@@ -1,0 +1,102 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of em411's Allegro PHP API project.
+ *
+ * (c) em411 <contact@em411.dev>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Em411\Allegro\Api\Model;
+
+class OwnTransportShipping extends ShippingExtended
+{
+    /**
+     * @var array
+     */
+    protected $initialized = [];
+    /**
+     * The licence plate of the truck that will deliver the shipment.
+     *
+     * @var string|null
+     */
+    protected $truckLicencePlate;
+    /**
+     * The estimated date and time of Advance Ship Notice arrival in the warehouse. Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).
+     *
+     * @var \DateTime|null
+     */
+    protected $estimatedTimeOfArrival;
+    /**
+     * Country code in ISO 3166-1 alpha-2 format (two-letter code), which means the country from which Advance Ship Notice is sent.
+     *
+     * @var string|null
+     */
+    protected $countryCode;
+
+    public function isInitialized($property): bool
+    {
+        return \array_key_exists($property, $this->initialized);
+    }
+
+    /**
+     * The licence plate of the truck that will deliver the shipment.
+     */
+    public function getTruckLicencePlate(): ?string
+    {
+        return $this->truckLicencePlate;
+    }
+
+    /**
+     * The licence plate of the truck that will deliver the shipment.
+     */
+    public function setTruckLicencePlate(?string $truckLicencePlate): self
+    {
+        $this->initialized['truckLicencePlate'] = true;
+        $this->truckLicencePlate = $truckLicencePlate;
+
+        return $this;
+    }
+
+    /**
+     * The estimated date and time of Advance Ship Notice arrival in the warehouse. Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).
+     */
+    public function getEstimatedTimeOfArrival(): ?\DateTime
+    {
+        return $this->estimatedTimeOfArrival;
+    }
+
+    /**
+     * The estimated date and time of Advance Ship Notice arrival in the warehouse. Provided in [ISO 8601 format](link: https://en.wikipedia.org/wiki/ISO_8601).
+     */
+    public function setEstimatedTimeOfArrival(?\DateTime $estimatedTimeOfArrival): self
+    {
+        $this->initialized['estimatedTimeOfArrival'] = true;
+        $this->estimatedTimeOfArrival = $estimatedTimeOfArrival;
+
+        return $this;
+    }
+
+    /**
+     * Country code in ISO 3166-1 alpha-2 format (two-letter code), which means the country from which Advance Ship Notice is sent.
+     */
+    public function getCountryCode(): ?string
+    {
+        return $this->countryCode;
+    }
+
+    /**
+     * Country code in ISO 3166-1 alpha-2 format (two-letter code), which means the country from which Advance Ship Notice is sent.
+     */
+    public function setCountryCode(?string $countryCode): self
+    {
+        $this->initialized['countryCode'] = true;
+        $this->countryCode = $countryCode;
+
+        return $this;
+    }
+}
