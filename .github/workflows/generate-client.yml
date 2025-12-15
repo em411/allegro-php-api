@@ -30,7 +30,7 @@ jobs:
       - name: Download Remote OpenAPI Spec
         run: |
           mkdir -p resources
-          curl -f -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -o resources/partner_api.yaml "${{ env.REMOTE_API_URL }}"
+          curl -f -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -o resources/spec.yaml "${{ env.REMOTE_API_URL }}"
 
       - name: Generate Code (JanePHP)
         run: vendor/bin/jane-openapi generate --config-file=.jane-openapi.php
