@@ -1,0 +1,12 @@
+.idea
+*.iml
+out
+gen
+
+/vendor/
+
+.php-cs-fixer.cache
+
+phpunit.xml
+ci_generated
+.phpunit.result.cache

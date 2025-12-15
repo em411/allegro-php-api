@@ -1,0 +1,61 @@
+name: Update API Client
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  REMOTE_API_URL: https://developer.allegro.pl/swagger.yaml
+
+jobs:
+  generate-sdk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          tools: composer
+
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Download Remote OpenAPI Spec
+        run: |
+          mkdir -p resources
+          curl -f -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -o resources/partner_api.yaml "${{ env.REMOTE_API_URL }}"
+
+      - name: Generate Code (JanePHP)
+        run: vendor/bin/jane-openapi generate --config-file=.jane-openapi.php
+
+      - name: Commit Changes
+        id: auto-commit
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "feat: Synchronize with remote API spec"
+          file_pattern: 'generated resources'
+          skip_fetch: true
+
+      - name: Bump version and push tag
+        id: tag_version
+        if: steps.auto-commit.outputs.changes_detected == 'true'
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
+          release_branches: main
+
+      - name: Create a GitHub Release
+        uses: ncipollo/release-action@v1
+        if: steps.auto-commit.outputs.changes_detected == 'true'
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: "Automatic update triggered by changes in Allegro API definition."
