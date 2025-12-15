@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'openapi-file' => __DIR__ . '/resources/swagger.yaml',
+    'openapi-file' => __DIR__ . '/resources/spec.yaml',
     'namespace' => 'Em411\\Allegro\\Api',
     'directory' => __DIR__ . '/generated',
     'strict' => false,
