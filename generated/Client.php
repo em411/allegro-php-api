@@ -4379,6 +4379,11 @@ class Client extends Runtime\Client\Client
      * @var string $searchFeatures Enables additional search options: - *SIMILAR_CATEGORIES* - searching in the indicated category (category.id) and in 'similar categories' (works only if category.id is a leaf category).
      *             }
      *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
      * @return Model\GetSaleProductsResponse|\Psr\Http\Message\ResponseInterface|null
@@ -4387,9 +4392,9 @@ class Client extends Runtime\Client\Client
      * @throws Exception\GetSaleProductsUnauthorizedException
      * @throws Exception\GetSaleProductsUnprocessableEntityException
      */
-    public function getSaleProducts(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function getSaleProducts(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new Endpoint\GetSaleProducts($queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\GetSaleProducts($queryParameters, $headerParameters), $fetch);
     }
 
     /**
@@ -4402,6 +4407,11 @@ class Client extends Runtime\Client\Client
      * @var string $language The language version of product. You can indicate the language for the returned product data.
      *             }
      *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
      * @return Model\SaleProductDto|\Psr\Http\Message\ResponseInterface|null
@@ -4410,9 +4420,9 @@ class Client extends Runtime\Client\Client
      * @throws Exception\GetSaleProductNotFoundException
      * @throws Exception\GetSaleProductUnprocessableEntityException
      */
-    public function getSaleProduct(string $productId, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function getSaleProduct(string $productId, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new Endpoint\GetSaleProduct($productId, $queryParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\GetSaleProduct($productId, $queryParameters, $headerParameters), $fetch);
     }
 
     /**

@@ -12999,6 +12999,21 @@ paths:
             type: string
             enum:
               - SIMILAR_CATEGORIES
+        - name: Accept-Language
+          in: header
+          required: false
+          description: Expected language of messages.
+          example: en-US
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
       responses:
         '200':
           description: Successful operation.
@@ -13060,6 +13075,21 @@ paths:
             type: string
             format: BCP-47 language code
             example: 'en-US'
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+        - name: Accept-Language
+          in: header
+          required: false
+          description: Expected language of messages.
+          example: en-US
+          schema:
+            type: string
+            format: BCP-47 language code
             enum:
               - en-US
               - pl-PL
@@ -32047,10 +32077,12 @@ components:
       properties:
         name:
           type: string
+          nullable: true
           description: User's company name.
           example: "Allegro.pl sp. z o.o."
         taxId:
           type: string
+          nullable: true
           description: User's tax identification number.
           example: "5252674798"
     MyBidResponse:

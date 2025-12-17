@@ -27,11 +27,17 @@ class GetSaleProduct extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impl
      * @var string $category.id The similar category identifier. You can choose a category from 'similar categories' to filter the list of parameters available in the category context.
      * @var string $language The language version of product. You can indicate the language for the returned product data.
      *             }
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
      */
-    public function __construct(string $productId, array $queryParameters = [])
+    public function __construct(string $productId, array $queryParameters = [], array $headerParameters = [])
     {
         $this->productId = $productId;
         $this->queryParameters = $queryParameters;
+        $this->headerParameters = $headerParameters;
     }
 
     public function getMethod(): string
@@ -67,6 +73,17 @@ class GetSaleProduct extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impl
         $optionsResolver->setDefaults([]);
         $optionsResolver->addAllowedTypes('category.id', ['string']);
         $optionsResolver->addAllowedTypes('language', ['string']);
+
+        return $optionsResolver;
+    }
+
+    protected function getHeadersOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
+    {
+        $optionsResolver = parent::getHeadersOptionsResolver();
+        $optionsResolver->setDefined(['Accept-Language']);
+        $optionsResolver->setRequired([]);
+        $optionsResolver->setDefaults([]);
+        $optionsResolver->addAllowedTypes('Accept-Language', ['string']);
 
         return $optionsResolver;
     }

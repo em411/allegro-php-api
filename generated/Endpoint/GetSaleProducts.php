@@ -52,10 +52,16 @@ class GetSaleProducts extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
      * @var string $page.id A "cursor" to the next set of results.
      * @var string $searchFeatures Enables additional search options: - *SIMILAR_CATEGORIES* - searching in the indicated category (category.id) and in 'similar categories' (works only if category.id is a leaf category).
      *             }
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
      */
-    public function __construct(array $queryParameters = [])
+    public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
         $this->queryParameters = $queryParameters;
+        $this->headerParameters = $headerParameters;
     }
 
     public function getMethod(): string
@@ -96,6 +102,17 @@ class GetSaleProducts extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
         $optionsResolver->addAllowedTypes('Dynamic filters', ['string']);
         $optionsResolver->addAllowedTypes('page.id', ['string']);
         $optionsResolver->addAllowedTypes('searchFeatures', ['string']);
+
+        return $optionsResolver;
+    }
+
+    protected function getHeadersOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
+    {
+        $optionsResolver = parent::getHeadersOptionsResolver();
+        $optionsResolver->setDefined(['Accept-Language']);
+        $optionsResolver->setRequired([]);
+        $optionsResolver->setDefaults([]);
+        $optionsResolver->addAllowedTypes('Accept-Language', ['string']);
 
         return $optionsResolver;
     }
