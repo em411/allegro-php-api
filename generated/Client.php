@@ -3759,7 +3759,7 @@ class Client extends Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\DisputeAttachmentId|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\PostPurchaseIssueAttachmentId|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\CreateAnIssueAttachmentUsingPOSTUnauthorizedException
      * @throws Exception\CreateAnIssueAttachmentUsingPOSTForbiddenException
@@ -3806,7 +3806,7 @@ class Client extends Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\DisputeAttachmentId|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\PostPurchaseIssueAttachmentId|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\UploadIssueAttachmentUsingPUTBadRequestException
      * @throws Exception\UploadIssueAttachmentUsingPUTUnauthorizedException
@@ -3817,180 +3817,6 @@ class Client extends Runtime\Client\Client
     public function uploadIssueAttachmentUsingPUT(string $attachmentId, $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\UploadIssueAttachmentUsingPUT($attachmentId, $requestBody, $headerParameters), $fetch);
-    }
-
-    /**
-     * Use this resource to get the list of your disputes ordered by descending opened date. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#dyskusje-na-koncie" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#all-discussions" target="_blank">EN</a>.
-     *
-     * @param array $queryParameters {
-     *
-     * @var string $checkoutForm.id Checkout form identifier.
-     * @var int    $limit the maximum number of disputes in a response
-     * @var int    $offset index of first returned dispute
-     * @var array  $status Filter disputes with given set of statuses.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\DisputeListResponse|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\GetListOfDisputesUsingGETUnauthorizedException
-     * @throws Exception\GetListOfDisputesUsingGETNotFoundException
-     * @throws Exception\GetListOfDisputesUsingGETUnprocessableEntityException
-     */
-    public function getListOfDisputesUsingGET(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\GetListOfDisputesUsingGET($queryParameters, $headerParameters), $fetch);
-    }
-
-    /**
-     * Use this resource to get a single dispute. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#szczegolowe-informacje-o-dyskusji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#information-about-a-particular-discussion" target="_blank">EN</a>.
-     *
-     * @param string $disputeId        dispute identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\Dispute|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\GetDisputeUsingGETUnauthorizedException
-     * @throws Exception\GetDisputeUsingGETForbiddenException
-     * @throws Exception\GetDisputeUsingGETNotFoundException
-     */
-    public function getDisputeUsingGET(string $disputeId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\GetDisputeUsingGET($disputeId, $headerParameters), $fetch);
-    }
-
-    /**
-     * Use this resource to get the list of messages within dispute. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#wiadomosci-z-dyskusji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#all-messages-within-a-discussion" target="_blank">EN</a>.
-     *
-     * @param string $disputeId       dispute identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the maximum number of messages within dispute returned in a response
-     * @var int $offset Index of first returned message within dispute.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\DisputeMessageList|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\GetMessagesFromDisputeUsingGETUnauthorizedException
-     * @throws Exception\GetMessagesFromDisputeUsingGETForbiddenException
-     * @throws Exception\GetMessagesFromDisputeUsingGETNotFoundException
-     */
-    public function getMessagesFromDisputeUsingGET(string $disputeId, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\GetMessagesFromDisputeUsingGET($disputeId, $queryParameters, $headerParameters), $fetch);
-    }
-
-    /**
-     * Use this resource to post a message in certain dispute. At least one of fields: 'text', 'attachment' has to be present. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#nowa-wiadomosc-w-dyskusji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#add-a-new-message-in-the-discussion" target="_blank">EN</a>.
-     *
-     * @param string $disputeId        dispute identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\DisputeMessage|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\AddMessageToDisputeUsingPOSTBadRequestException
-     * @throws Exception\AddMessageToDisputeUsingPOSTUnauthorizedException
-     * @throws Exception\AddMessageToDisputeUsingPOSTForbiddenException
-     * @throws Exception\AddMessageToDisputeUsingPOSTNotFoundException
-     * @throws Exception\AddMessageToDisputeUsingPOSTConflictException
-     * @throws Exception\AddMessageToDisputeUsingPOSTUnprocessableEntityException
-     */
-    public function addMessageToDisputeUsingPOST(string $disputeId, ?Model\MessageRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\AddMessageToDisputeUsingPOST($disputeId, $requestBody, $headerParameters), $fetch);
-    }
-
-    /**
-     * Use this resource to post an attachment declaration. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#deklaracja-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#attachment-declaration" target="_blank">EN</a>.
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\DisputeAttachmentId|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\CreateAnAttachmentUsingPOSTUnauthorizedException
-     * @throws Exception\CreateAnAttachmentUsingPOSTForbiddenException
-     * @throws Exception\CreateAnAttachmentUsingPOSTUnprocessableEntityException
-     */
-    public function createAnAttachmentUsingPOST(?Model\AttachmentDeclaration $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\CreateAnAttachmentUsingPOST($requestBody, $headerParameters), $fetch);
-    }
-
-    /**
-     * Use this resource to get an attachment. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#pobranie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#attachment-related-to-the-discussion" target="_blank">EN</a>.
-     *
-     * @param string $attachmentId     attachment identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return \Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\GetAttachmentUsingGETUnauthorizedException
-     * @throws Exception\GetAttachmentUsingGETForbiddenException
-     * @throws Exception\GetAttachmentUsingGETNotFoundException
-     */
-    public function getAttachmentUsingGET(string $attachmentId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\GetAttachmentUsingGET($attachmentId, $headerParameters), $fetch);
-    }
-
-    /**
-     * Upload a dispute message attachment.
-     * This operation should be used after creating an attachment declaration with *POST /sale/dispute-attachments*
-     * **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /sale/dispute-attachments*. The URL is unique and one-time. As its format may change in time, you should always use the address from the header. Do not compose the address on your own. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#dodanie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#adding-an-attachment" target="_blank">EN</a>.
-     *
-     * @param string                                                 $attachmentId     attachment identifier
-     * @param string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return \Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\UploadDisputeAttachmentUsingPUTBadRequestException
-     * @throws Exception\UploadDisputeAttachmentUsingPUTUnauthorizedException
-     * @throws Exception\UploadDisputeAttachmentUsingPUTRequestEntityTooLargeException
-     * @throws Exception\UploadDisputeAttachmentUsingPUTUnsupportedMediaTypeException
-     * @throws Exception\UploadDisputeAttachmentUsingPUTUnprocessableEntityException
-     */
-    public function uploadDisputeAttachmentUsingPUT(string $attachmentId, $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\UploadDisputeAttachmentUsingPUT($attachmentId, $requestBody, $headerParameters), $fetch);
     }
 
     /**

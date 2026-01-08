@@ -1079,33 +1079,9 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\NewOrderBillingDocumentLink::class => NewOrderBillingDocumentLinkNormalizer::class,
 
-        \Em411\Allegro\Api\Model\DisputeListResponse::class => DisputeListResponseNormalizer::class,
-
-        \Em411\Allegro\Api\Model\Dispute::class => DisputeNormalizer::class,
-
-        \Em411\Allegro\Api\Model\Subject::class => SubjectNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DisputeClaim::class => DisputeClaimNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DisputeUser::class => DisputeUserNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DisputeMessageList::class => DisputeMessageListNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DisputeFirstMessage::class => DisputeFirstMessageNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DisputeMessage::class => DisputeMessageNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DisputeMessageAuthor::class => DisputeMessageAuthorNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DisputeAttachment::class => DisputeAttachmentNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DisputeAttachmentId::class => DisputeAttachmentIdNormalizer::class,
+        \Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId::class => PostPurchaseIssueAttachmentIdNormalizer::class,
 
         \Em411\Allegro\Api\Model\AttachmentDeclaration::class => AttachmentDeclarationNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DisputeCheckoutForm::class => DisputeCheckoutFormNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DisputeAuthor::class => DisputeAuthorNormalizer::class,
 
         \Em411\Allegro\Api\Model\MessageRequest::class => MessageRequestNormalizer::class,
 
@@ -2901,20 +2877,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\CheckFormsNewOrderInvoiceFile::class => false,
             \Em411\Allegro\Api\Model\CheckFormsNewOrderInvoiceId::class => false,
             \Em411\Allegro\Api\Model\NewOrderBillingDocumentLink::class => false,
-            \Em411\Allegro\Api\Model\DisputeListResponse::class => false,
-            \Em411\Allegro\Api\Model\Dispute::class => false,
-            \Em411\Allegro\Api\Model\Subject::class => false,
-            \Em411\Allegro\Api\Model\DisputeClaim::class => false,
-            \Em411\Allegro\Api\Model\DisputeUser::class => false,
-            \Em411\Allegro\Api\Model\DisputeMessageList::class => false,
-            \Em411\Allegro\Api\Model\DisputeFirstMessage::class => false,
-            \Em411\Allegro\Api\Model\DisputeMessage::class => false,
-            \Em411\Allegro\Api\Model\DisputeMessageAuthor::class => false,
-            \Em411\Allegro\Api\Model\DisputeAttachment::class => false,
-            \Em411\Allegro\Api\Model\DisputeAttachmentId::class => false,
+            \Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId::class => false,
             \Em411\Allegro\Api\Model\AttachmentDeclaration::class => false,
-            \Em411\Allegro\Api\Model\DisputeCheckoutForm::class => false,
-            \Em411\Allegro\Api\Model\DisputeAuthor::class => false,
             \Em411\Allegro\Api\Model\MessageRequest::class => false,
             \Em411\Allegro\Api\Model\ClaimStatusChangeRequest::class => false,
             \Em411\Allegro\Api\Model\TagRequest::class => false,

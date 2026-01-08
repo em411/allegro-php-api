@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class DisputeAttachmentNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class PostPurchaseIssueAttachmentIdNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class DisputeAttachmentNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\DisputeAttachment::class === $type;
+        return \Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\DisputeAttachment::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,21 +48,15 @@ class DisputeAttachmentNormalizer implements DenormalizerInterface, NormalizerIn
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\DisputeAttachment();
+        $object = new \Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('fileName', $data) && null !== $data['fileName']) {
-            $object->setFileName($data['fileName']);
-            unset($data['fileName']);
-        } elseif (\array_key_exists('fileName', $data) && null === $data['fileName']) {
-            $object->setFileName(null);
-        }
-        if (\array_key_exists('url', $data) && null !== $data['url']) {
-            $object->setUrl($data['url']);
-            unset($data['url']);
-        } elseif (\array_key_exists('url', $data) && null === $data['url']) {
-            $object->setUrl(null);
+        if (\array_key_exists('id', $data) && null !== $data['id']) {
+            $object->setId($data['id']);
+            unset($data['id']);
+        } elseif (\array_key_exists('id', $data) && null === $data['id']) {
+            $object->setId(null);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,8 +70,7 @@ class DisputeAttachmentNormalizer implements DenormalizerInterface, NormalizerIn
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['fileName'] = $data->getFileName();
-        $dataArray['url'] = $data->getUrl();
+        $dataArray['id'] = $data->getId();
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
@@ -89,6 +82,6 @@ class DisputeAttachmentNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\DisputeAttachment::class => false];
+        return [\Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId::class => false];
     }
 }

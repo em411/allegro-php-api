@@ -61,7 +61,7 @@ class MessageRequestNormalizer implements DenormalizerInterface, NormalizerInter
         if (\array_key_exists('attachments', $data) && null !== $data['attachments']) {
             $values = [];
             foreach ($data['attachments'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\DisputeAttachmentId::class, 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId::class, 'json', $context);
             }
             $object->setAttachments($values);
             unset($data['attachments']);

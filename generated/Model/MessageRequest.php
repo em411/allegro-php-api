@@ -24,7 +24,7 @@ class MessageRequest extends \ArrayObject
      */
     protected $text;
     /**
-     * @var list<DisputeAttachmentId>|null
+     * @var list<PostPurchaseIssueAttachmentId>|null
      */
     protected $attachments;
     /**
@@ -53,7 +53,7 @@ class MessageRequest extends \ArrayObject
     }
 
     /**
-     * @return list<DisputeAttachmentId>|null
+     * @return list<PostPurchaseIssueAttachmentId>|null
      */
     public function getAttachments(): ?array
     {
@@ -61,7 +61,7 @@ class MessageRequest extends \ArrayObject
     }
 
     /**
-     * @param list<DisputeAttachmentId>|null $attachments
+     * @param list<PostPurchaseIssueAttachmentId>|null $attachments
      */
     public function setAttachments(?array $attachments): self
     {

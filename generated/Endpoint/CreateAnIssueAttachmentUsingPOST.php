@@ -72,7 +72,7 @@ class CreateAnIssueAttachmentUsingPOST extends \Em411\Allegro\Api\Runtime\Client
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\DisputeAttachmentId|null
+     * @return \Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId|null
      *
      * @throws \Em411\Allegro\Api\Exception\CreateAnIssueAttachmentUsingPOSTUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\CreateAnIssueAttachmentUsingPOSTForbiddenException
@@ -83,7 +83,7 @@ class CreateAnIssueAttachmentUsingPOST extends \Em411\Allegro\Api\Runtime\Client
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if ((null === $contentType) === false && (201 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
-            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\DisputeAttachmentId', 'json');
+            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId', 'json');
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\CreateAnIssueAttachmentUsingPOSTUnauthorizedException($response);

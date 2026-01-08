@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DisputeAttachmentId extends \ArrayObject
+class PostPurchaseIssueAttachmentId extends \ArrayObject
 {
     /**
      * @var array
