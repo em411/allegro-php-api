@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReturnPoliciesListReturnPolicy extends \ArrayObject
+class ReturnPoliciesListReturnPolicyV1 extends \ArrayObject
 {
     /**
      * @var array
@@ -24,7 +24,7 @@ class ReturnPoliciesListReturnPolicy extends \ArrayObject
      */
     protected $count;
     /**
-     * @var list<ReturnPolicyResponse>|null
+     * @var list<ReturnPolicyResponseV1>|null
      */
     protected $returnPolicies;
 
@@ -47,7 +47,7 @@ class ReturnPoliciesListReturnPolicy extends \ArrayObject
     }
 
     /**
-     * @return list<ReturnPolicyResponse>|null
+     * @return list<ReturnPolicyResponseV1>|null
      */
     public function getReturnPolicies(): ?array
     {
@@ -55,7 +55,7 @@ class ReturnPoliciesListReturnPolicy extends \ArrayObject
     }
 
     /**
-     * @param list<ReturnPolicyResponse>|null $returnPolicies
+     * @param list<ReturnPolicyResponseV1>|null $returnPolicies
      */
     public function setReturnPolicies(?array $returnPolicies): self
     {

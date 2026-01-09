@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ReturnPoliciesListReturnPolicyNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ReturnPoliciesListReturnPolicyV1Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class ReturnPoliciesListReturnPolicyNormalizer implements DenormalizerInterface,
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicy::class === $type;
+        return \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicy::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,7 +48,7 @@ class ReturnPoliciesListReturnPolicyNormalizer implements DenormalizerInterface,
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicy();
+        $object = new \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -61,7 +61,7 @@ class ReturnPoliciesListReturnPolicyNormalizer implements DenormalizerInterface,
         if (\array_key_exists('returnPolicies', $data) && null !== $data['returnPolicies']) {
             $values = [];
             foreach ($data['returnPolicies'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\ReturnPolicyResponse::class, 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\ReturnPolicyResponseV1::class, 'json', $context);
             }
             $object->setReturnPolicies($values);
             unset($data['returnPolicies']);
@@ -101,6 +101,6 @@ class ReturnPoliciesListReturnPolicyNormalizer implements DenormalizerInterface,
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicy::class => false];
+        return [\Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1::class => false];
     }
 }

@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class SaleShippingRatesIdGetResponse200featuresNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ReturnPoliciesListReturnPolicyV2Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class SaleShippingRatesIdGetResponse200featuresNormalizer implements Denormalize
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200features::class === $type;
+        return \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV2::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200features::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV2::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,31 +48,29 @@ class SaleShippingRatesIdGetResponse200featuresNormalizer implements Denormalize
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200features();
-        if (\array_key_exists('managedByAllegro', $data) && \is_int($data['managedByAllegro'])) {
-            $data['managedByAllegro'] = (bool) $data['managedByAllegro'];
-        }
-        if (\array_key_exists('isFulfillment', $data) && \is_int($data['isFulfillment'])) {
-            $data['isFulfillment'] = (bool) $data['isFulfillment'];
-        }
+        $object = new \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV2();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('managedByAllegro', $data) && null !== $data['managedByAllegro']) {
-            $object->setManagedByAllegro($data['managedByAllegro']);
-            unset($data['managedByAllegro']);
-        } elseif (\array_key_exists('managedByAllegro', $data) && null === $data['managedByAllegro']) {
-            $object->setManagedByAllegro(null);
+        if (\array_key_exists('count', $data) && null !== $data['count']) {
+            $object->setCount($data['count']);
+            unset($data['count']);
+        } elseif (\array_key_exists('count', $data) && null === $data['count']) {
+            $object->setCount(null);
         }
-        if (\array_key_exists('isFulfillment', $data) && null !== $data['isFulfillment']) {
-            $object->setIsFulfillment($data['isFulfillment']);
-            unset($data['isFulfillment']);
-        } elseif (\array_key_exists('isFulfillment', $data) && null === $data['isFulfillment']) {
-            $object->setIsFulfillment(null);
+        if (\array_key_exists('returnPolicies', $data) && null !== $data['returnPolicies']) {
+            $values = [];
+            foreach ($data['returnPolicies'] as $value) {
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\ReturnPolicyResponseV2::class, 'json', $context);
+            }
+            $object->setReturnPolicies($values);
+            unset($data['returnPolicies']);
+        } elseif (\array_key_exists('returnPolicies', $data) && null === $data['returnPolicies']) {
+            $object->setReturnPolicies(null);
         }
-        foreach ($data as $key => $value) {
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
+                $object[$key] = $value_1;
             }
         }
 
@@ -82,15 +80,19 @@ class SaleShippingRatesIdGetResponse200featuresNormalizer implements Denormalize
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('managedByAllegro') && null !== $data->getManagedByAllegro()) {
-            $dataArray['managedByAllegro'] = $data->getManagedByAllegro();
+        if ($data->isInitialized('count') && null !== $data->getCount()) {
+            $dataArray['count'] = $data->getCount();
         }
-        if ($data->isInitialized('isFulfillment') && null !== $data->getIsFulfillment()) {
-            $dataArray['isFulfillment'] = $data->getIsFulfillment();
+        if ($data->isInitialized('returnPolicies') && null !== $data->getReturnPolicies()) {
+            $values = [];
+            foreach ($data->getReturnPolicies() as $value) {
+                $values[] = $this->normalizer->normalize($value, 'json', $context);
+            }
+            $dataArray['returnPolicies'] = $values;
         }
-        foreach ($data as $key => $value) {
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
+                $dataArray[$key] = $value_1;
             }
         }
 
@@ -99,6 +101,6 @@ class SaleShippingRatesIdGetResponse200featuresNormalizer implements Denormalize
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200features::class => false];
+        return [\Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV2::class => false];
     }
 }

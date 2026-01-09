@@ -2486,39 +2486,42 @@ class Client extends Runtime\Client\Client
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.public.v2+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ReturnPoliciesListReturnPolicy|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ReturnPoliciesListReturnPolicyV1|Model\ReturnPoliciesListReturnPolicyV2|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\GetPublicSellerListingUsingGET1UnauthorizedException
      * @throws Exception\GetPublicSellerListingUsingGET1ForbiddenException
      * @throws Exception\GetPublicSellerListingUsingGET1NotFoundException
      */
-    public function getPublicSellerListingUsingGET1(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function getPublicSellerListingUsingGET1(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\GetPublicSellerListingUsingGET1($queryParameters, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\GetPublicSellerListingUsingGET1($queryParameters, $headerParameters, $accept), $fetch);
     }
 
     /**
      * Use this resource to create a return policy definition. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-informacje-o-warunkach-zwrotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-return-policy-information" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
+     * @param Model\ReturnPolicyRequestV1|Model\ReturnPolicyRequestV2|null $requestBody
+     * @param array                                                        $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.public.v2+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ReturnPolicyResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ReturnPolicyResponseV1|Model\ReturnPolicyResponseV2|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\CreateAfterSalesServiceReturnPolicyUsingPOSTBadRequestException
      * @throws Exception\CreateAfterSalesServiceReturnPolicyUsingPOSTUnauthorizedException
      * @throws Exception\CreateAfterSalesServiceReturnPolicyUsingPOSTForbiddenException
      * @throws Exception\CreateAfterSalesServiceReturnPolicyUsingPOSTUnprocessableEntityException
      */
-    public function createAfterSalesServiceReturnPolicyUsingPOST(?Model\ReturnPolicyRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function createAfterSalesServiceReturnPolicyUsingPOST($requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\CreateAfterSalesServiceReturnPolicyUsingPOST($requestBody, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\CreateAfterSalesServiceReturnPolicyUsingPOST($requestBody, $headerParameters, $accept), $fetch);
     }
 
     /**
@@ -2532,7 +2535,7 @@ class Client extends Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return Model\ReturnPolicyResponseV2|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\DeleteAfterSalesServiceReturnPolicyUsingDELETEBadRequestException
      * @throws Exception\DeleteAfterSalesServiceReturnPolicyUsingDELETEUnauthorizedException
@@ -2553,31 +2556,34 @@ class Client extends Runtime\Client\Client
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.public.v2+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ReturnPolicyResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ReturnPolicyResponseV1|Model\ReturnPolicyResponseV2|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\GetAfterSalesServiceReturnPolicyUsingGETUnauthorizedException
      * @throws Exception\GetAfterSalesServiceReturnPolicyUsingGETForbiddenException
      * @throws Exception\GetAfterSalesServiceReturnPolicyUsingGETNotFoundException
      */
-    public function getAfterSalesServiceReturnPolicyUsingGET(string $returnPolicyId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function getAfterSalesServiceReturnPolicyUsingGET(string $returnPolicyId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\GetAfterSalesServiceReturnPolicyUsingGET($returnPolicyId, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\GetAfterSalesServiceReturnPolicyUsingGET($returnPolicyId, $headerParameters, $accept), $fetch);
     }
 
     /**
      * Use this resource to modify the return policy details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-edytowac-informacje-o-warunkach-zwrotu" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-update-return-policy-information" target="_blank">EN</a>.
      *
-     * @param string $returnPolicyId   the ID of the return policy
-     * @param array  $headerParameters {
+     * @param string                                                             $returnPolicyId   the ID of the return policy
+     * @param Model\ReturnPolicyRequestV1|Model\ReturnPolicyUpdateRequestV2|null $requestBody
+     * @param array                                                              $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.public.v2+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ReturnPolicyResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ReturnPolicyResponseV1|Model\ReturnPolicyResponseV2|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\UpdateAfterSalesServiceReturnPolicyUsingPUTBadRequestException
      * @throws Exception\UpdateAfterSalesServiceReturnPolicyUsingPUTUnauthorizedException
@@ -2585,9 +2591,9 @@ class Client extends Runtime\Client\Client
      * @throws Exception\UpdateAfterSalesServiceReturnPolicyUsingPUTNotFoundException
      * @throws Exception\UpdateAfterSalesServiceReturnPolicyUsingPUTUnprocessableEntityException
      */
-    public function updateAfterSalesServiceReturnPolicyUsingPUT(string $returnPolicyId, ?Model\ReturnPolicyRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function updateAfterSalesServiceReturnPolicyUsingPUT(string $returnPolicyId, $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\UpdateAfterSalesServiceReturnPolicyUsingPUT($returnPolicyId, $requestBody, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\UpdateAfterSalesServiceReturnPolicyUsingPUT($returnPolicyId, $requestBody, $headerParameters, $accept), $fetch);
     }
 
     /**

@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ReturnPolicyContactNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ReturnPolicyContactV2Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class ReturnPolicyContactNormalizer implements DenormalizerInterface, Normalizer
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\ReturnPolicyContact::class === $type;
+        return \Em411\Allegro\Api\Model\ReturnPolicyContactV2::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\ReturnPolicyContact::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\ReturnPolicyContactV2::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,7 +48,7 @@ class ReturnPolicyContactNormalizer implements DenormalizerInterface, Normalizer
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ReturnPolicyContact();
+        $object = new \Em411\Allegro\Api\Model\ReturnPolicyContactV2();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -58,11 +58,11 @@ class ReturnPolicyContactNormalizer implements DenormalizerInterface, Normalizer
         } elseif (\array_key_exists('phoneNumber', $data) && null === $data['phoneNumber']) {
             $object->setPhoneNumber(null);
         }
-        if (\array_key_exists('email', $data) && null !== $data['email']) {
-            $object->setEmail($data['email']);
-            unset($data['email']);
-        } elseif (\array_key_exists('email', $data) && null === $data['email']) {
-            $object->setEmail(null);
+        if (\array_key_exists('emailAddress', $data) && null !== $data['emailAddress']) {
+            $object->setEmailAddress($data['emailAddress']);
+            unset($data['emailAddress']);
+        } elseif (\array_key_exists('emailAddress', $data) && null === $data['emailAddress']) {
+            $object->setEmailAddress(null);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -79,8 +79,8 @@ class ReturnPolicyContactNormalizer implements DenormalizerInterface, Normalizer
         if ($data->isInitialized('phoneNumber')) {
             $dataArray['phoneNumber'] = $data->getPhoneNumber();
         }
-        if ($data->isInitialized('email')) {
-            $dataArray['email'] = $data->getEmail();
+        if ($data->isInitialized('emailAddress')) {
+            $dataArray['emailAddress'] = $data->getEmailAddress();
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -93,6 +93,6 @@ class ReturnPolicyContactNormalizer implements DenormalizerInterface, Normalizer
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\ReturnPolicyContact::class => false];
+        return [\Em411\Allegro\Api\Model\ReturnPolicyContactV2::class => false];
     }
 }

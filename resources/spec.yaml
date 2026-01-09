@@ -6061,6 +6061,9 @@ paths:
                             managedByAllegro:
                               type: boolean
                               description: Indicates whether the shipping rates set is managed by Allegro and cannot be modified via API.
+                            isFulfillment:
+                              type: boolean
+                              description: Indicates whether the shipping rates set is for One Fulfillment offers.
                         marketplaces:
                           type: array
                           items:
@@ -6078,6 +6081,7 @@ paths:
                         name: Cennik z wysyłką do Czech
                         features:
                           managedByAllegro: false
+                          isFulfillment: false
                         marketplaces:
                           - id: "allegro-pl"
                           - id: "allegro-cz"
@@ -6200,6 +6204,9 @@ paths:
                           managedByAllegro:
                             type: boolean
                             description: Indicates whether the shipping rates set is managed by Allegro and cannot be modified via API.
+                          isFulfillment:
+                            type: boolean
+                            description: Indicates whether the shipping rates set is for One Fulfillment offers.
               examples:
                 response:
                   value:
@@ -6207,6 +6214,7 @@ paths:
                     name: Mój cennik
                     features:
                       managedByAllegro: false
+                      isFulfillment: false
                     rates:
                       - deliveryMethod:
                           id: 758fcd59-fbfa-4453-ae07-4800d72c2ca5
@@ -8221,7 +8229,10 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/ReturnPoliciesList_ReturnPolicy_'
+                $ref: '#/components/schemas/ReturnPoliciesList_ReturnPolicy_V1'
+            application/vnd.allegro.public.v2+json:
+              schema:
+                $ref: '#/components/schemas/ReturnPoliciesList_ReturnPolicy_V2'
         '401':
           description: Unauthorized
         '403':
@@ -8260,7 +8271,10 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/ReturnPolicyResponse'
+                $ref: '#/components/schemas/ReturnPolicyResponseV1'
+            application/vnd.allegro.public.v2+json:
+              schema:
+                $ref: '#/components/schemas/ReturnPolicyResponseV2'
         '400':
           description: Bad Request
         '401':
@@ -8275,7 +8289,10 @@ paths:
         content:
           application/vnd.allegro.public.v1+json:
             schema:
-              $ref: '#/components/schemas/ReturnPolicyRequest'
+              $ref: '#/components/schemas/ReturnPolicyRequestV1'
+          application/vnd.allegro.public.v2+json:
+            schema:
+              $ref: '#/components/schemas/ReturnPolicyRequestV2'
       security:
       - bearer-token-for-user:
         - allegro:api:sale:settings:write
@@ -8315,7 +8332,10 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/ReturnPolicyResponse'
+                $ref: '#/components/schemas/ReturnPolicyResponseV1'
+            application/vnd.allegro.public.v2+json:
+              schema:
+                $ref: '#/components/schemas/ReturnPolicyResponseV2'
         '401':
           description: Unauthorized
         '403':
@@ -8360,7 +8380,10 @@ paths:
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/ReturnPolicyResponse'
+                $ref: '#/components/schemas/ReturnPolicyResponseV1'
+            application/vnd.allegro.public.v2+json:
+              schema:
+                $ref: '#/components/schemas/ReturnPolicyResponseV2'
         '400':
           description: Bad Request
         '401':
@@ -8377,7 +8400,10 @@ paths:
         content:
           application/vnd.allegro.public.v1+json:
             schema:
-              $ref: '#/components/schemas/ReturnPolicyRequest'
+              $ref: '#/components/schemas/ReturnPolicyRequestV1'
+          application/vnd.allegro.public.v2+json:
+            schema:
+              $ref: '#/components/schemas/ReturnPolicyUpdateRequestV2'
       security:
       - bearer-token-for-user:
         - allegro:api:sale:settings:write
@@ -8411,6 +8437,12 @@ paths:
               - cs-CZ
               - hu-HU
       responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.allegro.public.v2+json:
+              schema:
+                $ref: '#/components/schemas/ReturnPolicyResponseV2'
         '204':
           description: No content
         '400':
@@ -20949,6 +20981,10 @@ components:
         id:
           type: string
           example: 'a3405c27-b01c-4357-9bea-e13925708b46'
+        isFulfillment:
+          type: boolean
+          description: Indicates if the return is handled by the One Fulfillment.
+          example: false
         createdAt:
           type: string
           format: date-time
@@ -21627,7 +21663,7 @@ components:
           type: string
           description: Country code.
           example: "PL"
-    ReturnPolicyRequest:
+    ReturnPolicyRequestV1:
       type: object
       required:
         - name
@@ -21652,10 +21688,62 @@ components:
         address:
           $ref: '#/components/schemas/ReturnPolicyAddress'
         contact:
-          $ref: '#/components/schemas/ReturnPolicyContact'
+          $ref: '#/components/schemas/ReturnPolicyContactV1'
         options:
           $ref: '#/components/schemas/ReturnPolicyOptions'
-    ReturnPolicyResponse:
+    ReturnPolicyRequestV2:
+      type: object
+      required:
+        - name
+        - isFulfillment
+        - availability
+      properties:
+        name:
+          type: string
+          description: Return policy name.
+          maxLength: 200
+        isFulfillment:
+          type: boolean
+          description: Indicates if the return policy is for One Fulfillment offers. Cannot be changed.
+        availability:
+          $ref: '#/components/schemas/ReturnPolicyAvailability'
+        withdrawalPeriod:
+          type: string
+          description: Period in ISO 8601 format. Only periods in full days are accepted.
+          example: 'P14D'
+        returnCost:
+          $ref: '#/components/schemas/ReturnPolicyReturnCost'
+        address:
+          $ref: '#/components/schemas/ReturnPolicyAddress'
+        contact:
+          $ref: '#/components/schemas/ReturnPolicyContactV2'
+        options:
+          $ref: '#/components/schemas/ReturnPolicyOptions'
+    ReturnPolicyUpdateRequestV2:
+      type: object
+      required:
+        - name
+        - availability
+      properties:
+        name:
+          type: string
+          description: Return policy name.
+          maxLength: 200
+        availability:
+          $ref: '#/components/schemas/ReturnPolicyAvailability'
+        withdrawalPeriod:
+          type: string
+          description: Period in ISO 8601 format. Only periods in full days are accepted.
+          example: 'P14D'
+        returnCost:
+          $ref: '#/components/schemas/ReturnPolicyReturnCost'
+        address:
+          $ref: '#/components/schemas/ReturnPolicyAddress'
+        contact:
+          $ref: '#/components/schemas/ReturnPolicyContactV2'
+        options:
+          $ref: '#/components/schemas/ReturnPolicyOptions'
+    ReturnPolicyResponseV1:
       type: object
       required:
         - id
@@ -21686,7 +21774,45 @@ components:
         address:
           $ref: '#/components/schemas/ReturnPolicyAddress'
         contact:
-          $ref: '#/components/schemas/ReturnPolicyContact'
+          $ref: '#/components/schemas/ReturnPolicyContactV1'
+        options:
+          $ref: '#/components/schemas/ReturnPolicyOptions'
+    ReturnPolicyResponseV2:
+      type: object
+      required:
+        - id
+        - isFulfillment
+        - seller
+        - name
+        - availability
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The ID of the return policy definition.
+          example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
+        isFulfillment:
+          type: boolean
+          description: Indicates if the return policy is for One Fulfillment offers.
+        seller:
+          $ref: '#/components/schemas/Seller'
+        name:
+          type: string
+          description: Return policy name.
+          maxLength: 200
+        availability:
+          $ref: '#/components/schemas/ReturnPolicyAvailability'
+        withdrawalPeriod:
+          type: string
+          nullable: true
+          description: Period in ISO 8601 format. Can be null if availability range is 'DISABLED'.
+          example: 'P14D'
+        returnCost:
+          $ref: '#/components/schemas/ReturnPolicyReturnCost'
+        address:
+          $ref: '#/components/schemas/ReturnPolicyAddress'
+        contact:
+          $ref: '#/components/schemas/ReturnPolicyContactV2'
         options:
           $ref: '#/components/schemas/ReturnPolicyOptions'
     ReturnPolicyAvailability:
@@ -21742,7 +21868,7 @@ components:
             - 'SELLER'
             - 'BUYER'
       description: Can be null if availability range is 'DISABLED'.
-    ReturnPolicyContact:
+    ReturnPolicyContactV1:
       type: object
       nullable: true
       properties:
@@ -21752,6 +21878,20 @@ components:
           nullable: true
           example: '123 123 123'
         email:
+          type: string
+          description: A valid email address of the seller
+          nullable: true
+          example: 'useridentifier@domain.com'
+    ReturnPolicyContactV2:
+      type: object
+      nullable: true
+      properties:
+        phoneNumber:
+          type: string
+          description: A valid phone number of the seller
+          nullable: true
+          example: '123 123 123'
+        emailAddress:
           type: string
           description: A valid email address of the seller
           nullable: true
@@ -26578,7 +26718,7 @@ components:
             Date and time for scheduling ACTIVATE action, will be ignored for
             another actions
       description: Contains publication's fields to change
-    ReturnPoliciesList_ReturnPolicy_:
+    ReturnPoliciesList_ReturnPolicy_V1:
       type: object
       properties:
         count:
@@ -26588,7 +26728,18 @@ components:
         returnPolicies:
           type: array
           items:
-            $ref: '#/components/schemas/ReturnPolicyResponse'
+            $ref: '#/components/schemas/ReturnPolicyResponseV1'
+    ReturnPoliciesList_ReturnPolicy_V2:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int32
+          minimum: 0
+        returnPolicies:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReturnPolicyResponseV2'
     WarrantiesList_WarrantyBasic_:
       type: object
       properties:

@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class SaleShippingRatesGetResponse200ShippingRatesItemFeaturesNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ReturnPolicyContactV1Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class SaleShippingRatesGetResponse200ShippingRatesItemFeaturesNormalizer impleme
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\SaleShippingRatesGetResponse200ShippingRatesItemFeatures::class === $type;
+        return \Em411\Allegro\Api\Model\ReturnPolicyContactV1::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\SaleShippingRatesGetResponse200ShippingRatesItemFeatures::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\ReturnPolicyContactV1::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,27 +48,21 @@ class SaleShippingRatesGetResponse200ShippingRatesItemFeaturesNormalizer impleme
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SaleShippingRatesGetResponse200ShippingRatesItemFeatures();
-        if (\array_key_exists('managedByAllegro', $data) && \is_int($data['managedByAllegro'])) {
-            $data['managedByAllegro'] = (bool) $data['managedByAllegro'];
-        }
-        if (\array_key_exists('isFulfillment', $data) && \is_int($data['isFulfillment'])) {
-            $data['isFulfillment'] = (bool) $data['isFulfillment'];
-        }
+        $object = new \Em411\Allegro\Api\Model\ReturnPolicyContactV1();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('managedByAllegro', $data) && null !== $data['managedByAllegro']) {
-            $object->setManagedByAllegro($data['managedByAllegro']);
-            unset($data['managedByAllegro']);
-        } elseif (\array_key_exists('managedByAllegro', $data) && null === $data['managedByAllegro']) {
-            $object->setManagedByAllegro(null);
+        if (\array_key_exists('phoneNumber', $data) && null !== $data['phoneNumber']) {
+            $object->setPhoneNumber($data['phoneNumber']);
+            unset($data['phoneNumber']);
+        } elseif (\array_key_exists('phoneNumber', $data) && null === $data['phoneNumber']) {
+            $object->setPhoneNumber(null);
         }
-        if (\array_key_exists('isFulfillment', $data) && null !== $data['isFulfillment']) {
-            $object->setIsFulfillment($data['isFulfillment']);
-            unset($data['isFulfillment']);
-        } elseif (\array_key_exists('isFulfillment', $data) && null === $data['isFulfillment']) {
-            $object->setIsFulfillment(null);
+        if (\array_key_exists('email', $data) && null !== $data['email']) {
+            $object->setEmail($data['email']);
+            unset($data['email']);
+        } elseif (\array_key_exists('email', $data) && null === $data['email']) {
+            $object->setEmail(null);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,11 +76,11 @@ class SaleShippingRatesGetResponse200ShippingRatesItemFeaturesNormalizer impleme
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('managedByAllegro') && null !== $data->getManagedByAllegro()) {
-            $dataArray['managedByAllegro'] = $data->getManagedByAllegro();
+        if ($data->isInitialized('phoneNumber')) {
+            $dataArray['phoneNumber'] = $data->getPhoneNumber();
         }
-        if ($data->isInitialized('isFulfillment') && null !== $data->getIsFulfillment()) {
-            $dataArray['isFulfillment'] = $data->getIsFulfillment();
+        if ($data->isInitialized('email')) {
+            $dataArray['email'] = $data->getEmail();
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -99,6 +93,6 @@ class SaleShippingRatesGetResponse200ShippingRatesItemFeaturesNormalizer impleme
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\SaleShippingRatesGetResponse200ShippingRatesItemFeatures::class => false];
+        return [\Em411\Allegro\Api\Model\ReturnPolicyContactV1::class => false];
     }
 }

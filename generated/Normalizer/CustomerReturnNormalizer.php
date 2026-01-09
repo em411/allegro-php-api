@@ -49,6 +49,9 @@ class CustomerReturnNormalizer implements DenormalizerInterface, NormalizerInter
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Em411\Allegro\Api\Model\CustomerReturn();
+        if (\array_key_exists('isFulfillment', $data) && \is_int($data['isFulfillment'])) {
+            $data['isFulfillment'] = (bool) $data['isFulfillment'];
+        }
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -57,6 +60,12 @@ class CustomerReturnNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+        }
+        if (\array_key_exists('isFulfillment', $data) && null !== $data['isFulfillment']) {
+            $object->setIsFulfillment($data['isFulfillment']);
+            unset($data['isFulfillment']);
+        } elseif (\array_key_exists('isFulfillment', $data) && null === $data['isFulfillment']) {
+            $object->setIsFulfillment(null);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
             $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']));
@@ -140,6 +149,9 @@ class CustomerReturnNormalizer implements DenormalizerInterface, NormalizerInter
         $dataArray = [];
         if ($data->isInitialized('id') && null !== $data->getId()) {
             $dataArray['id'] = $data->getId();
+        }
+        if ($data->isInitialized('isFulfillment') && null !== $data->getIsFulfillment()) {
+            $dataArray['isFulfillment'] = $data->getIsFulfillment();
         }
         if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
             $dataArray['createdAt'] = $data->getCreatedAt()->format('Y-m-d\TH:i:sP');

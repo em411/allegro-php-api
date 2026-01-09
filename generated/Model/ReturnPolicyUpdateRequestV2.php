@@ -13,22 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReturnPolicyResponse extends \ArrayObject
+class ReturnPolicyUpdateRequestV2 extends \ArrayObject
 {
     /**
      * @var array
      */
     protected $initialized = [];
-    /**
-     * The ID of the return policy definition.
-     *
-     * @var string|null
-     */
-    protected $id;
-    /**
-     * @var Seller|null
-     */
-    protected $seller;
     /**
      * Return policy name.
      *
@@ -40,7 +30,7 @@ class ReturnPolicyResponse extends \ArrayObject
      */
     protected $availability;
     /**
-     * Period in ISO 8601 format. Can be null if availability range is 'DISABLED'.
+     * Period in ISO 8601 format. Only periods in full days are accepted.
      *
      * @var string|null
      */
@@ -58,7 +48,7 @@ class ReturnPolicyResponse extends \ArrayObject
      */
     protected $address;
     /**
-     * @var ReturnPolicyContact|null
+     * @var ReturnPolicyContactV2|null
      */
     protected $contact;
     /**
@@ -71,38 +61,6 @@ class ReturnPolicyResponse extends \ArrayObject
     public function isInitialized($property): bool
     {
         return \array_key_exists($property, $this->initialized);
-    }
-
-    /**
-     * The ID of the return policy definition.
-     */
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
-
-    /**
-     * The ID of the return policy definition.
-     */
-    public function setId(?string $id): self
-    {
-        $this->initialized['id'] = true;
-        $this->id = $id;
-
-        return $this;
-    }
-
-    public function getSeller(): ?Seller
-    {
-        return $this->seller;
-    }
-
-    public function setSeller(?Seller $seller): self
-    {
-        $this->initialized['seller'] = true;
-        $this->seller = $seller;
-
-        return $this;
     }
 
     /**
@@ -138,7 +96,7 @@ class ReturnPolicyResponse extends \ArrayObject
     }
 
     /**
-     * Period in ISO 8601 format. Can be null if availability range is 'DISABLED'.
+     * Period in ISO 8601 format. Only periods in full days are accepted.
      */
     public function getWithdrawalPeriod(): ?string
     {
@@ -146,7 +104,7 @@ class ReturnPolicyResponse extends \ArrayObject
     }
 
     /**
-     * Period in ISO 8601 format. Can be null if availability range is 'DISABLED'.
+     * Period in ISO 8601 format. Only periods in full days are accepted.
      */
     public function setWithdrawalPeriod(?string $withdrawalPeriod): self
     {
@@ -194,12 +152,12 @@ class ReturnPolicyResponse extends \ArrayObject
         return $this;
     }
 
-    public function getContact(): ?ReturnPolicyContact
+    public function getContact(): ?ReturnPolicyContactV2
     {
         return $this->contact;
     }
 
-    public function setContact(?ReturnPolicyContact $contact): self
+    public function setContact(?ReturnPolicyContactV2 $contact): self
     {
         $this->initialized['contact'] = true;
         $this->contact = $contact;

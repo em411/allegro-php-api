@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ReturnPolicyResponseNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ReturnPolicyRequestV2Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class ReturnPolicyResponseNormalizer implements DenormalizerInterface, Normalize
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\ReturnPolicyResponse::class === $type;
+        return \Em411\Allegro\Api\Model\ReturnPolicyRequestV2::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\ReturnPolicyResponse::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\ReturnPolicyRequestV2::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,27 +48,24 @@ class ReturnPolicyResponseNormalizer implements DenormalizerInterface, Normalize
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ReturnPolicyResponse();
+        $object = new \Em411\Allegro\Api\Model\ReturnPolicyRequestV2();
+        if (\array_key_exists('isFulfillment', $data) && \is_int($data['isFulfillment'])) {
+            $data['isFulfillment'] = (bool) $data['isFulfillment'];
+        }
         if (null === $data || false === \is_array($data)) {
             return $object;
-        }
-        if (\array_key_exists('id', $data) && null !== $data['id']) {
-            $object->setId($data['id']);
-            unset($data['id']);
-        } elseif (\array_key_exists('id', $data) && null === $data['id']) {
-            $object->setId(null);
-        }
-        if (\array_key_exists('seller', $data) && null !== $data['seller']) {
-            $object->setSeller($this->denormalizer->denormalize($data['seller'], \Em411\Allegro\Api\Model\Seller::class, 'json', $context));
-            unset($data['seller']);
-        } elseif (\array_key_exists('seller', $data) && null === $data['seller']) {
-            $object->setSeller(null);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+        }
+        if (\array_key_exists('isFulfillment', $data) && null !== $data['isFulfillment']) {
+            $object->setIsFulfillment($data['isFulfillment']);
+            unset($data['isFulfillment']);
+        } elseif (\array_key_exists('isFulfillment', $data) && null === $data['isFulfillment']) {
+            $object->setIsFulfillment(null);
         }
         if (\array_key_exists('availability', $data) && null !== $data['availability']) {
             $object->setAvailability($this->denormalizer->denormalize($data['availability'], \Em411\Allegro\Api\Model\ReturnPolicyAvailability::class, 'json', $context));
@@ -95,7 +92,7 @@ class ReturnPolicyResponseNormalizer implements DenormalizerInterface, Normalize
             $object->setAddress(null);
         }
         if (\array_key_exists('contact', $data) && null !== $data['contact']) {
-            $object->setContact($this->denormalizer->denormalize($data['contact'], \Em411\Allegro\Api\Model\ReturnPolicyContact::class, 'json', $context));
+            $object->setContact($this->denormalizer->denormalize($data['contact'], \Em411\Allegro\Api\Model\ReturnPolicyContactV2::class, 'json', $context));
             unset($data['contact']);
         } elseif (\array_key_exists('contact', $data) && null === $data['contact']) {
             $object->setContact(null);
@@ -118,11 +115,10 @@ class ReturnPolicyResponseNormalizer implements DenormalizerInterface, Normalize
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['id'] = $data->getId();
-        $dataArray['seller'] = $this->normalizer->normalize($data->getSeller(), 'json', $context);
         $dataArray['name'] = $data->getName();
+        $dataArray['isFulfillment'] = $data->getIsFulfillment();
         $dataArray['availability'] = $this->normalizer->normalize($data->getAvailability(), 'json', $context);
-        if ($data->isInitialized('withdrawalPeriod')) {
+        if ($data->isInitialized('withdrawalPeriod') && null !== $data->getWithdrawalPeriod()) {
             $dataArray['withdrawalPeriod'] = $data->getWithdrawalPeriod();
         }
         if ($data->isInitialized('returnCost')) {
@@ -148,6 +144,6 @@ class ReturnPolicyResponseNormalizer implements DenormalizerInterface, Normalize
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\ReturnPolicyResponse::class => false];
+        return [\Em411\Allegro\Api\Model\ReturnPolicyRequestV2::class => false];
     }
 }

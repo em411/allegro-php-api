@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReturnPolicyContact extends \ArrayObject
+class ReturnPolicyContactV2 extends \ArrayObject
 {
     /**
      * @var array
@@ -30,7 +30,7 @@ class ReturnPolicyContact extends \ArrayObject
      *
      * @var string|null
      */
-    protected $email;
+    protected $emailAddress;
 
     public function isInitialized($property): bool
     {
@@ -59,18 +59,18 @@ class ReturnPolicyContact extends \ArrayObject
     /**
      * A valid email address of the seller.
      */
-    public function getEmail(): ?string
+    public function getEmailAddress(): ?string
     {
-        return $this->email;
+        return $this->emailAddress;
     }
 
     /**
      * A valid email address of the seller.
      */
-    public function setEmail(?string $email): self
+    public function setEmailAddress(?string $emailAddress): self
     {
-        $this->initialized['email'] = true;
-        $this->email = $email;
+        $this->initialized['emailAddress'] = true;
+        $this->emailAddress = $emailAddress;
 
         return $this;
     }

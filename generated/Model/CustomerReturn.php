@@ -24,6 +24,12 @@ class CustomerReturn extends \ArrayObject
      */
     protected $id;
     /**
+     * Indicates if the return is handled by the One Fulfillment.
+     *
+     * @var bool|null
+     */
+    protected $isFulfillment;
+    /**
      * @var \DateTime|null
      */
     protected $createdAt;
@@ -99,6 +105,25 @@ class CustomerReturn extends \ArrayObject
     {
         $this->initialized['id'] = true;
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Indicates if the return is handled by the One Fulfillment.
+     */
+    public function getIsFulfillment(): ?bool
+    {
+        return $this->isFulfillment;
+    }
+
+    /**
+     * Indicates if the return is handled by the One Fulfillment.
+     */
+    public function setIsFulfillment(?bool $isFulfillment): self
+    {
+        $this->initialized['isFulfillment'] = true;
+        $this->isFulfillment = $isFulfillment;
 
         return $this;
     }

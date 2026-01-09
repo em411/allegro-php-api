@@ -25,6 +25,12 @@ class SaleShippingRatesIdGetResponse200features extends \ArrayObject
      * @var bool|null
      */
     protected $managedByAllegro;
+    /**
+     * Indicates whether the shipping rates set is for One Fulfillment offers.
+     *
+     * @var bool|null
+     */
+    protected $isFulfillment;
 
     public function isInitialized($property): bool
     {
@@ -46,6 +52,25 @@ class SaleShippingRatesIdGetResponse200features extends \ArrayObject
     {
         $this->initialized['managedByAllegro'] = true;
         $this->managedByAllegro = $managedByAllegro;
+
+        return $this;
+    }
+
+    /**
+     * Indicates whether the shipping rates set is for One Fulfillment offers.
+     */
+    public function getIsFulfillment(): ?bool
+    {
+        return $this->isFulfillment;
+    }
+
+    /**
+     * Indicates whether the shipping rates set is for One Fulfillment offers.
+     */
+    public function setIsFulfillment(?bool $isFulfillment): self
+    {
+        $this->initialized['isFulfillment'] = true;
+        $this->isFulfillment = $isFulfillment;
 
         return $this;
     }
