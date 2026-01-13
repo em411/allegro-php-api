@@ -37,6 +37,12 @@ class DictionaryCategoryParameterdictionaryItem extends \ArrayObject
      * @var list<string>|null
      */
     protected $dependsOnValueIds;
+    /**
+     * Data which this dictionary value had in this category earlier. This field is not visible in JSON if no portion of historical data exists. Otherwise this field is present in JSON with at least one filled field. Please use this field to update your parameter mappings. The contained fields are guaranteed to contain former data at least from the last month.
+     *
+     * @var FormerParameterValueData|null
+     */
+    protected $formerData;
 
     public function isInitialized($property): bool
     {
@@ -100,6 +106,25 @@ class DictionaryCategoryParameterdictionaryItem extends \ArrayObject
     {
         $this->initialized['dependsOnValueIds'] = true;
         $this->dependsOnValueIds = $dependsOnValueIds;
+
+        return $this;
+    }
+
+    /**
+     * Data which this dictionary value had in this category earlier. This field is not visible in JSON if no portion of historical data exists. Otherwise this field is present in JSON with at least one filled field. Please use this field to update your parameter mappings. The contained fields are guaranteed to contain former data at least from the last month.
+     */
+    public function getFormerData(): ?FormerParameterValueData
+    {
+        return $this->formerData;
+    }
+
+    /**
+     * Data which this dictionary value had in this category earlier. This field is not visible in JSON if no portion of historical data exists. Otherwise this field is present in JSON with at least one filled field. Please use this field to update your parameter mappings. The contained fields are guaranteed to contain former data at least from the last month.
+     */
+    public function setFormerData(?FormerParameterValueData $formerData): self
+    {
+        $this->initialized['formerData'] = true;
+        $this->formerData = $formerData;
 
         return $this;
     }

@@ -74,6 +74,12 @@ class DictionaryCategoryParameterdictionaryItemNormalizer implements Denormalize
         } elseif (\array_key_exists('dependsOnValueIds', $data) && null === $data['dependsOnValueIds']) {
             $object->setDependsOnValueIds(null);
         }
+        if (\array_key_exists('formerData', $data) && null !== $data['formerData']) {
+            $object->setFormerData($this->denormalizer->denormalize($data['formerData'], \Em411\Allegro\Api\Model\FormerParameterValueData::class, 'json', $context));
+            unset($data['formerData']);
+        } elseif (\array_key_exists('formerData', $data) && null === $data['formerData']) {
+            $object->setFormerData(null);
+        }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value_1;
@@ -98,6 +104,9 @@ class DictionaryCategoryParameterdictionaryItemNormalizer implements Denormalize
                 $values[] = $value;
             }
             $dataArray['dependsOnValueIds'] = $values;
+        }
+        if ($data->isInitialized('formerData') && null !== $data->getFormerData()) {
+            $dataArray['formerData'] = $this->normalizer->normalize($data->getFormerData(), 'json', $context);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {

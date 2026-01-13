@@ -97,6 +97,12 @@ class DictionaryCategoryProductParameterNormalizer implements DenormalizerInterf
         } elseif (\array_key_exists('unit', $data) && null === $data['unit']) {
             $object->setUnit(null);
         }
+        if (\array_key_exists('formerData', $data) && null !== $data['formerData']) {
+            $object->setFormerData($this->denormalizer->denormalize($data['formerData'], \Em411\Allegro\Api\Model\FormerCategoryParameterData::class, 'json', $context));
+            unset($data['formerData']);
+        } elseif (\array_key_exists('formerData', $data) && null === $data['formerData']) {
+            $object->setFormerData(null);
+        }
         if (\array_key_exists('restrictions', $data) && null !== $data['restrictions']) {
             $object->setRestrictions($this->denormalizer->denormalize($data['restrictions'], \Em411\Allegro\Api\Model\DictionaryCategoryProductParameterrestrictions::class, 'json', $context));
             unset($data['restrictions']);
@@ -145,6 +151,9 @@ class DictionaryCategoryProductParameterNormalizer implements DenormalizerInterf
         }
         if ($data->isInitialized('unit')) {
             $dataArray['unit'] = $data->getUnit();
+        }
+        if ($data->isInitialized('formerData') && null !== $data->getFormerData()) {
+            $dataArray['formerData'] = $this->normalizer->normalize($data->getFormerData(), 'json', $context);
         }
         if ($data->isInitialized('restrictions') && null !== $data->getRestrictions()) {
             $dataArray['restrictions'] = $this->normalizer->normalize($data->getRestrictions(), 'json', $context);

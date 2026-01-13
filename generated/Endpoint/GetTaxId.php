@@ -18,7 +18,7 @@ class GetTaxId extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implements
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
 
     /**
-     * Use this resource to get tax identification number with verification status. After adding or updating the tax identification number the status will be NOT_VERIFIED and you will have to wait for acceptance status to start selling.
+     * Use this resource to get tax identification number with verification status. After adding or updating the tax identification number the status will be NOT_VERIFIED and you will have to wait for acceptance status to start selling. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *

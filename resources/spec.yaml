@@ -5424,6 +5424,9 @@ paths:
                           min: 0
                           max: 1000000
                           range: false
+                        formerData:
+                          ids: ["202876"]
+                          names: ["Liczba rdzeni"]
                 string_single:
                   summary: String single
                   value:
@@ -5454,6 +5457,8 @@ paths:
                           minLength: 2
                           maxLength: 35
                           allowedNumberOfValues: 1
+                        formerData:
+                          names: ["MPN"]
                 dictionary:
                   summary: Dictionary
                   value:
@@ -5485,6 +5490,10 @@ paths:
                             value: "Nowy"
                             dependsOnValueIds:
                               - "202870_1"
+                            formerData:
+                              values:
+                                - "Nowa"
+                                - "Nowe"
                           - id: "11323_2"
                             value: "Używany"
                             dependsOnValueIds:
@@ -5494,6 +5503,11 @@ paths:
                             dependsOnValueIds:
                               - "202870_1"
                               - "202870_2"
+                            formerData:
+                              ids:
+                                - "11323_1223635"
+                              values:
+                                - "Po demontażu"
                           - id: "11323_238058"
                             value: "Powystawowy"
                             dependsOnValueIds:
@@ -5539,6 +5553,8 @@ paths:
                           max: 1000000
                           range: false
                           precision: 3
+                        formerData:
+                          names: ["Waga"]
                 float_range:
                   summary: Float range
                   value:
@@ -5633,6 +5649,9 @@ paths:
                           min: 0
                           max: 1000000
                           range: false
+                        formerData:
+                          ids: ["202876"]
+                          names: ["Liczba rdzeni"]
                 string_single:
                   summary: String single
                   value:
@@ -5646,6 +5665,8 @@ paths:
                           minLength: 2
                           maxLength: 35
                           allowedNumberOfValues: 1
+                        formerData:
+                          names: ["MPN"]
                 dictionary:
                   summary: Dictionary
                   value:
@@ -5658,10 +5679,19 @@ paths:
                         dictionary:
                           - id: "11323_1"
                             value: "Nowy"
+                            formerData:
+                              values:
+                                - "Nowa"
+                                - "Nowe"
                           - id: "11323_2"
                             value: "Używany"
                           - id: "11323_238066"
                             value: "Po zwrocie"
+                            formerData:
+                              ids:
+                                - "11323_1223635"
+                              values:
+                                - "Po demontażu"
                           - id: "11323_238058"
                             value: "Powystawowy"
                           - id: "11323_238062"
@@ -5684,6 +5714,8 @@ paths:
                           max: 1000000
                           range: false
                           precision: 3
+                        formerData:
+                          names: ["Waga"]
                 float_range:
                   summary: Float range
                   value:
@@ -11305,7 +11337,7 @@ paths:
       parameters:
         - name: issueId
           in: path
-          description: Dispute or claim identifier.
+          description: Claim identifier.
           required: true
           schema:
             type: string
@@ -19909,7 +19941,7 @@ paths:
   /fulfillment/tax-id:
     post:
       summary: 'Add tax identification number'
-      description: 'Use this resource to add tax identification number. For international sellers only.'
+      description: 'Use this resource to add tax identification number. For international sellers only. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.'
       parameters:
         - name: Accept-Language
           in: header
@@ -19955,7 +19987,7 @@ paths:
             - allegro:api:fulfillment:write
     put:
       summary: 'Update tax identification number'
-      description: 'Use this resource to update tax identification number. For international sellers only.'
+      description: 'Use this resource to update tax identification number. For international sellers only. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.'
       parameters:
         - name: Accept-Language
           in: header
@@ -20001,7 +20033,7 @@ paths:
             - allegro:api:fulfillment:write
     get:
       summary: 'Get tax identification number'
-      description: 'Use this resource to get tax identification number with verification status. After adding or updating the tax identification number the status will be NOT_VERIFIED and you will have to wait for acceptance status to start selling.'
+      description: 'Use this resource to get tax identification number with verification status. After adding or updating the tax identification number the status will be NOT_VERIFIED and you will have to wait for acceptance status to start selling. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.'
       parameters:
         - name: Accept-Language
           in: header
@@ -24543,6 +24575,8 @@ components:
           example: 'kg'
         options:
           $ref: '#/components/schemas/CategoryParameterOptions'
+        formerData:
+          $ref: '#/components/schemas/FormerCategoryParameterData'
     CategoryProductParameter:
       type: object
       required:
@@ -24582,6 +24616,8 @@ components:
           nullable: true
           description: The unit in which values of the parameter are used. May be `null`.
           example: 'kg'
+        formerData:
+          $ref: '#/components/schemas/FormerCategoryParameterData'
     DictionaryCategoryProductParameter:
       allOf:
         - $ref: '#/components/schemas/CategoryProductParameter'
@@ -24614,6 +24650,8 @@ components:
                     type: string
                     description: The label of the dictionary value.
                     example: 'New'
+                  formerData:
+                    $ref: '#/components/schemas/FormerParameterValueData'
     IntegerCategoryProductParameter:
       allOf:
         - $ref: '#/components/schemas/CategoryProductParameter'
@@ -24729,6 +24767,54 @@ components:
           type: boolean
           description: Indicates if a custom value can be added to a parameter with an ambiguous value.
       description: A list of the different options which can be used with this parameter.
+    FormerCategoryParameterData:
+      type: object
+      properties:
+        ids:
+          type: array
+          description: >-
+            Former IDs which this parameter had in this category earlier. This field is not visible in JSON as long as
+            there is no former ID. Otherwise the array contains at least one ID.
+          items:
+            type: string
+            example: '11322'
+        names:
+          type: array
+          description: >-
+            Former names which this parameter had earlier. This field is not visible in JSON as long as
+            there is no former name. Otherwise the array contains at least one name.
+          items:
+            type: string
+            example: 'State'
+      description: >-
+        Data which this parameter had in this category earlier. This field is not visible in JSON if no portion of
+        historical data exists. Otherwise this field is present in JSON with at least one filled field. Please use
+        this field to update your parameter mappings. The contained fields are guaranteed to contain former data at
+        least from the last month.
+    FormerParameterValueData:
+      type: object
+      properties:
+        ids:
+          type: array
+          description: >-
+            Former IDs which this dictionary value had in this category earlier. This field is not visible in
+            JSON as long as there is no former ID. Otherwise the array contains at least one ID.
+          items:
+            type: string
+            example: '11322_1'
+        values:
+          type: array
+          description: >-
+            Former values which this dictionary value had earlier. This field is not visible in JSON as long as
+            there is no former name. Otherwise the array contains at least one name.
+          items:
+            type: string
+            example: 'Brand-new'
+      description: >-
+        Data which this dictionary value had in this category earlier. This field is not visible in JSON if no portion
+        of historical data exists. Otherwise this field is present in JSON with at least one filled field. Please use
+        this field to update your parameter mappings. The contained fields are guaranteed to contain former data at
+        least from the last month.
     DictionaryCategoryParameter:
       allOf:
         - $ref: '#/components/schemas/CategoryParameter'
@@ -24769,6 +24855,8 @@ components:
                     items:
                       type: string
                       example: "211062_246554"
+                  formerData:
+                    $ref: '#/components/schemas/FormerParameterValueData'
     IntegerCategoryParameter:
       allOf:
         - $ref: '#/components/schemas/CategoryParameter'

@@ -109,6 +109,12 @@ class CategoryProductParameterNormalizer implements DenormalizerInterface, Norma
         } elseif (\array_key_exists('unit', $data) && null === $data['unit']) {
             $object->setUnit(null);
         }
+        if (\array_key_exists('formerData', $data) && null !== $data['formerData']) {
+            $object->setFormerData($this->denormalizer->denormalize($data['formerData'], \Em411\Allegro\Api\Model\FormerCategoryParameterData::class, 'json', $context));
+            unset($data['formerData']);
+        } elseif (\array_key_exists('formerData', $data) && null === $data['formerData']) {
+            $object->setFormerData(null);
+        }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value;
@@ -151,6 +157,9 @@ class CategoryProductParameterNormalizer implements DenormalizerInterface, Norma
         }
         if ($data->isInitialized('unit')) {
             $dataArray['unit'] = $data->getUnit();
+        }
+        if ($data->isInitialized('formerData') && null !== $data->getFormerData()) {
+            $dataArray['formerData'] = $this->normalizer->normalize($data->getFormerData(), 'json', $context);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

@@ -61,6 +61,12 @@ class CategoryProductParameter extends \ArrayObject
      * @var string|null
      */
     protected $unit;
+    /**
+     * Data which this parameter had in this category earlier. This field is not visible in JSON if no portion of historical data exists. Otherwise this field is present in JSON with at least one filled field. Please use this field to update your parameter mappings. The contained fields are guaranteed to contain former data at least from the last month.
+     *
+     * @var FormerCategoryParameterData|null
+     */
+    protected $formerData;
 
     public function isInitialized($property): bool
     {
@@ -184,5 +190,22 @@ class CategoryProductParameter extends \ArrayObject
     {
         $this->initialized['unit'] = true;
         $this->unit = $unit;
+    }
+
+    /**
+     * Data which this parameter had in this category earlier. This field is not visible in JSON if no portion of historical data exists. Otherwise this field is present in JSON with at least one filled field. Please use this field to update your parameter mappings. The contained fields are guaranteed to contain former data at least from the last month.
+     */
+    public function getFormerData(): ?FormerCategoryParameterData
+    {
+        return $this->formerData;
+    }
+
+    /**
+     * Data which this parameter had in this category earlier. This field is not visible in JSON if no portion of historical data exists. Otherwise this field is present in JSON with at least one filled field. Please use this field to update your parameter mappings. The contained fields are guaranteed to contain former data at least from the last month.
+     */
+    public function setFormerData(?FormerCategoryParameterData $formerData)
+    {
+        $this->initialized['formerData'] = true;
+        $this->formerData = $formerData;
     }
 }

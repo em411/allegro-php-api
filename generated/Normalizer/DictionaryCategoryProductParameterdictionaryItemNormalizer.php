@@ -64,6 +64,12 @@ class DictionaryCategoryProductParameterdictionaryItemNormalizer implements Deno
         } elseif (\array_key_exists('value', $data) && null === $data['value']) {
             $object->setValue(null);
         }
+        if (\array_key_exists('formerData', $data) && null !== $data['formerData']) {
+            $object->setFormerData($this->denormalizer->denormalize($data['formerData'], \Em411\Allegro\Api\Model\FormerParameterValueData::class, 'json', $context));
+            unset($data['formerData']);
+        } elseif (\array_key_exists('formerData', $data) && null === $data['formerData']) {
+            $object->setFormerData(null);
+        }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value;
@@ -81,6 +87,9 @@ class DictionaryCategoryProductParameterdictionaryItemNormalizer implements Deno
         }
         if ($data->isInitialized('value') && null !== $data->getValue()) {
             $dataArray['value'] = $data->getValue();
+        }
+        if ($data->isInitialized('formerData') && null !== $data->getFormerData()) {
+            $dataArray['formerData'] = $this->normalizer->normalize($data->getFormerData(), 'json', $context);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

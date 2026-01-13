@@ -124,6 +124,12 @@ class CategoryParameterNormalizer implements DenormalizerInterface, NormalizerIn
         } elseif (\array_key_exists('options', $data) && null === $data['options']) {
             $object->setOptions(null);
         }
+        if (\array_key_exists('formerData', $data) && null !== $data['formerData']) {
+            $object->setFormerData($this->denormalizer->denormalize($data['formerData'], \Em411\Allegro\Api\Model\FormerCategoryParameterData::class, 'json', $context));
+            unset($data['formerData']);
+        } elseif (\array_key_exists('formerData', $data) && null === $data['formerData']) {
+            $object->setFormerData(null);
+        }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value;
@@ -172,6 +178,9 @@ class CategoryParameterNormalizer implements DenormalizerInterface, NormalizerIn
         }
         if ($data->isInitialized('options') && null !== $data->getOptions()) {
             $dataArray['options'] = $this->normalizer->normalize($data->getOptions(), 'json', $context);
+        }
+        if ($data->isInitialized('formerData') && null !== $data->getFormerData()) {
+            $dataArray['formerData'] = $this->normalizer->normalize($data->getFormerData(), 'json', $context);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

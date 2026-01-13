@@ -21,7 +21,7 @@ class ChangeStatusOfIssueUsingPOST extends \Em411\Allegro\Api\Runtime\Client\Bas
     /**
      * Change the formal status of a claim, for example accept or reject it. Not a valid operation for disputes. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#zmien-status-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#change-claim-status" target="_blank">EN</a>.
      *
-     * @param string $issueId          dispute or claim identifier
+     * @param string $issueId          claim identifier
      * @param array  $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.

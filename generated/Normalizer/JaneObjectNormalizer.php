@@ -611,6 +611,10 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\CategoryParameterOptions::class => CategoryParameterOptionsNormalizer::class,
 
+        \Em411\Allegro\Api\Model\FormerCategoryParameterData::class => FormerCategoryParameterDataNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FormerParameterValueData::class => FormerParameterValueDataNormalizer::class,
+
         \Em411\Allegro\Api\Model\DictionaryCategoryParameter::class => DictionaryCategoryParameterNormalizer::class,
 
         \Em411\Allegro\Api\Model\DictionaryCategoryParameterrestrictions::class => DictionaryCategoryParameterrestrictionsNormalizer::class,
@@ -2653,6 +2657,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\StringCategoryProductParameter::class => false,
             \Em411\Allegro\Api\Model\StringCategoryProductParameterrestrictions::class => false,
             \Em411\Allegro\Api\Model\CategoryParameterOptions::class => false,
+            \Em411\Allegro\Api\Model\FormerCategoryParameterData::class => false,
+            \Em411\Allegro\Api\Model\FormerParameterValueData::class => false,
             \Em411\Allegro\Api\Model\DictionaryCategoryParameter::class => false,
             \Em411\Allegro\Api\Model\DictionaryCategoryParameterrestrictions::class => false,
             \Em411\Allegro\Api\Model\DictionaryCategoryParameterdictionaryItem::class => false,

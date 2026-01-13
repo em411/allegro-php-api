@@ -112,6 +112,12 @@ class IntegerCategoryParameterNormalizer implements DenormalizerInterface, Norma
         } elseif (\array_key_exists('options', $data) && null === $data['options']) {
             $object->setOptions(null);
         }
+        if (\array_key_exists('formerData', $data) && null !== $data['formerData']) {
+            $object->setFormerData($this->denormalizer->denormalize($data['formerData'], \Em411\Allegro\Api\Model\FormerCategoryParameterData::class, 'json', $context));
+            unset($data['formerData']);
+        } elseif (\array_key_exists('formerData', $data) && null === $data['formerData']) {
+            $object->setFormerData(null);
+        }
         if (\array_key_exists('restrictions', $data) && null !== $data['restrictions']) {
             $object->setRestrictions($this->denormalizer->denormalize($data['restrictions'], \Em411\Allegro\Api\Model\IntegerCategoryParameterrestrictions::class, 'json', $context));
             unset($data['restrictions']);
@@ -156,6 +162,9 @@ class IntegerCategoryParameterNormalizer implements DenormalizerInterface, Norma
         }
         if ($data->isInitialized('options') && null !== $data->getOptions()) {
             $dataArray['options'] = $this->normalizer->normalize($data->getOptions(), 'json', $context);
+        }
+        if ($data->isInitialized('formerData') && null !== $data->getFormerData()) {
+            $dataArray['formerData'] = $this->normalizer->normalize($data->getFormerData(), 'json', $context);
         }
         if ($data->isInitialized('restrictions') && null !== $data->getRestrictions()) {
             $dataArray['restrictions'] = $this->normalizer->normalize($data->getRestrictions(), 'json', $context);

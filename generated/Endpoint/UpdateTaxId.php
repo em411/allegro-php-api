@@ -18,7 +18,7 @@ class UpdateTaxId extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impleme
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
 
     /**
-     * Use this resource to update tax identification number. For international sellers only.
+     * Use this resource to update tax identification number. For international sellers only. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *

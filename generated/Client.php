@@ -3735,7 +3735,7 @@ class Client extends Runtime\Client\Client
     /**
      * Change the formal status of a claim, for example accept or reject it. Not a valid operation for disputes. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#zmien-status-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#change-claim-status" target="_blank">EN</a>.
      *
-     * @param string $issueId          dispute or claim identifier
+     * @param string $issueId          claim identifier
      * @param array  $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
@@ -6448,7 +6448,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to get tax identification number with verification status. After adding or updating the tax identification number the status will be NOT_VERIFIED and you will have to wait for acceptance status to start selling.
+     * Use this resource to get tax identification number with verification status. After adding or updating the tax identification number the status will be NOT_VERIFIED and you will have to wait for acceptance status to start selling. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *
@@ -6469,7 +6469,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to add tax identification number. For international sellers only.
+     * Use this resource to add tax identification number. For international sellers only. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *
@@ -6491,7 +6491,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to update tax identification number. For international sellers only.
+     * Use this resource to update tax identification number. For international sellers only. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *
