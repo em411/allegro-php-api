@@ -22,11 +22,15 @@ class CategoryParameterOptions extends \ArrayObject
     /**
      * Parameters with this option enabled can be used for offer variants creation.
      *
+     * @deprecated
+     *
      * @var bool|null
      */
     protected $variantsAllowed;
     /**
      * All offer variants must have the same values in parameters with this option enabled.
+     *
+     * @deprecated
      *
      * @var bool|null
      */
@@ -65,6 +69,8 @@ class CategoryParameterOptions extends \ArrayObject
 
     /**
      * Parameters with this option enabled can be used for offer variants creation.
+     *
+     * @deprecated
      */
     public function getVariantsAllowed(): ?bool
     {
@@ -73,6 +79,8 @@ class CategoryParameterOptions extends \ArrayObject
 
     /**
      * Parameters with this option enabled can be used for offer variants creation.
+     *
+     * @deprecated
      */
     public function setVariantsAllowed(?bool $variantsAllowed): self
     {
@@ -84,6 +92,8 @@ class CategoryParameterOptions extends \ArrayObject
 
     /**
      * All offer variants must have the same values in parameters with this option enabled.
+     *
+     * @deprecated
      */
     public function getVariantsEqual(): ?bool
     {
@@ -92,6 +102,8 @@ class CategoryParameterOptions extends \ArrayObject
 
     /**
      * All offer variants must have the same values in parameters with this option enabled.
+     *
+     * @deprecated
      */
     public function setVariantsEqual(?bool $variantsEqual): self
     {

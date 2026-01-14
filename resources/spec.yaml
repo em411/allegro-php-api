@@ -9143,6 +9143,7 @@ paths:
 
 
          More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje). Read more: <a href="../../tutorials/jak-utworzyc-oferte-wielowariantowa-oA6ZYBg5XFo#utworz-oferte-wielowariantowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-create-a-multi-variant-offer-nn9DOL3nXs2#create-a-multi-variant-offer" target="_blank">EN</a>.
+      deprecated: true
       operationId: createVariantSet
       parameters:
         - name: Accept-Language
@@ -9183,6 +9184,7 @@ paths:
         Use this resource to get created variant sets.
         The returned variant sets are ordered by name.
         Read more: <a href="../../tutorials/jak-utworzyc-oferte-wielowariantowa-oA6ZYBg5XFo#pobierz-liste-ofert-wielowariantowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-create-a-multi-variant-offer-nn9DOL3nXs2#retrieve-a-multi-variant-offer" target="_blank">EN</a>.
+      deprecated: true
       operationId: getVariantSets
       parameters:
         - name: offset
@@ -9270,6 +9272,7 @@ paths:
 
 
          More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje). Read more: <a href="../../tutorials/jak-utworzyc-oferte-wielowariantowa-oA6ZYBg5XFo#edytuj-oferte-wielowariantowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-create-a-multi-variant-offer-nn9DOL3nXs2#update-a-multi-variant-offer" target="_blank">EN</a>.
+      deprecated: true
       operationId: updateVariantSet
       parameters:
         - name: setId
@@ -9313,6 +9316,7 @@ paths:
       summary: 'Get a variant set'
       description:
         'Use this resource to get variant set by set id. Read more: <a href="../../tutorials/jak-utworzyc-oferte-wielowariantowa-oA6ZYBg5XFo#edytuj-oferte-wielowariantowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-create-a-multi-variant-offer-nn9DOL3nXs2#update-a-multi-variant-offer" target="_blank">EN</a>.'
+      deprecated: true
       operationId: getVariantSet
       parameters:
         - name: setId
@@ -9356,6 +9360,7 @@ paths:
         Use this resource to delete variant set by id.
         Offers included in variant set will not be stopped or modified by this operation.
         Read more: <a href="../../tutorials/jak-utworzyc-oferte-wielowariantowa-oA6ZYBg5XFo#usun-oferte-wielowariantowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-create-a-multi-variant-offer-nn9DOL3nXs2#remove-a-multi-variant-offer" target="_blank">EN</a>.
+      deprecated: true
       operationId: deleteVariantSet
       parameters:
         - name: setId
@@ -22285,6 +22290,7 @@ components:
           description: Indicates whether offers of type ADVERTISEMENT can be listed in this category.
         variantsByColorPatternAllowed:
           type: boolean
+          deprecated: true
           description: >-
             Indicates whether you can combine offers from this category into variant sets based on the color and
             pattern.
@@ -24741,9 +24747,11 @@ components:
       properties:
         variantsAllowed:
           type: boolean
+          deprecated: true
           description: Parameters with this option enabled can be used for offer variants creation.
         variantsEqual:
           type: boolean
+          deprecated: true
           description: All offer variants must have the same values in parameters with this option enabled.
         ambiguousValueId:
           type: string

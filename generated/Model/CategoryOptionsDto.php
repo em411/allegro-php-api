@@ -28,6 +28,8 @@ class CategoryOptionsDto extends \ArrayObject
     /**
      * Indicates whether you can combine offers from this category into variant sets based on the color and pattern.
      *
+     * @deprecated
+     *
      * @var bool|null
      */
     protected $variantsByColorPatternAllowed;
@@ -76,6 +78,8 @@ class CategoryOptionsDto extends \ArrayObject
 
     /**
      * Indicates whether you can combine offers from this category into variant sets based on the color and pattern.
+     *
+     * @deprecated
      */
     public function getVariantsByColorPatternAllowed(): ?bool
     {
@@ -84,6 +88,8 @@ class CategoryOptionsDto extends \ArrayObject
 
     /**
      * Indicates whether you can combine offers from this category into variant sets based on the color and pattern.
+     *
+     * @deprecated
      */
     public function setVariantsByColorPatternAllowed(?bool $variantsByColorPatternAllowed): self
     {
