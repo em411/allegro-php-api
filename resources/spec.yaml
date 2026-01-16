@@ -10555,6 +10555,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+        - bearer-token-for-user:
+            - allegro:api:orders:read
     post:
       tags:
         - Order management
@@ -10622,6 +10625,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+        - bearer-token-for-user:
+            - allegro:api:orders:write
   /order/checkout-forms/{id}/invoices/{invoiceId}/file:
     put:
       tags:
@@ -10692,12 +10698,15 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+        - bearer-token-for-user:
+            - allegro:api:orders:write
   /order/{orderId}/billing-documents/links:
     post:
       tags:
         - Order management
       summary: "Upload URL to billing documents"
-      description: 'Used to upload a URL to a billing document.'
+      description: 'Used to upload a URL to a billing document. You can add up to 10 links.'
       operationId: uploadOrderBillingDocumentLink
       parameters:
         - name: orderId
@@ -10748,6 +10757,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
+      security:
+        - bearer-token-for-user:
+            - allegro:api:orders:write
   '/order/carriers/ALLEGRO/points':
     get:
       tags:
@@ -19670,8 +19682,6 @@ paths:
               * unfulfillable - sorting by quantity of unfulfillable products (ascending)
               * -name - sorting by product’s name (descending)
               * name - sorting by product’s name (ascending)
-              * lastWeekSalesAverage - sorting by product last week average sales (ascending)
-              * -lastWeekSalesAverage - sorting by product last week average sales (descending)
               * lastFourteenDaysSalesAverage - sorting by product last fourteen days average sales (ascending)
               * -lastFourteenDaysSalesAverage - sorting by product last fourteen days average sales (descending)
               * reserve - sorting by reserve.outOfStockIn field (ascending)
@@ -19691,8 +19701,6 @@ paths:
               - "-unfulfillable"
               - "name"
               - "-name"
-              - "lastWeekSalesAverage"
-              - "-lastWeekSalesAverage"
               - "lastFourteenDaysSalesAverage"
               - "-lastFourteenDaysSalesAverage"
               - "reserve"
@@ -35707,11 +35715,6 @@ components:
       type: object
       description: Represents selling stats of given product in merchant's stock.
       properties:
-        lastWeekAverage:
-          type: number
-          deprecated: true
-          description: Moving daily sales average calculated for last week (7 calendar days before current day). Doesn't include sales for current day. Note that this number is not stable and might change between subsequent requests due to e.g. cancellations of orders within the calculation period.
-          example: 4.25
         lastFourteenDaysAverage:
           type: number
           description: Moving daily sales average calculated for last 14 calendar days before current day. Doesn't include sales for current day. Note that this number is not stable and might change between subsequent requests due to e.g. cancellations of orders within the calculation period.

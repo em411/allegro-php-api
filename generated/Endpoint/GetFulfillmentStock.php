@@ -34,8 +34,6 @@ class GetFulfillmentStock extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
      *             unfulfillable - sorting by quantity of unfulfillable products (ascending)
      *             -name - sorting by product’s name (descending)
      *             name - sorting by product’s name (ascending)
-     *             lastWeekSalesAverage - sorting by product last week average sales (ascending)
-     *             -lastWeekSalesAverage - sorting by product last week average sales (descending)
      *             lastFourteenDaysSalesAverage - sorting by product last fourteen days average sales (ascending)
      *             -lastFourteenDaysSalesAverage - sorting by product last fourteen days average sales (descending)
      *             reserve - sorting by reserve.outOfStockIn field (ascending)

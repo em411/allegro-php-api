@@ -20,14 +20,6 @@ class StockSellingStats extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * Moving daily sales average calculated for last week (7 calendar days before current day). Doesn't include sales for current day. Note that this number is not stable and might change between subsequent requests due to e.g. cancellations of orders within the calculation period.
-     *
-     * @deprecated
-     *
-     * @var float|null
-     */
-    protected $lastWeekAverage;
-    /**
      * Moving daily sales average calculated for last 14 calendar days before current day. Doesn't include sales for current day. Note that this number is not stable and might change between subsequent requests due to e.g. cancellations of orders within the calculation period.
      *
      * @var float|null
@@ -43,29 +35,6 @@ class StockSellingStats extends \ArrayObject
     public function isInitialized($property): bool
     {
         return \array_key_exists($property, $this->initialized);
-    }
-
-    /**
-     * Moving daily sales average calculated for last week (7 calendar days before current day). Doesn't include sales for current day. Note that this number is not stable and might change between subsequent requests due to e.g. cancellations of orders within the calculation period.
-     *
-     * @deprecated
-     */
-    public function getLastWeekAverage(): ?float
-    {
-        return $this->lastWeekAverage;
-    }
-
-    /**
-     * Moving daily sales average calculated for last week (7 calendar days before current day). Doesn't include sales for current day. Note that this number is not stable and might change between subsequent requests due to e.g. cancellations of orders within the calculation period.
-     *
-     * @deprecated
-     */
-    public function setLastWeekAverage(?float $lastWeekAverage): self
-    {
-        $this->initialized['lastWeekAverage'] = true;
-        $this->lastWeekAverage = $lastWeekAverage;
-
-        return $this;
     }
 
     /**

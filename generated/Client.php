@@ -3554,7 +3554,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Used to upload a URL to a billing document.
+     * Used to upload a URL to a billing document. You can add up to 10 links.
      *
      * @param string $orderId          order identifier
      * @param array  $headerParameters {
@@ -6339,8 +6339,6 @@ class Client extends Runtime\Client\Client
      *             unfulfillable - sorting by quantity of unfulfillable products (ascending)
      *             -name - sorting by product’s name (descending)
      *             name - sorting by product’s name (ascending)
-     *             lastWeekSalesAverage - sorting by product last week average sales (ascending)
-     *             -lastWeekSalesAverage - sorting by product last week average sales (descending)
      *             lastFourteenDaysSalesAverage - sorting by product last fourteen days average sales (ascending)
      *             -lastFourteenDaysSalesAverage - sorting by product last fourteen days average sales (descending)
      *             reserve - sorting by reserve.outOfStockIn field (ascending)

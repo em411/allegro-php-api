@@ -49,9 +49,6 @@ class StockSellingStatsNormalizer implements DenormalizerInterface, NormalizerIn
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Em411\Allegro\Api\Model\StockSellingStats();
-        if (\array_key_exists('lastWeekAverage', $data) && \is_int($data['lastWeekAverage'])) {
-            $data['lastWeekAverage'] = (float) $data['lastWeekAverage'];
-        }
         if (\array_key_exists('lastFourteenDaysAverage', $data) && \is_int($data['lastFourteenDaysAverage'])) {
             $data['lastFourteenDaysAverage'] = (float) $data['lastFourteenDaysAverage'];
         }
@@ -60,12 +57,6 @@ class StockSellingStatsNormalizer implements DenormalizerInterface, NormalizerIn
         }
         if (null === $data || false === \is_array($data)) {
             return $object;
-        }
-        if (\array_key_exists('lastWeekAverage', $data) && null !== $data['lastWeekAverage']) {
-            $object->setLastWeekAverage($data['lastWeekAverage']);
-            unset($data['lastWeekAverage']);
-        } elseif (\array_key_exists('lastWeekAverage', $data) && null === $data['lastWeekAverage']) {
-            $object->setLastWeekAverage(null);
         }
         if (\array_key_exists('lastFourteenDaysAverage', $data) && null !== $data['lastFourteenDaysAverage']) {
             $object->setLastFourteenDaysAverage($data['lastFourteenDaysAverage']);
@@ -91,9 +82,6 @@ class StockSellingStatsNormalizer implements DenormalizerInterface, NormalizerIn
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('lastWeekAverage') && null !== $data->getLastWeekAverage()) {
-            $dataArray['lastWeekAverage'] = $data->getLastWeekAverage();
-        }
         if ($data->isInitialized('lastFourteenDaysAverage') && null !== $data->getLastFourteenDaysAverage()) {
             $dataArray['lastFourteenDaysAverage'] = $data->getLastFourteenDaysAverage();
         }

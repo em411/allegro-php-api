@@ -19,7 +19,7 @@ class UploadOrderBillingDocumentLink extends \Em411\Allegro\Api\Runtime\Client\B
     protected $orderId;
 
     /**
-     * Used to upload a URL to a billing document.
+     * Used to upload a URL to a billing document. You can add up to 10 links.
      *
      * @param string $orderId          order identifier
      * @param array  $headerParameters {
