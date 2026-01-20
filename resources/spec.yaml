@@ -5399,7 +5399,7 @@ paths:
                   value:
                     parameters:
                       - id: "202877"
-                        name: "Liczba rdzeni procesora"
+                        name: "Number of processor cores"
                         type: "integer"
                         required: true
                         requiredForProduct: false
@@ -5426,7 +5426,7 @@ paths:
                           range: false
                         formerData:
                           ids: ["202876"]
-                          names: ["Liczba rdzeni"]
+                          names: ["Number of cores"]
                 string_single:
                   summary: String single
                   value:
@@ -22277,8 +22277,8 @@ components:
           description: Indicates whether the category is at the lowest level. Leaf categories do not have any children. Offers can be listed only in leaf categories.
         name:
           type: string
-          description: Name of the category in Polish.
-          example: Pozostałe
+          description: Name of the category.
+          example: 'Other'
         options:
           $ref: '#/components/schemas/CategoryOptionsDto'
         parent:

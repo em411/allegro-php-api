@@ -32,7 +32,7 @@ class CategoryDto extends \ArrayObject
      */
     protected $leaf;
     /**
-     * Name of the category in Polish.
+     * Name of the category.
      *
      * @var string|null
      */
@@ -94,7 +94,7 @@ class CategoryDto extends \ArrayObject
     }
 
     /**
-     * Name of the category in Polish.
+     * Name of the category.
      */
     public function getName(): ?string
     {
@@ -102,7 +102,7 @@ class CategoryDto extends \ArrayObject
     }
 
     /**
-     * Name of the category in Polish.
+     * Name of the category.
      */
     public function setName(?string $name): self
     {
