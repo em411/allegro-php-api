@@ -23458,7 +23458,7 @@ components:
             $ref: '#/components/schemas/DescriptionSectionItem'
     DescriptionSectionItem:
       type: object
-      description: 'One of: TextItem, ImageItem'
+      description: 'One of: TextItem, ImageItem.'
       properties:
         type:
           type: string
@@ -23588,11 +23588,11 @@ components:
       properties:
         error:
           type: string
-          description: Authorization error code
+          description: Authorization error code.
           example: "unauthorized"
         error_description:
           type: string
-          description: Authorization error message
+          description: Authorization error message.
           example: "Full authentication is required to access this resource"
     Fee:
       type: object
