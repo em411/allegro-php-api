@@ -120,16 +120,6 @@ class CheckoutFormNormalizer implements DenormalizerInterface, NormalizerInterfa
         } elseif (\array_key_exists('surcharges', $data) && null === $data['surcharges']) {
             $object->setSurcharges(null);
         }
-        if (\array_key_exists('discounts', $data) && null !== $data['discounts']) {
-            $values_2 = [];
-            foreach ($data['discounts'] as $value_2) {
-                $values_2[] = $this->denormalizer->denormalize($value_2, \Em411\Allegro\Api\Model\CheckoutFormDiscount::class, 'json', $context);
-            }
-            $object->setDiscounts($values_2);
-            unset($data['discounts']);
-        } elseif (\array_key_exists('discounts', $data) && null === $data['discounts']) {
-            $object->setDiscounts(null);
-        }
         if (\array_key_exists('note', $data) && null !== $data['note']) {
             $object->setNote($this->denormalizer->denormalize($data['note'], \Em411\Allegro\Api\Model\CheckoutFormNoteReference::class, 'json', $context));
             unset($data['note']);
@@ -160,9 +150,9 @@ class CheckoutFormNormalizer implements DenormalizerInterface, NormalizerInterfa
         } elseif (\array_key_exists('revision', $data) && null === $data['revision']) {
             $object->setRevision(null);
         }
-        foreach ($data as $key => $value_3) {
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_3;
+                $object[$key] = $value_2;
             }
         }
 
@@ -200,11 +190,6 @@ class CheckoutFormNormalizer implements DenormalizerInterface, NormalizerInterfa
             $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
         }
         $dataArray['surcharges'] = $values_1;
-        $values_2 = [];
-        foreach ($data->getDiscounts() as $value_2) {
-            $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
-        }
-        $dataArray['discounts'] = $values_2;
         if ($data->isInitialized('note') && null !== $data->getNote()) {
             $dataArray['note'] = $this->normalizer->normalize($data->getNote(), 'json', $context);
         }
@@ -218,9 +203,9 @@ class CheckoutFormNormalizer implements DenormalizerInterface, NormalizerInterfa
         if ($data->isInitialized('revision') && null !== $data->getRevision()) {
             $dataArray['revision'] = $data->getRevision();
         }
-        foreach ($data as $key => $value_3) {
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_3;
+                $dataArray[$key] = $value_2;
             }
         }
 

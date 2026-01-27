@@ -68,14 +68,6 @@ class CheckoutForm extends \ArrayObject
      */
     protected $surcharges;
     /**
-     * Deprecated. This field is deprecated in favor of `lineItems[].discounts` and will be removed in the future.
-     *
-     * @deprecated
-     *
-     * @var list<CheckoutFormDiscount>|null
-     */
-    protected $discounts;
-    /**
      * @var CheckoutFormNoteReference|null
      */
     protected $note;
@@ -267,33 +259,6 @@ class CheckoutForm extends \ArrayObject
     {
         $this->initialized['surcharges'] = true;
         $this->surcharges = $surcharges;
-
-        return $this;
-    }
-
-    /**
-     * Deprecated. This field is deprecated in favor of `lineItems[].discounts` and will be removed in the future.
-     *
-     * @deprecated
-     *
-     * @return list<CheckoutFormDiscount>|null
-     */
-    public function getDiscounts(): ?array
-    {
-        return $this->discounts;
-    }
-
-    /**
-     * Deprecated. This field is deprecated in favor of `lineItems[].discounts` and will be removed in the future.
-     *
-     * @param list<CheckoutFormDiscount>|null $discounts
-     *
-     * @deprecated
-     */
-    public function setDiscounts(?array $discounts): self
-    {
-        $this->initialized['discounts'] = true;
-        $this->discounts = $discounts;
 
         return $this;
     }

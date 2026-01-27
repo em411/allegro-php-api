@@ -1065,8 +1065,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\LineItemDiscount::class => LineItemDiscountNormalizer::class,
 
-        \Em411\Allegro\Api\Model\CheckoutFormDiscount::class => CheckoutFormDiscountNormalizer::class,
-
         \Em411\Allegro\Api\Model\CheckoutFormNoteReference::class => CheckoutFormNoteReferenceNormalizer::class,
 
         \Em411\Allegro\Api\Model\CheckoutFormMarketplace::class => CheckoutFormMarketplaceNormalizer::class,
@@ -2884,7 +2882,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\LineItemVoucherValue::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormLineItemTax::class => false,
             \Em411\Allegro\Api\Model\LineItemDiscount::class => false,
-            \Em411\Allegro\Api\Model\CheckoutFormDiscount::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormNoteReference::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormMarketplace::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormSummary::class => false,

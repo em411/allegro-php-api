@@ -28049,7 +28049,6 @@ components:
         - status
         - lineItems
         - surcharges
-        - discounts
         - summary
       properties:
         id:
@@ -28081,14 +28080,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CheckoutFormPaymentReference'
-        discounts:
-          type: array
-          deprecated: true
-          description: >-
-            Deprecated. This field is deprecated in favor of `lineItems[].discounts` and will be
-            removed in the future.
-          items:
-            $ref: '#/components/schemas/CheckoutFormDiscount'
         note:
           $ref: '#/components/schemas/CheckoutFormNoteReference'
         marketplace:
@@ -28758,28 +28749,6 @@ components:
               - `COUPON` - a coupon discount
               - `CAMPAIGN` - a campaign discount
           example: 'BUNDLE'
-    CheckoutFormDiscount:
-      type: object
-      deprecated: true
-      required:
-        - type
-      properties:
-        type:
-          type: string
-          enum:
-            - COUPON
-            - BUNDLE
-            - MULTIPACK
-            - CROSSMULTIPACK
-            - ALLEGRO_PRICES
-          description: >
-            Describes the types of discounts used in the checkout form. The types of discounts can be as follows:
-            * `COUPON` - a coupon was used during payment
-            * `BUNDLE` - some items were bought as a bundle
-            * `MULTIPACK` - at least one item was bought with a multipack option turned on
-            * `CROSSMULTIPACK` - some items, each from a different offer, were bought together as a multipack
-            * `ALLEGRO_PRICES` - some items are included in the Allegro Prices program
-          example: 'COUPON'
     CheckoutFormNoteReference:
       type: object
       properties:
