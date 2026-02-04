@@ -15621,13 +15621,6 @@ paths:
           description: ID of the offer associated with the refund application.
           schema:
             type: string
-        - name: buyer.login
-          in: query
-          required: false
-          description: Login of the buyer that made the purchase associated with the refund application.
-          schema:
-            type: string
-          deprecated: true
         - name: buyer.id
           in: query
           required: false
@@ -20740,11 +20733,6 @@ components:
               type: string
               description: ID of the buyer associated with the refund application.
               example: '12345678'
-            login:
-              type: string
-              description: Login of the buyer associated with the refund application.
-              example: 'JanKowalski'
-              deprecated: true
         createdAt:
           type: string
           format: date-time
@@ -20775,10 +20763,6 @@ components:
                   type: string
                   description: ID of the offer associated with the purchase.
                   example: '12345678'
-                name:
-                  type: string
-                  description: Name of the offer associated with the purchase.
-                  deprecated: true
         type:
           type: string
           description: >-
@@ -31895,8 +31879,25 @@ components:
         shippingTo:
           description: List of countries where shipping is not allowed.
           type: array
+          deprecated: true
           items:
             type: string
+        blockades:
+          description: List of blockades where shipping is not allowed.
+          type: array
+          items:
+            $ref: '#/components/schemas/ShippingBlockade'
+    ShippingBlockade:
+      type: object
+      description: Details about blocked offer delivery per country.
+      properties:
+        country:
+          type: string
+          example: "DE"
+          description: ISO 3166-1 alpha-2 country code
+        reason:
+          type: string
+          description: Reason of export blockade
     OfferVisibilityChangedEvent:
       allOf:
         - $ref: '#/components/schemas/SellerOfferBaseEvent'
@@ -32842,7 +32843,7 @@ components:
           default: "PL"
         county:
           type: string
-          description: Required for shipments to Irleand ( county name ), United States ( state abbreviation / ISO code ), Canada ( province postal code / ISO code )
+          description: Required for shipments to Ireland ( county name ), United States ( state abbreviation / ISO code ), Canada ( province postal code / ISO code )
           example: "AL"
     ParcelCreationAddressWithMandatoryPlace:
       type: object

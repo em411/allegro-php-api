@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class RefundClaimBuyerNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ShippingBlockadeNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class RefundClaimBuyerNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\RefundClaimBuyer::class === $type;
+        return \Em411\Allegro\Api\Model\ShippingBlockade::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\RefundClaimBuyer::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\ShippingBlockade::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,15 +48,21 @@ class RefundClaimBuyerNormalizer implements DenormalizerInterface, NormalizerInt
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\RefundClaimBuyer();
+        $object = new \Em411\Allegro\Api\Model\ShippingBlockade();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('id', $data) && null !== $data['id']) {
-            $object->setId($data['id']);
-            unset($data['id']);
-        } elseif (\array_key_exists('id', $data) && null === $data['id']) {
-            $object->setId(null);
+        if (\array_key_exists('country', $data) && null !== $data['country']) {
+            $object->setCountry($data['country']);
+            unset($data['country']);
+        } elseif (\array_key_exists('country', $data) && null === $data['country']) {
+            $object->setCountry(null);
+        }
+        if (\array_key_exists('reason', $data) && null !== $data['reason']) {
+            $object->setReason($data['reason']);
+            unset($data['reason']);
+        } elseif (\array_key_exists('reason', $data) && null === $data['reason']) {
+            $object->setReason(null);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,8 +76,11 @@ class RefundClaimBuyerNormalizer implements DenormalizerInterface, NormalizerInt
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('id') && null !== $data->getId()) {
-            $dataArray['id'] = $data->getId();
+        if ($data->isInitialized('country') && null !== $data->getCountry()) {
+            $dataArray['country'] = $data->getCountry();
+        }
+        if ($data->isInitialized('reason') && null !== $data->getReason()) {
+            $dataArray['reason'] = $data->getReason();
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -84,6 +93,6 @@ class RefundClaimBuyerNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\RefundClaimBuyer::class => false];
+        return [\Em411\Allegro\Api\Model\ShippingBlockade::class => false];
     }
 }

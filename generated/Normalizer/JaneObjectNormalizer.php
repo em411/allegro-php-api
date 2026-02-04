@@ -1499,6 +1499,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\BlockedDelivery::class => BlockedDeliveryNormalizer::class,
 
+        \Em411\Allegro\Api\Model\ShippingBlockade::class => ShippingBlockadeNormalizer::class,
+
         \Em411\Allegro\Api\Model\OfferVisibilityChangedEvent::class => OfferVisibilityChangedEventNormalizer::class,
 
         \Em411\Allegro\Api\Model\OfferEventBaseOffer::class => OfferEventBaseOfferNormalizer::class,
@@ -3099,6 +3101,7 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\ChangedTranslation::class => false,
             \Em411\Allegro\Api\Model\OfferDeliveryCountriesChangedEvent::class => false,
             \Em411\Allegro\Api\Model\BlockedDelivery::class => false,
+            \Em411\Allegro\Api\Model\ShippingBlockade::class => false,
             \Em411\Allegro\Api\Model\OfferVisibilityChangedEvent::class => false,
             \Em411\Allegro\Api\Model\OfferEventBaseOffer::class => false,
             \Em411\Allegro\Api\Model\OfferEventExternalOffer::class => false,

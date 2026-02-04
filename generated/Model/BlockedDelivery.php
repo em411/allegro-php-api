@@ -26,9 +26,17 @@ class BlockedDelivery extends \ArrayObject
     /**
      * List of countries where shipping is not allowed.
      *
+     * @deprecated
+     *
      * @var list<string>|null
      */
     protected $shippingTo;
+    /**
+     * List of blockades where shipping is not allowed.
+     *
+     * @var list<ShippingBlockade>|null
+     */
+    protected $blockades;
 
     public function isInitialized($property): bool
     {
@@ -51,6 +59,8 @@ class BlockedDelivery extends \ArrayObject
     /**
      * List of countries where shipping is not allowed.
      *
+     * @deprecated
+     *
      * @return list<string>|null
      */
     public function getShippingTo(): ?array
@@ -62,11 +72,36 @@ class BlockedDelivery extends \ArrayObject
      * List of countries where shipping is not allowed.
      *
      * @param list<string>|null $shippingTo
+     *
+     * @deprecated
      */
     public function setShippingTo(?array $shippingTo): self
     {
         $this->initialized['shippingTo'] = true;
         $this->shippingTo = $shippingTo;
+
+        return $this;
+    }
+
+    /**
+     * List of blockades where shipping is not allowed.
+     *
+     * @return list<ShippingBlockade>|null
+     */
+    public function getBlockades(): ?array
+    {
+        return $this->blockades;
+    }
+
+    /**
+     * List of blockades where shipping is not allowed.
+     *
+     * @param list<ShippingBlockade>|null $blockades
+     */
+    public function setBlockades(?array $blockades): self
+    {
+        $this->initialized['blockades'] = true;
+        $this->blockades = $blockades;
 
         return $this;
     }

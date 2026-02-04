@@ -25,14 +25,6 @@ class RefundClaimLineItemOffer extends \ArrayObject
      * @var string|null
      */
     protected $id;
-    /**
-     * Name of the offer associated with the purchase.
-     *
-     * @deprecated
-     *
-     * @var string|null
-     */
-    protected $name;
 
     public function isInitialized($property): bool
     {
@@ -54,29 +46,6 @@ class RefundClaimLineItemOffer extends \ArrayObject
     {
         $this->initialized['id'] = true;
         $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Name of the offer associated with the purchase.
-     *
-     * @deprecated
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * Name of the offer associated with the purchase.
-     *
-     * @deprecated
-     */
-    public function setName(?string $name): self
-    {
-        $this->initialized['name'] = true;
-        $this->name = $name;
 
         return $this;
     }

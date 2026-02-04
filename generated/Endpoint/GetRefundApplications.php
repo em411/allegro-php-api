@@ -23,7 +23,6 @@ class GetRefundApplications extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
      * @param array $queryParameters {
      *
      * @var string $lineItem.offer.id ID of the offer associated with the refund application.
-     * @var string $buyer.login Login of the buyer that made the purchase associated with the refund application.
      * @var string $buyer.id Id of the buyer that made the purchase associated with the refund application.
      * @var string $status status of the refund application
      * @var int    $limit maximum number of returned refund applications in response
@@ -69,11 +68,10 @@ class GetRefundApplications extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
     protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(['lineItem.offer.id', 'buyer.login', 'buyer.id', 'status', 'limit', 'offset']);
+        $optionsResolver->setDefined(['lineItem.offer.id', 'buyer.id', 'status', 'limit', 'offset']);
         $optionsResolver->setRequired([]);
         $optionsResolver->setDefaults(['limit' => 25, 'offset' => 0]);
         $optionsResolver->addAllowedTypes('lineItem.offer.id', ['string']);
-        $optionsResolver->addAllowedTypes('buyer.login', ['string']);
         $optionsResolver->addAllowedTypes('buyer.id', ['string']);
         $optionsResolver->addAllowedTypes('status', ['string']);
         $optionsResolver->addAllowedTypes('limit', ['int']);

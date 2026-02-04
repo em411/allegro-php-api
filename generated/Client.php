@@ -5017,7 +5017,6 @@ class Client extends Runtime\Client\Client
      * @param array $queryParameters {
      *
      * @var string $lineItem.offer.id ID of the offer associated with the refund application.
-     * @var string $buyer.login Login of the buyer that made the purchase associated with the refund application.
      * @var string $buyer.id Id of the buyer that made the purchase associated with the refund application.
      * @var string $status status of the refund application
      * @var int    $limit maximum number of returned refund applications in response

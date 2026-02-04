@@ -58,12 +58,6 @@ class RefundClaimLineItemOfferNormalizer implements DenormalizerInterface, Norma
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
         }
-        if (\array_key_exists('name', $data) && null !== $data['name']) {
-            $object->setName($data['name']);
-            unset($data['name']);
-        } elseif (\array_key_exists('name', $data) && null === $data['name']) {
-            $object->setName(null);
-        }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value;
@@ -78,9 +72,6 @@ class RefundClaimLineItemOfferNormalizer implements DenormalizerInterface, Norma
         $dataArray = [];
         if ($data->isInitialized('id') && null !== $data->getId()) {
             $dataArray['id'] = $data->getId();
-        }
-        if ($data->isInitialized('name') && null !== $data->getName()) {
-            $dataArray['name'] = $data->getName();
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

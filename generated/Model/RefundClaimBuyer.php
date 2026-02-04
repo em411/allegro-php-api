@@ -25,14 +25,6 @@ class RefundClaimBuyer extends \ArrayObject
      * @var string|null
      */
     protected $id;
-    /**
-     * Login of the buyer associated with the refund application.
-     *
-     * @deprecated
-     *
-     * @var string|null
-     */
-    protected $login;
 
     public function isInitialized($property): bool
     {
@@ -54,29 +46,6 @@ class RefundClaimBuyer extends \ArrayObject
     {
         $this->initialized['id'] = true;
         $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Login of the buyer associated with the refund application.
-     *
-     * @deprecated
-     */
-    public function getLogin(): ?string
-    {
-        return $this->login;
-    }
-
-    /**
-     * Login of the buyer associated with the refund application.
-     *
-     * @deprecated
-     */
-    public function setLogin(?string $login): self
-    {
-        $this->initialized['login'] = true;
-        $this->login = $login;
 
         return $this;
     }

@@ -68,9 +68,19 @@ class BlockedDeliveryNormalizer implements DenormalizerInterface, NormalizerInte
         } elseif (\array_key_exists('shippingTo', $data) && null === $data['shippingTo']) {
             $object->setShippingTo(null);
         }
-        foreach ($data as $key => $value_1) {
+        if (\array_key_exists('blockades', $data) && null !== $data['blockades']) {
+            $values_1 = [];
+            foreach ($data['blockades'] as $value_1) {
+                $values_1[] = $this->denormalizer->denormalize($value_1, \Em411\Allegro\Api\Model\ShippingBlockade::class, 'json', $context);
+            }
+            $object->setBlockades($values_1);
+            unset($data['blockades']);
+        } elseif (\array_key_exists('blockades', $data) && null === $data['blockades']) {
+            $object->setBlockades(null);
+        }
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+                $object[$key] = $value_2;
             }
         }
 
@@ -90,9 +100,16 @@ class BlockedDeliveryNormalizer implements DenormalizerInterface, NormalizerInte
             }
             $dataArray['shippingTo'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        if ($data->isInitialized('blockades') && null !== $data->getBlockades()) {
+            $values_1 = [];
+            foreach ($data->getBlockades() as $value_1) {
+                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            }
+            $dataArray['blockades'] = $values_1;
+        }
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+                $dataArray[$key] = $value_2;
             }
         }
 
