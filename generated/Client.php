@@ -6590,7 +6590,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to get deposit types available when creating an offer.
+     * Use this resource to get deposit types available when creating an offer. Read more: <a href="../../news/1-pazdziernika-2025-dostosujemy-allegro-api-do-rozporzadzenia-o-systemie-kaucyjnym-m0mLB4XM9Ib" target="_blank">PL</a> / <a href="../../news/on-october-1-2025-we-will-adapt-Allegro-API-to-the-deposit-system-regulation-m0mLB4XM9Ib" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *
