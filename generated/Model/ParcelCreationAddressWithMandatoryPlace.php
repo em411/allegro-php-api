@@ -44,7 +44,7 @@ class ParcelCreationAddressWithMandatoryPlace extends \ArrayObject
      */
     protected $countryCode = 'PL';
     /**
-     * Required for shipments to Irleand ( county name ), United States ( state abbreviation / ISO code ), Canada ( province postal code / ISO code ).
+     * Required for shipments to Ireland ( county name ), United States ( state abbreviation / ISO code ), Canada ( province postal code / ISO code ).
      *
      * @var string|null
      */
@@ -132,7 +132,7 @@ class ParcelCreationAddressWithMandatoryPlace extends \ArrayObject
     }
 
     /**
-     * Required for shipments to Irleand ( county name ), United States ( state abbreviation / ISO code ), Canada ( province postal code / ISO code ).
+     * Required for shipments to Ireland ( county name ), United States ( state abbreviation / ISO code ), Canada ( province postal code / ISO code ).
      */
     public function getCounty(): ?string
     {
@@ -140,7 +140,7 @@ class ParcelCreationAddressWithMandatoryPlace extends \ArrayObject
     }
 
     /**
-     * Required for shipments to Irleand ( county name ), United States ( state abbreviation / ISO code ), Canada ( province postal code / ISO code ).
+     * Required for shipments to Ireland ( county name ), United States ( state abbreviation / ISO code ), Canada ( province postal code / ISO code ).
      */
     public function setCounty(?string $county): self
     {

@@ -873,8 +873,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\ListingCategory::class => ListingCategoryNormalizer::class,
 
-        \Em411\Allegro\Api\Model\ListingResponse::class => ListingResponseNormalizer::class,
-
         \Em411\Allegro\Api\Model\OfferSeller::class => OfferSellerNormalizer::class,
 
         \Em411\Allegro\Api\Model\OfferStock::class => OfferStockNormalizer::class,
@@ -2788,7 +2786,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\ListingOffer::class => false,
             \Em411\Allegro\Api\Model\ListingCategoryWithCount::class => false,
             \Em411\Allegro\Api\Model\ListingCategory::class => false,
-            \Em411\Allegro\Api\Model\ListingResponse::class => false,
             \Em411\Allegro\Api\Model\OfferSeller::class => false,
             \Em411\Allegro\Api\Model\OfferStock::class => false,
             \Em411\Allegro\Api\Model\OfferPromotion::class => false,
