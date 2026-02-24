@@ -5419,6 +5419,155 @@ class Client extends Runtime\Client\Client
     }
 
     /**
+     * Use this resource to retrieve the account participation status for all supported marketplaces in the Allegro Prices program.
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\AllegroPricesAccountParticipationResponse|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\GetAccountParticipationUnauthorizedException
+     */
+    public function getAccountParticipation(array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\GetAccountParticipation($headerParameters), $fetch);
+    }
+
+    /**
+     * Use this resource to update the account participation status for one or more marketplaces in the Allegro Prices program.
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\AllegroPricesAccountParticipationResponse|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\UpdateAccountParticipationBadRequestException
+     * @throws Exception\UpdateAccountParticipationUnauthorizedException
+     * @throws Exception\UpdateAccountParticipationUnprocessableEntityException
+     */
+    public function updateAccountParticipation(?Model\AllegroPricesAccountParticipationRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\UpdateAccountParticipation($requestBody, $headerParameters), $fetch);
+    }
+
+    /**
+     * Use this resource to submit a command to add offers to the Allegro Prices program. Returns a command ID that can be used to track the processing status.
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\SubsidyManageOffersCommandResult|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\SubmitOfferCommandsBadRequestException
+     * @throws Exception\SubmitOfferCommandsUnauthorizedException
+     * @throws Exception\SubmitOfferCommandsConflictException
+     * @throws Exception\SubmitOfferCommandsUnprocessableEntityException
+     */
+    public function submitOfferCommands(?Model\SubsidySubmitOffersCommand $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\SubmitOfferCommands($requestBody, $headerParameters), $fetch);
+    }
+
+    /**
+     * Use this resource to retrieve the status and details of a previously submitted offer command.
+     *
+     * @param string $commandId        the unique identifier of the command
+     * @param array  $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\SubsidySubmitOffersCommandPreview|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\GetSubmitOfferCommandStatusBadRequestException
+     * @throws Exception\GetSubmitOfferCommandStatusUnauthorizedException
+     * @throws Exception\GetSubmitOfferCommandStatusNotFoundException
+     */
+    public function getSubmitOfferCommandStatus(string $commandId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\GetSubmitOfferCommandStatus($commandId, $headerParameters), $fetch);
+    }
+
+    /**
+     * Use this resource to submit a command to exclude offers from the Allegro Prices program. Returns a command ID that can be used to track the processing status.
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\SubsidyManageOffersCommandResult|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\ExcludeOfferCommandsBadRequestException
+     * @throws Exception\ExcludeOfferCommandsUnauthorizedException
+     * @throws Exception\ExcludeOfferCommandsConflictException
+     * @throws Exception\ExcludeOfferCommandsUnprocessableEntityException
+     */
+    public function excludeOfferCommands(?Model\SubsidyExcludeOffersCommand $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\ExcludeOfferCommands($requestBody, $headerParameters), $fetch);
+    }
+
+    /**
+     * Use this resource to retrieve the status and details of a previously submitted exclusion command.
+     *
+     * @param string $commandId        the unique identifier of the command
+     * @param array  $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\SubsidyExcludeOffersCommandPreview|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\GetExcludeOfferCommandStatusBadRequestException
+     * @throws Exception\GetExcludeOfferCommandStatusUnauthorizedException
+     * @throws Exception\GetExcludeOfferCommandStatusNotFoundException
+     */
+    public function getExcludeOfferCommandStatus(string $commandId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\GetExcludeOfferCommandStatus($commandId, $headerParameters), $fetch);
+    }
+
+    /**
+     * Use this resource to retrieve a list of offers and their status in the Allegro Prices program with optional filtering and pagination. Allows filtering by offer IDs, marketplace, and scope (WITH_DECLARATION, DISCOUNTED, or EXCLUDED). Only offers in ACTIVATING, ACTIVE, or ENDED statuses are considered.
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\OfferStatusQueryResponseDto|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\GetAllegroPricesOffersBadRequestException
+     * @throws Exception\GetAllegroPricesOffersUnauthorizedException
+     * @throws Exception\GetAllegroPricesOffersUnprocessableEntityException
+     */
+    public function getAllegroPricesOffers(?Model\OfferStatusQueryRequestDto $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\GetAllegroPricesOffers($requestBody, $headerParameters), $fetch);
+    }
+
+    /**
      * Use this resource to create a command for submitting an offer. Offer will be submitted to the AlleDiscount campaign only if command is processed successfully. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zglosic-oferte-do-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-an-offer-to-a-campaign" target="_blank">EN</a>.
      *
      * @param array $headerParameters {

@@ -1729,6 +1729,90 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\AllegroPricesQualificationResponse::class => AllegroPricesQualificationResponseNormalizer::class,
 
+        \Em411\Allegro\Api\Model\AccountParticipationMarketplaceRequest::class => AccountParticipationMarketplaceRequestNormalizer::class,
+
+        \Em411\Allegro\Api\Model\AllegroPricesAccountParticipationRequest::class => AllegroPricesAccountParticipationRequestNormalizer::class,
+
+        \Em411\Allegro\Api\Model\AccountParticipationMarketplace::class => AccountParticipationMarketplaceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\AllegroPricesAccountParticipationResponse::class => AllegroPricesAccountParticipationResponseNormalizer::class,
+
+        \Em411\Allegro\Api\Model\Marketplace::class => MarketplaceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SellerDiscountDeclaration::class => SellerDiscountDeclarationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidyOfferToSubmit::class => SubsidyOfferToSubmitNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidyOfferToSubmitMarketplace::class => SubsidyOfferToSubmitMarketplaceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidyOfferToSubmitSellerDiscountDeclaration::class => SubsidyOfferToSubmitSellerDiscountDeclarationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidySubmitOffersCommand::class => SubsidySubmitOffersCommandNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidyManageOffersCommandResult::class => SubsidyManageOffersCommandResultNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferError::class => OfferErrorNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidySubmitOfferItem::class => SubsidySubmitOfferItemNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidySubmitOfferItemMarketplace::class => SubsidySubmitOfferItemMarketplaceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidySubmitOfferItemSellerDiscountDeclaration::class => SubsidySubmitOfferItemSellerDiscountDeclarationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidySubmitOffersCommandPreview::class => SubsidySubmitOffersCommandPreviewNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidyOfferToExclude::class => SubsidyOfferToExcludeNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidyOfferToExcludeMarketplace::class => SubsidyOfferToExcludeMarketplaceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidyExcludeOffersCommand::class => SubsidyExcludeOffersCommandNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidyExcludeOfferItem::class => SubsidyExcludeOfferItemNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidyExcludeOfferItemMarketplace::class => SubsidyExcludeOfferItemMarketplaceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SubsidyExcludeOffersCommandPreview::class => SubsidyExcludeOffersCommandPreviewNormalizer::class,
+
+        \Em411\Allegro\Api\Model\MarketplaceDto::class => MarketplaceDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\MoneyDto::class => MoneyDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\DeclaredPriceReductionDto::class => DeclaredPriceReductionDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\DeclaredPriceReductionDtoSellerMaxDeclaredDiscount::class => DeclaredPriceReductionDtoSellerMaxDeclaredDiscountNormalizer::class,
+
+        \Em411\Allegro\Api\Model\ActualPriceReductionDto::class => ActualPriceReductionDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\ActualPriceReductionDtoSellerMaxDeclaredDiscount::class => ActualPriceReductionDtoSellerMaxDeclaredDiscountNormalizer::class,
+
+        \Em411\Allegro\Api\Model\ActualPriceReductionDtoSellerDiscount::class => ActualPriceReductionDtoSellerDiscountNormalizer::class,
+
+        \Em411\Allegro\Api\Model\ActualPriceReductionDtoAllegroDiscount::class => ActualPriceReductionDtoAllegroDiscountNormalizer::class,
+
+        \Em411\Allegro\Api\Model\ActualPriceReductionDtoFinalPriceForTheBuyer::class => ActualPriceReductionDtoFinalPriceForTheBuyerNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferFilterDto::class => OfferFilterDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\MarketplaceFilterDto::class => MarketplaceFilterDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferStatusItemDto::class => OfferStatusItemDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferStatusItemDtoMarketplace::class => OfferStatusItemDtoMarketplaceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferStatusItemDtoBasePrice::class => OfferStatusItemDtoBasePriceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferStatusItemDtoDeclaredPriceReduction::class => OfferStatusItemDtoDeclaredPriceReductionNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferStatusItemDtoActualPriceReduction::class => OfferStatusItemDtoActualPriceReductionNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferStatusQueryRequestDto::class => OfferStatusQueryRequestDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoOffer::class => OfferStatusQueryRequestDtoOfferNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoMarketplace::class => OfferStatusQueryRequestDtoMarketplaceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferStatusQueryResponseDto::class => OfferStatusQueryResponseDtoNormalizer::class,
+
         \Em411\Allegro\Api\Model\AlleDiscountSubmitCommandRequest::class => AlleDiscountSubmitCommandRequestNormalizer::class,
 
         \Em411\Allegro\Api\Model\AlleDiscountSubmitCommandRequestInput::class => AlleDiscountSubmitCommandRequestInputNormalizer::class,
@@ -3214,6 +3298,48 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\AllegroPricesEligibilityResponse::class => false,
             \Em411\Allegro\Api\Model\AllegroPricesEligibilityResponseAdditionalMarketplacesItem::class => false,
             \Em411\Allegro\Api\Model\AllegroPricesQualificationResponse::class => false,
+            \Em411\Allegro\Api\Model\AccountParticipationMarketplaceRequest::class => false,
+            \Em411\Allegro\Api\Model\AllegroPricesAccountParticipationRequest::class => false,
+            \Em411\Allegro\Api\Model\AccountParticipationMarketplace::class => false,
+            \Em411\Allegro\Api\Model\AllegroPricesAccountParticipationResponse::class => false,
+            \Em411\Allegro\Api\Model\Marketplace::class => false,
+            \Em411\Allegro\Api\Model\SellerDiscountDeclaration::class => false,
+            \Em411\Allegro\Api\Model\SubsidyOfferToSubmit::class => false,
+            \Em411\Allegro\Api\Model\SubsidyOfferToSubmitMarketplace::class => false,
+            \Em411\Allegro\Api\Model\SubsidyOfferToSubmitSellerDiscountDeclaration::class => false,
+            \Em411\Allegro\Api\Model\SubsidySubmitOffersCommand::class => false,
+            \Em411\Allegro\Api\Model\SubsidyManageOffersCommandResult::class => false,
+            \Em411\Allegro\Api\Model\OfferError::class => false,
+            \Em411\Allegro\Api\Model\SubsidySubmitOfferItem::class => false,
+            \Em411\Allegro\Api\Model\SubsidySubmitOfferItemMarketplace::class => false,
+            \Em411\Allegro\Api\Model\SubsidySubmitOfferItemSellerDiscountDeclaration::class => false,
+            \Em411\Allegro\Api\Model\SubsidySubmitOffersCommandPreview::class => false,
+            \Em411\Allegro\Api\Model\SubsidyOfferToExclude::class => false,
+            \Em411\Allegro\Api\Model\SubsidyOfferToExcludeMarketplace::class => false,
+            \Em411\Allegro\Api\Model\SubsidyExcludeOffersCommand::class => false,
+            \Em411\Allegro\Api\Model\SubsidyExcludeOfferItem::class => false,
+            \Em411\Allegro\Api\Model\SubsidyExcludeOfferItemMarketplace::class => false,
+            \Em411\Allegro\Api\Model\SubsidyExcludeOffersCommandPreview::class => false,
+            \Em411\Allegro\Api\Model\MarketplaceDto::class => false,
+            \Em411\Allegro\Api\Model\MoneyDto::class => false,
+            \Em411\Allegro\Api\Model\DeclaredPriceReductionDto::class => false,
+            \Em411\Allegro\Api\Model\DeclaredPriceReductionDtoSellerMaxDeclaredDiscount::class => false,
+            \Em411\Allegro\Api\Model\ActualPriceReductionDto::class => false,
+            \Em411\Allegro\Api\Model\ActualPriceReductionDtoSellerMaxDeclaredDiscount::class => false,
+            \Em411\Allegro\Api\Model\ActualPriceReductionDtoSellerDiscount::class => false,
+            \Em411\Allegro\Api\Model\ActualPriceReductionDtoAllegroDiscount::class => false,
+            \Em411\Allegro\Api\Model\ActualPriceReductionDtoFinalPriceForTheBuyer::class => false,
+            \Em411\Allegro\Api\Model\OfferFilterDto::class => false,
+            \Em411\Allegro\Api\Model\MarketplaceFilterDto::class => false,
+            \Em411\Allegro\Api\Model\OfferStatusItemDto::class => false,
+            \Em411\Allegro\Api\Model\OfferStatusItemDtoMarketplace::class => false,
+            \Em411\Allegro\Api\Model\OfferStatusItemDtoBasePrice::class => false,
+            \Em411\Allegro\Api\Model\OfferStatusItemDtoDeclaredPriceReduction::class => false,
+            \Em411\Allegro\Api\Model\OfferStatusItemDtoActualPriceReduction::class => false,
+            \Em411\Allegro\Api\Model\OfferStatusQueryRequestDto::class => false,
+            \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoOffer::class => false,
+            \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoMarketplace::class => false,
+            \Em411\Allegro\Api\Model\OfferStatusQueryResponseDto::class => false,
             \Em411\Allegro\Api\Model\AlleDiscountSubmitCommandRequest::class => false,
             \Em411\Allegro\Api\Model\AlleDiscountSubmitCommandRequestInput::class => false,
             \Em411\Allegro\Api\Model\AlleDiscountSubmitCommandRequestInputOffer::class => false,

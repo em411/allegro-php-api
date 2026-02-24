@@ -16696,6 +16696,7 @@ paths:
                 $ref: '#/components/schemas/ErrorsHolder'
   /sale/allegro-prices-offer-consents/{offerId}:
     get:
+      deprecated: true
       tags:
         - Allegro Prices
       operationId: getAllegroPricesConsentForOffer
@@ -16759,6 +16760,7 @@ paths:
       - bearer-token-for-user:
         - allegro:api:campaigns
     put:
+      deprecated: true
       tags:
         - Allegro Prices
       operationId: updateAllegroPricesConsentForOffer
@@ -16846,6 +16848,7 @@ paths:
         - allegro:api:campaigns
   /sale/allegro-prices-account-eligibility:
     get:
+      deprecated: true
       tags:
         - Allegro Prices
       operationId: "getAllegroPricesEligibilityForAccount"
@@ -16898,6 +16901,7 @@ paths:
         - allegro:api:campaigns
   /sale/allegro-prices-account-consent:
     put:
+      deprecated: true
       tags:
         - Allegro Prices
       operationId: "updateAllegroPricesConsentForAccount"
@@ -16965,6 +16969,739 @@ paths:
       security:
       - bearer-token-for-user:
         - allegro:api:campaigns
+  '/sale/allegro-prices/accounts/participations':
+    get:
+      tags:
+        - Allegro Prices
+      summary: 'Get account participation status'
+      description: 'Use this resource to retrieve the account participation status for all supported marketplaces in the Allegro Prices program.'
+      operationId: getAccountParticipation
+      security:
+        - bearer-token-for-user:
+            - allegro:api:campaigns
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          description: 'Expected language of messages.'
+          example: pl-PL
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      responses:
+        '200':
+          description: 'Successfully retrieved account participation status'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AllegroPricesAccountParticipationResponse'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+    patch:
+      tags:
+        - Allegro Prices
+      summary: 'Update account participation'
+      description: 'Use this resource to update the account participation status for one or more marketplaces in the Allegro Prices program.'
+      operationId: updateAccountParticipation
+      security:
+        - bearer-token-for-user:
+            - allegro:api:campaigns
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          description: 'Expected language of messages.'
+          example: pl-PL
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      requestBody:
+        $ref: '#/components/requestBodies/AllegroPricesAccountParticipationRequest'
+      responses:
+        '200':
+          description: 'Successfully updated account participation'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AllegroPricesAccountParticipationResponse'
+        '400':
+          description: 'Bad request'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '422':
+          description: 'Unprocessable Entity'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+  '/sale/allegro-prices/offers/submit-offer-commands':
+    post:
+      tags:
+        - Allegro Prices
+      summary: 'Submit offers command'
+      description: 'Use this resource to submit a command to add offers to the Allegro Prices program. Returns a command ID that can be used to track the processing status.'
+      operationId: submitOfferCommands
+      security:
+        - bearer-token-for-user:
+            - allegro:api:campaigns
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          description: 'Expected language of messages.'
+          example: pl-PL
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      requestBody:
+        $ref: '#/components/requestBodies/SubsidySubmitOffersCommand'
+      responses:
+        '201':
+          description: 'Command successfully created and is being processed'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/SubsidyManageOffersCommandResult'
+        '400':
+          description: 'Bad Request - invalid JSON format or missing required fields (e.g., invalid command ID format, null values for offers, offer id, marketplace id, or maxContributionPercentage)'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '409':
+          description: 'Conflict'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: 'Unprocessable Entity - validation error (e.g., empty offers list, invalid discount declaration, duplicate offers, unsupported marketplace)'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+  '/sale/allegro-prices/offers/submit-offer-commands/{commandId}':
+    get:
+      tags:
+        - Allegro Prices
+      summary: 'Get submit offer command status'
+      description: 'Use this resource to retrieve the status and details of a previously submitted offer command.'
+      operationId: getSubmitOfferCommandStatus
+      security:
+        - bearer-token-for-user:
+            - allegro:api:campaigns
+      parameters:
+        - name: commandId
+          in: path
+          description: 'The unique identifier of the command.'
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Accept-Language
+          in: header
+          required: false
+          description: 'Expected language of messages.'
+          example: pl-PL
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      responses:
+        '200':
+          description: 'Command found and details retrieved successfully'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/SubsidySubmitOffersCommandPreview'
+              examples:
+                successfulCommand:
+                  summary: 'All offers successfully submitted'
+                  value:
+                    commandId: '123e4567-e89b-12d3-a456-426614174000'
+                    createdAt: '2024-01-29T10:30:00.000Z'
+                    offers:
+                      - id: '10000000721'
+                        marketplace:
+                          id: 'allegro-pl'
+                        sellerDiscountDeclaration:
+                          maxContributionPercentage: '15.50'
+                        completedAt: '2024-01-29T10:30:15.000Z'
+                        status: 'SUCCESS'
+                        errors: null
+                      - id: '10000000722'
+                        marketplace:
+                          id: 'allegro-pl'
+                        sellerDiscountDeclaration:
+                          maxContributionPercentage: '10.00'
+                        completedAt: '2024-01-29T10:30:16.000Z'
+                        status: 'SUCCESS'
+                        errors: null
+                inProgressCommand:
+                  summary: 'Command still being processed'
+                  value:
+                    commandId: '234e5678-e89b-12d3-a456-426614174001'
+                    createdAt: '2024-01-29T10:35:00.000Z'
+                    offers:
+                      - id: '10000000723'
+                        marketplace:
+                          id: 'allegro-cz'
+                        sellerDiscountDeclaration:
+                          maxContributionPercentage: '12.00'
+                        completedAt: null
+                        status: 'IN_PROGRESS'
+                        errors: null
+                      - id: '10000000724'
+                        marketplace:
+                          id: 'allegro-cz'
+                        completedAt: null
+                        status: 'IN_PROGRESS'
+                        errors: null
+                partialFailure:
+                  summary: 'Some offers succeeded, some failed'
+                  value:
+                    commandId: '345e6789-e89b-12d3-a456-426614174002'
+                    createdAt: '2024-01-29T10:40:00.000Z'
+                    offers:
+                      - id: '10000000725'
+                        marketplace:
+                          id: 'allegro-pl'
+                        sellerDiscountDeclaration:
+                          maxContributionPercentage: '15.00'
+                        completedAt: '2024-01-29T10:40:20.000Z'
+                        status: 'SUCCESS'
+                        errors: null
+                      - id: '10000000726'
+                        marketplace:
+                          id: 'allegro-pl'
+                        sellerDiscountDeclaration:
+                          maxContributionPercentage: '20.00'
+                        completedAt: '2024-01-29T10:40:25.000Z'
+                        status: 'FAILED'
+                        errors:
+                          - message: 'Offer not found'
+                      - id: '10000000727'
+                        marketplace:
+                          id: 'allegro-pl'
+                        sellerDiscountDeclaration:
+                          maxContributionPercentage: '5.00'
+                        completedAt: '2024-01-29T10:40:25.000Z'
+                        status: 'FAILED'
+                        errors:
+                          - message: 'Invalid discount declaration: maxContributionPercentage must be at least 10.0'
+                completeFailure:
+                  summary: 'All offers failed'
+                  value:
+                    commandId: '456e7890-e89b-12d3-a456-426614174003'
+                    createdAt: '2024-01-29T10:45:00.000Z'
+                    offers:
+                      - id: '10000000728'
+                        marketplace:
+                          id: 'allegro-pl'
+                        sellerDiscountDeclaration:
+                          maxContributionPercentage: '15.00'
+                        completedAt: '2024-01-29T10:45:10.000Z'
+                        status: 'FAILED'
+                        errors:
+                          - message: 'Offer not found'
+        '400':
+          description: 'Bad Request - invalid UUID format for command ID'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '404':
+          description: 'Not Found'
+  '/sale/allegro-prices/offers/exclusion-commands':
+    post:
+      tags:
+        - Allegro Prices
+      summary: 'Exclude offers command'
+      description: 'Use this resource to submit a command to exclude offers from the Allegro Prices program. Returns a command ID that can be used to track the processing status.'
+      operationId: excludeOfferCommands
+      security:
+        - bearer-token-for-user:
+            - allegro:api:campaigns
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          description: 'Expected language of messages.'
+          example: pl-PL
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      requestBody:
+        $ref: '#/components/requestBodies/SubsidyExcludeOffersCommand'
+      responses:
+        '201':
+          description: 'Command successfully created and is being processed'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/SubsidyManageOffersCommandResult'
+        '400':
+          description: 'Bad Request - invalid JSON format or missing required fields (e.g., invalid command ID format, null values for offers, offer id, or marketplace id)'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '409':
+          description: 'Conflict'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: 'Unprocessable Entity - validation error (e.g., empty offers list, duplicate offers, unsupported marketplace)'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+  '/sale/allegro-prices/offers/exclusion-commands/{commandId}':
+    get:
+      tags:
+        - Allegro Prices
+      summary: 'Get exclude offer command status'
+      description: 'Use this resource to retrieve the status and details of a previously submitted exclusion command.'
+      operationId: getExcludeOfferCommandStatus
+      security:
+        - bearer-token-for-user:
+            - allegro:api:campaigns
+      parameters:
+        - name: commandId
+          in: path
+          description: 'The unique identifier of the command.'
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Accept-Language
+          in: header
+          required: false
+          description: 'Expected language of messages.'
+          example: pl-PL
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      responses:
+        '200':
+          description: 'Command found and details retrieved successfully'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/SubsidyExcludeOffersCommandPreview'
+              examples:
+                successfulExclusion:
+                  summary: 'All offers successfully excluded'
+                  value:
+                    commandId: '567e8901-e89b-12d3-a456-426614174004'
+                    createdAt: '2024-01-29T11:00:00.000Z'
+                    offers:
+                      - id: '10000000801'
+                        marketplace:
+                          id: 'allegro-pl'
+                        completedAt: '2024-01-29T11:00:10.000Z'
+                        status: 'SUCCESS'
+                        errors: null
+                      - id: '10000000802'
+                        marketplace:
+                          id: 'allegro-pl'
+                        completedAt: '2024-01-29T11:00:11.000Z'
+                        status: 'SUCCESS'
+                        errors: null
+                      - id: '10000000803'
+                        marketplace:
+                          id: 'allegro-cz'
+                        completedAt: '2024-01-29T11:00:12.000Z'
+                        status: 'SUCCESS'
+                        errors: null
+                inProgressExclusion:
+                  summary: 'Exclusion command still being processed'
+                  value:
+                    commandId: '678e9012-e89b-12d3-a456-426614174005'
+                    createdAt: '2024-01-29T11:05:00.000Z'
+                    offers:
+                      - id: '10000000804'
+                        marketplace:
+                          id: 'allegro-sk'
+                        completedAt: null
+                        status: 'IN_PROGRESS'
+                        errors: null
+                      - id: '10000000805'
+                        marketplace:
+                          id: 'allegro-sk'
+                        completedAt: null
+                        status: 'IN_PROGRESS'
+                        errors: null
+                partialExclusionFailure:
+                  summary: 'Some offers excluded, some failed'
+                  value:
+                    commandId: '789e0123-e89b-12d3-a456-426614174006'
+                    createdAt: '2024-01-29T11:10:00.000Z'
+                    offers:
+                      - id: '10000000806'
+                        marketplace:
+                          id: 'allegro-pl'
+                        completedAt: '2024-01-29T11:10:15.000Z'
+                        status: 'SUCCESS'
+                        errors: null
+                      - id: '10000000808'
+                        marketplace:
+                          id: 'allegro-pl'
+                        completedAt: '2024-01-29T11:10:20.000Z'
+                        status: 'FAILED'
+                        errors:
+                          - message: 'Offer not found'
+                      - id: '10000000807'
+                        marketplace:
+                          id: 'allegro-pl'
+                        completedAt: '2024-01-29T11:10:21.000Z'
+                        status: 'FAILED'
+                        errors:
+                          - message: 'Offer is not participating in Allegro Prices program'
+                allExclusionsFailed:
+                  summary: 'All exclusions failed'
+                  value:
+                    commandId: '890e1234-e89b-12d3-a456-426614174007'
+                    createdAt: '2024-01-29T11:15:00.000Z'
+                    offers:
+                      - id: '10000000810'
+                        marketplace:
+                          id: 'allegro-hu'
+                        completedAt: '2024-01-29T11:15:08.000Z'
+                        status: 'FAILED'
+                        errors:
+                          - message: 'Offer not found'
+                      - id: '10000000811'
+                        marketplace:
+                          id: 'allegro-hu'
+                        completedAt: '2024-01-29T11:15:09.000Z'
+                        status: 'FAILED'
+                        errors:
+                          - message: 'Offer not found'
+        '400':
+          description: 'Bad Request - invalid UUID format for command ID'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '404':
+            description: 'Not Found'
+  '/sale/allegro-prices/offers-queries':
+    post:
+      tags:
+        - Allegro Prices
+      summary: 'Query Allegro Prices offers status'
+      description: 'Use this resource to retrieve a list of offers and their status in the Allegro Prices program with optional filtering and pagination. Allows filtering by offer IDs, marketplace, and scope (WITH_DECLARATION, DISCOUNTED, or EXCLUDED). Only offers in ACTIVATING, ACTIVE, or ENDED statuses are considered.'
+      operationId: getAllegroPricesOffers
+      security:
+        - bearer-token-for-user:
+            - allegro:api:campaigns
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          description: 'Expected language of messages.'
+          example: pl-PL
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      requestBody:
+        required: true
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/OfferStatusQueryRequestDto'
+            examples:
+              filterByScope:
+                summary: 'Filter offers by scope (WITH_DECLARATION)'
+                value:
+                  marketplace:
+                    id: 'allegro-pl'
+                  offer:
+                    scope: 'WITH_DECLARATION'
+                  limit: 50
+                  offset: 0
+              filterByIds:
+                summary: 'Filter specific offers by IDs'
+                value:
+                  marketplace:
+                    id: 'allegro-pl'
+                  offer:
+                    ids:
+                      - '10000000001'
+                      - '10000000002'
+                      - '10000000003'
+                  limit: 20
+              filterDiscounted:
+                summary: 'Get currently discounted offers'
+                value:
+                  marketplace:
+                    id: 'allegro-cz'
+                  offer:
+                    scope: 'DISCOUNTED'
+                  limit: 100
+                  offset: 0
+              allOffers:
+                summary: 'Get all offers for marketplace'
+                value:
+                  marketplace:
+                    id: 'allegro-pl'
+                  limit: 20
+                  offset: 0
+      responses:
+        '200':
+          description: 'Successfully retrieved offers'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/OfferStatusQueryResponseDto'
+              examples:
+                withDiscountedOffers:
+                  summary: 'Response with discounted offers'
+                  value:
+                    offers:
+                      - id: '10000000001'
+                        name: 'Smartphone XYZ Pro 256GB'
+                        marketplace:
+                          id: 'allegro-pl'
+                        basePrice:
+                          amount: '2999.00'
+                          currency: 'PLN'
+                        declaredPriceReduction:
+                          sellerMaxDeclaredPercentage: '15.0'
+                          sellerMaxDeclaredDiscount:
+                            amount: '449.85'
+                            currency: 'PLN'
+                        actualPriceReduction:
+                          sellerMaxDeclaredPercentage: '15.0'
+                          sellerMaxDeclaredDiscount:
+                            amount: '449.85'
+                            currency: 'PLN'
+                          sellerDiscount:
+                            amount: '269.91'
+                            currency: 'PLN'
+                          allegroDiscount:
+                            amount: '629.79'
+                            currency: 'PLN'
+                          finalPriceForTheBuyer:
+                            amount: '2099.30'
+                            currency: 'PLN'
+                        discountedAt: '2024-01-15T10:30:00.000Z'
+                      - id: '10000000002'
+                        name: "Laptop ABC 15.6' 16GB RAM"
+                        marketplace:
+                          id: 'allegro-pl'
+                        basePrice:
+                          amount: '4500.00'
+                          currency: 'PLN'
+                        declaredPriceReduction:
+                          sellerMaxDeclaredPercentage: '10.0'
+                          sellerMaxDeclaredDiscount:
+                            amount: '450.00'
+                            currency: 'PLN'
+                        actualPriceReduction:
+                          sellerMaxDeclaredPercentage: '10.0'
+                          sellerMaxDeclaredDiscount:
+                            amount: '450.00'
+                            currency: 'PLN'
+                          sellerDiscount:
+                            amount: '270.00'
+                            currency: 'PLN'
+                          allegroDiscount:
+                            amount: '630.00'
+                            currency: 'PLN'
+                          finalPriceForTheBuyer:
+                            amount: '3600.00'
+                            currency: 'PLN'
+                        discountedAt: '2024-01-16T14:20:00.000Z'
+                    totalCount: 150
+                    count: 2
+                withDeclarationOnly:
+                  summary: 'Response with offers that have declarations but are not discounted'
+                  value:
+                    offers:
+                      - id: '10000000005'
+                        name: 'Headphones Premium Noise Cancelling'
+                        marketplace:
+                          id: 'allegro-pl'
+                        basePrice:
+                          amount: '899.00'
+                          currency: 'PLN'
+                        declaredPriceReduction:
+                          sellerMaxDeclaredPercentage: '12.0'
+                          sellerMaxDeclaredDiscount:
+                            amount: '107.88'
+                            currency: 'PLN'
+                    totalCount: 45
+                    count: 1
+                withExcludedOffers:
+                  summary: 'Response with excluded offers'
+                  value:
+                    offers:
+                      - id: '10000000010'
+                        name: "Tablet 10' WiFi 64GB"
+                        marketplace:
+                          id: 'allegro-pl'
+                        basePrice:
+                          amount: '1200.00'
+                          currency: 'PLN'
+                        excludedAt: '2024-01-20T09:15:00.000Z'
+                    totalCount: 8
+                    count: 1
+                emptyResult:
+                  summary: 'No offers found'
+                  value:
+                    offers: [ ]
+                    totalCount: 0
+                    count: 0
+        '400':
+          description: 'Bad request - Invalid request body or missing required fields'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                missingMarketplace:
+                  summary: 'Missing required marketplace field'
+                  value:
+                    errors:
+                      - code: 'ValidationException'
+                        message: 'Missing required field: marketplace'
+                        userMessage: 'The request is missing required information'
+                invalidJsonFormat:
+                  summary: 'Invalid JSON format'
+                  value:
+                    errors:
+                      - code: 'BadRequestException'
+                        message: 'Invalid JSON format in request body'
+                        userMessage: 'The request contains incorrectly formatted data'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '422':
+          description: 'Unprocessable entity - Validation error (e.g., invalid marketplace ID, limit out of range, invalid scope)'
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              examples:
+                invalidMarketplace:
+                  summary: 'Invalid marketplace ID'
+                  value:
+                    errors:
+                      - code: 'ValidationException'
+                        message: 'Invalid marketplace ID: allegro-invalid. Supported values: allegro-pl, allegro-cz, allegro-sk, allegro-hu'
+                        userMessage: 'The specified marketplace is not supported'
+                limitOutOfRange:
+                  summary: 'Limit parameter out of range'
+                  value:
+                    errors:
+                      - code: 'ValidationException'
+                        message: 'Limit must be between 1 and 1000. Provided value: 2000'
+                        userMessage: 'The requested number of results is outside the allowed range'
+                invalidScope:
+                  summary: 'Invalid scope value'
+                  value:
+                    errors:
+                      - code: 'ValidationException'
+                        message: 'Invalid scope: INVALID_SCOPE. Supported values: WITH_DECLARATION, DISCOUNTED, EXCLUDED'
+                        userMessage: 'The specified filter scope is not valid'
+                tooManyOfferIds:
+                  summary: 'Too many offer IDs provided'
+                  value:
+                    errors:
+                      - code: 'ValidationException'
+                        message: 'Offer IDs list cannot contain more than 1000 items. Provided: 1500'
+                        userMessage: 'Too many offer IDs in the request'
   /sale/alle-discount/submit-offer-commands:
     post:
       tags:
@@ -20210,6 +20947,30 @@ components:
             $ref: '#/components/schemas/PromoOptionsCommand'
       description: 'Promotion packages modification command request.'
       required: true
+    AllegroPricesAccountParticipationRequest:
+      required: true
+      content:
+        application/vnd.allegro.public.v1+json:
+          schema:
+            $ref: '#/components/schemas/AllegroPricesAccountParticipationRequest'
+    SubsidySubmitOffersCommand:
+      required: true
+      content:
+        application/vnd.allegro.public.v1+json:
+          schema:
+            $ref: '#/components/schemas/SubsidySubmitOffersCommand'
+    SubsidyExcludeOffersCommand:
+      required: true
+      content:
+        application/vnd.allegro.public.v1+json:
+          schema:
+            $ref: '#/components/schemas/SubsidyExcludeOffersCommand'
+    OfferStatusQueryRequestDto:
+      required: true
+      content:
+        application/vnd.allegro.public.v1+json:
+          schema:
+            $ref: '#/components/schemas/OfferStatusQueryRequestDto'
   schemas:
     BillingEntries:
       type: object
@@ -33457,6 +34218,513 @@ components:
             - "QUALIFIED"
             - "DISQUALIFIED"
           example: 'QUALIFIED'
+    AccountParticipationMarketplaceRequest:
+      type: object
+      description: 'Marketplace participation update request'
+      properties:
+        id:
+          type: string
+          description: 'Marketplace identifier (must be a supported marketplace)'
+          example: allegro-pl
+        status:
+          type: string
+          description: 'Desired participation status (ALLOWED or DENIED)'
+          example: ALLOWED
+      required:
+        - id
+        - status
+    AllegroPricesAccountParticipationRequest:
+      type: object
+      description: 'Request to update account participation for one or more marketplaces'
+      properties:
+        marketplaces:
+          type: array
+          description: 'List of marketplaces to update (must not be empty)'
+          items:
+            $ref: '#/components/schemas/AccountParticipationMarketplaceRequest'
+          minItems: 1
+      required:
+        - marketplaces
+    AccountParticipationMarketplace:
+      type: object
+      description: 'Marketplace participation status'
+      properties:
+        id:
+          type: string
+          description: 'Marketplace identifier (e.g., allegro-pl, allegro-cz)'
+          example: allegro-pl
+        status:
+          type: string
+          description: 'Participation status (ALLOWED or DENIED)'
+          example: ALLOWED
+      required:
+        - id
+        - status
+    AllegroPricesAccountParticipationResponse:
+      type: object
+      description: 'Response containing account participation status for all supported marketplaces'
+      properties:
+        marketplaces:
+          type: array
+          description: 'List of marketplace participation statuses'
+          items:
+            $ref: '#/components/schemas/AccountParticipationMarketplace'
+      required:
+        - marketplaces
+    Marketplace:
+      type: object
+      description: 'Marketplace information'
+      properties:
+        id:
+          type: string
+          description: 'Marketplace identifier (e.g., allegro-pl, allegro-cz)'
+          example: allegro-pl
+          minLength: 1
+      required:
+        - id
+    SellerDiscountDeclaration:
+      type: object
+      description: 'Seller''s discount contribution declaration'
+      properties:
+        maxContributionPercentage:
+          type: string
+          description: 'Maximum discount percentage that the seller is willing to contribute (0-100)'
+          example: '15.50'
+      required:
+        - maxContributionPercentage
+    SubsidyOfferToSubmit:
+      type: object
+      description: 'Offer to be submitted to the Allegro Prices program'
+      properties:
+        id:
+          type: string
+          description: 'Offer identifier'
+          example: '10000000721'
+          minLength: 1
+        marketplace:
+          allOf:
+            - $ref: '#/components/schemas/Marketplace'
+            - description: 'Marketplace where the offer is listed'
+        sellerDiscountDeclaration:
+          allOf:
+            - $ref: '#/components/schemas/SellerDiscountDeclaration'
+            - description: 'Optional seller discount declaration'
+      required:
+        - id
+        - marketplace
+    SubsidySubmitOffersCommand:
+      type: object
+      description: 'Command to submit offers to the Allegro Prices program'
+      properties:
+        commandId:
+          type: string
+          format: uuid
+          description: 'Optional custom command identifier. If not provided, a UUID will be generated automatically'
+          example: '123e4567-e89b-12d3-a456-426614174000'
+        offers:
+          type: array
+          description: 'List of offers to submit (1-1000 offers, must not contain duplicates)'
+          items:
+            $ref: '#/components/schemas/SubsidyOfferToSubmit'
+          minItems: 1
+          maxItems: 1000
+      required:
+        - offers
+    SubsidyManageOffersCommandResult:
+      type: object
+      description: 'Result of a subsidy manage offers command'
+      properties:
+        commandId:
+          type: string
+          description: 'Unique identifier of the command'
+          example: '123e4567-e89b-12d3-a456-426614174000'
+        status:
+          type: string
+          description: 'Current status of the command'
+          enum:
+            - IN_PROGRESS
+          example: IN_PROGRESS
+        createdAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the command was created'
+          example: '2023-12-11T12:00:00.000Z'
+      required:
+        - commandId
+        - status
+        - createdAt
+    OfferError:
+      type: object
+      description: 'Error details for a failed offer processing'
+      properties:
+        message:
+          type: string
+          description: 'Error message describing what went wrong'
+          example: 'Offer not found'
+      required:
+        - message
+    SubsidySubmitOfferItem:
+      type: object
+      description: 'Submit offer item with seller''s discount declaration and processing status'
+      properties:
+        id:
+          type: string
+          description: 'Offer identifier'
+          example: '10000000721'
+        marketplace:
+          allOf:
+            - $ref: '#/components/schemas/Marketplace'
+            - description: 'Marketplace information'
+        sellerDiscountDeclaration:
+          allOf:
+            - $ref: '#/components/schemas/SellerDiscountDeclaration'
+            - description: 'Seller''s discount declaration (null if not provided)'
+        completedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the offer processing completed (successfully or with failure). Null if the offer is still being processed.'
+          example: '2023-12-11T12:05:00.000Z'
+          nullable: true
+        status:
+          type: string
+          description: 'Processing status of the offer'
+          enum:
+            - SUCCESS
+            - IN_PROGRESS
+            - FAILED
+          example: SUCCESS
+        errors:
+          type: array
+          description: 'List of errors if processing failed'
+          items:
+            $ref: '#/components/schemas/OfferError'
+          nullable: true
+      required:
+        - id
+        - marketplace
+        - status
+    SubsidySubmitOffersCommandPreview:
+      type: object
+      description: 'Preview of a submit offers command with processing status and results'
+      properties:
+        commandId:
+          type: string
+          description: 'Unique identifier of the command'
+          example: '123e4567-e89b-12d3-a456-426614174000'
+        createdAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the command was created'
+          example: '2023-12-11T12:00:00.000Z'
+        offers:
+          type: array
+          description: 'List of submitted offers with their processing status and seller discount declarations'
+          items:
+            $ref: '#/components/schemas/SubsidySubmitOfferItem'
+      required:
+        - commandId
+        - createdAt
+        - offers
+    SubsidyOfferToExclude:
+      type: object
+      description: 'Offer to be excluded from the Allegro Prices program'
+      properties:
+        id:
+          type: string
+          description: 'Offer identifier'
+          example: '10000000721'
+          minLength: 1
+        marketplace:
+          allOf:
+            - $ref: '#/components/schemas/Marketplace'
+            - description: 'Marketplace where the offer is listed'
+      required:
+        - id
+        - marketplace
+    SubsidyExcludeOffersCommand:
+      type: object
+      description: 'Command to exclude offers from the Allegro Prices program'
+      properties:
+        commandId:
+          type: string
+          format: uuid
+          description: 'Optional custom command identifier. If not provided, a UUID will be generated automatically'
+          example: '123e4567-e89b-12d3-a456-426614174000'
+        offers:
+          type: array
+          description: 'List of offers to exclude (1-1000 offers, must not contain duplicates)'
+          items:
+            $ref: '#/components/schemas/SubsidyOfferToExclude'
+          minItems: 1
+          maxItems: 1000
+      required:
+        - offers
+    SubsidyExcludeOfferItem:
+      type: object
+      description: 'Exclude offer item with processing status'
+      properties:
+        id:
+          type: string
+          description: 'Offer identifier'
+          example: '10000000721'
+        marketplace:
+          allOf:
+            - $ref: '#/components/schemas/Marketplace'
+            - description: 'Marketplace information'
+        completedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the offer processing completed (successfully or with failure). Null if the offer is still being processed.'
+          example: '2023-12-11T12:05:00.000Z'
+          nullable: true
+        status:
+          type: string
+          description: 'Processing status of the offer'
+          enum:
+            - SUCCESS
+            - IN_PROGRESS
+            - FAILED
+          example: SUCCESS
+        errors:
+          type: array
+          description: 'List of errors if processing failed'
+          items:
+            $ref: '#/components/schemas/OfferError'
+          nullable: true
+      required:
+        - id
+        - marketplace
+        - status
+    SubsidyExcludeOffersCommandPreview:
+      type: object
+      description: 'Preview of an exclude offers command with processing status and results'
+      properties:
+        commandId:
+          type: string
+          description: 'Unique identifier of the command'
+          example: '123e4567-e89b-12d3-a456-426614174000'
+        createdAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the command was created'
+          example: '2023-12-11T12:00:00.000Z'
+        offers:
+          type: array
+          description: 'List of excluded offers with their processing status'
+          items:
+            $ref: '#/components/schemas/SubsidyExcludeOfferItem'
+      required:
+        - commandId
+        - createdAt
+        - offers
+    MarketplaceDto:
+      type: object
+      description: 'Marketplace identifier'
+      properties:
+        id:
+          type: string
+          description: 'Marketplace identifier (e.g., ''allegro-pl'', ''allegro-cz'', ''allegro-sk'', ''allegro-hu'')'
+          example: allegro-pl
+      required:
+        - id
+    MoneyDto:
+      type: object
+      description: 'Monetary value with amount and currency'
+      properties:
+        amount:
+          type: string
+          description: 'Monetary amount as a string with decimal precision (e.g., ''100.00'')'
+          example: '100.00'
+        currency:
+          type: string
+          description: 'ISO 4217 currency code (e.g., ''PLN'', ''CZK'', ''EUR'', ''HUF'')'
+          example: PLN
+      required:
+        - amount
+        - currency
+    DeclaredPriceReductionDto:
+      type: object
+      description: 'Information about seller''s declared price reduction for Allegro Prices program'
+      properties:
+        sellerMaxDeclaredPercentage:
+          type: string
+          description: 'Maximum percentage of base price that the seller declared to discount (as a string, e.g., ''10.0'' means 10%)'
+          example: '10.0'
+        sellerMaxDeclaredDiscount:
+          allOf:
+            - $ref: '#/components/schemas/MoneyDto'
+            - description: 'Maximum monetary discount amount that the seller declared (calculated from the percentage and base price)'
+      required:
+        - sellerMaxDeclaredPercentage
+        - sellerMaxDeclaredDiscount
+    ActualPriceReductionDto:
+      type: object
+      description: 'Information about the actual price reduction currently applied in Allegro Prices program'
+      properties:
+        sellerMaxDeclaredPercentage:
+          type: string
+          description: 'Maximum percentage of base price that the seller declared to discount (as a string, e.g., ''10.0'' means 10%)'
+          example: '10.0'
+        sellerMaxDeclaredDiscount:
+          allOf:
+            - $ref: '#/components/schemas/MoneyDto'
+            - description: 'Maximum monetary discount amount that the seller declared (calculated from the percentage and base price)'
+        sellerDiscount:
+          allOf:
+            - $ref: '#/components/schemas/MoneyDto'
+            - description: 'Actual monetary discount amount calculated for the seller'
+        allegroDiscount:
+          allOf:
+            - $ref: '#/components/schemas/MoneyDto'
+            - description: 'Monetary discount amount co-financed by Allegro'
+        finalPriceForTheBuyer:
+          allOf:
+            - $ref: '#/components/schemas/MoneyDto'
+            - description: 'Final price that the buyer pays after all discounts are applied (base price - seller discount - Allegro discount)'
+      required:
+        - sellerMaxDeclaredPercentage
+        - sellerMaxDeclaredDiscount
+        - sellerDiscount
+        - allegroDiscount
+        - finalPriceForTheBuyer
+    OfferFilterDto:
+      type: object
+      description: 'Filter options for offers'
+      properties:
+        ids:
+          type: array
+          description: 'Optional list of offer IDs to filter by. The list must contain between 1 and 1000 items. If not provided, all offers matching other criteria will be returned.'
+          items:
+            type: string
+            minLength: 1
+            maxLength: 20
+          minItems: 1
+          maxItems: 1000
+        scope:
+          type: string
+          description: 'Optional scope filter to narrow down offers by their Allegro Prices status. Supported values: ''WITH_DECLARATION'' (offers with seller price reduction declaration), ''DISCOUNTED'' (offers currently discounted in Allegro Prices program), ''EXCLUDED'' (offers excluded from Allegro Prices program). If not provided, all offers regardless of scope will be returned.'
+          enum:
+            - WITH_DECLARATION
+            - DISCOUNTED
+            - EXCLUDED
+          example: WITH_DECLARATION
+    MarketplaceFilterDto:
+      type: object
+      description: 'Marketplace identifier filter'
+      properties:
+        id:
+          type: string
+          description: 'Marketplace identifier. Supported values: ''allegro-pl'', ''allegro-cz'', ''allegro-sk'', ''allegro-hu''. Required field.'
+          enum:
+            - allegro-pl
+            - allegro-cz
+            - allegro-sk
+            - allegro-hu
+          example: allegro-pl
+      required:
+        - id
+    OfferStatusItemDto:
+      type: object
+      description: 'Detailed information about an offer''s Allegro Prices status'
+      properties:
+        id:
+          type: string
+          description: 'Unique offer identifier'
+          example: '10000000001'
+        name:
+          type: string
+          description: 'Offer title/name'
+          example: 'Example Product Title'
+        marketplace:
+          allOf:
+            - $ref: '#/components/schemas/MarketplaceDto'
+            - description: 'Marketplace where the offer is listed'
+        basePrice:
+          type: object
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/MoneyDto'
+          description: 'Base price of the offer before any discounts. May be null if price is not available.'
+        declaredPriceReduction:
+          type: object
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/DeclaredPriceReductionDto'
+          description: 'Information about the seller''s declared price reduction for Allegro Prices program. Contains the maximum percentage and amount the seller is willing to discount. Null if the seller has not made a declaration.'
+        actualPriceReduction:
+          type: object
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/ActualPriceReductionDto'
+          description: 'Information about the actual price reduction currently applied in the Allegro Prices program. Contains details about seller discount, Allegro co-financing, and final price for the buyer. Null if the offer is not currently discounted.'
+        discountedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the offer was discounted in the Allegro Prices program. Null if the offer is not discounted.'
+          example: '2024-01-15T10:30:00.000Z'
+          nullable: true
+        excludedAt:
+          type: string
+          format: date-time
+          description: 'Timestamp when the offer was excluded from the Allegro Prices program. Null if the offer is not excluded.'
+          example: '2024-01-20T14:45:00.000Z'
+          nullable: true
+      required:
+        - id
+        - name
+        - marketplace
+    OfferStatusQueryRequestDto:
+      type: object
+      description: 'Request parameters for querying Allegro Prices offers status'
+      properties:
+        offer:
+          allOf:
+            - $ref: '#/components/schemas/OfferFilterDto'
+            - description: 'Optional filter for offers by IDs and/or scope. If not provided, all offers for the marketplace will be returned.'
+        marketplace:
+          allOf:
+            - $ref: '#/components/schemas/MarketplaceFilterDto'
+            - description: 'Marketplace filter to specify which marketplace to query offers from. Required field.'
+        limit:
+          type: integer
+          format: int32
+          description: 'Maximum number of offers to return in a single response. Must be between 1 and 1000.'
+          default: 20
+          minimum: 1
+          maximum: 1000
+          example: 20
+        offset:
+          type: integer
+          format: int32
+          description: 'Number of offers to skip before starting to return results. Used for pagination. Must be at least 0.'
+          default: 0
+          minimum: 0
+          example: 0
+      required:
+        - marketplace
+    OfferStatusQueryResponseDto:
+      type: object
+      description: 'Response containing a list of offers and their status in Allegro Prices program and pagination information'
+      properties:
+        offers:
+          type: array
+          description: 'List of offers matching the query criteria. Each offer contains detailed information about its Allegro Prices status.'
+          items:
+            $ref: '#/components/schemas/OfferStatusItemDto'
+        totalCount:
+          type: integer
+          format: int32
+          description: 'Total count of offers matching the query criteria.'
+          example: 150
+        count:
+          type: integer
+          format: int32
+          description: 'Number of offers returned in this response (may be less than limit if fewer offers are available).'
+          example: 20
+      required:
+        - offers
+        - totalCount
+        - count
     AlleDiscountSubmitCommandRequest:
       type: object
       properties:
