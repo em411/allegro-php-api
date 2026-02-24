@@ -8,39 +8,148 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: api-client-update
+  cancel-in-progress: false
+
 env:
   REMOTE_API_URL: https://developer.allegro.pl/swagger.yaml
+  OASDIFF_IMAGE: tufin/oasdiff:v1.11.10
 
 jobs:
   generate-sdk:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 45
     steps:
+      # ── Bootstrap ──────────────────────────────────────
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
+          php-version: 'pre-installed'
           tools: composer
 
-      - name: Install Dependencies
-        run: composer install --prefer-dist --no-progress
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
 
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      # ── Download & compare spec ────────────────────────
       - name: Download Remote OpenAPI Spec
         run: |
           mkdir -p resources
-          curl -f -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -o resources/spec.yaml "${{ env.REMOTE_API_URL }}"
+          curl -f -L --retry 3 --retry-delay 5 --retry-max-time 30 \
+            -A "GitHubActions-AllegroSDK/1.0 (+https://github.com/${{ github.repository }})" \
+            -o resources/new_spec.yaml "${{ env.REMOTE_API_URL }}"
 
-      - name: Generate Code (JanePHP)
-        run: vendor/bin/jane-openapi generate --config-file=.jane-openapi.php
+          if ! head -20 resources/new_spec.yaml | grep -qE '^(openapi|swagger):'; then
+            echo "::error::Downloaded file is not a valid OpenAPI spec"
+            exit 1
+          fi
+
+      - name: Check for spec changes
+        id: spec_check
+        run: |
+          if [ -f "resources/spec.yaml" ]; then
+            OLD=$(sha256sum resources/spec.yaml | awk '{print $1}')
+            NEW=$(sha256sum resources/new_spec.yaml | awk '{print $1}')
+            if [ "$OLD" = "$NEW" ]; then
+              echo "🟢 Spec unchanged — skipping."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # ── Semantic version detection ─────────────────────
+      - name: Detect Semantic Version Bump
+        id: versioning
+        if: steps.spec_check.outputs.changed == 'true'
+        run: |
+          BUMP_TYPE="patch"
+
+          cat <<'EOF' > release_notes.md
+          Automatic update triggered by changes in the remote Allegro API definition.
+
+          EOF
+
+          if [ -f "resources/spec.yaml" ]; then
+            echo "Running oasdiff to examine API changes..."
+
+            # 1. Check for BREAKING changes
+            set +e
+            docker run --rm -v "${{ github.workspace }}:/work" "${{ env.OASDIFF_IMAGE }}" breaking \
+              /work/resources/spec.yaml /work/resources/new_spec.yaml > breaking_diff.txt 2>&1
+            RC=$?
+            set -e
+
+            if [ "$RC" -eq 1 ]; then
+              echo "🚨 Breaking changes detected → MAJOR"
+              BUMP_TYPE="major"
+              {
+                echo "### 🚨 Breaking API Changes"
+                echo '```text'
+                cat breaking_diff.txt
+                echo '```'
+              } >> release_notes.md
+
+            elif [ "$RC" -ge 2 ]; then
+              echo "::error::oasdiff breaking failed (exit $RC)"
+              cat breaking_diff.txt
+              exit 1
+
+            else
+              # 2. Determine MINOR vs PATCH via structured changelog
+              docker run --rm -v "${{ github.workspace }}:/work" "${{ env.OASDIFF_IMAGE }}" changelog \
+                /work/resources/spec.yaml /work/resources/new_spec.yaml \
+                --format json > changelog.json
+
+              docker run --rm -v "${{ github.workspace }}:/work" "${{ env.OASDIFF_IMAGE }}" changelog \
+                /work/resources/spec.yaml /work/resources/new_spec.yaml > changelog.txt
+
+              if jq -e '[.[] | select(.level == 3)] | length > 0' changelog.json >/dev/null 2>&1; then
+                echo "✨ New features detected → MINOR"
+                BUMP_TYPE="minor"
+                echo "### ✨ New API Features" >> release_notes.md
+              else
+                echo "🐛 Non-breaking fixes → PATCH"
+                BUMP_TYPE="patch"
+                echo "### 🐛 Non-Breaking Changes" >> release_notes.md
+              fi
+
+              {
+                echo '```text'
+                cat changelog.txt
+                echo '```'
+              } >> release_notes.md
+            fi
+          fi
+
+          echo "bump_type=$BUMP_TYPE" >> "$GITHUB_OUTPUT"
+
+      # ── Generate & publish ─────────────────────────────
+      - name: Replace spec and generate code
+        if: steps.spec_check.outputs.changed == 'true'
+        run: |
+          mv resources/new_spec.yaml resources/spec.yaml
+          vendor/bin/jane-openapi generate --config-file=.jane-openapi.php
 
       - name: Commit Changes
         id: auto-commit
-        uses: stefanzweifel/git-auto-commit-action@v7
+        if: steps.spec_check.outputs.changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "feat: Synchronize with remote API spec"
-          file_pattern: 'generated resources'
+          commit_message: "feat: synchronize with remote API spec"
+          file_pattern: 'generated/** resources/spec.yaml'
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
           skip_fetch: true
 
       - name: Bump version and push tag
@@ -49,13 +158,13 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          default_bump: patch
+          default_bump: ${{ steps.versioning.outputs.bump_type }}
           release_branches: main
 
-      - name: Create a GitHub Release
+      - name: Create GitHub Release
+        if: steps.auto-commit.outputs.changes_detected == 'true' && steps.tag_version.outputs.new_tag
         uses: ncipollo/release-action@v1
-        if: steps.auto-commit.outputs.changes_detected == 'true'
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: "Automatic update triggered by changes in Allegro API definition."
+          bodyFile: release_notes.md
