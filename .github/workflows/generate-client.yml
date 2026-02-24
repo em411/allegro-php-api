@@ -28,7 +28,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 'pre-installed'
+          php-version: '8.5'
           tools: composer
 
       - name: Cache Composer packages
