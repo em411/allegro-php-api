@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 2 * * *'
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force regeneration even if spec is unchanged'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -14,59 +19,106 @@ concurrency:
 
 env:
   REMOTE_API_URL: https://developer.allegro.pl/swagger.yaml
-  OASDIFF_IMAGE: tufin/oasdiff:v1.11.10
+  OASDIFF_VERSION: v1.11.10
+  PHP_VERSION: '8.5'
+  TEMP_DIR: .tmp            # keep throwaway files out of project root
 
 jobs:
   generate-sdk:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+
     steps:
       # ── Bootstrap ──────────────────────────────────────
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0     # needed so the tag action can see history
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.5'
+          php-version: ${{ env.PHP_VERSION }}
           tools: composer
 
       - name: Cache Composer packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: vendor
-          key: composer-${{ hashFiles('composer.lock') }}
-          restore-keys: composer-
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
 
       - name: Install Dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      # ── Download & compare spec ────────────────────────
+      # ── Download & validate spec ───────────────────────
       - name: Download Remote OpenAPI Spec
         run: |
-          mkdir -p resources
-          curl -f -L --retry 3 --retry-delay 5 --retry-max-time 30 \
+          mkdir -p "$TEMP_DIR"
+          curl -fSL --retry 5 --retry-delay 10 --retry-max-time 120 \
+            --connect-timeout 15 --max-time 60 \
             -A "GitHubActions-AllegroSDK/1.0 (+https://github.com/${{ github.repository }})" \
-            -o resources/new_spec.yaml "${{ env.REMOTE_API_URL }}"
+            -o "$TEMP_DIR/new_spec.yaml" "$REMOTE_API_URL"
 
-          if ! head -20 resources/new_spec.yaml | grep -qE '^(openapi|swagger):'; then
-            echo "::error::Downloaded file is not a valid OpenAPI spec"
+      - name: Validate downloaded spec
+        run: |
+          FILE="$TEMP_DIR/new_spec.yaml"
+
+          # Must be at least 10 KB (a real spec)
+          MIN_SIZE=10240
+          FILE_SIZE=$(stat --printf='%s' "$FILE")
+          if [ "$FILE_SIZE" -lt "$MIN_SIZE" ]; then
+            echo "::error::Downloaded file is suspiciously small (${FILE_SIZE} bytes)"
             exit 1
           fi
 
+          # Validate YAML structure and that it's actually an OpenAPI/Swagger doc
+          python3 -c "
+          import yaml, sys
+          with open('$FILE') as f:
+              doc = yaml.safe_load(f)
+          if not isinstance(doc, dict):
+              print('::error::Spec is not a YAML mapping', file=sys.stderr)
+              sys.exit(1)
+          if 'openapi' not in doc and 'swagger' not in doc:
+              print('::error::Missing openapi/swagger version key', file=sys.stderr)
+              sys.exit(1)
+          if 'paths' not in doc:
+              print('::error::Missing paths key', file=sys.stderr)
+              sys.exit(1)
+          print(f'✅ Valid spec — {len(doc.get(\"paths\", {}))} paths found')
+          "
+
+      # ── Compare specs ──────────────────────────────────
       - name: Check for spec changes
         id: spec_check
         run: |
+          FORCE="${{ inputs.force }}"
+          if [ "$FORCE" = "true" ]; then
+            echo "⚡ Forced run — skipping diff."
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           if [ -f "resources/spec.yaml" ]; then
             OLD=$(sha256sum resources/spec.yaml | awk '{print $1}')
-            NEW=$(sha256sum resources/new_spec.yaml | awk '{print $1}')
+            NEW=$(sha256sum "$TEMP_DIR/new_spec.yaml" | awk '{print $1}')
             if [ "$OLD" = "$NEW" ]; then
-              echo "🟢 Spec unchanged — skipping."
+              echo "🟢 Spec unchanged — nothing to do."
               echo "changed=false" >> "$GITHUB_OUTPUT"
+              echo "### 🟢 Spec Unchanged" >> "$GITHUB_STEP_SUMMARY"
+              echo "The remote spec hash matches the committed spec. No update needed." >> "$GITHUB_STEP_SUMMARY"
               exit 0
             fi
+          else
+            echo "📄 No existing spec found — treating as initial import."
           fi
           echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # ── Pre-pull oasdiff image once ────────────────────
+      - name: Pull oasdiff image
+        if: steps.spec_check.outputs.changed == 'true' && hashFiles('resources/spec.yaml') != ''
+        run: docker pull "tufin/oasdiff:${OASDIFF_VERSION}"
 
       # ── Semantic version detection ─────────────────────
       - name: Detect Semantic Version Bump
@@ -74,88 +126,121 @@ jobs:
         if: steps.spec_check.outputs.changed == 'true'
         run: |
           BUMP_TYPE="patch"
+          RELEASE_NOTES="$TEMP_DIR/release_notes.md"
 
-          cat <<'EOF' > release_notes.md
+          cat <<'EOF' > "$RELEASE_NOTES"
           Automatic update triggered by changes in the remote Allegro API definition.
 
           EOF
 
-          if [ -f "resources/spec.yaml" ]; then
-            echo "Running oasdiff to examine API changes..."
+          if [ ! -f "resources/spec.yaml" ]; then
+            echo "📄 Initial import — defaulting to **patch**."
+            echo "### 📄 Initial Import" >> "$RELEASE_NOTES"
+            echo "bump_type=$BUMP_TYPE" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
-            # 1. Check for BREAKING changes
-            set +e
-            docker run --rm -v "${{ github.workspace }}:/work" "${{ env.OASDIFF_IMAGE }}" breaking \
-              /work/resources/spec.yaml /work/resources/new_spec.yaml > breaking_diff.txt 2>&1
-            RC=$?
-            set -e
+          OASDIFF="docker run --rm -v ${{ github.workspace }}:/work tufin/oasdiff:${OASDIFF_VERSION}"
 
-            if [ "$RC" -eq 1 ]; then
-              echo "🚨 Breaking changes detected → MAJOR"
-              BUMP_TYPE="major"
-              {
-                echo "### 🚨 Breaking API Changes"
-                echo '```text'
-                cat breaking_diff.txt
-                echo '```'
-              } >> release_notes.md
+          echo "Running oasdiff breaking check..."
 
-            elif [ "$RC" -ge 2 ]; then
-              echo "::error::oasdiff breaking failed (exit $RC)"
-              cat breaking_diff.txt
-              exit 1
+          set +e
+          $OASDIFF breaking /work/resources/spec.yaml "/work/$TEMP_DIR/new_spec.yaml" \
+            > "$TEMP_DIR/breaking_diff.txt" 2>&1
+          RC=$?
+          set -e
 
+          if [ "$RC" -ge 2 ]; then
+            echo "::error::oasdiff 'breaking' failed with exit code $RC"
+            cat "$TEMP_DIR/breaking_diff.txt"
+            exit 1
+          fi
+
+          if [ "$RC" -eq 1 ]; then
+            echo "🚨 Breaking changes detected → MAJOR"
+            BUMP_TYPE="major"
+            {
+              echo "### 🚨 Breaking API Changes"
+              echo '```text'
+              cat "$TEMP_DIR/breaking_diff.txt"
+              echo '```'
+            } >> "$RELEASE_NOTES"
+          else
+            echo "Running oasdiff changelog..."
+
+            $OASDIFF changelog /work/resources/spec.yaml "/work/$TEMP_DIR/new_spec.yaml" \
+              --format json > "$TEMP_DIR/changelog.json"
+            $OASDIFF changelog /work/resources/spec.yaml "/work/$TEMP_DIR/new_spec.yaml" \
+              > "$TEMP_DIR/changelog.txt"
+
+            # level 3 = INFO → new endpoints / features → MINOR
+            if jq -e 'if type == "array" then [.[] | select(.level == 3)] | length > 0 else false end' \
+                "$TEMP_DIR/changelog.json" >/dev/null 2>&1; then
+              echo "✨ New features detected → MINOR"
+              BUMP_TYPE="minor"
+              echo "### ✨ New API Features" >> "$RELEASE_NOTES"
             else
-              # 2. Determine MINOR vs PATCH via structured changelog
-              docker run --rm -v "${{ github.workspace }}:/work" "${{ env.OASDIFF_IMAGE }}" changelog \
-                /work/resources/spec.yaml /work/resources/new_spec.yaml \
-                --format json > changelog.json
-
-              docker run --rm -v "${{ github.workspace }}:/work" "${{ env.OASDIFF_IMAGE }}" changelog \
-                /work/resources/spec.yaml /work/resources/new_spec.yaml > changelog.txt
-
-              if jq -e '[.[] | select(.level == 3)] | length > 0' changelog.json >/dev/null 2>&1; then
-                echo "✨ New features detected → MINOR"
-                BUMP_TYPE="minor"
-                echo "### ✨ New API Features" >> release_notes.md
-              else
-                echo "🐛 Non-breaking fixes → PATCH"
-                BUMP_TYPE="patch"
-                echo "### 🐛 Non-Breaking Changes" >> release_notes.md
-              fi
-
-              {
-                echo '```text'
-                cat changelog.txt
-                echo '```'
-              } >> release_notes.md
+              echo "🐛 Non-breaking fixes → PATCH"
+              BUMP_TYPE="patch"
+              echo "### 🐛 Non-Breaking Changes" >> "$RELEASE_NOTES"
             fi
+
+            {
+              echo '```text'
+              cat "$TEMP_DIR/changelog.txt"
+              echo '```'
+            } >> "$RELEASE_NOTES"
           fi
 
           echo "bump_type=$BUMP_TYPE" >> "$GITHUB_OUTPUT"
 
-      # ── Generate & publish ─────────────────────────────
+          # Job summary
+          {
+            echo "### Version Bump: \`$BUMP_TYPE\`"
+            cat "$RELEASE_NOTES"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # ── Generate code ──────────────────────────────────
       - name: Replace spec and generate code
         if: steps.spec_check.outputs.changed == 'true'
         run: |
-          mv resources/new_spec.yaml resources/spec.yaml
+          cp "$TEMP_DIR/new_spec.yaml" resources/spec.yaml
           vendor/bin/jane-openapi generate --config-file=.jane-openapi.php
 
+      # ── Validate generated code ────────────────────────
+      - name: Validate generated code
+        if: steps.spec_check.outputs.changed == 'true'
+        run: |
+          echo "Running PHP syntax check on generated files..."
+          ERROR_COUNT=0
+          while IFS= read -r -d '' file; do
+            if ! php -l "$file" > /dev/null 2>&1; then
+              echo "::error file=$file::Syntax error in generated file"
+              ERROR_COUNT=$((ERROR_COUNT + 1))
+            fi
+          done < <(find generated/ -name '*.php' -print0)
+
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            echo "::error::$ERROR_COUNT generated file(s) have syntax errors"
+            exit 1
+          fi
+          echo "✅ All generated PHP files pass syntax check."
+
+      # ── Commit, tag, release ───────────────────────────
       - name: Commit Changes
         id: auto-commit
         if: steps.spec_check.outputs.changed == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "feat: synchronize with remote API spec"
           file_pattern: 'generated/** resources/spec.yaml'
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
-          skip_fetch: true
 
       - name: Bump version and push tag
         id: tag_version
         if: steps.auto-commit.outputs.changes_detected == 'true'
-        uses: mathieudutour/github-tag-action@v6.2
+        uses: mathieudutour/github-tag-action@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: ${{ steps.versioning.outputs.bump_type }}
@@ -167,4 +252,9 @@ jobs:
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
-          bodyFile: release_notes.md
+          bodyFile: ${{ env.TEMP_DIR }}/release_notes.md
+
+      # ── Cleanup ────────────────────────────────────────
+      - name: Cleanup temporary files
+        if: always()
+        run: rm -rf "$TEMP_DIR"
