@@ -108,6 +108,12 @@ class OfferListingDto extends \ArrayObject
      */
     protected $fundraisingCampaign;
     /**
+     * Whether the offer is handled by the Allegro Warehouse (One Fulfillment).
+     *
+     * @var bool|null
+     */
+    protected $isFulfillment;
+    /**
      * Properties of the offer for each additional marketplace.
      *
      * @var array<string, OfferListingDtoV1AdditionalMarketplace>|null
@@ -398,6 +404,25 @@ class OfferListingDto extends \ArrayObject
     {
         $this->initialized['fundraisingCampaign'] = true;
         $this->fundraisingCampaign = $fundraisingCampaign;
+
+        return $this;
+    }
+
+    /**
+     * Whether the offer is handled by the Allegro Warehouse (One Fulfillment).
+     */
+    public function getIsFulfillment(): ?bool
+    {
+        return $this->isFulfillment;
+    }
+
+    /**
+     * Whether the offer is handled by the Allegro Warehouse (One Fulfillment).
+     */
+    public function setIsFulfillment(?bool $isFulfillment): self
+    {
+        $this->initialized['isFulfillment'] = true;
+        $this->isFulfillment = $isFulfillment;
 
         return $this;
     }

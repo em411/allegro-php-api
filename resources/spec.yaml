@@ -1190,6 +1190,13 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: isFulfillment
+          in: query
+          description: Allows to search for offers handled by the Allegro Warehouse (One Fulfillment).
+          required: false
+          example: true
+          schema:
+            type: boolean
         - name: Accept-Language
           in: header
           required: false
@@ -27087,6 +27094,10 @@ components:
           $ref: '#/components/schemas/OfferListingDtoV1B2b'
         fundraisingCampaign:
           $ref: '#/components/schemas/JustId'
+        isFulfillment:
+          type: boolean
+          description: Whether the offer is handled by the Allegro Warehouse (One Fulfillment).
+          example: false
         additionalMarketplaces:
           $ref: '#/components/schemas/OfferListingDtoV1AdditionalMarketplaces'
     OfferListingDtoImage:

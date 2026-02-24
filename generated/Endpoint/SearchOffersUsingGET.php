@@ -58,6 +58,7 @@ class SearchOffersUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
      * @var string $fundraisingCampaign.id ID of the charity fundraising campaign that benefits from this offer.
      * @var bool   $fundraisingCampaign.id.empty Allows to search for charity or commercial offers.
      * @var string $afterSalesServices.returnPolicy.id The ID of return policy. Returns offers with given return policy ID.
+     * @var bool   $isFulfillment Allows to search for offers handled by the Allegro Warehouse (One Fulfillment).
      *             }
      *
      * @param array $headerParameters {
@@ -99,7 +100,7 @@ class SearchOffersUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(['offer.id', 'name', 'sellingMode.price.amount.gte', 'sellingMode.price.amount.lte', 'sellingMode.priceAutomation.rule.id', 'sellingMode.priceAutomation.rule.id.empty', 'publication.status', 'publication.marketplace', 'sellingMode.format', 'external.id', 'delivery.shippingRates.id', 'delivery.shippingRates.id.empty', 'sort', 'limit', 'offset', 'category.id', 'product.id.empty', 'productizationRequired', 'b2b.buyableOnlyByBusiness', 'fundraisingCampaign.id', 'fundraisingCampaign.id.empty', 'afterSalesServices.returnPolicy.id']);
+        $optionsResolver->setDefined(['offer.id', 'name', 'sellingMode.price.amount.gte', 'sellingMode.price.amount.lte', 'sellingMode.priceAutomation.rule.id', 'sellingMode.priceAutomation.rule.id.empty', 'publication.status', 'publication.marketplace', 'sellingMode.format', 'external.id', 'delivery.shippingRates.id', 'delivery.shippingRates.id.empty', 'sort', 'limit', 'offset', 'category.id', 'product.id.empty', 'productizationRequired', 'b2b.buyableOnlyByBusiness', 'fundraisingCampaign.id', 'fundraisingCampaign.id.empty', 'afterSalesServices.returnPolicy.id', 'isFulfillment']);
         $optionsResolver->setRequired([]);
         $optionsResolver->setDefaults(['limit' => 20]);
         $optionsResolver->addAllowedTypes('offer.id', ['array']);
@@ -124,6 +125,7 @@ class SearchOffersUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
         $optionsResolver->addAllowedTypes('fundraisingCampaign.id', ['string']);
         $optionsResolver->addAllowedTypes('fundraisingCampaign.id.empty', ['bool']);
         $optionsResolver->addAllowedTypes('afterSalesServices.returnPolicy.id', ['string']);
+        $optionsResolver->addAllowedTypes('isFulfillment', ['bool']);
 
         return $optionsResolver;
     }

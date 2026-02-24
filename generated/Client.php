@@ -179,6 +179,7 @@ class Client extends Runtime\Client\Client
      * @var string $fundraisingCampaign.id ID of the charity fundraising campaign that benefits from this offer.
      * @var bool   $fundraisingCampaign.id.empty Allows to search for charity or commercial offers.
      * @var string $afterSalesServices.returnPolicy.id The ID of return policy. Returns offers with given return policy ID.
+     * @var bool   $isFulfillment Allows to search for offers handled by the Allegro Warehouse (One Fulfillment).
      *             }
      *
      * @param array $headerParameters {

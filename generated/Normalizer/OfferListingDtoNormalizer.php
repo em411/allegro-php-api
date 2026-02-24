@@ -49,6 +49,9 @@ class OfferListingDtoNormalizer implements DenormalizerInterface, NormalizerInte
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Em411\Allegro\Api\Model\OfferListingDto();
+        if (\array_key_exists('isFulfillment', $data) && \is_int($data['isFulfillment'])) {
+            $data['isFulfillment'] = (bool) $data['isFulfillment'];
+        }
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -146,6 +149,12 @@ class OfferListingDtoNormalizer implements DenormalizerInterface, NormalizerInte
         } elseif (\array_key_exists('fundraisingCampaign', $data) && null === $data['fundraisingCampaign']) {
             $object->setFundraisingCampaign(null);
         }
+        if (\array_key_exists('isFulfillment', $data) && null !== $data['isFulfillment']) {
+            $object->setIsFulfillment($data['isFulfillment']);
+            unset($data['isFulfillment']);
+        } elseif (\array_key_exists('isFulfillment', $data) && null === $data['isFulfillment']) {
+            $object->setIsFulfillment(null);
+        }
         if (\array_key_exists('additionalMarketplaces', $data) && null !== $data['additionalMarketplaces']) {
             $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['additionalMarketplaces'] as $key_1 => $value_1) {
@@ -216,6 +225,9 @@ class OfferListingDtoNormalizer implements DenormalizerInterface, NormalizerInte
         }
         if ($data->isInitialized('fundraisingCampaign') && null !== $data->getFundraisingCampaign()) {
             $dataArray['fundraisingCampaign'] = $this->normalizer->normalize($data->getFundraisingCampaign(), 'json', $context);
+        }
+        if ($data->isInitialized('isFulfillment') && null !== $data->getIsFulfillment()) {
+            $dataArray['isFulfillment'] = $data->getIsFulfillment();
         }
         if ($data->isInitialized('additionalMarketplaces') && null !== $data->getAdditionalMarketplaces()) {
             $values_1 = [];
