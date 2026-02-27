@@ -44,13 +44,13 @@ class OfferStatusItemDto extends \ArrayObject
     /**
      * Information about the seller's declared price reduction for Allegro Prices program. Contains the maximum percentage and amount the seller is willing to discount. Null if the seller has not made a declaration.
      *
-     * @var array<string, mixed>|null
+     * @var DeclaredPriceReductionDto|array<string, mixed>|null
      */
     protected $declaredPriceReduction;
     /**
      * Information about the actual price reduction currently applied in the Allegro Prices program. Contains details about seller discount, Allegro co-financing, and final price for the buyer. Null if the offer is not currently discounted.
      *
-     * @var array<string, mixed>|null
+     * @var ActualPriceReductionDto|array<string, mixed>|null
      */
     protected $actualPriceReduction;
     /**
@@ -148,9 +148,9 @@ class OfferStatusItemDto extends \ArrayObject
     /**
      * Information about the seller's declared price reduction for Allegro Prices program. Contains the maximum percentage and amount the seller is willing to discount. Null if the seller has not made a declaration.
      *
-     * @return array<string, mixed>|null
+     * @return DeclaredPriceReductionDto|array<string, mixed>|null
      */
-    public function getDeclaredPriceReduction(): ?iterable
+    public function getDeclaredPriceReduction()
     {
         return $this->declaredPriceReduction;
     }
@@ -158,9 +158,9 @@ class OfferStatusItemDto extends \ArrayObject
     /**
      * Information about the seller's declared price reduction for Allegro Prices program. Contains the maximum percentage and amount the seller is willing to discount. Null if the seller has not made a declaration.
      *
-     * @param array<string, mixed>|null $declaredPriceReduction
+     * @param DeclaredPriceReductionDto|array<string, mixed>|null $declaredPriceReduction
      */
-    public function setDeclaredPriceReduction(?iterable $declaredPriceReduction): self
+    public function setDeclaredPriceReduction($declaredPriceReduction): self
     {
         $this->initialized['declaredPriceReduction'] = true;
         $this->declaredPriceReduction = $declaredPriceReduction;
@@ -171,9 +171,9 @@ class OfferStatusItemDto extends \ArrayObject
     /**
      * Information about the actual price reduction currently applied in the Allegro Prices program. Contains details about seller discount, Allegro co-financing, and final price for the buyer. Null if the offer is not currently discounted.
      *
-     * @return array<string, mixed>|null
+     * @return ActualPriceReductionDto|array<string, mixed>|null
      */
-    public function getActualPriceReduction(): ?iterable
+    public function getActualPriceReduction()
     {
         return $this->actualPriceReduction;
     }
@@ -181,9 +181,9 @@ class OfferStatusItemDto extends \ArrayObject
     /**
      * Information about the actual price reduction currently applied in the Allegro Prices program. Contains details about seller discount, Allegro co-financing, and final price for the buyer. Null if the offer is not currently discounted.
      *
-     * @param array<string, mixed>|null $actualPriceReduction
+     * @param ActualPriceReductionDto|array<string, mixed>|null $actualPriceReduction
      */
-    public function setActualPriceReduction(?iterable $actualPriceReduction): self
+    public function setActualPriceReduction($actualPriceReduction): self
     {
         $this->initialized['actualPriceReduction'] = true;
         $this->actualPriceReduction = $actualPriceReduction;

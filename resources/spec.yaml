@@ -17043,19 +17043,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/AllegroPricesAccountParticipationResponse'
         '400':
-          description: 'Bad request'
+          description: 'Bad request - invalid JSON format or missing required fields (e.g., null values for non-nullable fields)'
           content:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
-          description: 'Unauthorized'
+          description: 'Unauthorized - invalid or missing authentication token'
           content:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '422':
-          description: 'Unprocessable Entity'
+          description: 'Unprocessable Entity - validation error (e.g., empty marketplace list, invalid status, unsupported marketplace)'
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -17102,13 +17102,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
-          description: 'Unauthorized'
+          description: 'Unauthorized - invalid or missing authentication token'
           content:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '409':
-          description: 'Conflict'
+          description: 'Conflict - command with the same ID already exists'
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -17233,7 +17233,7 @@ paths:
                         completedAt: '2024-01-29T10:40:25.000Z'
                         status: 'FAILED'
                         errors:
-                          - message: 'Invalid discount declaration: maxContributionPercentage must be at least 10.0'
+                          - message: 'Offer services are currently unavailable. Try again later'
                 completeFailure:
                   summary: 'All offers failed'
                   value:
@@ -17256,13 +17256,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
-          description: 'Unauthorized'
+          description: 'Unauthorized - invalid or missing authentication token'
           content:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '404':
-          description: 'Not Found'
+          description: 'Not Found - command does not exist or belongs to a different seller'
   '/sale/allegro-prices/offers/exclusion-commands':
     post:
       tags:
@@ -17305,13 +17305,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
-          description: 'Unauthorized'
+          description: 'Unauthorized - invalid or missing authentication token'
           content:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '409':
-          description: 'Conflict'
+          description: 'Conflict - command with the same ID already exists'
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -17430,7 +17430,7 @@ paths:
                         completedAt: '2024-01-29T11:10:21.000Z'
                         status: 'FAILED'
                         errors:
-                          - message: 'Offer is not participating in Allegro Prices program'
+                          - message: 'Offer services are currently unavailable. Try again later'
                 allExclusionsFailed:
                   summary: 'All exclusions failed'
                   value:
@@ -17458,13 +17458,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
         '401':
-          description: 'Unauthorized'
+          description: 'Unauthorized - invalid or missing authentication token'
           content:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/AuthError'
         '404':
-            description: 'Not Found'
+            description: 'Not Found - command does not exist or belongs to a different seller'
   '/sale/allegro-prices/offers-queries':
     post:
       tags:
@@ -17573,6 +17573,7 @@ paths:
                             amount: '2099.30'
                             currency: 'PLN'
                         discountedAt: '2024-01-15T10:30:00.000Z'
+                        excludedAt: null
                       - id: '10000000002'
                         name: "Laptop ABC 15.6' 16GB RAM"
                         marketplace:
@@ -17600,6 +17601,7 @@ paths:
                             amount: '3600.00'
                             currency: 'PLN'
                         discountedAt: '2024-01-16T14:20:00.000Z'
+                        excludedAt: null
                     totalCount: 150
                     count: 2
                 withDeclarationOnly:
@@ -17618,6 +17620,9 @@ paths:
                           sellerMaxDeclaredDiscount:
                             amount: '107.88'
                             currency: 'PLN'
+                        actualPriceReduction: null
+                        discountedAt: null
+                        excludedAt: null
                     totalCount: 45
                     count: 1
                 withExcludedOffers:
@@ -17631,6 +17636,9 @@ paths:
                         basePrice:
                           amount: '1200.00'
                           currency: 'PLN'
+                        declaredPriceReduction: null
+                        actualPriceReduction: null
+                        discountedAt: null
                         excludedAt: '2024-01-20T09:15:00.000Z'
                     totalCount: 8
                     count: 1
@@ -17662,7 +17670,7 @@ paths:
                         message: 'Invalid JSON format in request body'
                         userMessage: 'The request contains incorrectly formatted data'
         '401':
-          description: 'Unauthorized'
+          description: 'Unauthorized - Missing or invalid authentication credentials'
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -17678,30 +17686,30 @@ paths:
                   summary: 'Invalid marketplace ID'
                   value:
                     errors:
-                      - code: 'ValidationException'
-                        message: 'Invalid marketplace ID: allegro-invalid. Supported values: allegro-pl, allegro-cz, allegro-sk, allegro-hu'
-                        userMessage: 'The specified marketplace is not supported'
+                      - code: 'VALIDATION_ERROR'
+                        message: 'Validation failed: Invalid marketplace ID'
+                        userMessage: 'Validation failed: Invalid marketplace ID'
                 limitOutOfRange:
                   summary: 'Limit parameter out of range'
                   value:
                     errors:
-                      - code: 'ValidationException'
-                        message: 'Limit must be between 1 and 1000. Provided value: 2000'
-                        userMessage: 'The requested number of results is outside the allowed range'
+                      - code: 'VALIDATION_ERROR'
+                        message: 'Validation failed: limit must be less than or equal to 1,000'
+                        userMessage: 'Validation failed: limit must be less than or equal to 1,000'
                 invalidScope:
                   summary: 'Invalid scope value'
                   value:
                     errors:
-                      - code: 'ValidationException'
-                        message: 'Invalid scope: INVALID_SCOPE. Supported values: WITH_DECLARATION, DISCOUNTED, EXCLUDED'
-                        userMessage: 'The specified filter scope is not valid'
+                      - code: 'VALIDATION_ERROR'
+                        message: 'Validation failed: The provided scope is invalid'
+                        userMessage: 'Validation failed: The provided scope is invalid'
                 tooManyOfferIds:
                   summary: 'Too many offer IDs provided'
                   value:
                     errors:
-                      - code: 'ValidationException'
-                        message: 'Offer IDs list cannot contain more than 1000 items. Provided: 1500'
-                        userMessage: 'Too many offer IDs in the request'
+                      - code: 'VALIDATION_ERROR'
+                        message: 'Validation failed: offer.ids size must be between 1 and 1,000'
+                        userMessage: 'Validation failed: offer.ids size must be between 1 and 1,000'
   /sale/alle-discount/submit-offer-commands:
     post:
       tags:
@@ -34646,17 +34654,17 @@ components:
             - $ref: '#/components/schemas/MoneyDto'
           description: 'Base price of the offer before any discounts. May be null if price is not available.'
         declaredPriceReduction:
-          type: object
-          nullable: true
-          allOf:
-            - $ref: '#/components/schemas/DeclaredPriceReductionDto'
           description: 'Information about the seller''s declared price reduction for Allegro Prices program. Contains the maximum percentage and amount the seller is willing to discount. Null if the seller has not made a declaration.'
+          anyOf:
+            - $ref: '#/components/schemas/DeclaredPriceReductionDto'
+            - nullable: true
+              type: object
         actualPriceReduction:
-          type: object
-          nullable: true
-          allOf:
-            - $ref: '#/components/schemas/ActualPriceReductionDto'
           description: 'Information about the actual price reduction currently applied in the Allegro Prices program. Contains details about seller discount, Allegro co-financing, and final price for the buyer. Null if the offer is not currently discounted.'
+          anyOf:
+            - $ref: '#/components/schemas/ActualPriceReductionDto'
+            - nullable: true
+              type: object
         discountedAt:
           type: string
           format: date-time

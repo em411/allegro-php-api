@@ -22,7 +22,7 @@ class GetSubmitOfferCommandStatusNotFoundException extends NotFoundException
 
     public function __construct(?\Psr\Http\Message\ResponseInterface $response = null)
     {
-        parent::__construct('Not Found');
+        parent::__construct('Not Found - command does not exist or belongs to a different seller');
         $this->response = $response;
     }
 

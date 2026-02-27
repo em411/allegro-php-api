@@ -26,7 +26,7 @@ class UpdateAccountParticipationUnprocessableEntityException extends Unprocessab
 
     public function __construct(\Em411\Allegro\Api\Model\ErrorsHolder $errorsHolder, \Psr\Http\Message\ResponseInterface $response)
     {
-        parent::__construct('Unprocessable Entity');
+        parent::__construct('Unprocessable Entity - validation error (e.g., empty marketplace list, invalid status, unsupported marketplace)');
         $this->errorsHolder = $errorsHolder;
         $this->response = $response;
     }

@@ -26,7 +26,7 @@ class UpdateAccountParticipationBadRequestException extends BadRequestException
 
     public function __construct(\Em411\Allegro\Api\Model\ErrorsHolder $errorsHolder, \Psr\Http\Message\ResponseInterface $response)
     {
-        parent::__construct('Bad request');
+        parent::__construct('Bad request - invalid JSON format or missing required fields (e.g., null values for non-nullable fields)');
         $this->errorsHolder = $errorsHolder;
         $this->response = $response;
     }

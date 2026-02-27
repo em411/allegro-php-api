@@ -26,7 +26,7 @@ class GetSubmitOfferCommandStatusUnauthorizedException extends UnauthorizedExcep
 
     public function __construct(\Em411\Allegro\Api\Model\AuthError $authError, \Psr\Http\Message\ResponseInterface $response)
     {
-        parent::__construct('Unauthorized');
+        parent::__construct('Unauthorized - invalid or missing authentication token');
         $this->authError = $authError;
         $this->response = $response;
     }

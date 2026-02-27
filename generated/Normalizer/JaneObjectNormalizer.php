@@ -1801,10 +1801,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\OfferStatusItemDtoBasePrice::class => OfferStatusItemDtoBasePriceNormalizer::class,
 
-        \Em411\Allegro\Api\Model\OfferStatusItemDtoDeclaredPriceReduction::class => OfferStatusItemDtoDeclaredPriceReductionNormalizer::class,
-
-        \Em411\Allegro\Api\Model\OfferStatusItemDtoActualPriceReduction::class => OfferStatusItemDtoActualPriceReductionNormalizer::class,
-
         \Em411\Allegro\Api\Model\OfferStatusQueryRequestDto::class => OfferStatusQueryRequestDtoNormalizer::class,
 
         \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoOffer::class => OfferStatusQueryRequestDtoOfferNormalizer::class,
@@ -3334,8 +3330,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\OfferStatusItemDto::class => false,
             \Em411\Allegro\Api\Model\OfferStatusItemDtoMarketplace::class => false,
             \Em411\Allegro\Api\Model\OfferStatusItemDtoBasePrice::class => false,
-            \Em411\Allegro\Api\Model\OfferStatusItemDtoDeclaredPriceReduction::class => false,
-            \Em411\Allegro\Api\Model\OfferStatusItemDtoActualPriceReduction::class => false,
             \Em411\Allegro\Api\Model\OfferStatusQueryRequestDto::class => false,
             \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoOffer::class => false,
             \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoMarketplace::class => false,
