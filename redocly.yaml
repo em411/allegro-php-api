@@ -1,0 +1,5 @@
+plugins:
+  - ./redocly/plugin.js
+
+decorators:
+  sanitize/path-params: on
