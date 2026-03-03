@@ -208,23 +208,23 @@ jobs:
           vendor/bin/jane-openapi generate --config-file=.jane-openapi.php
 
       # ── Validate generated code ────────────────────────
-      #- name: Validate generated code
-      #  if: steps.spec_check.outputs.changed == 'true'
-      #  run: |
-      #    echo "Running PHP syntax check on generated files..."
-      #    ERROR_COUNT=0
-      #    while IFS= read -r -d '' file; do
-      #      if ! php -l "$file" > /dev/null 2>&1; then
-      #        echo "::error file=$file::Syntax error in generated file"
-      #        ERROR_COUNT=$((ERROR_COUNT + 1))
-      #      fi
-      #    done < <(find generated/ -name '*.php' -print0)
+      - name: Validate generated code
+        if: steps.spec_check.outputs.changed == 'true'
+        run: |
+          echo "Running PHP syntax check on generated files..."
+          ERROR_COUNT=0
+          while IFS= read -r -d '' file; do
+            if ! php -l "$file" > /dev/null 2>&1; then
+              echo "::error file=$file::Syntax error in generated file"
+              ERROR_COUNT=$((ERROR_COUNT + 1))
+            fi
+          done < <(find generated/ -name '*.php' -print0)
 
-      #    if [ "$ERROR_COUNT" -gt 0 ]; then
-      #      echo "::error::$ERROR_COUNT generated file(s) have syntax errors"
-      #      exit 1
-      #    fi
-      #    echo "✅ All generated PHP files pass syntax check."
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            echo "::error::$ERROR_COUNT generated file(s) have syntax errors"
+            exit 1
+          fi
+          echo "✅ All generated PHP files pass syntax check."
 
       # ── Commit, tag, release ───────────────────────────
       - name: Commit Changes
