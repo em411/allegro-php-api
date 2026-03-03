@@ -48,7 +48,7 @@ class BillingEntry extends \ArrayObject
      */
     protected $value;
     /**
-     * Tax rate applied to the returned billing entry. Optional field percentage is present if the returned billing entry is subject to tax. In this case, annotation is not returned. Optional field annotation is present if the returned billing entry is exempt from tax or tax is not applicable; the possible value is "OUT_OF_SCOPE". In this case, percentage is not returned.
+     * Tax rate applied to the returned billing entry. Optional field percentage is present if the returned billing entry is subject to tax. In this case, annotation is not returned. Optional field annotation is present if the returned billing entry is exempt from tax or tax is not applicable; the possible values are "OUT_OF_SCOPE", "NOT_APPLICABLE". In this case, percentage is not returned.
      *
      * @var BillingEntryTax|null
      */
@@ -167,7 +167,7 @@ class BillingEntry extends \ArrayObject
     }
 
     /**
-     * Tax rate applied to the returned billing entry. Optional field percentage is present if the returned billing entry is subject to tax. In this case, annotation is not returned. Optional field annotation is present if the returned billing entry is exempt from tax or tax is not applicable; the possible value is "OUT_OF_SCOPE". In this case, percentage is not returned.
+     * Tax rate applied to the returned billing entry. Optional field percentage is present if the returned billing entry is subject to tax. In this case, annotation is not returned. Optional field annotation is present if the returned billing entry is exempt from tax or tax is not applicable; the possible values are "OUT_OF_SCOPE", "NOT_APPLICABLE". In this case, percentage is not returned.
      */
     public function getTax(): ?BillingEntryTax
     {
@@ -175,7 +175,7 @@ class BillingEntry extends \ArrayObject
     }
 
     /**
-     * Tax rate applied to the returned billing entry. Optional field percentage is present if the returned billing entry is subject to tax. In this case, annotation is not returned. Optional field annotation is present if the returned billing entry is exempt from tax or tax is not applicable; the possible value is "OUT_OF_SCOPE". In this case, percentage is not returned.
+     * Tax rate applied to the returned billing entry. Optional field percentage is present if the returned billing entry is subject to tax. In this case, annotation is not returned. Optional field annotation is present if the returned billing entry is exempt from tax or tax is not applicable; the possible values are "OUT_OF_SCOPE", "NOT_APPLICABLE". In this case, percentage is not returned.
      */
     public function setTax(?BillingEntryTax $tax): self
     {

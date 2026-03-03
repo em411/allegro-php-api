@@ -1439,6 +1439,14 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\TopUpOperation::class => TopUpOperationNormalizer::class,
 
+        \Em411\Allegro\Api\Model\PayoutSweepIncreaseOperation::class => PayoutSweepIncreaseOperationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\PayoutSweepChargeOperation::class => PayoutSweepChargeOperationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\PayoutSweepCancelIncreaseOperation::class => PayoutSweepCancelIncreaseOperationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\PayoutSweepCancelChargeOperation::class => PayoutSweepCancelChargeOperationNormalizer::class,
+
         \Em411\Allegro\Api\Model\OperationPayment::class => OperationPaymentNormalizer::class,
 
         \Em411\Allegro\Api\Model\Participant::class => ParticipantNormalizer::class,
@@ -3149,6 +3157,10 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\ProviderRefundTransferChargeOperation::class => false,
             \Em411\Allegro\Api\Model\CompensationOperation::class => false,
             \Em411\Allegro\Api\Model\TopUpOperation::class => false,
+            \Em411\Allegro\Api\Model\PayoutSweepIncreaseOperation::class => false,
+            \Em411\Allegro\Api\Model\PayoutSweepChargeOperation::class => false,
+            \Em411\Allegro\Api\Model\PayoutSweepCancelIncreaseOperation::class => false,
+            \Em411\Allegro\Api\Model\PayoutSweepCancelChargeOperation::class => false,
             \Em411\Allegro\Api\Model\OperationPayment::class => false,
             \Em411\Allegro\Api\Model\Participant::class => false,
             \Em411\Allegro\Api\Model\SellerParticipant::class => false,

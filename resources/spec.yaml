@@ -13333,8 +13333,8 @@ paths:
           in: query
           description: >-
             Group of operation types:
-            * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION, DEDUCTION_INCREASE, LOAN_DEDUCTION_INCREASE, COMPENSATION, COMPENSATION_COD_INCREASE, TOP_UP.
-            * OUTCOME - PAYOUT, PAYOUT_CANCEL, DEDUCTION_CHARGE, LOAN_DEDUCTION_CHARGE, COMPENSATION_COD_CHARGE.
+            * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION, DEDUCTION_INCREASE, LOAN_DEDUCTION_INCREASE, COMPENSATION, COMPENSATION_COD_INCREASE, TOP_UP, PAYOUT_SWEEP_INCREASE, PAYOUT_SWEEP_CANCEL_INCREASE.
+            * OUTCOME - PAYOUT, PAYOUT_CANCEL, DEDUCTION_CHARGE, LOAN_DEDUCTION_CHARGE, COMPENSATION_COD_CHARGE, PAYOUT_SWEEP_CHARGE, PAYOUT_SWEEP_CANCEL_CHARGE.
             * REFUND - REFUND_CHARGE, REFUND_CANCEL, REFUND_INCREASE, CORRECTION, PROVIDER_REFUND_TRANSFER_CHARGE, PROVIDER_REFUND_TRANSFER_INCREASE.
             * BLOCKADES - BLOCKADE, BLOCKADE_RELEASE.
           required: false
@@ -21044,7 +21044,7 @@ components:
             Optional field percentage is present if the returned billing entry is subject to tax.
             In this case, annotation is not returned.
             Optional field annotation is present if the returned billing entry
-            is exempt from tax or tax is not applicable; the possible value is "OUT_OF_SCOPE".
+            is exempt from tax or tax is not applicable; the possible values are "OUT_OF_SCOPE", "NOT_APPLICABLE".
             In this case, percentage is not returned.
           properties:
             percentage:
@@ -21055,6 +21055,9 @@ components:
               type: string
               description: Optional annotation explaining the tax rate.
               example: 'OUT_OF_SCOPE'
+              enum:
+                - 'OUT_OF_SCOPE'
+                - 'NOT_APPLICABLE'
         balance:
           type: object
           description: User account balance calculated on billing date.
@@ -31585,6 +31588,10 @@ components:
           PROVIDER_REFUND_TRANSFER_INCREASE: '#/components/schemas/ProviderRefundTransferIncreaseOperation'
           COMPENSATION: '#/components/schemas/CompensationOperation'
           TOP_UP: '#/components/schemas/TopUpOperation'
+          PAYOUT_SWEEP_INCREASE: '#/components/schemas/PayoutSweepIncreaseOperation'
+          PAYOUT_SWEEP_CHARGE: '#/components/schemas/PayoutSweepChargeOperation'
+          PAYOUT_SWEEP_CANCEL_INCREASE: '#/components/schemas/PayoutSweepCancelIncreaseOperation'
+          PAYOUT_SWEEP_CANCEL_CHARGE: '#/components/schemas/PayoutSweepCancelChargeOperation'
     Wallet:
       type: object
       description: The state of the wallet after the operation.
@@ -31918,6 +31925,42 @@ components:
               type: string
               default: 'TOP_UP'
               example: 'TOP_UP'
+    PayoutSweepIncreaseOperation:
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            type:
+              type: string
+              default: 'PAYOUT_SWEEP_INCREASE'
+              example: 'PAYOUT_SWEEP_INCREASE'
+    PayoutSweepChargeOperation:
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            type:
+              type: string
+              default: 'PAYOUT_SWEEP_CHARGE'
+              example: 'PAYOUT_SWEEP_CHARGE'
+    PayoutSweepCancelIncreaseOperation:
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            type:
+              type: string
+              default: 'PAYOUT_SWEEP_CANCEL_INCREASE'
+              example: 'PAYOUT_SWEEP_CANCEL_INCREASE'
+    PayoutSweepCancelChargeOperation:
+      allOf:
+        - $ref: '#/components/schemas/BaseOperation'
+        - type: object
+          properties:
+            type:
+              type: string
+              default: 'PAYOUT_SWEEP_CANCEL_CHARGE'
+              example: 'PAYOUT_SWEEP_CANCEL_CHARGE'
     OperationPayment:
       type: object
       title: OperationPayment

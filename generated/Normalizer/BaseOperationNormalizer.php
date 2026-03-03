@@ -102,6 +102,18 @@ class BaseOperationNormalizer implements DenormalizerInterface, NormalizerInterf
         if (\array_key_exists('type', $data) && 'TOP_UP' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\TopUpOperation', $format, $context);
         }
+        if (\array_key_exists('type', $data) && 'PAYOUT_SWEEP_INCREASE' === $data['type']) {
+            return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\PayoutSweepIncreaseOperation', $format, $context);
+        }
+        if (\array_key_exists('type', $data) && 'PAYOUT_SWEEP_CHARGE' === $data['type']) {
+            return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\PayoutSweepChargeOperation', $format, $context);
+        }
+        if (\array_key_exists('type', $data) && 'PAYOUT_SWEEP_CANCEL_INCREASE' === $data['type']) {
+            return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\PayoutSweepCancelIncreaseOperation', $format, $context);
+        }
+        if (\array_key_exists('type', $data) && 'PAYOUT_SWEEP_CANCEL_CHARGE' === $data['type']) {
+            return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\PayoutSweepCancelChargeOperation', $format, $context);
+        }
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
@@ -218,6 +230,18 @@ class BaseOperationNormalizer implements DenormalizerInterface, NormalizerInterf
             return $this->normalizer->normalize($data, $format, $context);
         }
         if (null !== $data->getType() && 'TOP_UP' === $data->getType()) {
+            return $this->normalizer->normalize($data, $format, $context);
+        }
+        if (null !== $data->getType() && 'PAYOUT_SWEEP_INCREASE' === $data->getType()) {
+            return $this->normalizer->normalize($data, $format, $context);
+        }
+        if (null !== $data->getType() && 'PAYOUT_SWEEP_CHARGE' === $data->getType()) {
+            return $this->normalizer->normalize($data, $format, $context);
+        }
+        if (null !== $data->getType() && 'PAYOUT_SWEEP_CANCEL_INCREASE' === $data->getType()) {
+            return $this->normalizer->normalize($data, $format, $context);
+        }
+        if (null !== $data->getType() && 'PAYOUT_SWEEP_CANCEL_CHARGE' === $data->getType()) {
             return $this->normalizer->normalize($data, $format, $context);
         }
         $dataArray['type'] = $data->getType();
