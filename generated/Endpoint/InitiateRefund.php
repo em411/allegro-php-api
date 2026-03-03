@@ -76,9 +76,9 @@ class InitiateRefund extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impl
      *
      * @throws \Em411\Allegro\Api\Exception\InitiateRefundBadRequestException
      * @throws \Em411\Allegro\Api\Exception\InitiateRefundUnauthorizedException
-     * @throws \Em411\Allegro\Api\Exception\InitiateRefundUnprocessableEntityException
      * @throws \Em411\Allegro\Api\Exception\InitiateRefundForbiddenException
      * @throws \Em411\Allegro\Api\Exception\InitiateRefundNotFoundException
+     * @throws \Em411\Allegro\Api\Exception\InitiateRefundUnprocessableEntityException
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -93,14 +93,14 @@ class InitiateRefund extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impl
         if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\InitiateRefundUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            throw new \Em411\Allegro\Api\Exception\InitiateRefundUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
-        }
         if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\InitiateRefundForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\PaymentsRefundsPostResponse403', 'json'), $response);
         }
         if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\InitiateRefundNotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
+        }
+        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\InitiateRefundUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }
 }

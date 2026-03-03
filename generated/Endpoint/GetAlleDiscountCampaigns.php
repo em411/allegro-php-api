@@ -86,9 +86,9 @@ class GetAlleDiscountCampaigns extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
     /**
      * @return \Em411\Allegro\Api\Model\AlleDiscountListCampaignsResponse|null
      *
-     * @throws \Em411\Allegro\Api\Exception\GetAlleDiscountCampaignsNotFoundException
      * @throws \Em411\Allegro\Api\Exception\GetAlleDiscountCampaignsBadRequestException
      * @throws \Em411\Allegro\Api\Exception\GetAlleDiscountCampaignsUnauthorizedException
+     * @throws \Em411\Allegro\Api\Exception\GetAlleDiscountCampaignsNotFoundException
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -97,14 +97,14 @@ class GetAlleDiscountCampaigns extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AlleDiscountListCampaignsResponse', 'json');
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            throw new \Em411\Allegro\Api\Exception\GetAlleDiscountCampaignsNotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
-        }
         if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetAlleDiscountCampaignsBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetAlleDiscountCampaignsUnauthorizedException($response);
+        }
+        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\GetAlleDiscountCampaignsNotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }
 }

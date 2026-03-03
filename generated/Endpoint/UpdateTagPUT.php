@@ -75,10 +75,10 @@ class UpdateTagPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implem
     }
 
     /**
-     * @throws \Em411\Allegro\Api\Exception\UpdateTagPUTUnprocessableEntityException
      * @throws \Em411\Allegro\Api\Exception\UpdateTagPUTUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\UpdateTagPUTForbiddenException
      * @throws \Em411\Allegro\Api\Exception\UpdateTagPUTNotFoundException
+     * @throws \Em411\Allegro\Api\Exception\UpdateTagPUTUnprocessableEntityException
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -86,9 +86,6 @@ class UpdateTagPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implem
         $body = (string) $response->getBody();
         if (200 === $status) {
             return null;
-        }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            throw new \Em411\Allegro\Api\Exception\UpdateTagPUTUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
         if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\UpdateTagPUTUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
@@ -98,6 +95,9 @@ class UpdateTagPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implem
         }
         if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\UpdateTagPUTNotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
+        }
+        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\UpdateTagPUTUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }
 }

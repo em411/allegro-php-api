@@ -21,10 +21,12 @@ class UploadOfferImageUsingPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEn
      * Upload image to our servers.
      * You can choose from two upload options:
      *   * \- provide a link and we will download an image for you
-     *   * \- send an image as binary data
+     *   * \- send an image as binary data.
+     *
      * **Important!** Remember to use dedicated domain for upload, i.e.
      *   * \- https://upload.allegro.pl for Production
      *   * \- https://upload.allegro.pl.allegrosandbox.pl for Sandbox
+     *
      * Read more about the rules for photos in an offer's gallery and description: <a href="https://help.allegro.com/pl/sell/a/zasady-dla-zdjec-w-galerii-i-w-opisie-8dvWz3eo4T5?marketplaceId=allegro-pl" target="_blank">PL</a> / <a href="https://help.allegro.com/en/sell/a/rules-for-images-in-the-gallery-and-in-descriptions-8dvWB8Y2PIq" target="_blank">EN</a>.
      *
      * @param \Em411\Allegro\Api\Model\OfferImageLinkUploadRequest|string|resource|\Psr\Http\Message\StreamInterface|null $requestBody

@@ -75,9 +75,9 @@ class CreateTagPOST1 extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impl
      * @return \Em411\Allegro\Api\Model\TagId|null
      *
      * @throws \Em411\Allegro\Api\Exception\CreateTagPOST1BadRequestException
-     * @throws \Em411\Allegro\Api\Exception\CreateTagPOST1UnprocessableEntityException
      * @throws \Em411\Allegro\Api\Exception\CreateTagPOST1UnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\CreateTagPOST1ForbiddenException
+     * @throws \Em411\Allegro\Api\Exception\CreateTagPOST1UnprocessableEntityException
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -89,14 +89,14 @@ class CreateTagPOST1 extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impl
         if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\CreateTagPOST1BadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            throw new \Em411\Allegro\Api\Exception\CreateTagPOST1UnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
-        }
         if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\CreateTagPOST1UnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
         if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\CreateTagPOST1ForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
+        }
+        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\CreateTagPOST1UnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }
 }

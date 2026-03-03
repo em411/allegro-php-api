@@ -28,7 +28,7 @@ class DeleteTagUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param array $accept Accept content header *\/*|application/vnd.allegro.public.v1+json
+     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|*\/*
      */
     public function __construct(string $tagId, array $headerParameters = [], array $accept = [])
     {
@@ -55,7 +55,7 @@ class DeleteTagUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     public function getExtraHeaders(): array
     {
         if (empty($this->accept)) {
-            return ['Accept' => ['*/*', 'application/vnd.allegro.public.v1+json']];
+            return ['Accept' => ['application/vnd.allegro.public.v1+json', '*/*']];
         }
 
         return $this->accept;
@@ -88,13 +88,13 @@ class DeleteTagUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
         if (204 === $status) {
             return null;
         }
-        if (404 === $status) {
-        }
         if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeleteTagUsingDELETEUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
         if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeleteTagUsingDELETEForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
+        }
+        if (404 === $status) {
         }
     }
 }

@@ -113,11 +113,11 @@ class GetPaymentsOperationHistory extends \Em411\Allegro\Api\Runtime\Client\Base
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (401 === $status) {
-            throw new \Em411\Allegro\Api\Exception\GetPaymentsOperationHistoryUnauthorizedException($response);
-        }
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PaymentOperations', 'json');
+        }
+        if (401 === $status) {
+            throw new \Em411\Allegro\Api\Exception\GetPaymentsOperationHistoryUnauthorizedException($response);
         }
         if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetPaymentsOperationHistoryUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);

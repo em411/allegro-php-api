@@ -74,8 +74,8 @@ class UpdateTaxId extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impleme
     /**
      * @throws \Em411\Allegro\Api\Exception\UpdateTaxIdUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\UpdateTaxIdForbiddenException
-     * @throws \Em411\Allegro\Api\Exception\UpdateTaxIdUnprocessableEntityException
      * @throws \Em411\Allegro\Api\Exception\UpdateTaxIdNotFoundException
+     * @throws \Em411\Allegro\Api\Exception\UpdateTaxIdUnprocessableEntityException
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -90,11 +90,11 @@ class UpdateTaxId extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impleme
         if (403 === $status) {
             throw new \Em411\Allegro\Api\Exception\UpdateTaxIdForbiddenException($response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
-            throw new \Em411\Allegro\Api\Exception\UpdateTaxIdUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
-        }
         if (404 === $status) {
             throw new \Em411\Allegro\Api\Exception\UpdateTaxIdNotFoundException($response);
+        }
+        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+            throw new \Em411\Allegro\Api\Exception\UpdateTaxIdUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }
 }

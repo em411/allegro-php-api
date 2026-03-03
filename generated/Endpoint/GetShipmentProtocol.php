@@ -80,8 +80,8 @@ class GetShipmentProtocol extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
     }
 
     /**
-     * @throws \Em411\Allegro\Api\Exception\GetShipmentProtocolUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\GetShipmentProtocolBadRequestException
+     * @throws \Em411\Allegro\Api\Exception\GetShipmentProtocolUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\GetShipmentProtocolForbiddenException
      * @throws \Em411\Allegro\Api\Exception\GetShipmentProtocolNotFoundException
      * @throws \Em411\Allegro\Api\Exception\GetShipmentProtocolGatewayTimeoutException
@@ -95,11 +95,11 @@ class GetShipmentProtocol extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
         if (204 === $status) {
             return null;
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            throw new \Em411\Allegro\Api\Exception\GetShipmentProtocolUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
-        }
         if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetShipmentProtocolBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementProtocolPostResponse400', 'json'), $response);
+        }
+        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\GetShipmentProtocolUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
         if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetShipmentProtocolForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementProtocolPostResponse403', 'json'), $response);

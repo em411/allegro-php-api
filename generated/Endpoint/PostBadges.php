@@ -23,6 +23,7 @@ class PostBadges extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implemen
      * Fees will be charged in accordance with Annex No. 1 to the
      *   <a href="https://allegro.pl/regulaminy/regulamin-strefy-okazji-9dGVAPB69In"
      *     target="_blank">Daily deals zone terms and conditions</a>.
+     *
      * By using this resource you agree to the
      *   <a href="https://allegro.pl/regulaminy/regulamin-strefy-okazji-9dGVAPB69In"
      *     target="_blank">Daily deals zone terms and conditions</a>

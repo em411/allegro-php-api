@@ -72,9 +72,9 @@ class OfferRatingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impl
     /**
      * @return \Em411\Allegro\Api\Model\OfferRating|null
      *
+     * @throws \Em411\Allegro\Api\Exception\OfferRatingGETUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\OfferRatingGETForbiddenException
      * @throws \Em411\Allegro\Api\Exception\OfferRatingGETNotFoundException
-     * @throws \Em411\Allegro\Api\Exception\OfferRatingGETUnauthorizedException
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -83,14 +83,14 @@ class OfferRatingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint impl
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\OfferRating', 'json');
         }
+        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\OfferRatingGETUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
+        }
         if (403 === $status) {
             throw new \Em411\Allegro\Api\Exception\OfferRatingGETForbiddenException($response);
         }
         if (404 === $status) {
             throw new \Em411\Allegro\Api\Exception\OfferRatingGETNotFoundException($response);
-        }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            throw new \Em411\Allegro\Api\Exception\OfferRatingGETUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
     }
 }

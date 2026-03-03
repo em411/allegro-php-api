@@ -76,10 +76,10 @@ class AssignTagToOfferPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
 
     /**
      * @throws \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTBadRequestException
-     * @throws \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTForbiddenException
-     * @throws \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTUnprocessableEntityException
      * @throws \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTUnauthorizedException
+     * @throws \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTForbiddenException
      * @throws \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTNotFoundException
+     * @throws \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTUnprocessableEntityException
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -91,17 +91,17 @@ class AssignTagToOfferPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
         if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            throw new \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
-        }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            throw new \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
-        }
         if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
+        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
+        }
         if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTNotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
+        }
+        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\AssignTagToOfferPOSTUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }
 }

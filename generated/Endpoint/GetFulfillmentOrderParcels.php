@@ -72,8 +72,8 @@ class GetFulfillmentOrderParcels extends \Em411\Allegro\Api\Runtime\Client\BaseE
     /**
      * @return \Em411\Allegro\Api\Model\FulfillmentOrder|null
      *
-     * @throws \Em411\Allegro\Api\Exception\GetFulfillmentOrderParcelsNotFoundException
      * @throws \Em411\Allegro\Api\Exception\GetFulfillmentOrderParcelsUnauthorizedException
+     * @throws \Em411\Allegro\Api\Exception\GetFulfillmentOrderParcelsNotFoundException
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -82,11 +82,11 @@ class GetFulfillmentOrderParcels extends \Em411\Allegro\Api\Runtime\Client\BaseE
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\FulfillmentOrder', 'json');
         }
-        if (404 === $status) {
-            throw new \Em411\Allegro\Api\Exception\GetFulfillmentOrderParcelsNotFoundException($response);
-        }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetFulfillmentOrderParcelsUnauthorizedException($response);
+        }
+        if (404 === $status) {
+            throw new \Em411\Allegro\Api\Exception\GetFulfillmentOrderParcelsNotFoundException($response);
         }
     }
 }

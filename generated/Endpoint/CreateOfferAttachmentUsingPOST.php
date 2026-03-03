@@ -31,13 +31,16 @@ class CreateOfferAttachmentUsingPOST extends \Em411\Allegro\Api\Runtime\Client\B
      *   * Product information sheet (PRODUCT_INFORMATION_SHEET). Allowed media types: PDF
      *   * Tire label (TIRE_LABEL). Allowed media types: JPEG, JPG, PNG
      *   * Data processing sheet - software (SOFTWARE_DATA_PROCESSING). Allowed media types: PDF
-     *   * Data processing sheet - device (HARDWARE_DATA_PROCESSING). Allowed media types: PDF
+     *   * Data processing sheet - device (HARDWARE_DATA_PROCESSING). Allowed media types: PDF.
+     *
      * You can attach up to 20 files to one product for:
      *   * Safety information manual (SAFETY_INFORMATION_MANUAL). Allowed media types: PDF, JPEG, JPG, PNG
+     *
      * Uploading attachments flow:
      *   1. Create an attachment object to receive an upload URL (*POST /sale/offer-attachments*),
      *   2. Use the upload URL to submit the file (*PUT /sale/offer-attachments/{attachmentId}*),
      *   3. Add attachments to the offer (*PATCH /sale/product-offers/{offerId}*).
+     *
      * Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#zalaczniki" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#attachments" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
