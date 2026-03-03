@@ -39,7 +39,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
-          tools: composer
+          tools: composer, parallel-lint
 
       - name: Cache Composer packages
         uses: actions/cache@v5
@@ -210,21 +210,7 @@ jobs:
       # ── Validate generated code ────────────────────────
       - name: Validate generated code
         if: steps.spec_check.outputs.changed == 'true'
-        run: |
-          echo "Running PHP syntax check on generated files..."
-          ERROR_COUNT=0
-          while IFS= read -r -d '' file; do
-            if ! php -l "$file" > /dev/null 2>&1; then
-              echo "::error file=$file::Syntax error in generated file"
-              ERROR_COUNT=$((ERROR_COUNT + 1))
-            fi
-          done < <(find generated/ -name '*.php' -print0)
-
-          if [ "$ERROR_COUNT" -gt 0 ]; then
-            echo "::error::$ERROR_COUNT generated file(s) have syntax errors"
-            exit 1
-          fi
-          echo "✅ All generated PHP files pass syntax check."
+        run: parallel-lint --no-colors -e php generated/
 
       # ── Commit, tag, release ───────────────────────────
       - name: Commit Changes
