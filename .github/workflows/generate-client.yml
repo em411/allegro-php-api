@@ -21,6 +21,7 @@ env:
   REMOTE_API_URL: https://developer.allegro.pl/swagger.yaml
   OASDIFF_VERSION: v1.11.10
   PHP_VERSION: '8.5'
+  REDOCLY_VERSION: latest
   TEMP_DIR: .tmp            # keep throwaway files out of project root
 
 jobs:
@@ -89,6 +90,15 @@ jobs:
               sys.exit(1)
           print(f'✅ Valid spec — {len(doc.get(\"paths\", {}))} paths found')
           "
+
+      # ── Sanitize spec ─────────────────────────────────
+      - name: Sanitize spec (fix hyphenated path params)
+        run: |
+          npx -y @redocly/cli@${REDOCLY_VERSION} bundle \
+            "$TEMP_DIR/new_spec.yaml" \
+            -o "$TEMP_DIR/sanitized_spec.yaml"
+          mv "$TEMP_DIR/sanitized_spec.yaml" "$TEMP_DIR/new_spec.yaml"
+          echo "✅ Spec sanitized"
 
       # ── Compare specs ──────────────────────────────────
       - name: Check for spec changes
