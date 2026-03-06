@@ -31,7 +31,8 @@ class CreateOfferAttachmentUsingPOST extends \Em411\Allegro\Api\Runtime\Client\B
      *   * Product information sheet (PRODUCT_INFORMATION_SHEET). Allowed media types: PDF
      *   * Tire label (TIRE_LABEL). Allowed media types: JPEG, JPG, PNG
      *   * Data processing sheet - software (SOFTWARE_DATA_PROCESSING). Allowed media types: PDF
-     *   * Data processing sheet - device (HARDWARE_DATA_PROCESSING). Allowed media types: PDF.
+     *   * Data processing sheet - device (HARDWARE_DATA_PROCESSING). Allowed media types: PDF
+     *   * Plant Protection Products (PPPs) license (PLANT_PROTECTION_PRODUCTS_AUTHORIZATION). Allowed media types: PDF.
      *
      * You can attach up to 20 files to one product for:
      *   * Safety information manual (SAFETY_INFORMATION_MANUAL). Allowed media types: PDF, JPEG, JPG, PNG

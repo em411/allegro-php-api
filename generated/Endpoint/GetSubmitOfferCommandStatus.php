@@ -89,8 +89,8 @@ class GetSubmitOfferCommandStatus extends \Em411\Allegro\Api\Runtime\Client\Base
         if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetSubmitOfferCommandStatusUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if (404 === $status) {
-            throw new \Em411\Allegro\Api\Exception\GetSubmitOfferCommandStatusNotFoundException($response);
+        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\GetSubmitOfferCommandStatusNotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }
 }

@@ -16,17 +16,27 @@ namespace Em411\Allegro\Api\Exception;
 class GetSubmitOfferCommandStatusNotFoundException extends NotFoundException
 {
     /**
+     * @var \Em411\Allegro\Api\Model\ErrorsHolder
+     */
+    private $errorsHolder;
+    /**
      * @var \Psr\Http\Message\ResponseInterface
      */
     private $response;
 
-    public function __construct(?\Psr\Http\Message\ResponseInterface $response = null)
+    public function __construct(\Em411\Allegro\Api\Model\ErrorsHolder $errorsHolder, \Psr\Http\Message\ResponseInterface $response)
     {
         parent::__construct('Not Found - command does not exist or belongs to a different seller');
+        $this->errorsHolder = $errorsHolder;
         $this->response = $response;
     }
 
-    public function getResponse(): ?\Psr\Http\Message\ResponseInterface
+    public function getErrorsHolder(): \Em411\Allegro\Api\Model\ErrorsHolder
+    {
+        return $this->errorsHolder;
+    }
+
+    public function getResponse(): \Psr\Http\Message\ResponseInterface
     {
         return $this->response;
     }

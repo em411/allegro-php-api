@@ -9069,6 +9069,7 @@ paths:
           * Tire label (TIRE_LABEL). Allowed media types: JPEG, JPG, PNG
           * Data processing sheet - software (SOFTWARE_DATA_PROCESSING). Allowed media types: PDF
           * Data processing sheet - device (HARDWARE_DATA_PROCESSING). Allowed media types: PDF
+          * Plant Protection Products (PPPs) license (PLANT_PROTECTION_PRODUCTS_AUTHORIZATION). Allowed media types: PDF
 
         You can attach up to 20 files to one product for:
           * Safety information manual (SAFETY_INFORMATION_MANUAL). Allowed media types: PDF, JPEG, JPG, PNG
@@ -16662,6 +16663,18 @@ paths:
                 $ref: '#/components/schemas/AuthError'
         '404':
           description: Not Found - command does not exist or belongs to a different seller
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              example:
+                errors:
+                  - code: COMMAND_NOT_FOUND
+                    message: Command not found.
+                    details: null
+                    path: null
+                    userMessage: Command not found.
+                    metadata: {}
   /sale/allegro-prices/offers/exclusion-commands:
     post:
       tags:
@@ -16864,6 +16877,18 @@ paths:
                 $ref: '#/components/schemas/AuthError'
         '404':
           description: Not Found - command does not exist or belongs to a different seller
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              example:
+                errors:
+                  - code: COMMAND_NOT_FOUND
+                    message: Command not found.
+                    details: null
+                    path: null
+                    userMessage: Command not found.
+                    metadata: {}
   /sale/allegro-prices/offers-queries:
     post:
       tags:
@@ -23757,6 +23782,7 @@ components:
         - SAFETY_INFORMATION_MANUAL
         - SOFTWARE_DATA_PROCESSING
         - HARDWARE_DATA_PROCESSING
+        - PLANT_PROTECTION_PRODUCTS_AUTHORIZATION
     AttachmentFile:
       type: object
       properties:
