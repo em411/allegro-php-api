@@ -24,9 +24,15 @@ class PickupDateProposalsDto extends \ArrayObject
      */
     protected $shipmentId;
     /**
+     * @deprecated
+     *
      * @var list<PickupDateProposalDto>|null
      */
     protected $proposalItems;
+    /**
+     * @var list<PickupTimeDto>|null
+     */
+    protected $pickupTimes;
 
     public function isInitialized($property): bool
     {
@@ -47,6 +53,8 @@ class PickupDateProposalsDto extends \ArrayObject
     }
 
     /**
+     * @deprecated
+     *
      * @return list<PickupDateProposalDto>|null
      */
     public function getProposalItems(): ?array
@@ -56,11 +64,32 @@ class PickupDateProposalsDto extends \ArrayObject
 
     /**
      * @param list<PickupDateProposalDto>|null $proposalItems
+     *
+     * @deprecated
      */
     public function setProposalItems(?array $proposalItems): self
     {
         $this->initialized['proposalItems'] = true;
         $this->proposalItems = $proposalItems;
+
+        return $this;
+    }
+
+    /**
+     * @return list<PickupTimeDto>|null
+     */
+    public function getPickupTimes(): ?array
+    {
+        return $this->pickupTimes;
+    }
+
+    /**
+     * @param list<PickupTimeDto>|null $pickupTimes
+     */
+    public function setPickupTimes(?array $pickupTimes): self
+    {
+        $this->initialized['pickupTimes'] = true;
+        $this->pickupTimes = $pickupTimes;
 
         return $this;
     }

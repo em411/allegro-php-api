@@ -26,9 +26,15 @@ class PickupCreateRequestDto extends \ArrayObject
     /**
      * Internal pickup proposal ID.
      *
+     * @deprecated
+     *
      * @var string|null
      */
     protected $pickupDateProposalId;
+    /**
+     * @var PickupTimeDto|null
+     */
+    protected $pickupTime;
     /**
      * Address where the courier will pick up parcels to be sent.
      *
@@ -62,6 +68,8 @@ class PickupCreateRequestDto extends \ArrayObject
 
     /**
      * Internal pickup proposal ID.
+     *
+     * @deprecated
      */
     public function getPickupDateProposalId(): ?string
     {
@@ -70,11 +78,26 @@ class PickupCreateRequestDto extends \ArrayObject
 
     /**
      * Internal pickup proposal ID.
+     *
+     * @deprecated
      */
     public function setPickupDateProposalId(?string $pickupDateProposalId): self
     {
         $this->initialized['pickupDateProposalId'] = true;
         $this->pickupDateProposalId = $pickupDateProposalId;
+
+        return $this;
+    }
+
+    public function getPickupTime(): ?PickupTimeDto
+    {
+        return $this->pickupTime;
+    }
+
+    public function setPickupTime(?PickupTimeDto $pickupTime): self
+    {
+        $this->initialized['pickupTime'] = true;
+        $this->pickupTime = $pickupTime;
 
         return $this;
     }

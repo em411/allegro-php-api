@@ -35826,6 +35826,11 @@ components:
           type: string
           description: Additional information on the package label.
           example: Smartphones
+        transportingInfo:
+          type: array
+          description: Information about carriers involved in transport of that package
+          items:
+            $ref: '#/components/schemas/TransportingInfoDto'
     ShipmentCreateRequestDto:
       required:
         - deliveryMethodId
@@ -35881,6 +35886,19 @@ components:
             x-additionalPropertiesName: additionalPropertyId
             type: string
             example: EXTERNAL_CARRIER_WAYBILL
+    TransportingInfoDto:
+      required:
+        - carrierId
+      type: object
+      properties:
+        carrierId:
+          type: string
+          example: INPOST
+          description: Carrier identifier
+        carrierWaybill:
+          type: string
+          example: 3513A245S
+          description: Carrier Waybill number
     ShipmentCancelCommandDto:
       required:
         - input
@@ -35939,8 +35957,11 @@ components:
             example: ba88f0fb-acf3-438a-877e-580da50c0874
         pickupDateProposalId:
           type: string
+          deprecated: true
           description: Internal pickup proposal ID
           example: '2023071210001300'
+        pickupTime:
+          $ref: '#/components/schemas/PickupTimeDto'
         address:
           $ref: '#/components/schemas/PickupAddressDto'
     PickupDateProposalDto:
@@ -35961,6 +35982,23 @@ components:
           type: string
           description: Additional information for pickup proposal
           example: Odbiór A
+    PickupTimeDto:
+      required:
+        - date
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date of the pickup in ISO format (yyyy-MM-dd)
+          example: '2026-03-15'
+        minTime:
+          type: string
+          description: Start time of the pickup slot
+          example: '10:00'
+        maxTime:
+          type: string
+          description: End time of the pickup slot
+          example: '14:00'
     PickupProposalsRequestDto:
       required:
         - shipmentIds
@@ -35988,8 +36026,13 @@ components:
           example: ba88f0fb-acf3-438a-877e-580da50c0874
         proposalItems:
           type: array
+          deprecated: true
           items:
             $ref: '#/components/schemas/PickupDateProposalDto'
+        pickupTimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PickupTimeDto'
     PickupProposalsResponseDto:
       type: object
       properties:

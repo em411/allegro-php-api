@@ -2127,6 +2127,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\ShipmentCreateRequestDto::class => ShipmentCreateRequestDtoNormalizer::class,
 
+        \Em411\Allegro\Api\Model\TransportingInfoDto::class => TransportingInfoDtoNormalizer::class,
+
         \Em411\Allegro\Api\Model\ShipmentCancelCommandDto::class => ShipmentCancelCommandDtoNormalizer::class,
 
         \Em411\Allegro\Api\Model\ShipmentCancelRequestDto::class => ShipmentCancelRequestDtoNormalizer::class,
@@ -2138,6 +2140,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\PickupCreateRequestDto::class => PickupCreateRequestDtoNormalizer::class,
 
         \Em411\Allegro\Api\Model\PickupDateProposalDto::class => PickupDateProposalDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\PickupTimeDto::class => PickupTimeDtoNormalizer::class,
 
         \Em411\Allegro\Api\Model\PickupProposalsRequestDto::class => PickupProposalsRequestDtoNormalizer::class,
 
@@ -3501,12 +3505,14 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\InsuranceDto::class => false,
             \Em411\Allegro\Api\Model\PackageRequestDto::class => false,
             \Em411\Allegro\Api\Model\ShipmentCreateRequestDto::class => false,
+            \Em411\Allegro\Api\Model\TransportingInfoDto::class => false,
             \Em411\Allegro\Api\Model\ShipmentCancelCommandDto::class => false,
             \Em411\Allegro\Api\Model\ShipmentCancelRequestDto::class => false,
             \Em411\Allegro\Api\Model\ShipmentIdsDto::class => false,
             \Em411\Allegro\Api\Model\PickupCreateCommandDto::class => false,
             \Em411\Allegro\Api\Model\PickupCreateRequestDto::class => false,
             \Em411\Allegro\Api\Model\PickupDateProposalDto::class => false,
+            \Em411\Allegro\Api\Model\PickupTimeDto::class => false,
             \Em411\Allegro\Api\Model\PickupProposalsRequestDto::class => false,
             \Em411\Allegro\Api\Model\PickupDateProposalsDto::class => false,
             \Em411\Allegro\Api\Model\PickupProposalsResponseDto::class => false,

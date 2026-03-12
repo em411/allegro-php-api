@@ -68,9 +68,19 @@ class PickupDateProposalsDtoNormalizer implements DenormalizerInterface, Normali
         } elseif (\array_key_exists('proposalItems', $data) && null === $data['proposalItems']) {
             $object->setProposalItems(null);
         }
-        foreach ($data as $key => $value_1) {
+        if (\array_key_exists('pickupTimes', $data) && null !== $data['pickupTimes']) {
+            $values_1 = [];
+            foreach ($data['pickupTimes'] as $value_1) {
+                $values_1[] = $this->denormalizer->denormalize($value_1, \Em411\Allegro\Api\Model\PickupTimeDto::class, 'json', $context);
+            }
+            $object->setPickupTimes($values_1);
+            unset($data['pickupTimes']);
+        } elseif (\array_key_exists('pickupTimes', $data) && null === $data['pickupTimes']) {
+            $object->setPickupTimes(null);
+        }
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+                $object[$key] = $value_2;
             }
         }
 
@@ -90,9 +100,16 @@ class PickupDateProposalsDtoNormalizer implements DenormalizerInterface, Normali
             }
             $dataArray['proposalItems'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        if ($data->isInitialized('pickupTimes') && null !== $data->getPickupTimes()) {
+            $values_1 = [];
+            foreach ($data->getPickupTimes() as $value_1) {
+                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            }
+            $dataArray['pickupTimes'] = $values_1;
+        }
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+                $dataArray[$key] = $value_2;
             }
         }
 

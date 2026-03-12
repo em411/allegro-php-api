@@ -47,6 +47,12 @@ class PackageRequestDto extends \ArrayObject
      * @var string|null
      */
     protected $textOnLabel;
+    /**
+     * Information about carriers involved in transport of that package.
+     *
+     * @var list<TransportingInfoDto>|null
+     */
+    protected $transportingInfo;
 
     public function isInitialized($property): bool
     {
@@ -139,6 +145,29 @@ class PackageRequestDto extends \ArrayObject
     {
         $this->initialized['textOnLabel'] = true;
         $this->textOnLabel = $textOnLabel;
+
+        return $this;
+    }
+
+    /**
+     * Information about carriers involved in transport of that package.
+     *
+     * @return list<TransportingInfoDto>|null
+     */
+    public function getTransportingInfo(): ?array
+    {
+        return $this->transportingInfo;
+    }
+
+    /**
+     * Information about carriers involved in transport of that package.
+     *
+     * @param list<TransportingInfoDto>|null $transportingInfo
+     */
+    public function setTransportingInfo(?array $transportingInfo): self
+    {
+        $this->initialized['transportingInfo'] = true;
+        $this->transportingInfo = $transportingInfo;
 
         return $this;
     }
