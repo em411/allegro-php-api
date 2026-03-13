@@ -94,9 +94,19 @@ class PackageDtoNormalizer implements DenormalizerInterface, NormalizerInterface
         } elseif (\array_key_exists('textOnLabel', $data) && null === $data['textOnLabel']) {
             $object->setTextOnLabel(null);
         }
-        foreach ($data as $key => $value) {
+        if (\array_key_exists('transportingInfo', $data) && null !== $data['transportingInfo']) {
+            $values = [];
+            foreach ($data['transportingInfo'] as $value) {
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\TransportingInfoDto::class, 'json', $context);
+            }
+            $object->setTransportingInfo($values);
+            unset($data['transportingInfo']);
+        } elseif (\array_key_exists('transportingInfo', $data) && null === $data['transportingInfo']) {
+            $object->setTransportingInfo(null);
+        }
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
+                $object[$key] = $value_1;
             }
         }
 
@@ -127,9 +137,16 @@ class PackageDtoNormalizer implements DenormalizerInterface, NormalizerInterface
         if ($data->isInitialized('textOnLabel') && null !== $data->getTextOnLabel()) {
             $dataArray['textOnLabel'] = $data->getTextOnLabel();
         }
-        foreach ($data as $key => $value) {
+        if ($data->isInitialized('transportingInfo') && null !== $data->getTransportingInfo()) {
+            $values = [];
+            foreach ($data->getTransportingInfo() as $value) {
+                $values[] = $this->normalizer->normalize($value, 'json', $context);
+            }
+            $dataArray['transportingInfo'] = $values;
+        }
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
+                $dataArray[$key] = $value_1;
             }
         }
 

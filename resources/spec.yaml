@@ -18426,7 +18426,7 @@ paths:
       tags:
         - Message Center
       summary: Download attachment
-      description: 'Use this resource to download attachment with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#pobranie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#attachment-related-to-the-message" target="_blank">EN</a>.'
+      description: 'Use this resource to download attachment with provided identifier. You can retrieve attachments uploaded within the last 6 months. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#pobranie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#attachment-related-to-the-message" target="_blank">EN</a>.'
       operationId: downloadAttachmentGET
       security:
         - bearer-token-for-user:
@@ -35826,11 +35826,6 @@ components:
           type: string
           description: Additional information on the package label.
           example: Smartphones
-        transportingInfo:
-          type: array
-          description: Information about carriers involved in transport of that package
-          items:
-            $ref: '#/components/schemas/TransportingInfoDto'
     ShipmentCreateRequestDto:
       required:
         - deliveryMethodId
@@ -36154,6 +36149,11 @@ components:
         textOnLabel:
           type: string
           description: Additional information on the package label.
+        transportingInfo:
+          type: array
+          description: Information about carriers involved in transport of that package
+          items:
+            $ref: '#/components/schemas/TransportingInfoDto'
     ShipmentDto:
       type: object
       properties:
