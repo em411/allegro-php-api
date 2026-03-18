@@ -35793,7 +35793,7 @@ components:
         amount:
           pattern: \d+[.,]\d{1,2}
           type: string
-          description: Additional parcel protection value
+          description: Additional parcel protection value.
           example: '23.47'
         currency:
           pattern: '[A-Z]{3}'
@@ -35812,7 +35812,7 @@ components:
         type:
           pattern: DOX|PACKAGE|PALLET|OTHER
           type: string
-          description: 'Available values: PACKAGE|DOX|PALLET|OTHER'
+          description: 'Available values: PACKAGE|DOX|PALLET|OTHER.'
           example: PACKAGE
         length:
           $ref: '#/components/schemas/DimensionValue'
@@ -35889,11 +35889,11 @@ components:
         carrierId:
           type: string
           example: INPOST
-          description: Carrier identifier
+          description: Carrier identifier.
         carrierWaybill:
           type: string
           example: 3513A245S
-          description: Carrier Waybill number
+          description: Carrier Waybill number.
     ShipmentCancelCommandDto:
       required:
         - input
@@ -35953,7 +35953,7 @@ components:
         pickupDateProposalId:
           type: string
           deprecated: true
-          description: Internal pickup proposal ID
+          description: Internal pickup proposal ID.
           example: '2023071210001300'
         pickupTime:
           $ref: '#/components/schemas/PickupTimeDto'
@@ -35967,15 +35967,15 @@ components:
       properties:
         id:
           type: string
-          description: Internal pickup proposal ID
+          description: Internal pickup proposal ID.
           example: '2023071210001300'
         name:
           type: string
-          description: Human readable name of pickup proposal
+          description: Human readable name of pickup proposal.
           example: 2023-07-12 10:00-13:00
         description:
           type: string
-          description: Additional information for pickup proposal
+          description: Additional information for pickup proposal.
           example: Odbiór A
     PickupTimeDto:
       required:
@@ -35984,15 +35984,15 @@ components:
       properties:
         date:
           type: string
-          description: Date of the pickup in ISO format (yyyy-MM-dd)
+          description: Date of the pickup in ISO format (yyyy-MM-dd).
           example: '2026-03-15'
         minTime:
           type: string
-          description: Start time of the pickup slot
+          description: Start time of the pickup slot.
           example: '10:00'
         maxTime:
           type: string
-          description: End time of the pickup slot
+          description: End time of the pickup slot.
           example: '14:00'
     PickupProposalsRequestDto:
       required:
