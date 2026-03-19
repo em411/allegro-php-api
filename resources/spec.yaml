@@ -79,7 +79,7 @@ paths:
       tags:
         - Offer management
       summary: Create offer based on product
-      description: 'Use this resource to create offer based on product. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-wystawic-oferte-z-produktem-za-pomoca-zasobu-sale-product-offers" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-list-an-offer-with-a-product-via-sale-product-offers-resource" target="_blank">EN</a>. Note that requests may be limited.'
+      description: 'Use this resource to create offer based on product. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-utworzyc-oferte-powiazana-z-produktem" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-list-product-offer" target="_blank">EN</a>. Note that requests may be limited.'
       operationId: createProductOffers
       parameters:
         - name: Accept-Language
@@ -4137,6 +4137,162 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/TaskReport'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Command not found
+        '422':
+          description: Unprocessable Entity
+      security:
+        - bearer-token-for-user:
+            - allegro:api:sale:offers:write
+  /sale/offer-bulk-modification-commands:
+    post:
+      tags:
+        - Batch offer modification
+      summary: Batch offer price and stock modification (beta)
+      operationId: batchOfferModificationUsingPOST
+      description: "Bulk price and stock modification. Contrary to standard batch price or stock modification, it lets you modify both price and stock modification across multiple offers, or within the same offer but in a separate modification unit. <br> Change price and stock of offers. Read more: <a href=\"../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena-i-liczba-przedmiotow\" target=\"_blank\">PL</a> / <a href=\"../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price-and-stock\" target=\"_blank\">EN</a>. <br> This resource is rate limited to 150\_000 offer changes per hour or 9000 offer changes per minute - limit applies to a single user of the application."
+      parameters:
+        - name: Accept-Language
+          in: header
+          required: false
+          description: Expected language of messages.
+          example: pl-PL
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      responses:
+        '201':
+          description: Command was registered
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/GeneralReport'
+        '400':
+          description: Semantically incorrect request or provided conditions not correct
+        '401':
+          description: Unauthorized
+        '409':
+          description: Command id was already used
+        '422':
+          description: Unprocessable Entity
+      requestBody:
+        content:
+          application/vnd.allegro.beta.v1+json:
+            schema:
+              $ref: '#/components/schemas/OfferBulkChangeCommand'
+        description: offerBulkChangeCommandDto
+        required: true
+      security:
+        - bearer-token-for-user:
+            - allegro:api:sale:offers:write
+  /sale/offer-bulk-modification-commands/{commandId}:
+    get:
+      tags:
+        - Batch offer modification
+      summary: Batch price and stock command summary (beta)
+      description: "Returns status and summary of particular command execution. Read more: <a href=\"../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena-i-liczba-przedmiotow\" target=\"_blank\">PL</a> / <a href=\"../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price-and-stock\" target=\"_blank\">EN</a>. This resource is rate limited to retrieving information about 270\_000 offer changes per minute."
+      operationId: batchOfferModificationCommandStatusUsingGET
+      parameters:
+        - name: commandId
+          in: path
+          description: Command identifier.
+          required: true
+          schema:
+            type: string
+        - name: Accept-Language
+          in: header
+          required: false
+          description: Expected language of messages.
+          example: pl-PL
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      responses:
+        '200':
+          description: report was generated and successfully returned
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/GeneralReport'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Command not found
+      security:
+        - bearer-token-for-user:
+            - allegro:api:sale:offers:write
+  /sale/offer-bulk-modification-commands/{commandId}/tasks:
+    get:
+      tags:
+        - Batch offer modification
+      summary: Batch price and stock command detailed report (beta)
+      description: "Defaults: limit = 100, offset = 0. Read more: <a href=\"../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena-i-liczba-przedmiotow\" target=\"_blank\">PL</a> / <a href=\"../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price-and-stock\" target=\"_blank\">EN</a>. This resource is rate limited to retrieving information about 270\_000 offer changes per minute."
+      operationId: batchOfferModificationCommandTaskStatusesUsingGET
+      parameters:
+        - name: commandId
+          in: path
+          description: Command identifier.
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: The limit of elements in the response.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 100
+            minimum: 1
+            maximum: 1000
+        - name: offset
+          in: query
+          description: The offset of elements in the response.
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+            minimum: 0
+            maximum: 999
+        - name: Accept-Language
+          in: header
+          required: false
+          description: Expected language of messages.
+          example: pl-PL
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      responses:
+        '200':
+          description: Task status successfully returned
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/TaskWithSubjectReport'
         '401':
           description: Unauthorized
         '404':
@@ -22927,6 +23083,64 @@ components:
           items:
             $ref: '#/components/schemas/Error'
       description: Status of single command task.
+    CommandTaskWithPriceSubject:
+      type: object
+      properties:
+        subject:
+          type: object
+          description: A pair of values which can uniquely identify a modification from the request.
+          properties:
+            offerId:
+              type: string
+              description: Offer identifier, which was modified in the request.
+              example: '1234567890'
+            field:
+              type: string
+              description: A field, which was modified in the request.
+              example: prices
+        message:
+          type: string
+          description: General fail reason. You should check the errors structure to get more detailed information of the encountered errors.
+          example: The offer does not exist.
+        status:
+          type: string
+          description: 'Available statuses: NEW, SUCCESS, FAIL'
+          example: FAIL
+        errors:
+          description: The list of error objects explaining the problems with command processing for the given offer.
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      description: Status of single command task.
+    CommandTaskWithStockSubject:
+      type: object
+      properties:
+        subject:
+          type: object
+          description: A pair of values which can uniquely identify a modification from the request.
+          properties:
+            offerId:
+              type: string
+              description: Offer identifier, which was modified in the request.
+              example: '1234567890'
+            field:
+              type: string
+              description: A field, which was modified in the request.
+              example: stock
+        message:
+          type: string
+          description: General fail reason. You should check the errors structure to get more detailed information of the encountered errors.
+          example: The offer does not exist.
+        status:
+          type: string
+          description: 'Available statuses: NEW, SUCCESS, FAIL'
+          example: FAIL
+        errors:
+          description: The list of error objects explaining the problems with command processing for the given offer.
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      description: Status of single command task.
     CompatibilityList:
       type: object
       properties:
@@ -23947,6 +24161,179 @@ components:
     PriceModificationPercentageChangeHolder:
       type: string
       description: 'Percentage change of offer buy now price, related to types: INCREASE_PERCENTAGE, DECREASE_PERCENTAGE. Provided in a string format to avoid rounding errors.'
+    OfferBulkChangeCommand:
+      type: object
+      required:
+        - commandId
+        - modifications
+      properties:
+        commandId:
+          type: string
+          format: uuid
+          description: The unique identifier for the command.
+        modifications:
+          type: array
+          description: A list of modifications price or stock to apply to offers. Multiple modifications of the same type for the same offerId are not allowed (eg. price and offerId).
+          minItems: 1
+          maxItems: 25
+          items:
+            $ref: '#/components/schemas/OfferBulkModification'
+      example:
+        commandId: c1b3f63d-d293-4333-911d-a0c1053e2c81
+        modifications:
+          - offerId: '1234567890'
+            prices:
+              allegro-pl:
+                changeType: FIXED
+                value:
+                  amount: '49.99'
+                  currency: PLN
+              allegro-cz:
+                changeType: GAIN
+                value:
+                  amount: '10'
+                  currency: CZK
+              allegro-sk:
+                changeType: PERCENTAGE
+                percentage: '-10%'
+          - offerId: '1234567890'
+            stock:
+              changeType: FIXED
+              value: 10
+    OfferBulkModification:
+      type: object
+      required:
+        - offerId
+      properties:
+        offerId:
+          type: string
+          description: Offer Identifier.
+          minLength: 1
+          maxLength: 20
+          example: '1234567890'
+        prices:
+          type: object
+          description: |
+            A map of price modifications where the key is a marketplace identifier - "allegro-pl", "allegro-cz", etc.
+            <br> Multiple modifications on the same marketplace are not allowed.
+          additionalProperties:
+            allOf:
+              - $ref: '#/components/schemas/MarketplacePriceModification'
+            x-additionalPropertiesName: marketplace id
+          minProperties: 1
+          maxProperties: 10
+        stock:
+          type: object
+          description: |
+            Stock modification. <br>
+             We distinguish 2 types of modification - only one can be chosen at once:
+             <ul>
+               <li>FIXED - sets stock exactly to the specified value.</li>
+               <li>GAIN - increases / decreases current stock by the specified value.</li>
+             </ul>
+          required:
+            - changeType
+          discriminator:
+            propertyName: changeType
+            mapping:
+              FIXED: '#/components/schemas/StockModificationFixed'
+              GAIN: '#/components/schemas/StockModificationGain'
+          properties:
+            changeType:
+              type: string
+    StockModificationFixed:
+      type: object
+      required:
+        - changeType
+        - value
+      properties:
+        changeType:
+          description: Type of the modification.
+          type: string
+        value:
+          type: integer
+          example: 1
+          description: New stock value set with the `FIXED` type modification (stock > 0).
+    StockModificationGain:
+      type: object
+      required:
+        - changeType
+        - value
+      properties:
+        changeType:
+          description: Type of the modification.
+          type: string
+        value:
+          type: integer
+          example: 1
+          description: An increase/decrease stock value set with the `GAIN` type modification.
+    MarketplacePriceModification:
+      type: object
+      description: |
+        Describes how the offer's BUY NOW price should be changed on the specified marketplace.
+
+        <p>
+          We distinguish 3 types of modification:
+          <ul>
+            <li>FIXED - sets price exactly to the specified value.</li>
+            <li>GAIN - increases / decreases current price by the specified value.</li>
+            <li>PERCENTAGE - increases / decreases current price by the specified percent.</li>
+          </ul>
+        </p>
+      required:
+        - changeType
+      discriminator:
+        propertyName: changeType
+        mapping:
+          FIXED: '#/components/schemas/MarketplacePriceModificationFixed'
+          GAIN: '#/components/schemas/MarketplacePriceModificationGain'
+          PERCENTAGE: '#/components/schemas/MarketplacePriceModificationPercentage'
+      properties:
+        changeType:
+          type: string
+          description: Type of the modification.
+    MarketplacePriceModificationFixed:
+      allOf:
+        - $ref: '#/components/schemas/MarketplacePriceModification'
+        - type: object
+          required:
+            - value
+          properties:
+            changeType:
+              type: string
+            value:
+              allOf:
+                - $ref: '#/components/schemas/Price'
+              description: New offer's BUY NOW price set with the `FIXED` type modification.
+    MarketplacePriceModificationGain:
+      allOf:
+        - $ref: '#/components/schemas/MarketplacePriceModification'
+        - type: object
+          required:
+            - value
+          properties:
+            changeType:
+              type: string
+            value:
+              allOf:
+                - $ref: '#/components/schemas/Price'
+              description: Value, which will be added to the current offer's BUY_NOW price with the `GAIN` modification type.
+    MarketplacePriceModificationPercentage:
+      allOf:
+        - $ref: '#/components/schemas/MarketplacePriceModification'
+        - type: object
+          required:
+            - percentage
+          properties:
+            changeType:
+              type: string
+            percentage:
+              type: string
+              description: |
+                A percent, which will be added to the current offer's BUY NOW price with the `PERCENTAGE` modification type.
+                <br>`+` and `%` are redundant, effectively making "15.5" and "+15.5%" the exact same value.
+
+                Example values: `10%`, `33.3`, `-3`, `-10.50%`
     OfferQuantityChangeCommand:
       type: object
       properties:
@@ -25769,6 +26156,17 @@ components:
           items:
             $ref: '#/components/schemas/CommandTask'
       description: Contains list of task results
+    TaskWithSubjectReport:
+      type: object
+      properties:
+        tasks:
+          type: array
+          description: Results with a list of task with subject (offer+field).
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/CommandTaskWithPriceSubject'
+              - $ref: '#/components/schemas/CommandTaskWithStockSubject'
+      description: Contains list of task results.
     UUID:
       type: string
       format: uuid
@@ -26124,15 +26522,20 @@ components:
       properties:
         code:
           type: string
+          example: UnknownJSONProperty
         details:
           type: string
+          example: Unknown properties found in the request.
         message:
           type: string
+          example: Unknown properties found in the request.
         path:
           type: string
           nullable: true
+          example: endedBy
         userMessage:
           type: string
+          example: Unknown parameters found in the query.
         metadata:
           type: object
           additionalProperties:

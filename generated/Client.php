@@ -16,7 +16,7 @@ namespace Em411\Allegro\Api;
 class Client extends Runtime\Client\Client
 {
     /**
-     * Use this resource to create offer based on product. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-wystawic-oferte-z-produktem-za-pomoca-zasobu-sale-product-offers" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-list-an-offer-with-a-product-via-sale-product-offers-resource" target="_blank">EN</a>. Note that requests may be limited.
+     * Use this resource to create offer based on product. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-utworzyc-oferte-powiazana-z-produktem" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-list-product-offer" target="_blank">EN</a>. Note that requests may be limited.
      *
      * @param array $headerParameters {
      *
@@ -1243,6 +1243,77 @@ class Client extends Runtime\Client\Client
     public function getPriceModificationCommandTasksStatusesUsingGET(string $commandId, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\GetPriceModificationCommandTasksStatusesUsingGET($commandId, $queryParameters, $headerParameters), $fetch);
+    }
+
+    /**
+     * Bulk price and stock modification. Contrary to standard batch price or stock modification, it lets you modify both price and stock modification across multiple offers, or within the same offer but in a separate modification unit. <br> Change price and stock of offers. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena-i-liczba-przedmiotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price-and-stock" target="_blank">EN</a>. <br> This resource is rate limited to 150 000 offer changes per hour or 9000 offer changes per minute - limit applies to a single user of the application.
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\BatchOfferModificationUsingPOSTBadRequestException
+     * @throws Exception\BatchOfferModificationUsingPOSTUnauthorizedException
+     * @throws Exception\BatchOfferModificationUsingPOSTConflictException
+     * @throws Exception\BatchOfferModificationUsingPOSTUnprocessableEntityException
+     */
+    public function batchOfferModificationUsingPOST(?Model\OfferBulkChangeCommand $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\BatchOfferModificationUsingPOST($requestBody, $headerParameters), $fetch);
+    }
+
+    /**
+     * Returns status and summary of particular command execution. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena-i-liczba-przedmiotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price-and-stock" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
+     *
+     * @param string $commandId        command identifier
+     * @param array  $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\BatchOfferModificationCommandStatusUsingGETUnauthorizedException
+     * @throws Exception\BatchOfferModificationCommandStatusUsingGETNotFoundException
+     */
+    public function batchOfferModificationCommandStatusUsingGET(string $commandId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\BatchOfferModificationCommandStatusUsingGET($commandId, $headerParameters), $fetch);
+    }
+
+    /**
+     * Defaults: limit = 100, offset = 0. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena-i-liczba-przedmiotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price-and-stock" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
+     *
+     * @param string $commandId       command identifier
+     * @param array  $queryParameters {
+     *
+     * @var int $limit the limit of elements in the response
+     * @var int $offset The offset of elements in the response.
+     *          }
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\TaskWithSubjectReport|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\BatchOfferModificationCommandTaskStatusesUsingGETUnauthorizedException
+     * @throws Exception\BatchOfferModificationCommandTaskStatusesUsingGETNotFoundException
+     * @throws Exception\BatchOfferModificationCommandTaskStatusesUsingGETUnprocessableEntityException
+     */
+    public function batchOfferModificationCommandTaskStatusesUsingGET(string $commandId, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\BatchOfferModificationCommandTaskStatusesUsingGET($commandId, $queryParameters, $headerParameters), $fetch);
     }
 
     /**

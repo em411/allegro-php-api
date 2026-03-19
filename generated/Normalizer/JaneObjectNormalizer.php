@@ -385,6 +385,14 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\CommandTask::class => CommandTaskNormalizer::class,
 
+        \Em411\Allegro\Api\Model\CommandTaskWithPriceSubject::class => CommandTaskWithPriceSubjectNormalizer::class,
+
+        \Em411\Allegro\Api\Model\CommandTaskWithPriceSubjectSubject::class => CommandTaskWithPriceSubjectSubjectNormalizer::class,
+
+        \Em411\Allegro\Api\Model\CommandTaskWithStockSubject::class => CommandTaskWithStockSubjectNormalizer::class,
+
+        \Em411\Allegro\Api\Model\CommandTaskWithStockSubjectSubject::class => CommandTaskWithStockSubjectSubjectNormalizer::class,
+
         \Em411\Allegro\Api\Model\CompatibilityList::class => CompatibilityListNormalizer::class,
 
         \Em411\Allegro\Api\Model\CompatibilityListProductOfferResponse::class => CompatibilityListProductOfferResponseNormalizer::class,
@@ -550,6 +558,30 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\PriceModificationFixedPriceHolder::class => PriceModificationFixedPriceHolderNormalizer::class,
 
         \Em411\Allegro\Api\Model\PriceModificationValueChangeHolder::class => PriceModificationValueChangeHolderNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferBulkChangeCommand::class => OfferBulkChangeCommandNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferBulkModification::class => OfferBulkModificationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferBulkModificationPricesItem::class => OfferBulkModificationPricesItemNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferBulkModificationStock::class => OfferBulkModificationStockNormalizer::class,
+
+        \Em411\Allegro\Api\Model\StockModificationFixed::class => StockModificationFixedNormalizer::class,
+
+        \Em411\Allegro\Api\Model\StockModificationGain::class => StockModificationGainNormalizer::class,
+
+        \Em411\Allegro\Api\Model\MarketplacePriceModification::class => MarketplacePriceModificationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\MarketplacePriceModificationFixed::class => MarketplacePriceModificationFixedNormalizer::class,
+
+        \Em411\Allegro\Api\Model\MarketplacePriceModificationFixedvalue::class => MarketplacePriceModificationFixedvalueNormalizer::class,
+
+        \Em411\Allegro\Api\Model\MarketplacePriceModificationGain::class => MarketplacePriceModificationGainNormalizer::class,
+
+        \Em411\Allegro\Api\Model\MarketplacePriceModificationGainvalue::class => MarketplacePriceModificationGainvalueNormalizer::class,
+
+        \Em411\Allegro\Api\Model\MarketplacePriceModificationPercentage::class => MarketplacePriceModificationPercentageNormalizer::class,
 
         \Em411\Allegro\Api\Model\OfferQuantityChangeCommand::class => OfferQuantityChangeCommandNormalizer::class,
 
@@ -794,6 +826,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\TaskCount::class => TaskCountNormalizer::class,
 
         \Em411\Allegro\Api\Model\TaskReport::class => TaskReportNormalizer::class,
+
+        \Em411\Allegro\Api\Model\TaskWithSubjectReport::class => TaskWithSubjectReportNormalizer::class,
 
         \Em411\Allegro\Api\Model\User::class => UserNormalizer::class,
 
@@ -2634,6 +2668,10 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\ChangePriceWithoutOutput::class => false,
             \Em411\Allegro\Api\Model\CommandOutput::class => false,
             \Em411\Allegro\Api\Model\CommandTask::class => false,
+            \Em411\Allegro\Api\Model\CommandTaskWithPriceSubject::class => false,
+            \Em411\Allegro\Api\Model\CommandTaskWithPriceSubjectSubject::class => false,
+            \Em411\Allegro\Api\Model\CommandTaskWithStockSubject::class => false,
+            \Em411\Allegro\Api\Model\CommandTaskWithStockSubjectSubject::class => false,
             \Em411\Allegro\Api\Model\CompatibilityList::class => false,
             \Em411\Allegro\Api\Model\CompatibilityListProductOfferResponse::class => false,
             \Em411\Allegro\Api\Model\CompatibilityListManual::class => false,
@@ -2717,6 +2755,18 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\PriceModificationPercentageChangeDecrease::class => false,
             \Em411\Allegro\Api\Model\PriceModificationFixedPriceHolder::class => false,
             \Em411\Allegro\Api\Model\PriceModificationValueChangeHolder::class => false,
+            \Em411\Allegro\Api\Model\OfferBulkChangeCommand::class => false,
+            \Em411\Allegro\Api\Model\OfferBulkModification::class => false,
+            \Em411\Allegro\Api\Model\OfferBulkModificationPricesItem::class => false,
+            \Em411\Allegro\Api\Model\OfferBulkModificationStock::class => false,
+            \Em411\Allegro\Api\Model\StockModificationFixed::class => false,
+            \Em411\Allegro\Api\Model\StockModificationGain::class => false,
+            \Em411\Allegro\Api\Model\MarketplacePriceModification::class => false,
+            \Em411\Allegro\Api\Model\MarketplacePriceModificationFixed::class => false,
+            \Em411\Allegro\Api\Model\MarketplacePriceModificationFixedvalue::class => false,
+            \Em411\Allegro\Api\Model\MarketplacePriceModificationGain::class => false,
+            \Em411\Allegro\Api\Model\MarketplacePriceModificationGainvalue::class => false,
+            \Em411\Allegro\Api\Model\MarketplacePriceModificationPercentage::class => false,
             \Em411\Allegro\Api\Model\OfferQuantityChangeCommand::class => false,
             \Em411\Allegro\Api\Model\QuantityModification::class => false,
             \Em411\Allegro\Api\Model\SellerRebateOfferCriterion::class => false,
@@ -2839,6 +2889,7 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\Stock::class => false,
             \Em411\Allegro\Api\Model\TaskCount::class => false,
             \Em411\Allegro\Api\Model\TaskReport::class => false,
+            \Em411\Allegro\Api\Model\TaskWithSubjectReport::class => false,
             \Em411\Allegro\Api\Model\User::class => false,
             \Em411\Allegro\Api\Model\UserRating::class => false,
             \Em411\Allegro\Api\Model\UserRatingListResponse::class => false,
