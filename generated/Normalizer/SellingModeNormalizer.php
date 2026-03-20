@@ -65,13 +65,13 @@ class SellingModeNormalizer implements DenormalizerInterface, NormalizerInterfac
             $object->setPrice(null);
         }
         if (\array_key_exists('minimalPrice', $data) && null !== $data['minimalPrice']) {
-            $object->setMinimalPrice($this->denormalizer->denormalize($data['minimalPrice'], \Em411\Allegro\Api\Model\MinimalPrice::class, 'json', $context));
+            $object->setMinimalPrice($data['minimalPrice']);
             unset($data['minimalPrice']);
         } elseif (\array_key_exists('minimalPrice', $data) && null === $data['minimalPrice']) {
             $object->setMinimalPrice(null);
         }
         if (\array_key_exists('startingPrice', $data) && null !== $data['startingPrice']) {
-            $object->setStartingPrice($this->denormalizer->denormalize($data['startingPrice'], \Em411\Allegro\Api\Model\StartingPrice::class, 'json', $context));
+            $object->setStartingPrice($data['startingPrice']);
             unset($data['startingPrice']);
         } elseif (\array_key_exists('startingPrice', $data) && null === $data['startingPrice']) {
             $object->setStartingPrice(null);
@@ -94,11 +94,11 @@ class SellingModeNormalizer implements DenormalizerInterface, NormalizerInterfac
         if ($data->isInitialized('price') && null !== $data->getPrice()) {
             $dataArray['price'] = $this->normalizer->normalize($data->getPrice(), 'json', $context);
         }
-        if ($data->isInitialized('minimalPrice') && null !== $data->getMinimalPrice()) {
-            $dataArray['minimalPrice'] = $this->normalizer->normalize($data->getMinimalPrice(), 'json', $context);
+        if ($data->isInitialized('minimalPrice')) {
+            $dataArray['minimalPrice'] = $data->getMinimalPrice();
         }
-        if ($data->isInitialized('startingPrice') && null !== $data->getStartingPrice()) {
-            $dataArray['startingPrice'] = $this->normalizer->normalize($data->getStartingPrice(), 'json', $context);
+        if ($data->isInitialized('startingPrice')) {
+            $dataArray['startingPrice'] = $data->getStartingPrice();
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

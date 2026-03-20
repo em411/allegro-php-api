@@ -30,9 +30,7 @@ class ParameterProductOfferResponse extends \ArrayObject
      */
     protected $name;
     /**
-     * Parameter's range value.
-     *
-     * @var ParameterRangeValue|null
+     * @var ParameterProductOfferResponseRangeValue|null
      */
     protected $rangeValue;
     /**
@@ -81,18 +79,12 @@ class ParameterProductOfferResponse extends \ArrayObject
         return $this;
     }
 
-    /**
-     * Parameter's range value.
-     */
-    public function getRangeValue(): ?ParameterRangeValue
+    public function getRangeValue(): ?ParameterProductOfferResponseRangeValue
     {
         return $this->rangeValue;
     }
 
-    /**
-     * Parameter's range value.
-     */
-    public function setRangeValue(?ParameterRangeValue $rangeValue): self
+    public function setRangeValue(?ParameterProductOfferResponseRangeValue $rangeValue): self
     {
         $this->initialized['rangeValue'] = true;
         $this->rangeValue = $rangeValue;

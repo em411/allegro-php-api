@@ -107,7 +107,7 @@ class ValidationErrorNormalizer implements DenormalizerInterface, NormalizerInte
         if ($data->isInitialized('code') && null !== $data->getCode()) {
             $dataArray['code'] = $data->getCode();
         }
-        if ($data->isInitialized('details') && null !== $data->getDetails()) {
+        if ($data->isInitialized('details')) {
             $dataArray['details'] = $data->getDetails();
         }
         if ($data->isInitialized('message') && null !== $data->getMessage()) {

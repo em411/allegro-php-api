@@ -119,13 +119,13 @@ class SaleProductOfferResponseV1productSetItemNormalizer implements Denormalizer
         if ($data->isInitialized('product') && null !== $data->getProduct()) {
             $dataArray['product'] = $this->normalizer->normalize($data->getProduct(), 'json', $context);
         }
-        if ($data->isInitialized('responsiblePerson') && null !== $data->getResponsiblePerson()) {
+        if ($data->isInitialized('responsiblePerson')) {
             $dataArray['responsiblePerson'] = $this->normalizer->normalize($data->getResponsiblePerson(), 'json', $context);
         }
-        if ($data->isInitialized('responsibleProducer') && null !== $data->getResponsibleProducer()) {
+        if ($data->isInitialized('responsibleProducer')) {
             $dataArray['responsibleProducer'] = $this->normalizer->normalize($data->getResponsibleProducer(), 'json', $context);
         }
-        if ($data->isInitialized('safetyInformation') && null !== $data->getSafetyInformation()) {
+        if ($data->isInitialized('safetyInformation')) {
             $dataArray['safetyInformation'] = $data->getSafetyInformation();
         }
         if ($data->isInitialized('marketedBeforeGPSRObligation')) {

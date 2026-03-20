@@ -1245,6 +1245,12 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\SaleProductOffer::class => SaleProductOfferNormalizer::class,
 
+        \Em411\Allegro\Api\Model\SaleProductOfferSizeTable::class => SaleProductOfferSizeTableNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SaleProductOfferTaxSettings::class => SaleProductOfferTaxSettingsNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SaleProductOfferMessageToSellerSettings::class => SaleProductOfferMessageToSellerSettingsNormalizer::class,
+
         \Em411\Allegro\Api\Model\SaleProductOfferRequestBase::class => SaleProductOfferRequestBaseNormalizer::class,
 
         \Em411\Allegro\Api\Model\SaleProductOfferRequestBasecategory::class => SaleProductOfferRequestBasecategoryNormalizer::class,
@@ -1284,6 +1290,16 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\SaleProductOfferResponseV1productSetItemresponsiblePerson::class => SaleProductOfferResponseV1productSetItemresponsiblePersonNormalizer::class,
 
         \Em411\Allegro\Api\Model\SaleProductOfferResponseV1productSetItemresponsibleProducer::class => SaleProductOfferResponseV1productSetItemresponsibleProducerNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SaleProductOfferResponseV1fundraisingCampaign::class => SaleProductOfferResponseV1fundraisingCampaignNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SaleProductOfferResponseV1additionalServices::class => SaleProductOfferResponseV1additionalServicesNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SaleProductOfferResponseV1compatibilityList::class => SaleProductOfferResponseV1compatibilityListNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SaleProductOfferResponseV1afterSalesServices::class => SaleProductOfferResponseV1afterSalesServicesNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SaleProductOfferResponseV1stock::class => SaleProductOfferResponseV1stockNormalizer::class,
 
         \Em411\Allegro\Api\Model\SaleProductOfferResponseV1contact::class => SaleProductOfferResponseV1contactNormalizer::class,
 
@@ -1359,6 +1375,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\DeliveryProductOfferResponse::class => DeliveryProductOfferResponseNormalizer::class,
 
+        \Em411\Allegro\Api\Model\DeliveryProductOfferResponseShippingRates::class => DeliveryProductOfferResponseShippingRatesNormalizer::class,
+
         \Em411\Allegro\Api\Model\SaleProductOfferPublicationMarketplacesResponse::class => SaleProductOfferPublicationMarketplacesResponseNormalizer::class,
 
         \Em411\Allegro\Api\Model\SaleProductOfferPublicationMarketplacesResponseBase::class => SaleProductOfferPublicationMarketplacesResponseBaseNormalizer::class,
@@ -1385,11 +1403,15 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\ParameterProductOfferResponse::class => ParameterProductOfferResponseNormalizer::class,
 
+        \Em411\Allegro\Api\Model\ParameterProductOfferResponseRangeValue::class => ParameterProductOfferResponseRangeValueNormalizer::class,
+
         \Em411\Allegro\Api\Model\DiscountsProductOfferRequest::class => DiscountsProductOfferRequestNormalizer::class,
 
         \Em411\Allegro\Api\Model\DiscountsProductOfferRequestWholesalePriceList::class => DiscountsProductOfferRequestWholesalePriceListNormalizer::class,
 
         \Em411\Allegro\Api\Model\DiscountsProductOfferResponse::class => DiscountsProductOfferResponseNormalizer::class,
+
+        \Em411\Allegro\Api\Model\DiscountsProductOfferResponseWholesalePriceList::class => DiscountsProductOfferResponseWholesalePriceListNormalizer::class,
 
         \Em411\Allegro\Api\Model\OfferRequirements::class => OfferRequirementsNormalizer::class,
 
@@ -3098,6 +3120,9 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\AiCoCreatedContent::class => false,
             \Em411\Allegro\Api\Model\TrustedContent::class => false,
             \Em411\Allegro\Api\Model\SaleProductOffer::class => false,
+            \Em411\Allegro\Api\Model\SaleProductOfferSizeTable::class => false,
+            \Em411\Allegro\Api\Model\SaleProductOfferTaxSettings::class => false,
+            \Em411\Allegro\Api\Model\SaleProductOfferMessageToSellerSettings::class => false,
             \Em411\Allegro\Api\Model\SaleProductOfferRequestBase::class => false,
             \Em411\Allegro\Api\Model\SaleProductOfferRequestBasecategory::class => false,
             \Em411\Allegro\Api\Model\SaleProductOfferRequestBasepublication::class => false,
@@ -3118,6 +3143,11 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\SaleProductOfferResponseV1productSetItemproduct::class => false,
             \Em411\Allegro\Api\Model\SaleProductOfferResponseV1productSetItemresponsiblePerson::class => false,
             \Em411\Allegro\Api\Model\SaleProductOfferResponseV1productSetItemresponsibleProducer::class => false,
+            \Em411\Allegro\Api\Model\SaleProductOfferResponseV1fundraisingCampaign::class => false,
+            \Em411\Allegro\Api\Model\SaleProductOfferResponseV1additionalServices::class => false,
+            \Em411\Allegro\Api\Model\SaleProductOfferResponseV1compatibilityList::class => false,
+            \Em411\Allegro\Api\Model\SaleProductOfferResponseV1afterSalesServices::class => false,
+            \Em411\Allegro\Api\Model\SaleProductOfferResponseV1stock::class => false,
             \Em411\Allegro\Api\Model\SaleProductOfferResponseV1contact::class => false,
             \Em411\Allegro\Api\Model\SalePartialProductOfferResponse::class => false,
             \Em411\Allegro\Api\Model\SalePartialProductOfferResponseStock::class => false,
@@ -3155,6 +3185,7 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\DeliveryProductOfferRequest::class => false,
             \Em411\Allegro\Api\Model\DeliveryProductOfferRequestShippingRates::class => false,
             \Em411\Allegro\Api\Model\DeliveryProductOfferResponse::class => false,
+            \Em411\Allegro\Api\Model\DeliveryProductOfferResponseShippingRates::class => false,
             \Em411\Allegro\Api\Model\SaleProductOfferPublicationMarketplacesResponse::class => false,
             \Em411\Allegro\Api\Model\SaleProductOfferPublicationMarketplacesResponseBase::class => false,
             \Em411\Allegro\Api\Model\SaleProductOfferPublicationRequest::class => false,
@@ -3168,9 +3199,11 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\AdditionalMarketplacesRefusalReasonResponse::class => false,
             \Em411\Allegro\Api\Model\ParameterProductOfferRequest::class => false,
             \Em411\Allegro\Api\Model\ParameterProductOfferResponse::class => false,
+            \Em411\Allegro\Api\Model\ParameterProductOfferResponseRangeValue::class => false,
             \Em411\Allegro\Api\Model\DiscountsProductOfferRequest::class => false,
             \Em411\Allegro\Api\Model\DiscountsProductOfferRequestWholesalePriceList::class => false,
             \Em411\Allegro\Api\Model\DiscountsProductOfferResponse::class => false,
+            \Em411\Allegro\Api\Model\DiscountsProductOfferResponseWholesalePriceList::class => false,
             \Em411\Allegro\Api\Model\OfferRequirements::class => false,
             \Em411\Allegro\Api\Model\AdditionalEmailsResponse::class => false,
             \Em411\Allegro\Api\Model\AdditionalEmail::class => false,

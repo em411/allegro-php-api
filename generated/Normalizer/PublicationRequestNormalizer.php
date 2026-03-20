@@ -91,7 +91,7 @@ class PublicationRequestNormalizer implements DenormalizerInterface, NormalizerI
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('duration') && null !== $data->getDuration()) {
+        if ($data->isInitialized('duration')) {
             $dataArray['duration'] = $data->getDuration();
         }
         if ($data->isInitialized('startingAt') && null !== $data->getStartingAt()) {

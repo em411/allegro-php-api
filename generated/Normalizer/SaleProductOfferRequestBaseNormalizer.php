@@ -97,7 +97,7 @@ class SaleProductOfferRequestBaseNormalizer implements DenormalizerInterface, No
             $object->setAfterSalesServices(null);
         }
         if (\array_key_exists('sizeTable', $data) && null !== $data['sizeTable']) {
-            $object->setSizeTable($this->denormalizer->denormalize($data['sizeTable'], \Em411\Allegro\Api\Model\SizeTable::class, 'json', $context));
+            $object->setSizeTable($this->denormalizer->denormalize($data['sizeTable'], \Em411\Allegro\Api\Model\SaleProductOfferSizeTable::class, 'json', $context));
             unset($data['sizeTable']);
         } elseif (\array_key_exists('sizeTable', $data) && null === $data['sizeTable']) {
             $object->setSizeTable(null);
@@ -155,13 +155,13 @@ class SaleProductOfferRequestBaseNormalizer implements DenormalizerInterface, No
             $object->setExternal(null);
         }
         if (\array_key_exists('taxSettings', $data) && null !== $data['taxSettings']) {
-            $object->setTaxSettings($this->denormalizer->denormalize($data['taxSettings'], \Em411\Allegro\Api\Model\OfferTaxSettings::class, 'json', $context));
+            $object->setTaxSettings($this->denormalizer->denormalize($data['taxSettings'], \Em411\Allegro\Api\Model\SaleProductOfferTaxSettings::class, 'json', $context));
             unset($data['taxSettings']);
         } elseif (\array_key_exists('taxSettings', $data) && null === $data['taxSettings']) {
             $object->setTaxSettings(null);
         }
         if (\array_key_exists('messageToSellerSettings', $data) && null !== $data['messageToSellerSettings']) {
-            $object->setMessageToSellerSettings($this->denormalizer->denormalize($data['messageToSellerSettings'], \Em411\Allegro\Api\Model\MessageToSellerSettings::class, 'json', $context));
+            $object->setMessageToSellerSettings($this->denormalizer->denormalize($data['messageToSellerSettings'], \Em411\Allegro\Api\Model\SaleProductOfferMessageToSellerSettings::class, 'json', $context));
             unset($data['messageToSellerSettings']);
         } elseif (\array_key_exists('messageToSellerSettings', $data) && null === $data['messageToSellerSettings']) {
             $object->setMessageToSellerSettings(null);
@@ -204,7 +204,7 @@ class SaleProductOfferRequestBaseNormalizer implements DenormalizerInterface, No
         if ($data->isInitialized('afterSalesServices') && null !== $data->getAfterSalesServices()) {
             $dataArray['afterSalesServices'] = $this->normalizer->normalize($data->getAfterSalesServices(), 'json', $context);
         }
-        if ($data->isInitialized('sizeTable') && null !== $data->getSizeTable()) {
+        if ($data->isInitialized('sizeTable')) {
             $dataArray['sizeTable'] = $this->normalizer->normalize($data->getSizeTable(), 'json', $context);
         }
         if ($data->isInitialized('contact') && null !== $data->getContact()) {
@@ -235,10 +235,10 @@ class SaleProductOfferRequestBaseNormalizer implements DenormalizerInterface, No
         if ($data->isInitialized('external') && null !== $data->getExternal()) {
             $dataArray['external'] = $this->normalizer->normalize($data->getExternal(), 'json', $context);
         }
-        if ($data->isInitialized('taxSettings') && null !== $data->getTaxSettings()) {
+        if ($data->isInitialized('taxSettings')) {
             $dataArray['taxSettings'] = $this->normalizer->normalize($data->getTaxSettings(), 'json', $context);
         }
-        if ($data->isInitialized('messageToSellerSettings') && null !== $data->getMessageToSellerSettings()) {
+        if ($data->isInitialized('messageToSellerSettings')) {
             $dataArray['messageToSellerSettings'] = $this->normalizer->normalize($data->getMessageToSellerSettings(), 'json', $context);
         }
         foreach ($data as $key_1 => $value_3) {

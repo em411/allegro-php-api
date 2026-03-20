@@ -65,7 +65,7 @@ class ParameterProductOfferResponseNormalizer implements DenormalizerInterface, 
             $object->setName(null);
         }
         if (\array_key_exists('rangeValue', $data) && null !== $data['rangeValue']) {
-            $object->setRangeValue($this->denormalizer->denormalize($data['rangeValue'], \Em411\Allegro\Api\Model\ParameterRangeValue::class, 'json', $context));
+            $object->setRangeValue($this->denormalizer->denormalize($data['rangeValue'], \Em411\Allegro\Api\Model\ParameterProductOfferResponseRangeValue::class, 'json', $context));
             unset($data['rangeValue']);
         } elseif (\array_key_exists('rangeValue', $data) && null === $data['rangeValue']) {
             $object->setRangeValue(null);
@@ -108,7 +108,7 @@ class ParameterProductOfferResponseNormalizer implements DenormalizerInterface, 
         if ($data->isInitialized('name') && null !== $data->getName()) {
             $dataArray['name'] = $data->getName();
         }
-        if ($data->isInitialized('rangeValue') && null !== $data->getRangeValue()) {
+        if ($data->isInitialized('rangeValue')) {
             $dataArray['rangeValue'] = $this->normalizer->normalize($data->getRangeValue(), 'json', $context);
         }
         if ($data->isInitialized('values') && null !== $data->getValues()) {
@@ -118,7 +118,7 @@ class ParameterProductOfferResponseNormalizer implements DenormalizerInterface, 
             }
             $dataArray['values'] = $values;
         }
-        if ($data->isInitialized('valuesIds') && null !== $data->getValuesIds()) {
+        if ($data->isInitialized('valuesIds')) {
             $values_1 = [];
             foreach ($data->getValuesIds() as $value_1) {
                 $values_1[] = $value_1;

@@ -59,7 +59,7 @@ class DeliveryProductOfferResponseNormalizer implements DenormalizerInterface, N
             $object->setHandlingTime(null);
         }
         if (\array_key_exists('shippingRates', $data) && null !== $data['shippingRates']) {
-            $object->setShippingRates($this->denormalizer->denormalize($data['shippingRates'], \Em411\Allegro\Api\Model\JustId::class, 'json', $context));
+            $object->setShippingRates($this->denormalizer->denormalize($data['shippingRates'], \Em411\Allegro\Api\Model\DeliveryProductOfferResponseShippingRates::class, 'json', $context));
             unset($data['shippingRates']);
         } elseif (\array_key_exists('shippingRates', $data) && null === $data['shippingRates']) {
             $object->setShippingRates(null);
@@ -91,14 +91,14 @@ class DeliveryProductOfferResponseNormalizer implements DenormalizerInterface, N
         if ($data->isInitialized('handlingTime') && null !== $data->getHandlingTime()) {
             $dataArray['handlingTime'] = $data->getHandlingTime();
         }
-        if ($data->isInitialized('shippingRates') && null !== $data->getShippingRates()) {
+        if ($data->isInitialized('shippingRates')) {
             $dataArray['shippingRates'] = $this->normalizer->normalize($data->getShippingRates(), 'json', $context);
         }
-        if ($data->isInitialized('additionalInfo') && null !== $data->getAdditionalInfo()) {
+        if ($data->isInitialized('additionalInfo')) {
             $dataArray['additionalInfo'] = $data->getAdditionalInfo();
         }
-        if ($data->isInitialized('shipmentDate') && null !== $data->getShipmentDate()) {
-            $dataArray['shipmentDate'] = $data->getShipmentDate()->format('Y-m-d\TH:i:sP');
+        if ($data->isInitialized('shipmentDate')) {
+            $dataArray['shipmentDate'] = $data->getShipmentDate()?->format('Y-m-d\TH:i:sP');
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

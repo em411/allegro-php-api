@@ -32,15 +32,11 @@ class SellingMode extends \ArrayObject
      */
     protected $price;
     /**
-     * The minimal price for offers in auction format.
-     *
-     * @var MinimalPrice|null
+     * @var mixed|null
      */
     protected $minimalPrice;
     /**
-     * The starting price for offers in auction format.
-     *
-     * @var StartingPrice|null
+     * @var mixed|null
      */
     protected $startingPrice;
 
@@ -87,18 +83,12 @@ class SellingMode extends \ArrayObject
         return $this;
     }
 
-    /**
-     * The minimal price for offers in auction format.
-     */
-    public function getMinimalPrice(): ?MinimalPrice
+    public function getMinimalPrice()
     {
         return $this->minimalPrice;
     }
 
-    /**
-     * The minimal price for offers in auction format.
-     */
-    public function setMinimalPrice(?MinimalPrice $minimalPrice): self
+    public function setMinimalPrice($minimalPrice): self
     {
         $this->initialized['minimalPrice'] = true;
         $this->minimalPrice = $minimalPrice;
@@ -106,18 +96,12 @@ class SellingMode extends \ArrayObject
         return $this;
     }
 
-    /**
-     * The starting price for offers in auction format.
-     */
-    public function getStartingPrice(): ?StartingPrice
+    public function getStartingPrice()
     {
         return $this->startingPrice;
     }
 
-    /**
-     * The starting price for offers in auction format.
-     */
-    public function setStartingPrice(?StartingPrice $startingPrice): self
+    public function setStartingPrice($startingPrice): self
     {
         $this->initialized['startingPrice'] = true;
         $this->startingPrice = $startingPrice;

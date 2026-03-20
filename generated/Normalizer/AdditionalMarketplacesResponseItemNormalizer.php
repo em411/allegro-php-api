@@ -76,7 +76,7 @@ class AdditionalMarketplacesResponseItemNormalizer implements DenormalizerInterf
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('sellingMode') && null !== $data->getSellingMode()) {
+        if ($data->isInitialized('sellingMode')) {
             $dataArray['sellingMode'] = $this->normalizer->normalize($data->getSellingMode(), 'json', $context);
         }
         if ($data->isInitialized('publication') && null !== $data->getPublication()) {

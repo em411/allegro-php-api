@@ -26,7 +26,7 @@ class DeliveryProductOfferResponse extends \ArrayObject
      */
     protected $handlingTime;
     /**
-     * @var JustId|null
+     * @var DeliveryProductOfferResponseShippingRates|null
      */
     protected $shippingRates;
     /**
@@ -68,12 +68,12 @@ class DeliveryProductOfferResponse extends \ArrayObject
         return $this;
     }
 
-    public function getShippingRates(): ?JustId
+    public function getShippingRates(): ?DeliveryProductOfferResponseShippingRates
     {
         return $this->shippingRates;
     }
 
-    public function setShippingRates(?JustId $shippingRates): self
+    public function setShippingRates(?DeliveryProductOfferResponseShippingRates $shippingRates): self
     {
         $this->initialized['shippingRates'] = true;
         $this->shippingRates = $shippingRates;

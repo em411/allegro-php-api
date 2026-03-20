@@ -25358,7 +25358,9 @@ components:
       type: object
       properties:
         duration:
-          $ref: '#/components/schemas/OfferDuration'
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/OfferDuration'
         startingAt:
           $ref: '#/components/schemas/OfferStartingAt'
         status:
@@ -25373,8 +25375,11 @@ components:
         - type: object
           properties:
             endingAt:
-              $ref: '#/components/schemas/OfferEndingAt'
+              nullable: true
+              allOf:
+                - $ref: '#/components/schemas/OfferEndingAt'
             endedBy:
+              nullable: true
               type: string
               readOnly: true
               enum:
@@ -26498,6 +26503,7 @@ components:
           type: string
           example: NotAcceptableException
         details:
+          nullable: true
           type: string
           example: null
         message:
@@ -27238,9 +27244,13 @@ components:
         price:
           $ref: '#/components/schemas/BuyNowPrice'
         minimalPrice:
-          $ref: '#/components/schemas/MinimalPrice'
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/MinimalPrice'
         startingPrice:
-          $ref: '#/components/schemas/StartingPrice'
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/StartingPrice'
     SellingModeWithNetPrice:
       type: object
       description: Information on the offer's selling mode.
@@ -29681,11 +29691,17 @@ components:
         external:
           $ref: '#/components/schemas/ExternalId'
         sizeTable:
-          $ref: '#/components/schemas/SizeTable'
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/SizeTable'
         taxSettings:
-          $ref: '#/components/schemas/OfferTaxSettings'
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/OfferTaxSettings'
         messageToSellerSettings:
-          $ref: '#/components/schemas/MessageToSellerSettings'
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/MessageToSellerSettings'
       description: Single offer data.
     SaleProductOfferRequestBase:
       allOf:
@@ -29898,6 +29914,7 @@ components:
                                 description: Flag that indicates if any part of product was cocreated with using AI.
                                 example: false
                       responsiblePerson:
+                        nullable: true
                         type: object
                         description: Reference to the responsible person configured using <a href="https://developer.allegro.pl/documentation#tag/Responsible-persons">Responsible Persons API</a>. Note that this is a different field than <code>responsibleProducer</code>.
                         properties:
@@ -29905,6 +29922,7 @@ components:
                             type: string
                             example: 570c928f-39ac-4838-93bb-eb829bc2136f
                       responsibleProducer:
+                        nullable: true
                         type: object
                         description: Reference to the responsible producer configured using Responsible Producer API. Note that this is a different field than <code>responsiblePerson</code>.
                         properties:
@@ -29929,9 +29947,13 @@ components:
             attachments:
               $ref: '#/components/schemas/ProductOfferAttachment'
             fundraisingCampaign:
-              $ref: '#/components/schemas/ProductOfferFundraisingCampaignResponse'
+              nullable: true
+              allOf:
+                - $ref: '#/components/schemas/ProductOfferFundraisingCampaignResponse'
             additionalServices:
-              $ref: '#/components/schemas/ProductOfferAdditionalServicesResponse'
+              nullable: true
+              allOf:
+                - $ref: '#/components/schemas/ProductOfferAdditionalServicesResponse'
             delivery:
               $ref: '#/components/schemas/DeliveryProductOfferResponse'
             publication:
@@ -29941,7 +29963,10 @@ components:
             b2b:
               $ref: '#/components/schemas/B2b'
             compatibilityList:
-              $ref: '#/components/schemas/CompatibilityListProductOfferResponse'
+              type: object
+              nullable: true
+              allOf:
+                - $ref: '#/components/schemas/CompatibilityListProductOfferResponse'
             language:
               type: string
               description: Declared base language of the offer.
@@ -29954,17 +29979,22 @@ components:
                 - $ref: '#/components/schemas/Errors'
                 - description: 'Information about any problems that occurred during request processing, for example: some details may not have been saved, but the offer creation could continue. It is advised to present this data similarly to <code>validation.warnings</code>.'
             afterSalesServices:
-              $ref: '#/components/schemas/AfterSalesServices'
+              nullable: true
+              allOf:
+                - $ref: '#/components/schemas/AfterSalesServices'
             discounts:
               $ref: '#/components/schemas/DiscountsProductOfferResponse'
             stock:
-              $ref: '#/components/schemas/Stock'
+              nullable: true
+              allOf:
+                - $ref: '#/components/schemas/Stock'
             parameters:
               type: array
               items:
                 $ref: '#/components/schemas/ParameterProductOfferResponse'
               description: List of offer parameters.
             contact:
+              nullable: true
               allOf:
                 - $ref: '#/components/schemas/Contact'
               description: Identifier of contact data for sales format ADVERTISEMENT (classified ad); retrieve it via GET /sale/offer-contacts.
@@ -30187,6 +30217,7 @@ components:
       type: object
       properties:
         safetyInformation:
+          nullable: true
           oneOf:
             - $ref: '#/components/schemas/TextSafetyInformation'
             - $ref: '#/components/schemas/AttachmentsSafetyInformation'
@@ -30282,6 +30313,7 @@ components:
       type: object
       properties:
         id:
+          nullable: true
           type: string
           example: c9e39cae-9cb6-11e9-a2a3-2a2ae2dbcce4
           description: Product id.
@@ -30363,14 +30395,18 @@ components:
           example: PT24H
           description: 'Handling time, ISO 8601 duration format. This field must be set to one of the following: PT0S for immediately, PT24H, P2D, P3D, P4D, P5D, P7D, P10D, P14D, P21D, P30D, P60D.'
         shippingRates:
-          $ref: '#/components/schemas/JustId'
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/JustId'
         additionalInfo:
+          nullable: true
           type: string
           maxLength: 650
           deprecated: true
           description: Additional information about delivery. Parameter is deprecated and will be removed in the future. Additional information is only visible on marketplace `allegro-pl`.
           example: Example additional info
         shipmentDate:
+          nullable: true
           type: string
           format: date-time
           description: 'Shipment date: Format (ISO 8601) - yyyy-MM-dd''T''HH:mm:ss.SSSZ.'
@@ -30426,6 +30462,7 @@ components:
         type: object
         properties:
           sellingMode:
+            nullable: true
             allOf:
               - $ref: '#/components/schemas/SellingMode'
             description: The offer price for the selected additional marketplace.
@@ -30515,13 +30552,16 @@ components:
           description: The name of the parameter.
           example: Manufacturer code
         rangeValue:
-          $ref: '#/components/schemas/ParameterRangeValue'
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/ParameterRangeValue'
         values:
           type: array
           items:
             type: string
             example: '4234'
         valuesIds:
+          nullable: true
           type: array
           items:
             type: string
@@ -30545,7 +30585,9 @@ components:
       type: object
       properties:
         wholesalePriceList:
-          $ref: '#/components/schemas/JustId'
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/JustId'
     OfferRequirements:
       description: Conditions which an offer must meet to be assigned with the product, i.e. Condition parameter must be set to New.
       properties:

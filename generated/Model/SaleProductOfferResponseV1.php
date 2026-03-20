@@ -48,11 +48,11 @@ class SaleProductOfferResponseV1 extends \ArrayObject
      */
     protected $attachments;
     /**
-     * @var ProductOfferFundraisingCampaignResponse|null
+     * @var SaleProductOfferResponseV1fundraisingCampaign|null
      */
     protected $fundraisingCampaign;
     /**
-     * @var ProductOfferAdditionalServicesResponse|null
+     * @var SaleProductOfferResponseV1additionalServices|null
      */
     protected $additionalServices;
     /**
@@ -76,7 +76,7 @@ class SaleProductOfferResponseV1 extends \ArrayObject
      */
     protected $b2b;
     /**
-     * @var CompatibilityListProductOfferResponse|null
+     * @var array<string, mixed>|null
      */
     protected $compatibilityList;
     /**
@@ -94,9 +94,7 @@ class SaleProductOfferResponseV1 extends \ArrayObject
      */
     protected $warnings;
     /**
-     * The definitions of the different after sales services assigned to the offer.
-     *
-     * @var AfterSalesServices|null
+     * @var SaleProductOfferResponseV1afterSalesServices|null
      */
     protected $afterSalesServices;
     /**
@@ -104,7 +102,7 @@ class SaleProductOfferResponseV1 extends \ArrayObject
      */
     protected $discounts;
     /**
-     * @var Stock|null
+     * @var SaleProductOfferResponseV1stock|null
      */
     protected $stock;
     /**
@@ -164,19 +162,15 @@ class SaleProductOfferResponseV1 extends \ArrayObject
      */
     protected $external;
     /**
-     * @var SizeTable|null
+     * @var SaleProductOfferSizeTable|null
      */
     protected $sizeTable;
     /**
-     * Tax settings for offer. Available settings can be found under <a href="#operation/getTaxSettingsForCategory" target="_blank">"get all tax settings for category" resource</a>.
-     *
-     * @var OfferTaxSettings|null
+     * @var SaleProductOfferTaxSettings|null
      */
     protected $taxSettings;
     /**
-     * Defines message to the seller settings options.
-     *
-     * @var MessageToSellerSettings|null
+     * @var SaleProductOfferMessageToSellerSettings|null
      */
     protected $messageToSellerSettings;
 
@@ -286,12 +280,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    public function getFundraisingCampaign(): ?ProductOfferFundraisingCampaignResponse
+    public function getFundraisingCampaign(): ?SaleProductOfferResponseV1fundraisingCampaign
     {
         return $this->fundraisingCampaign;
     }
 
-    public function setFundraisingCampaign(?ProductOfferFundraisingCampaignResponse $fundraisingCampaign): self
+    public function setFundraisingCampaign(?SaleProductOfferResponseV1fundraisingCampaign $fundraisingCampaign): self
     {
         $this->initialized['fundraisingCampaign'] = true;
         $this->fundraisingCampaign = $fundraisingCampaign;
@@ -299,12 +293,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    public function getAdditionalServices(): ?ProductOfferAdditionalServicesResponse
+    public function getAdditionalServices(): ?SaleProductOfferResponseV1additionalServices
     {
         return $this->additionalServices;
     }
 
-    public function setAdditionalServices(?ProductOfferAdditionalServicesResponse $additionalServices): self
+    public function setAdditionalServices(?SaleProductOfferResponseV1additionalServices $additionalServices): self
     {
         $this->initialized['additionalServices'] = true;
         $this->additionalServices = $additionalServices;
@@ -380,12 +374,18 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    public function getCompatibilityList(): ?CompatibilityListProductOfferResponse
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function getCompatibilityList(): ?iterable
     {
         return $this->compatibilityList;
     }
 
-    public function setCompatibilityList(?CompatibilityListProductOfferResponse $compatibilityList): self
+    /**
+     * @param array<string, mixed>|null $compatibilityList
+     */
+    public function setCompatibilityList(?iterable $compatibilityList): self
     {
         $this->initialized['compatibilityList'] = true;
         $this->compatibilityList = $compatibilityList;
@@ -444,18 +444,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    /**
-     * The definitions of the different after sales services assigned to the offer.
-     */
-    public function getAfterSalesServices(): ?AfterSalesServices
+    public function getAfterSalesServices(): ?SaleProductOfferResponseV1afterSalesServices
     {
         return $this->afterSalesServices;
     }
 
-    /**
-     * The definitions of the different after sales services assigned to the offer.
-     */
-    public function setAfterSalesServices(?AfterSalesServices $afterSalesServices): self
+    public function setAfterSalesServices(?SaleProductOfferResponseV1afterSalesServices $afterSalesServices): self
     {
         $this->initialized['afterSalesServices'] = true;
         $this->afterSalesServices = $afterSalesServices;
@@ -476,12 +470,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    public function getStock(): ?Stock
+    public function getStock(): ?SaleProductOfferResponseV1stock
     {
         return $this->stock;
     }
 
-    public function setStock(?Stock $stock): self
+    public function setStock(?SaleProductOfferResponseV1stock $stock): self
     {
         $this->initialized['stock'] = true;
         $this->stock = $stock;
@@ -677,12 +671,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    public function getSizeTable(): ?SizeTable
+    public function getSizeTable(): ?SaleProductOfferSizeTable
     {
         return $this->sizeTable;
     }
 
-    public function setSizeTable(?SizeTable $sizeTable): self
+    public function setSizeTable(?SaleProductOfferSizeTable $sizeTable): self
     {
         $this->initialized['sizeTable'] = true;
         $this->sizeTable = $sizeTable;
@@ -690,18 +684,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    /**
-     * Tax settings for offer. Available settings can be found under <a href="#operation/getTaxSettingsForCategory" target="_blank">"get all tax settings for category" resource</a>.
-     */
-    public function getTaxSettings(): ?OfferTaxSettings
+    public function getTaxSettings(): ?SaleProductOfferTaxSettings
     {
         return $this->taxSettings;
     }
 
-    /**
-     * Tax settings for offer. Available settings can be found under <a href="#operation/getTaxSettingsForCategory" target="_blank">"get all tax settings for category" resource</a>.
-     */
-    public function setTaxSettings(?OfferTaxSettings $taxSettings): self
+    public function setTaxSettings(?SaleProductOfferTaxSettings $taxSettings): self
     {
         $this->initialized['taxSettings'] = true;
         $this->taxSettings = $taxSettings;
@@ -709,18 +697,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    /**
-     * Defines message to the seller settings options.
-     */
-    public function getMessageToSellerSettings(): ?MessageToSellerSettings
+    public function getMessageToSellerSettings(): ?SaleProductOfferMessageToSellerSettings
     {
         return $this->messageToSellerSettings;
     }
 
-    /**
-     * Defines message to the seller settings options.
-     */
-    public function setMessageToSellerSettings(?MessageToSellerSettings $messageToSellerSettings): self
+    public function setMessageToSellerSettings(?SaleProductOfferMessageToSellerSettings $messageToSellerSettings): self
     {
         $this->initialized['messageToSellerSettings'] = true;
         $this->messageToSellerSettings = $messageToSellerSettings;

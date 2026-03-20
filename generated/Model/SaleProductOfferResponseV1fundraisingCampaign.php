@@ -13,31 +13,39 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DiscountsProductOfferResponse extends \ArrayObject
+class SaleProductOfferResponseV1fundraisingCampaign extends \ArrayObject
 {
     /**
      * @var array
      */
     protected $initialized = [];
     /**
-     * @var DiscountsProductOfferResponseWholesalePriceList|null
+     * Id of fundraising campaign.
+     *
+     * @var string|null
      */
-    protected $wholesalePriceList;
+    protected $id;
 
     public function isInitialized($property): bool
     {
         return \array_key_exists($property, $this->initialized);
     }
 
-    public function getWholesalePriceList(): ?DiscountsProductOfferResponseWholesalePriceList
+    /**
+     * Id of fundraising campaign.
+     */
+    public function getId(): ?string
     {
-        return $this->wholesalePriceList;
+        return $this->id;
     }
 
-    public function setWholesalePriceList(?DiscountsProductOfferResponseWholesalePriceList $wholesalePriceList): self
+    /**
+     * Id of fundraising campaign.
+     */
+    public function setId(?string $id): self
     {
-        $this->initialized['wholesalePriceList'] = true;
-        $this->wholesalePriceList = $wholesalePriceList;
+        $this->initialized['id'] = true;
+        $this->id = $id;
 
         return $this;
     }

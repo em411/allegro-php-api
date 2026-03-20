@@ -103,7 +103,7 @@ class PublicationNormalizer implements DenormalizerInterface, NormalizerInterfac
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('duration') && null !== $data->getDuration()) {
+        if ($data->isInitialized('duration')) {
             $dataArray['duration'] = $data->getDuration();
         }
         if ($data->isInitialized('startingAt') && null !== $data->getStartingAt()) {
@@ -115,7 +115,7 @@ class PublicationNormalizer implements DenormalizerInterface, NormalizerInterfac
         if ($data->isInitialized('republish') && null !== $data->getRepublish()) {
             $dataArray['republish'] = $data->getRepublish();
         }
-        if ($data->isInitialized('endingAt') && null !== $data->getEndingAt()) {
+        if ($data->isInitialized('endingAt')) {
             $dataArray['endingAt'] = $data->getEndingAt()->format('Y-m-d\TH:i:sP');
         }
         foreach ($data as $key => $value) {

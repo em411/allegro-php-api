@@ -52,19 +52,15 @@ class SaleProductOffer extends \ArrayObject
      */
     protected $external;
     /**
-     * @var SizeTable|null
+     * @var SaleProductOfferSizeTable|null
      */
     protected $sizeTable;
     /**
-     * Tax settings for offer. Available settings can be found under <a href="#operation/getTaxSettingsForCategory" target="_blank">"get all tax settings for category" resource</a>.
-     *
-     * @var OfferTaxSettings|null
+     * @var SaleProductOfferTaxSettings|null
      */
     protected $taxSettings;
     /**
-     * Defines message to the seller settings options.
-     *
-     * @var MessageToSellerSettings|null
+     * @var SaleProductOfferMessageToSellerSettings|null
      */
     protected $messageToSellerSettings;
 
@@ -181,12 +177,12 @@ class SaleProductOffer extends \ArrayObject
         return $this;
     }
 
-    public function getSizeTable(): ?SizeTable
+    public function getSizeTable(): ?SaleProductOfferSizeTable
     {
         return $this->sizeTable;
     }
 
-    public function setSizeTable(?SizeTable $sizeTable): self
+    public function setSizeTable(?SaleProductOfferSizeTable $sizeTable): self
     {
         $this->initialized['sizeTable'] = true;
         $this->sizeTable = $sizeTable;
@@ -194,18 +190,12 @@ class SaleProductOffer extends \ArrayObject
         return $this;
     }
 
-    /**
-     * Tax settings for offer. Available settings can be found under <a href="#operation/getTaxSettingsForCategory" target="_blank">"get all tax settings for category" resource</a>.
-     */
-    public function getTaxSettings(): ?OfferTaxSettings
+    public function getTaxSettings(): ?SaleProductOfferTaxSettings
     {
         return $this->taxSettings;
     }
 
-    /**
-     * Tax settings for offer. Available settings can be found under <a href="#operation/getTaxSettingsForCategory" target="_blank">"get all tax settings for category" resource</a>.
-     */
-    public function setTaxSettings(?OfferTaxSettings $taxSettings): self
+    public function setTaxSettings(?SaleProductOfferTaxSettings $taxSettings): self
     {
         $this->initialized['taxSettings'] = true;
         $this->taxSettings = $taxSettings;
@@ -213,18 +203,12 @@ class SaleProductOffer extends \ArrayObject
         return $this;
     }
 
-    /**
-     * Defines message to the seller settings options.
-     */
-    public function getMessageToSellerSettings(): ?MessageToSellerSettings
+    public function getMessageToSellerSettings(): ?SaleProductOfferMessageToSellerSettings
     {
         return $this->messageToSellerSettings;
     }
 
-    /**
-     * Defines message to the seller settings options.
-     */
-    public function setMessageToSellerSettings(?MessageToSellerSettings $messageToSellerSettings): self
+    public function setMessageToSellerSettings(?SaleProductOfferMessageToSellerSettings $messageToSellerSettings): self
     {
         $this->initialized['messageToSellerSettings'] = true;
         $this->messageToSellerSettings = $messageToSellerSettings;

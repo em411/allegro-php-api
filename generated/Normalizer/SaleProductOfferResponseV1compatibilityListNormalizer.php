@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class DiscountsProductOfferResponseNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class SaleProductOfferResponseV1compatibilityListNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class DiscountsProductOfferResponseNormalizer implements DenormalizerInterface, 
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\DiscountsProductOfferResponse::class === $type;
+        return \Em411\Allegro\Api\Model\SaleProductOfferResponseV1compatibilityList::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\DiscountsProductOfferResponse::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\SaleProductOfferResponseV1compatibilityList::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,15 +48,15 @@ class DiscountsProductOfferResponseNormalizer implements DenormalizerInterface, 
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\DiscountsProductOfferResponse();
+        $object = new \Em411\Allegro\Api\Model\SaleProductOfferResponseV1compatibilityList();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('wholesalePriceList', $data) && null !== $data['wholesalePriceList']) {
-            $object->setWholesalePriceList($this->denormalizer->denormalize($data['wholesalePriceList'], \Em411\Allegro\Api\Model\DiscountsProductOfferResponseWholesalePriceList::class, 'json', $context));
-            unset($data['wholesalePriceList']);
-        } elseif (\array_key_exists('wholesalePriceList', $data) && null === $data['wholesalePriceList']) {
-            $object->setWholesalePriceList(null);
+        if (\array_key_exists('type', $data) && null !== $data['type']) {
+            $object->setType($data['type']);
+            unset($data['type']);
+        } elseif (\array_key_exists('type', $data) && null === $data['type']) {
+            $object->setType(null);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,9 +70,7 @@ class DiscountsProductOfferResponseNormalizer implements DenormalizerInterface, 
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('wholesalePriceList')) {
-            $dataArray['wholesalePriceList'] = $this->normalizer->normalize($data->getWholesalePriceList(), 'json', $context);
-        }
+        $dataArray['type'] = $data->getType();
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
@@ -84,6 +82,6 @@ class DiscountsProductOfferResponseNormalizer implements DenormalizerInterface, 
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\DiscountsProductOfferResponse::class => false];
+        return [\Em411\Allegro\Api\Model\SaleProductOfferResponseV1compatibilityList::class => false];
     }
 }

@@ -70,7 +70,7 @@ class ProductSetElementSafetyInformationResponseNormalizer implements Denormaliz
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('safetyInformation') && null !== $data->getSafetyInformation()) {
+        if ($data->isInitialized('safetyInformation')) {
             $dataArray['safetyInformation'] = $data->getSafetyInformation();
         }
         foreach ($data as $key => $value) {
