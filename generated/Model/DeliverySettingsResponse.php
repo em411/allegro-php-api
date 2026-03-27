@@ -44,7 +44,9 @@ class DeliverySettingsResponse extends \ArrayObject
      */
     protected $joinPolicy;
     /**
-     * Policy of custom delivery cost.
+     * Feature is no longer supported, 'allowed' property is always false.
+     *
+     * @deprecated
      *
      * @var DeliverySettingsResponseCustomCost|null
      */
@@ -138,7 +140,9 @@ class DeliverySettingsResponse extends \ArrayObject
     }
 
     /**
-     * Policy of custom delivery cost.
+     * Feature is no longer supported, 'allowed' property is always false.
+     *
+     * @deprecated
      */
     public function getCustomCost(): ?DeliverySettingsResponseCustomCost
     {
@@ -146,7 +150,9 @@ class DeliverySettingsResponse extends \ArrayObject
     }
 
     /**
-     * Policy of custom delivery cost.
+     * Feature is no longer supported, 'allowed' property is always false.
+     *
+     * @deprecated
      */
     public function setCustomCost(?DeliverySettingsResponseCustomCost $customCost): self
     {

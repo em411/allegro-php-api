@@ -26004,7 +26004,8 @@ components:
           required:
             - strategy
         customCost:
-          description: Policy of custom delivery cost.
+          deprecated: true
+          description: Feature is no longer supported, 'allowed' property is always false.
           type: object
           properties:
             allowed:
@@ -26087,7 +26088,8 @@ components:
           required:
             - strategy
         customCost:
-          description: Policy of custom delivery cost.
+          deprecated: true
+          description: Feature is no longer supported, attempting to set property 'allowed' to true will return 422.
           type: object
           properties:
             allowed:

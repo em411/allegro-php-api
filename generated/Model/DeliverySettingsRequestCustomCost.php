@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
+/**
+ * @deprecated
+ */
 class DeliverySettingsRequestCustomCost extends \ArrayObject
 {
     /**
