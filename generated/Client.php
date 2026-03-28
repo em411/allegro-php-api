@@ -6272,6 +6272,36 @@ class Client extends Runtime\Client\Client
     }
 
     /**
+     * Use this resource to get refund dispositions for returns handled in One Fulfillment. The response contains data from the last 90 days only. The response contains both buyer returns and operational returns. When there is no matching disposition, the `report` array is empty.
+     *
+     * @param array $queryParameters {
+     *
+     * @var string $createdAt.gte Date of the return in ISO 8601 format to search by greater or equal.
+     * @var string $createdAt.lte Date of the return in ISO 8601 format to search by lower or equal.
+     * @var int    $limit maximum number of elements in response
+     * @var int    $offset The offset of elements in the response.
+     *             }
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\FulfillmentRefundDispositionsResponse|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\GetRefundDispositionsReportUnauthorizedException
+     * @throws Exception\GetRefundDispositionsReportForbiddenException
+     * @throws Exception\GetRefundDispositionsReportNotAcceptableException
+     * @throws Exception\GetRefundDispositionsReportUnprocessableEntityException
+     */
+    public function getRefundDispositionsReport(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\GetRefundDispositionsReport($queryParameters, $headerParameters), $fetch);
+    }
+
+    /**
      * Use this resource to delete an Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-usunac-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-delete-advance-ship-notice" target="_blank">EN</a>.
      *
      * @param string $id               an identifier of the Advance Ship Notice to delete

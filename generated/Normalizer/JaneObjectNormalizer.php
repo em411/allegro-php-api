@@ -81,6 +81,20 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\RefundDetailsAdditionalServices::class => RefundDetailsAdditionalServicesNormalizer::class,
 
+        \Em411\Allegro\Api\Model\FulfillmentRefundDispositionsResponse::class => FulfillmentRefundDispositionsResponseNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FulfillmentRefundDisposition::class => FulfillmentRefundDispositionNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FulfillmentRefundDispositionRefund::class => FulfillmentRefundDispositionRefundNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FulfillmentRefundDispositionProduct::class => FulfillmentRefundDispositionProductNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FulfillmentRefundDispositionBuyer::class => FulfillmentRefundDispositionBuyerNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FulfillmentRefundDispositionsValidationErrorResponse::class => FulfillmentRefundDispositionsValidationErrorResponseNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FulfillmentRefundDispositionsValidationError::class => FulfillmentRefundDispositionsValidationErrorNormalizer::class,
+
         \Em411\Allegro\Api\Model\RefundLineItem::class => RefundLineItemNormalizer::class,
 
         \Em411\Allegro\Api\Model\RefundLineItemValue::class => RefundLineItemValueNormalizer::class,
@@ -2538,6 +2552,13 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\RefundDetailsDelivery::class => false,
             \Em411\Allegro\Api\Model\RefundDetailsOverpaid::class => false,
             \Em411\Allegro\Api\Model\RefundDetailsAdditionalServices::class => false,
+            \Em411\Allegro\Api\Model\FulfillmentRefundDispositionsResponse::class => false,
+            \Em411\Allegro\Api\Model\FulfillmentRefundDisposition::class => false,
+            \Em411\Allegro\Api\Model\FulfillmentRefundDispositionRefund::class => false,
+            \Em411\Allegro\Api\Model\FulfillmentRefundDispositionProduct::class => false,
+            \Em411\Allegro\Api\Model\FulfillmentRefundDispositionBuyer::class => false,
+            \Em411\Allegro\Api\Model\FulfillmentRefundDispositionsValidationErrorResponse::class => false,
+            \Em411\Allegro\Api\Model\FulfillmentRefundDispositionsValidationError::class => false,
             \Em411\Allegro\Api\Model\RefundLineItem::class => false,
             \Em411\Allegro\Api\Model\RefundLineItemValue::class => false,
             \Em411\Allegro\Api\Model\RefundLineItemDeposit::class => false,

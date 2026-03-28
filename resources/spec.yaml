@@ -67,6 +67,7 @@ tags:
   - name: Fulfillment Stock
   - name: Fulfillment Parcels
   - name: Fulfillment Products
+  - name: Fulfillment Returns
   - name: Fulfillment Removal
   - name: Tax Identification Number
   - name: Responsible persons
@@ -19097,6 +19098,89 @@ paths:
       security:
         - bearer-token-for-user:
             - allegro:api:fulfillment:write
+  /fulfillment/returns/refund-dispositions:
+    get:
+      summary: Get refund dispositions report
+      description: Use this resource to get refund dispositions for returns handled in One Fulfillment. The response contains data from the last 90 days only. The response contains both buyer returns and operational returns. When there is no matching disposition, the `report` array is empty.
+      tags:
+        - Fulfillment Returns
+      operationId: getRefundDispositionsReport
+      parameters:
+        - name: createdAt.gte
+          in: query
+          description: Date of the return in ISO 8601 format to search by greater or equal.
+          required: false
+          schema:
+            type: string
+            format: date-time
+          example: '2025-11-01T00:00:00.000Z'
+        - name: createdAt.lte
+          in: query
+          description: Date of the return in ISO 8601 format to search by lower or equal.
+          required: false
+          schema:
+            type: string
+            format: date-time
+          example: '2025-11-10T23:59:59.000Z'
+        - name: limit
+          in: query
+          description: Maximum number of elements in response.
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+        - name: offset
+          in: query
+          description: The offset of elements in the response.
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 1000
+            default: 0
+        - name: Accept-Language
+          in: header
+          required: false
+          description: Expected language of messages.
+          example: en-US
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      responses:
+        '200':
+          description: Returns the refund dispositions report.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/FulfillmentRefundDispositionsResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '406':
+          description: Not Acceptable
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/FulfillmentRefundDispositionsValidationErrorResponse'
+        '422':
+          description: Invalid request parameters.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/FulfillmentRefundDispositionsValidationErrorResponse'
+      security:
+        - bearer-token-for-user:
+            - allegro:api:fulfillment:read
   /fulfillment/advance-ship-notices/{id}:
     get:
       summary: Get single Advance Ship Notice
@@ -20877,6 +20961,137 @@ components:
           description: Sellers optional justification for refund.
           maxLength: 250
           example: Example seller comment.
+    FulfillmentRefundDispositionsResponse:
+      type: object
+      properties:
+        report:
+          type: array
+          description: Refund dispositions matching the provided filters.
+          items:
+            $ref: '#/components/schemas/FulfillmentRefundDisposition'
+    FulfillmentRefundDisposition:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the refund disposition. - `RETURN` - buyer return, - `BOUNCE` - operational return.
+          enum:
+            - RETURN
+            - BOUNCE
+        refund:
+          $ref: '#/components/schemas/FulfillmentRefundDispositionRefund'
+        stockStatus:
+          type: string
+          description: Status describing whether the item returns to sellable stock. - `SELLABLE` - item returns to sellable stock, - `NON_SELLABLE` - item designated for removal process or disposal, - `MISSING` - expected item was not found in parcel, - `ITEM_MISMATCH` - same product but different serial numbers.
+          enum:
+            - SELLABLE
+            - NON_SELLABLE
+            - MISSING
+            - ITEM_MISMATCH
+        verificationStatus:
+          type: string
+          nullable: true
+          description: Verification status based on quality inspection in warehouse. Sample values include `DAMAGED`, `EXPIRED`, `FULL_DAMAGE`, `ITEM_MISSING`, `PARTIAL_DAMAGE`, `RECEIVED`, `SELLABLE` and may change without prior notification.
+          example: FULL_DAMAGE
+        accountableForNonSellability:
+          type: string
+          description: Side accountable for item non-sellability. - `WAREHOUSE` - `BUYER` - `NOT_APPLICABLE`
+          enum:
+            - WAREHOUSE
+            - BUYER
+            - NOT_APPLICABLE
+        orderId:
+          type: string
+          description: Order identifier.
+          example: 10fbfd40-affa-11f0-8259-fbdb704ebfec
+        offerId:
+          type: string
+          description: Offer identifier.
+          example: '17570527479'
+        product:
+          $ref: '#/components/schemas/FulfillmentRefundDispositionProduct'
+        buyer:
+          $ref: '#/components/schemas/FulfillmentRefundDispositionBuyer'
+        createdAt:
+          type: string
+          format: date-time
+          description: Disposition creation date.
+          example: '2025-11-09T13:30:55.268Z'
+    FulfillmentRefundDispositionRefund:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Detailed refund status. Sample values include `NEW`, `IN_PROGRESS`, `SUCCESS`, `FAILURE`, `CANCELLED`, `PAYMENT_OPERATOR_NOT_SUPPORTED`, `UNTRACKED_REFUND_DETECTED`, `POSTPAID` and may change without prior notification.
+          example: SUCCESS
+        details:
+          type: string
+          description: Information about what should happen to finish the refund process. - `NO_ACTION_NEEDED` - nothing to do by seller, - `ACTION_NEEDED` - no automatic refund possible, refund should be managed by seller, - `IN_PROGRESS` - automatic refund started but not completed yet.
+          enum:
+            - NO_ACTION_NEEDED
+            - ACTION_NEEDED
+            - IN_PROGRESS
+    FulfillmentRefundDispositionProduct:
+      type: object
+      properties:
+        gtins:
+          type: array
+          items:
+            type: string
+          description: Product GTINs.
+          example:
+            - '5902719471815'
+        name:
+          type: string
+          description: Product name.
+          example: Szczotka do czyszczenia mopa obrotowego
+        quantity:
+          type: integer
+          format: int32
+          description: Product quantity.
+          example: 1
+    FulfillmentRefundDispositionBuyer:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Buyer login.
+          example: Alpacas_buyer
+    FulfillmentRefundDispositionsValidationErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FulfillmentRefundDispositionsValidationError'
+    FulfillmentRefundDispositionsValidationError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Validation error code.
+          example: CREATED_AT_INVALID
+        details:
+          type: string
+          nullable: true
+          example: ''
+        message:
+          type: string
+          description: Technical message describing the error.
+          example: Incorrect value for createdAt.gte parameter
+        path:
+          type: string
+          description: Request path related to the validation error.
+          example: /fulfillment/returns/refund-dispositions?createdAt.gte&createdAt.lte
+        userMessage:
+          type: string
+          description: User-facing message describing the validation error.
+          example: The request contains incorrect value for createdAt.gte parameter. Minimum acceptable value is 2025-11-09T13:30:55.268Z.
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional metadata related to the validation error.
     RefundLineItem:
       type: object
       required:
@@ -37882,6 +38097,7 @@ x-tagGroups:
       - Fulfillment Stock
       - Fulfillment Parcels
       - Fulfillment Products
+      - Fulfillment Returns
       - Fulfillment Removal
       - Tax Identification Number
   - name: Affiliate
