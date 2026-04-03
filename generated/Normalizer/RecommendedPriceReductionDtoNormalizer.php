@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OfferFilterDtoNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class RecommendedPriceReductionDtoNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class OfferFilterDtoNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\OfferFilterDto::class === $type;
+        return \Em411\Allegro\Api\Model\RecommendedPriceReductionDto::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\OfferFilterDto::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\RecommendedPriceReductionDto::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,35 +48,19 @@ class OfferFilterDtoNormalizer implements DenormalizerInterface, NormalizerInter
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\OfferFilterDto();
+        $object = new \Em411\Allegro\Api\Model\RecommendedPriceReductionDto();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('ids', $data) && null !== $data['ids']) {
-            $values = [];
-            foreach ($data['ids'] as $value) {
-                $values[] = $value;
-            }
-            $object->setIds($values);
-            unset($data['ids']);
-        } elseif (\array_key_exists('ids', $data) && null === $data['ids']) {
-            $object->setIds(null);
+        if (\array_key_exists('sellerMaxDeclaredPercentage', $data) && null !== $data['sellerMaxDeclaredPercentage']) {
+            $object->setSellerMaxDeclaredPercentage($data['sellerMaxDeclaredPercentage']);
+            unset($data['sellerMaxDeclaredPercentage']);
+        } elseif (\array_key_exists('sellerMaxDeclaredPercentage', $data) && null === $data['sellerMaxDeclaredPercentage']) {
+            $object->setSellerMaxDeclaredPercentage(null);
         }
-        if (\array_key_exists('scope', $data) && null !== $data['scope']) {
-            $object->setScope($data['scope']);
-            unset($data['scope']);
-        } elseif (\array_key_exists('scope', $data) && null === $data['scope']) {
-            $object->setScope(null);
-        }
-        if (\array_key_exists('substatus', $data) && null !== $data['substatus']) {
-            $object->setSubstatus($data['substatus']);
-            unset($data['substatus']);
-        } elseif (\array_key_exists('substatus', $data) && null === $data['substatus']) {
-            $object->setSubstatus(null);
-        }
-        foreach ($data as $key => $value_1) {
+        foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+                $object[$key] = $value;
             }
         }
 
@@ -86,22 +70,10 @@ class OfferFilterDtoNormalizer implements DenormalizerInterface, NormalizerInter
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('ids') && null !== $data->getIds()) {
-            $values = [];
-            foreach ($data->getIds() as $value) {
-                $values[] = $value;
-            }
-            $dataArray['ids'] = $values;
-        }
-        if ($data->isInitialized('scope') && null !== $data->getScope()) {
-            $dataArray['scope'] = $data->getScope();
-        }
-        if ($data->isInitialized('substatus') && null !== $data->getSubstatus()) {
-            $dataArray['substatus'] = $data->getSubstatus();
-        }
-        foreach ($data as $key => $value_1) {
+        $dataArray['sellerMaxDeclaredPercentage'] = $data->getSellerMaxDeclaredPercentage();
+        foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+                $dataArray[$key] = $value;
             }
         }
 
@@ -110,6 +82,6 @@ class OfferFilterDtoNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\OfferFilterDto::class => false];
+        return [\Em411\Allegro\Api\Model\RecommendedPriceReductionDto::class => false];
     }
 }

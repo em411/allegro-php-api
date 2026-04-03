@@ -42,6 +42,16 @@ class OfferStatusItemDto extends \ArrayObject
      */
     protected $basePrice;
     /**
+     * @var OfferStatusItemDtoDiscount|null
+     */
+    protected $discount;
+    /**
+     * Recommended price reduction for the offer. Contains the recommended seller discount percentage. Null if no recommendation is available.
+     *
+     * @var RecommendedPriceReductionDto|array<string, mixed>|null
+     */
+    protected $recommendedPriceReduction;
+    /**
      * Information about the seller's declared price reduction for Allegro Prices program. Contains the maximum percentage and amount the seller is willing to discount. Null if the seller has not made a declaration.
      *
      * @var DeclaredPriceReductionDto|array<string, mixed>|null
@@ -141,6 +151,42 @@ class OfferStatusItemDto extends \ArrayObject
     {
         $this->initialized['basePrice'] = true;
         $this->basePrice = $basePrice;
+
+        return $this;
+    }
+
+    public function getDiscount(): ?OfferStatusItemDtoDiscount
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(?OfferStatusItemDtoDiscount $discount): self
+    {
+        $this->initialized['discount'] = true;
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * Recommended price reduction for the offer. Contains the recommended seller discount percentage. Null if no recommendation is available.
+     *
+     * @return RecommendedPriceReductionDto|array<string, mixed>|null
+     */
+    public function getRecommendedPriceReduction()
+    {
+        return $this->recommendedPriceReduction;
+    }
+
+    /**
+     * Recommended price reduction for the offer. Contains the recommended seller discount percentage. Null if no recommendation is available.
+     *
+     * @param RecommendedPriceReductionDto|array<string, mixed>|null $recommendedPriceReduction
+     */
+    public function setRecommendedPriceReduction($recommendedPriceReduction): self
+    {
+        $this->initialized['recommendedPriceReduction'] = true;
+        $this->recommendedPriceReduction = $recommendedPriceReduction;
 
         return $this;
     }

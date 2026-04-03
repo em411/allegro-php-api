@@ -31,6 +31,12 @@ class OfferFilterDto extends \ArrayObject
      * @var string|null
      */
     protected $scope;
+    /**
+     * Optional substatus filter to narrow down offers. Supported values: 'DISCOUNT_OPPORTUNITY' (offers with discount opportunity), 'DISCOUNT_RECOMMENDATION' (offers with discount recommendation). Can be combined with any scope value.
+     *
+     * @var string|null
+     */
+    protected $substatus;
 
     public function isInitialized($property): bool
     {
@@ -75,6 +81,25 @@ class OfferFilterDto extends \ArrayObject
     {
         $this->initialized['scope'] = true;
         $this->scope = $scope;
+
+        return $this;
+    }
+
+    /**
+     * Optional substatus filter to narrow down offers. Supported values: 'DISCOUNT_OPPORTUNITY' (offers with discount opportunity), 'DISCOUNT_RECOMMENDATION' (offers with discount recommendation). Can be combined with any scope value.
+     */
+    public function getSubstatus(): ?string
+    {
+        return $this->substatus;
+    }
+
+    /**
+     * Optional substatus filter to narrow down offers. Supported values: 'DISCOUNT_OPPORTUNITY' (offers with discount opportunity), 'DISCOUNT_RECOMMENDATION' (offers with discount recommendation). Can be combined with any scope value.
+     */
+    public function setSubstatus(?string $substatus): self
+    {
+        $this->initialized['substatus'] = true;
+        $this->substatus = $substatus;
 
         return $this;
     }

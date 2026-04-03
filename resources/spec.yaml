@@ -17115,6 +17115,15 @@ paths:
                     id: allegro-pl
                   limit: 20
                   offset: 0
+              filterBySubstatus:
+                summary: Filter offers by substatus (DISCOUNT_OPPORTUNITY)
+                value:
+                  marketplace:
+                    id: allegro-pl
+                  offer:
+                    substatus: DISCOUNT_OPPORTUNITY
+                  limit: 50
+                  offset: 0
       responses:
         '200':
           description: Successfully retrieved offers
@@ -17134,6 +17143,10 @@ paths:
                         basePrice:
                           amount: '2999.00'
                           currency: PLN
+                        discount:
+                          opportunity: true
+                        recommendedPriceReduction:
+                          sellerMaxDeclaredPercentage: '18.0'
                         declaredPriceReduction:
                           sellerMaxDeclaredPercentage: '15.0'
                           sellerMaxDeclaredDiscount:
@@ -17162,6 +17175,10 @@ paths:
                         basePrice:
                           amount: '4500.00'
                           currency: PLN
+                        discount:
+                          opportunity: true
+                        recommendedPriceReduction:
+                          sellerMaxDeclaredPercentage: '18.0'
                         declaredPriceReduction:
                           sellerMaxDeclaredPercentage: '10.0'
                           sellerMaxDeclaredDiscount:
@@ -17196,6 +17213,10 @@ paths:
                         basePrice:
                           amount: '899.00'
                           currency: PLN
+                        discount:
+                          opportunity: true
+                        recommendedPriceReduction:
+                          sellerMaxDeclaredPercentage: '18.0'
                         declaredPriceReduction:
                           sellerMaxDeclaredPercentage: '12.0'
                           sellerMaxDeclaredDiscount:
@@ -17217,6 +17238,9 @@ paths:
                         basePrice:
                           amount: '1200.00'
                           currency: PLN
+                        discount:
+                          opportunity: false
+                        recommendedPriceReduction: null
                         declaredPriceReduction: null
                         actualPriceReduction: null
                         discountedAt: null
@@ -17284,6 +17308,13 @@ paths:
                       - code: VALIDATION_ERROR
                         message: 'Validation failed: The provided scope is invalid'
                         userMessage: 'Validation failed: The provided scope is invalid'
+                invalidSubstatus:
+                  summary: Invalid substatus value
+                  value:
+                    errors:
+                      - code: VALIDATION_ERROR
+                        message: 'Validation failed: Substatus parameter is invalid'
+                        userMessage: 'Validation failed: Substatus parameter is invalid'
                 tooManyOfferIds:
                   summary: Too many offer IDs provided
                   value:
@@ -19101,7 +19132,7 @@ paths:
   /fulfillment/returns/refund-dispositions:
     get:
       summary: Get refund dispositions report
-      description: Use this resource to get refund dispositions for returns handled in One Fulfillment. The response contains data from the last 90 days only. The response contains both buyer returns and operational returns. When there is no matching disposition, the `report` array is empty.
+      description: 'Use this resource to get refund dispositions for returns handled in One Fulfillment. The response contains data from the last 90 days only. The response contains both buyer returns and operational returns. When there is no matching disposition, the `report` array is empty.  Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-pobrac-raport-dyspozycji-zwrotu-srodkow" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-retrieve-the-refund-disposition-report" target="_blank">EN</a>.'
       tags:
         - Fulfillment Returns
       operationId: getRefundDispositionsReport
@@ -34021,6 +34052,26 @@ components:
         - sellerDiscount
         - allegroDiscount
         - finalPriceForTheBuyer
+    DiscountDto:
+      type: object
+      description: Discount information for the offer in the Allegro Prices program.
+      properties:
+        opportunity:
+          type: boolean
+          description: Whether this offer has an opportunity to be discounted by Allegro.
+          example: true
+      required:
+        - opportunity
+    RecommendedPriceReductionDto:
+      type: object
+      description: Recommended price reduction for the offer in the Allegro Prices program.
+      properties:
+        sellerMaxDeclaredPercentage:
+          type: string
+          description: Recommended maximum seller declared discount percentage.
+          example: '10.0'
+      required:
+        - sellerMaxDeclaredPercentage
     OfferFilterDto:
       type: object
       description: Filter options for offers
@@ -34042,6 +34093,13 @@ components:
             - DISCOUNTED
             - EXCLUDED
           example: WITH_DECLARATION
+        substatus:
+          type: string
+          description: 'Optional substatus filter to narrow down offers. Supported values: ''DISCOUNT_OPPORTUNITY'' (offers with discount opportunity), ''DISCOUNT_RECOMMENDATION'' (offers with discount recommendation). Can be combined with any scope value.'
+          enum:
+            - DISCOUNT_OPPORTUNITY
+            - DISCOUNT_RECOMMENDATION
+          example: DISCOUNT_OPPORTUNITY
     MarketplaceFilterDto:
       type: object
       description: Marketplace identifier filter
@@ -34079,6 +34137,16 @@ components:
           allOf:
             - $ref: '#/components/schemas/MoneyDto'
           description: Base price of the offer before any discounts. May be null if price is not available.
+        discount:
+          allOf:
+            - $ref: '#/components/schemas/DiscountDto'
+            - description: Discount information for the offer in the Allegro Prices program.
+        recommendedPriceReduction:
+          description: Recommended price reduction for the offer. Contains the recommended seller discount percentage. Null if no recommendation is available.
+          anyOf:
+            - $ref: '#/components/schemas/RecommendedPriceReductionDto'
+            - nullable: true
+              type: object
         declaredPriceReduction:
           description: Information about the seller's declared price reduction for Allegro Prices program. Contains the maximum percentage and amount the seller is willing to discount. Null if the seller has not made a declaration.
           anyOf:
@@ -34107,6 +34175,7 @@ components:
         - id
         - name
         - marketplace
+        - discount
     OfferStatusQueryRequestDto:
       type: object
       description: Request parameters for querying Allegro Prices offers status

@@ -80,34 +80,56 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
         } elseif (\array_key_exists('basePrice', $data) && null === $data['basePrice']) {
             $object->setBasePrice(null);
         }
-        if (\array_key_exists('declaredPriceReduction', $data) && null !== $data['declaredPriceReduction']) {
-            $value_1 = $data['declaredPriceReduction'];
-            if (\is_array($data['declaredPriceReduction']) && isset($data['declaredPriceReduction']['sellerMaxDeclaredPercentage']) && isset($data['declaredPriceReduction']['sellerMaxDeclaredDiscount'])) {
-                $value_1 = $this->denormalizer->denormalize($data['declaredPriceReduction'], \Em411\Allegro\Api\Model\DeclaredPriceReductionDto::class, 'json', $context);
-            } elseif (\is_array($data['declaredPriceReduction']) && $this->isOnlyNumericKeys($data['declaredPriceReduction'])) {
+        if (\array_key_exists('discount', $data) && null !== $data['discount']) {
+            $object->setDiscount($this->denormalizer->denormalize($data['discount'], \Em411\Allegro\Api\Model\OfferStatusItemDtoDiscount::class, 'json', $context));
+            unset($data['discount']);
+        } elseif (\array_key_exists('discount', $data) && null === $data['discount']) {
+            $object->setDiscount(null);
+        }
+        if (\array_key_exists('recommendedPriceReduction', $data) && null !== $data['recommendedPriceReduction']) {
+            $value_1 = $data['recommendedPriceReduction'];
+            if (\is_array($data['recommendedPriceReduction']) && isset($data['recommendedPriceReduction']['sellerMaxDeclaredPercentage'])) {
+                $value_1 = $this->denormalizer->denormalize($data['recommendedPriceReduction'], \Em411\Allegro\Api\Model\RecommendedPriceReductionDto::class, 'json', $context);
+            } elseif (\is_array($data['recommendedPriceReduction']) && $this->isOnlyNumericKeys($data['recommendedPriceReduction'])) {
                 $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-                foreach ($data['declaredPriceReduction'] as $key_1 => $value_2) {
+                foreach ($data['recommendedPriceReduction'] as $key_1 => $value_2) {
                     $values_1[$key_1] = $value_2;
                 }
                 $value_1 = $values_1;
             }
-            $object->setDeclaredPriceReduction($value_1);
+            $object->setRecommendedPriceReduction($value_1);
+            unset($data['recommendedPriceReduction']);
+        } elseif (\array_key_exists('recommendedPriceReduction', $data) && null === $data['recommendedPriceReduction']) {
+            $object->setRecommendedPriceReduction(null);
+        }
+        if (\array_key_exists('declaredPriceReduction', $data) && null !== $data['declaredPriceReduction']) {
+            $value_3 = $data['declaredPriceReduction'];
+            if (\is_array($data['declaredPriceReduction']) && isset($data['declaredPriceReduction']['sellerMaxDeclaredPercentage']) && isset($data['declaredPriceReduction']['sellerMaxDeclaredDiscount'])) {
+                $value_3 = $this->denormalizer->denormalize($data['declaredPriceReduction'], \Em411\Allegro\Api\Model\DeclaredPriceReductionDto::class, 'json', $context);
+            } elseif (\is_array($data['declaredPriceReduction']) && $this->isOnlyNumericKeys($data['declaredPriceReduction'])) {
+                $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+                foreach ($data['declaredPriceReduction'] as $key_2 => $value_4) {
+                    $values_2[$key_2] = $value_4;
+                }
+                $value_3 = $values_2;
+            }
+            $object->setDeclaredPriceReduction($value_3);
             unset($data['declaredPriceReduction']);
         } elseif (\array_key_exists('declaredPriceReduction', $data) && null === $data['declaredPriceReduction']) {
             $object->setDeclaredPriceReduction(null);
         }
         if (\array_key_exists('actualPriceReduction', $data) && null !== $data['actualPriceReduction']) {
-            $value_3 = $data['actualPriceReduction'];
+            $value_5 = $data['actualPriceReduction'];
             if (\is_array($data['actualPriceReduction']) && isset($data['actualPriceReduction']['sellerMaxDeclaredPercentage']) && isset($data['actualPriceReduction']['sellerMaxDeclaredDiscount']) && isset($data['actualPriceReduction']['sellerDiscount']) && isset($data['actualPriceReduction']['allegroDiscount']) && isset($data['actualPriceReduction']['finalPriceForTheBuyer'])) {
-                $value_3 = $this->denormalizer->denormalize($data['actualPriceReduction'], \Em411\Allegro\Api\Model\ActualPriceReductionDto::class, 'json', $context);
+                $value_5 = $this->denormalizer->denormalize($data['actualPriceReduction'], \Em411\Allegro\Api\Model\ActualPriceReductionDto::class, 'json', $context);
             } elseif (\is_array($data['actualPriceReduction']) && $this->isOnlyNumericKeys($data['actualPriceReduction'])) {
-                $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-                foreach ($data['actualPriceReduction'] as $key_2 => $value_4) {
-                    $values_2[$key_2] = $value_4;
+                $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+                foreach ($data['actualPriceReduction'] as $key_3 => $value_6) {
+                    $values_3[$key_3] = $value_6;
                 }
-                $value_3 = $values_2;
+                $value_5 = $values_3;
             }
-            $object->setActualPriceReduction($value_3);
+            $object->setActualPriceReduction($value_5);
             unset($data['actualPriceReduction']);
         } elseif (\array_key_exists('actualPriceReduction', $data) && null === $data['actualPriceReduction']) {
             $object->setActualPriceReduction(null);
@@ -124,9 +146,9 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
         } elseif (\array_key_exists('excludedAt', $data) && null === $data['excludedAt']) {
             $object->setExcludedAt(null);
         }
-        foreach ($data as $key_3 => $value_5) {
-            if (preg_match('/.*/', (string) $key_3)) {
-                $object[$key_3] = $value_5;
+        foreach ($data as $key_4 => $value_7) {
+            if (preg_match('/.*/', (string) $key_4)) {
+                $object[$key_4] = $value_7;
             }
         }
 
@@ -146,31 +168,45 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
             }
             $dataArray['basePrice'] = $values;
         }
-        if ($data->isInitialized('declaredPriceReduction') && null !== $data->getDeclaredPriceReduction()) {
-            $value_1 = $data->getDeclaredPriceReduction();
-            if (\is_object($data->getDeclaredPriceReduction())) {
-                $value_1 = $this->normalizer->normalize($data->getDeclaredPriceReduction(), 'json', $context);
-            } elseif (\is_object($data->getDeclaredPriceReduction())) {
+        $dataArray['discount'] = $this->normalizer->normalize($data->getDiscount(), 'json', $context);
+        if ($data->isInitialized('recommendedPriceReduction') && null !== $data->getRecommendedPriceReduction()) {
+            $value_1 = $data->getRecommendedPriceReduction();
+            if (\is_object($data->getRecommendedPriceReduction())) {
+                $value_1 = $this->normalizer->normalize($data->getRecommendedPriceReduction(), 'json', $context);
+            } elseif (\is_object($data->getRecommendedPriceReduction())) {
                 $values_1 = [];
-                foreach ($data->getDeclaredPriceReduction() as $key_1 => $value_2) {
+                foreach ($data->getRecommendedPriceReduction() as $key_1 => $value_2) {
                     $values_1[$key_1] = $value_2;
                 }
                 $value_1 = $values_1;
             }
-            $dataArray['declaredPriceReduction'] = $value_1;
+            $dataArray['recommendedPriceReduction'] = $value_1;
         }
-        if ($data->isInitialized('actualPriceReduction') && null !== $data->getActualPriceReduction()) {
-            $value_3 = $data->getActualPriceReduction();
-            if (\is_object($data->getActualPriceReduction())) {
-                $value_3 = $this->normalizer->normalize($data->getActualPriceReduction(), 'json', $context);
-            } elseif (\is_object($data->getActualPriceReduction())) {
+        if ($data->isInitialized('declaredPriceReduction') && null !== $data->getDeclaredPriceReduction()) {
+            $value_3 = $data->getDeclaredPriceReduction();
+            if (\is_object($data->getDeclaredPriceReduction())) {
+                $value_3 = $this->normalizer->normalize($data->getDeclaredPriceReduction(), 'json', $context);
+            } elseif (\is_object($data->getDeclaredPriceReduction())) {
                 $values_2 = [];
-                foreach ($data->getActualPriceReduction() as $key_2 => $value_4) {
+                foreach ($data->getDeclaredPriceReduction() as $key_2 => $value_4) {
                     $values_2[$key_2] = $value_4;
                 }
                 $value_3 = $values_2;
             }
-            $dataArray['actualPriceReduction'] = $value_3;
+            $dataArray['declaredPriceReduction'] = $value_3;
+        }
+        if ($data->isInitialized('actualPriceReduction') && null !== $data->getActualPriceReduction()) {
+            $value_5 = $data->getActualPriceReduction();
+            if (\is_object($data->getActualPriceReduction())) {
+                $value_5 = $this->normalizer->normalize($data->getActualPriceReduction(), 'json', $context);
+            } elseif (\is_object($data->getActualPriceReduction())) {
+                $values_3 = [];
+                foreach ($data->getActualPriceReduction() as $key_3 => $value_6) {
+                    $values_3[$key_3] = $value_6;
+                }
+                $value_5 = $values_3;
+            }
+            $dataArray['actualPriceReduction'] = $value_5;
         }
         if ($data->isInitialized('discountedAt')) {
             $dataArray['discountedAt'] = $data->getDiscountedAt()?->format('Y-m-d\TH:i:sP');
@@ -178,9 +214,9 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('excludedAt')) {
             $dataArray['excludedAt'] = $data->getExcludedAt()?->format('Y-m-d\TH:i:sP');
         }
-        foreach ($data as $key_3 => $value_5) {
-            if (preg_match('/.*/', (string) $key_3)) {
-                $dataArray[$key_3] = $value_5;
+        foreach ($data as $key_4 => $value_7) {
+            if (preg_match('/.*/', (string) $key_4)) {
+                $dataArray[$key_4] = $value_7;
             }
         }
 

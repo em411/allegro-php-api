@@ -68,6 +68,12 @@ class OfferStatusQueryRequestDtoOfferNormalizer implements DenormalizerInterface
         } elseif (\array_key_exists('scope', $data) && null === $data['scope']) {
             $object->setScope(null);
         }
+        if (\array_key_exists('substatus', $data) && null !== $data['substatus']) {
+            $object->setSubstatus($data['substatus']);
+            unset($data['substatus']);
+        } elseif (\array_key_exists('substatus', $data) && null === $data['substatus']) {
+            $object->setSubstatus(null);
+        }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value_1;
@@ -89,6 +95,9 @@ class OfferStatusQueryRequestDtoOfferNormalizer implements DenormalizerInterface
         }
         if ($data->isInitialized('scope') && null !== $data->getScope()) {
             $dataArray['scope'] = $data->getScope();
+        }
+        if ($data->isInitialized('substatus') && null !== $data->getSubstatus()) {
+            $dataArray['substatus'] = $data->getSubstatus();
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {

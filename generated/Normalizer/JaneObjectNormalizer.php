@@ -1869,6 +1869,10 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\ActualPriceReductionDtoFinalPriceForTheBuyer::class => ActualPriceReductionDtoFinalPriceForTheBuyerNormalizer::class,
 
+        \Em411\Allegro\Api\Model\DiscountDto::class => DiscountDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\RecommendedPriceReductionDto::class => RecommendedPriceReductionDtoNormalizer::class,
+
         \Em411\Allegro\Api\Model\OfferFilterDto::class => OfferFilterDtoNormalizer::class,
 
         \Em411\Allegro\Api\Model\MarketplaceFilterDto::class => MarketplaceFilterDtoNormalizer::class,
@@ -1878,6 +1882,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\OfferStatusItemDtoMarketplace::class => OfferStatusItemDtoMarketplaceNormalizer::class,
 
         \Em411\Allegro\Api\Model\OfferStatusItemDtoBasePrice::class => OfferStatusItemDtoBasePriceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferStatusItemDtoDiscount::class => OfferStatusItemDtoDiscountNormalizer::class,
 
         \Em411\Allegro\Api\Model\OfferStatusQueryRequestDto::class => OfferStatusQueryRequestDtoNormalizer::class,
 
@@ -3446,11 +3452,14 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\ActualPriceReductionDtoSellerDiscount::class => false,
             \Em411\Allegro\Api\Model\ActualPriceReductionDtoAllegroDiscount::class => false,
             \Em411\Allegro\Api\Model\ActualPriceReductionDtoFinalPriceForTheBuyer::class => false,
+            \Em411\Allegro\Api\Model\DiscountDto::class => false,
+            \Em411\Allegro\Api\Model\RecommendedPriceReductionDto::class => false,
             \Em411\Allegro\Api\Model\OfferFilterDto::class => false,
             \Em411\Allegro\Api\Model\MarketplaceFilterDto::class => false,
             \Em411\Allegro\Api\Model\OfferStatusItemDto::class => false,
             \Em411\Allegro\Api\Model\OfferStatusItemDtoMarketplace::class => false,
             \Em411\Allegro\Api\Model\OfferStatusItemDtoBasePrice::class => false,
+            \Em411\Allegro\Api\Model\OfferStatusItemDtoDiscount::class => false,
             \Em411\Allegro\Api\Model\OfferStatusQueryRequestDto::class => false,
             \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoOffer::class => false,
             \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoMarketplace::class => false,
