@@ -36684,7 +36684,7 @@ components:
         pickupDateProposalId:
           type: string
           deprecated: true
-          description: Internal pickup proposal ID.
+          description: Internal pickup proposal ID. Required if pickupTime not provided.
           example: '2023071210001300'
         pickupTime:
           $ref: '#/components/schemas/PickupTimeDto'
@@ -36711,6 +36711,7 @@ components:
     PickupTimeDto:
       required:
         - date
+      description: Pickup time date proposal. Required if pickupDateProposalId not provided.
       type: object
       properties:
         date:

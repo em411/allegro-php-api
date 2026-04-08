@@ -24,7 +24,7 @@ class PickupCreateRequestDto extends \ArrayObject
      */
     protected $shipmentIds;
     /**
-     * Internal pickup proposal ID.
+     * Internal pickup proposal ID. Required if pickupTime not provided.
      *
      * @deprecated
      *
@@ -32,6 +32,8 @@ class PickupCreateRequestDto extends \ArrayObject
      */
     protected $pickupDateProposalId;
     /**
+     * Pickup time date proposal. Required if pickupDateProposalId not provided.
+     *
      * @var PickupTimeDto|null
      */
     protected $pickupTime;
@@ -67,7 +69,7 @@ class PickupCreateRequestDto extends \ArrayObject
     }
 
     /**
-     * Internal pickup proposal ID.
+     * Internal pickup proposal ID. Required if pickupTime not provided.
      *
      * @deprecated
      */
@@ -77,7 +79,7 @@ class PickupCreateRequestDto extends \ArrayObject
     }
 
     /**
-     * Internal pickup proposal ID.
+     * Internal pickup proposal ID. Required if pickupTime not provided.
      *
      * @deprecated
      */
@@ -89,11 +91,17 @@ class PickupCreateRequestDto extends \ArrayObject
         return $this;
     }
 
+    /**
+     * Pickup time date proposal. Required if pickupDateProposalId not provided.
+     */
     public function getPickupTime(): ?PickupTimeDto
     {
         return $this->pickupTime;
     }
 
+    /**
+     * Pickup time date proposal. Required if pickupDateProposalId not provided.
+     */
     public function setPickupTime(?PickupTimeDto $pickupTime): self
     {
         $this->initialized['pickupTime'] = true;
