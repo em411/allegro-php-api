@@ -21226,6 +21226,9 @@ components:
                 - NEW_ITEM_SENT
                 - ITEM_FIXED
                 - MISSING_PART_SENT
+                - ITEM_MISMATCH
+                - BUSINESS_PURCHASE
+                - NO_RETURN_RIGHT
             reason:
               type: string
               description: Refund rejection reason, required when code is REFUND_REJECTED
@@ -21314,6 +21317,9 @@ components:
             - NEW_ITEM_SENT
             - ITEM_FIXED
             - MISSING_PART_SENT
+            - ITEM_MISMATCH
+            - BUSINESS_PURCHASE
+            - NO_RETURN_RIGHT
         reason:
           type: string
           description: Reason of refund cancellation.
@@ -23452,7 +23458,7 @@ components:
         - $ref: '#/components/schemas/CompatibilityList'
         - type: object
           required:
-            - id
+            - items
           properties:
             items:
               type: array
