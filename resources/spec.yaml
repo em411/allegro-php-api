@@ -5989,14 +5989,48 @@ paths:
         content:
           application/vnd.allegro.public.v1+json:
             schema:
-              $ref: '#/components/schemas/ShippingRatesSet'
+              allOf:
+                - $ref: '#/components/schemas/ShippingRatesSet'
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      nullable: true
+                      example: PHYSICAL
+                      enum:
+                        - PHYSICAL
+                        - ELECTRONIC
+                      description: Whether the shipping rates set is physical or electronic. Note that passing the type and dispatchCountry fields in the payload will result in creating a new custom shipping price list based on the specified dispatch country.
+                    dispatchCountry:
+                      type: string
+                      nullable: true
+                      maxLength: 2
+                      example: PL
+                      description: The dispatch country code in ISO 3166-1 alfa-2 format, must be passed only for shipping rates of the `PHYSICAL` type.
       responses:
         '201':
           description: OK
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/ShippingRatesSet'
+                allOf:
+                  - $ref: '#/components/schemas/ShippingRatesSet'
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        nullable: true
+                        example: PHYSICAL
+                        enum:
+                          - PHYSICAL
+                          - ELECTRONIC
+                        description: Whether the shipping rates set is physical or electronic.
+                      dispatchCountry:
+                        type: string
+                        nullable: true
+                        maxLength: 2
+                        example: PL
+                        description: The dispatch country code in ISO 3166-1 alfa-2 format.
         '400':
           description: Bad request
           content:
@@ -6057,6 +6091,19 @@ paths:
                   - $ref: '#/components/schemas/ShippingRatesSet'
                   - type: object
                     properties:
+                      type:
+                        type: string
+                        nullable: true
+                        enum:
+                          - PHYSICAL
+                          - ELECTRONIC
+                        description: Whether the shipping rates set is physical or electronic. Note that this field is returned only when the shipping rates set was created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or via API with this new field explicitly provided.
+                      dispatchCountry:
+                        type: string
+                        nullable: true
+                        maxLength: 2
+                        example: PL
+                        description: The dispatch country code in ISO 3166-1 alfa-2 format, returned only for shipping rates of the `PHYSICAL` type.
                       features:
                         type: object
                         properties:
@@ -6071,6 +6118,8 @@ paths:
                   value:
                     id: 758fcd59-fbfa-4453-ae07-4800d72c2ca6
                     name: Mój cennik
+                    type: PHYSICAL
+                    dispatchCountry: PL
                     features:
                       managedByAllegro: false
                       isFulfillment: false
@@ -6085,7 +6134,7 @@ paths:
                           amount: '12.00'
                           currency: PLN
                         nextItemRate:
-                          amount: '2.50'
+                          amount: '0.00'
                           currency: PLN
                         shippingTime:
                           from: P1D
@@ -6146,14 +6195,46 @@ paths:
         content:
           application/vnd.allegro.public.v1+json:
             schema:
-              $ref: '#/components/schemas/ShippingRatesSet'
+              allOf:
+                - $ref: '#/components/schemas/ShippingRatesSet'
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                      nullable: true
+                      enum:
+                        - PHYSICAL
+                        - ELECTRONIC
+                      description: Whether the shipping rates set is physical or electronic. Optional field, if provided, it must match the value returned by the <a href="#operation/getShippingRatesSetUsingGET" target="_blank">"get the details of a shipping rates set" resource</a>.
+                    dispatchCountry:
+                      type: string
+                      nullable: true
+                      maxLength: 2
+                      example: PL
+                      description: The dispatch country code in ISO 3166-1 alfa-2 format. Optional field, if provided, it must match the value returned by the <a href="#operation/getShippingRatesSetUsingGET" target="_blank">"get the details of a shipping rates set" resource</a>.
       responses:
         '200':
           description: OK
           content:
             application/vnd.allegro.public.v1+json:
               schema:
-                $ref: '#/components/schemas/ShippingRatesSet'
+                allOf:
+                  - $ref: '#/components/schemas/ShippingRatesSet'
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        nullable: true
+                        enum:
+                          - PHYSICAL
+                          - ELECTRONIC
+                        description: Whether the shipping rates set is physical or electronic.
+                      dispatchCountry:
+                        type: string
+                        nullable: true
+                        maxLength: 2
+                        example: PL
+                        description: The dispatch country code in ISO 3166-1 alfa-2 format.
         '400':
           description: Bad request
           content:
@@ -26130,7 +26211,7 @@ components:
               description: ISO 4217 currency code
         nextItemRate:
           type: object
-          description: Rate for every other item, after the first, in the same parcel for the given delivery method. The rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource.
+          description: Deprecated. Rate for every other item, after the first, in the same parcel for the given delivery method. In case of shipping rates with no specified type, the rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource. In case of shipping rates of the `PHYSICAL` or `ELECTRONIC` type, the rate amount must be "0.00".
           properties:
             amount:
               type: string

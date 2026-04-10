@@ -1801,13 +1801,13 @@ class Client extends Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ShippingRatesSet|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\SaleShippingRatesPostResponse201|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\CreateShippingRatesSetUsingPOSTBadRequestException
      * @throws Exception\CreateShippingRatesSetUsingPOSTUnauthorizedException
      * @throws Exception\CreateShippingRatesSetUsingPOSTUnprocessableEntityException
      */
-    public function createShippingRatesSetUsingPOST(?Model\ShippingRatesSet $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function createShippingRatesSetUsingPOST(?Model\SaleShippingRatesPostBody $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\CreateShippingRatesSetUsingPOST($requestBody, $headerParameters), $fetch);
     }
@@ -1845,7 +1845,7 @@ class Client extends Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ShippingRatesSet|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\SaleShippingRatesIdPutResponse200|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\ModifyShippingRatesSetUsingPUTBadRequestException
      * @throws Exception\ModifyShippingRatesSetUsingPUTUnauthorizedException
@@ -1853,7 +1853,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\ModifyShippingRatesSetUsingPUTNotFoundException
      * @throws Exception\ModifyShippingRatesSetUsingPUTUnprocessableEntityException
      */
-    public function modifyShippingRatesSetUsingPUT(string $id, ?Model\ShippingRatesSet $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function modifyShippingRatesSetUsingPUT(string $id, ?Model\SaleShippingRatesIdPutBody $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\ModifyShippingRatesSetUsingPUT($id, $requestBody, $headerParameters), $fetch);
     }

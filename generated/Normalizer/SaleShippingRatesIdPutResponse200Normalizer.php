@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class SaleShippingRatesIdGetResponse200Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class SaleShippingRatesIdPutResponse200Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class SaleShippingRatesIdGetResponse200Normalizer implements DenormalizerInterfa
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200::class === $type;
+        return \Em411\Allegro\Api\Model\SaleShippingRatesIdPutResponse200::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\SaleShippingRatesIdPutResponse200::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,7 +48,7 @@ class SaleShippingRatesIdGetResponse200Normalizer implements DenormalizerInterfa
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200();
+        $object = new \Em411\Allegro\Api\Model\SaleShippingRatesIdPutResponse200();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -92,12 +92,6 @@ class SaleShippingRatesIdGetResponse200Normalizer implements DenormalizerInterfa
         } elseif (\array_key_exists('dispatchCountry', $data) && null === $data['dispatchCountry']) {
             $object->setDispatchCountry(null);
         }
-        if (\array_key_exists('features', $data) && null !== $data['features']) {
-            $object->setFeatures($this->denormalizer->denormalize($data['features'], \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200features::class, 'json', $context));
-            unset($data['features']);
-        } elseif (\array_key_exists('features', $data) && null === $data['features']) {
-            $object->setFeatures(null);
-        }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value_1;
@@ -130,9 +124,6 @@ class SaleShippingRatesIdGetResponse200Normalizer implements DenormalizerInterfa
         if ($data->isInitialized('dispatchCountry')) {
             $dataArray['dispatchCountry'] = $data->getDispatchCountry();
         }
-        if ($data->isInitialized('features') && null !== $data->getFeatures()) {
-            $dataArray['features'] = $this->normalizer->normalize($data->getFeatures(), 'json', $context);
-        }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
@@ -144,6 +135,6 @@ class SaleShippingRatesIdGetResponse200Normalizer implements DenormalizerInterfa
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200::class => false];
+        return [\Em411\Allegro\Api\Model\SaleShippingRatesIdPutResponse200::class => false];
     }
 }

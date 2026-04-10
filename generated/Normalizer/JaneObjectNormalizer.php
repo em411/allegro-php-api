@@ -2381,9 +2381,17 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\SaleShippingRatesGetResponse200ShippingRatesItemMarketplacesItem::class => SaleShippingRatesGetResponse200ShippingRatesItemMarketplacesItemNormalizer::class,
 
+        \Em411\Allegro\Api\Model\SaleShippingRatesPostBody::class => SaleShippingRatesPostBodyNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SaleShippingRatesPostResponse201::class => SaleShippingRatesPostResponse201Normalizer::class,
+
         \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200::class => SaleShippingRatesIdGetResponse200Normalizer::class,
 
         \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200features::class => SaleShippingRatesIdGetResponse200featuresNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SaleShippingRatesIdPutBody::class => SaleShippingRatesIdPutBodyNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SaleShippingRatesIdPutResponse200::class => SaleShippingRatesIdPutResponse200Normalizer::class,
 
         \Em411\Allegro\Api\Model\SaleResponsiblePersonsGetResponse200::class => SaleResponsiblePersonsGetResponse200Normalizer::class,
 
@@ -3708,8 +3716,12 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\SaleShippingRatesGetResponse200ShippingRatesItem::class => false,
             \Em411\Allegro\Api\Model\SaleShippingRatesGetResponse200ShippingRatesItemFeatures::class => false,
             \Em411\Allegro\Api\Model\SaleShippingRatesGetResponse200ShippingRatesItemMarketplacesItem::class => false,
+            \Em411\Allegro\Api\Model\SaleShippingRatesPostBody::class => false,
+            \Em411\Allegro\Api\Model\SaleShippingRatesPostResponse201::class => false,
             \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200::class => false,
             \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200features::class => false,
+            \Em411\Allegro\Api\Model\SaleShippingRatesIdPutBody::class => false,
+            \Em411\Allegro\Api\Model\SaleShippingRatesIdPutResponse200::class => false,
             \Em411\Allegro\Api\Model\SaleResponsiblePersonsGetResponse200::class => false,
             \Em411\Allegro\Api\Model\SaleResponsibleProducersGetResponse200::class => false,
             \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200::class => false,

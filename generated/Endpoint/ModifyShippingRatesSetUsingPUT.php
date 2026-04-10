@@ -27,7 +27,7 @@ class ModifyShippingRatesSetUsingPUT extends \Em411\Allegro\Api\Runtime\Client\B
      * @var string $Accept-Language Expected language of messages.
      *             }
      */
-    public function __construct(string $id, ?\Em411\Allegro\Api\Model\ShippingRatesSet $requestBody = null, array $headerParameters = [])
+    public function __construct(string $id, ?\Em411\Allegro\Api\Model\SaleShippingRatesIdPutBody $requestBody = null, array $headerParameters = [])
     {
         $this->id = $id;
         $this->body = $requestBody;
@@ -46,7 +46,7 @@ class ModifyShippingRatesSetUsingPUT extends \Em411\Allegro\Api\Runtime\Client\B
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        if ($this->body instanceof \Em411\Allegro\Api\Model\ShippingRatesSet) {
+        if ($this->body instanceof \Em411\Allegro\Api\Model\SaleShippingRatesIdPutBody) {
             return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
         }
 
@@ -75,7 +75,7 @@ class ModifyShippingRatesSetUsingPUT extends \Em411\Allegro\Api\Runtime\Client\B
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\ShippingRatesSet|null
+     * @return \Em411\Allegro\Api\Model\SaleShippingRatesIdPutResponse200|null
      *
      * @throws \Em411\Allegro\Api\Exception\ModifyShippingRatesSetUsingPUTBadRequestException
      * @throws \Em411\Allegro\Api\Exception\ModifyShippingRatesSetUsingPUTUnauthorizedException
@@ -88,7 +88,7 @@ class ModifyShippingRatesSetUsingPUT extends \Em411\Allegro\Api\Runtime\Client\B
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShippingRatesSet', 'json');
+            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\SaleShippingRatesIdPutResponse200', 'json');
         }
         if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\ModifyShippingRatesSetUsingPUTBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);

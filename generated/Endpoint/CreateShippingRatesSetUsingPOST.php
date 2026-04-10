@@ -25,7 +25,7 @@ class CreateShippingRatesSetUsingPOST extends \Em411\Allegro\Api\Runtime\Client\
      * @var string $Accept-Language Expected language of messages.
      *             }
      */
-    public function __construct(?\Em411\Allegro\Api\Model\ShippingRatesSet $requestBody = null, array $headerParameters = [])
+    public function __construct(?\Em411\Allegro\Api\Model\SaleShippingRatesPostBody $requestBody = null, array $headerParameters = [])
     {
         $this->body = $requestBody;
         $this->headerParameters = $headerParameters;
@@ -43,7 +43,7 @@ class CreateShippingRatesSetUsingPOST extends \Em411\Allegro\Api\Runtime\Client\
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        if ($this->body instanceof \Em411\Allegro\Api\Model\ShippingRatesSet) {
+        if ($this->body instanceof \Em411\Allegro\Api\Model\SaleShippingRatesPostBody) {
             return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
         }
 
@@ -72,7 +72,7 @@ class CreateShippingRatesSetUsingPOST extends \Em411\Allegro\Api\Runtime\Client\
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\ShippingRatesSet|null
+     * @return \Em411\Allegro\Api\Model\SaleShippingRatesPostResponse201|null
      *
      * @throws \Em411\Allegro\Api\Exception\CreateShippingRatesSetUsingPOSTBadRequestException
      * @throws \Em411\Allegro\Api\Exception\CreateShippingRatesSetUsingPOSTUnauthorizedException
@@ -83,7 +83,7 @@ class CreateShippingRatesSetUsingPOST extends \Em411\Allegro\Api\Runtime\Client\
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if ((null === $contentType) === false && (201 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShippingRatesSet', 'json');
+            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\SaleShippingRatesPostResponse201', 'json');
         }
         if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\CreateShippingRatesSetUsingPOSTBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);

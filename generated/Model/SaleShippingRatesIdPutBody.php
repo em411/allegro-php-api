@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleShippingRatesIdGetResponse200 extends \ArrayObject
+class SaleShippingRatesIdPutBody extends \ArrayObject
 {
     /**
      * @var array
@@ -42,21 +42,17 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
      */
     protected $lastModified;
     /**
-     * Whether the shipping rates set is physical or electronic. Note that this field is returned only when the shipping rates set was created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or via API with this new field explicitly provided.
+     * Whether the shipping rates set is physical or electronic. Optional field, if provided, it must match the value returned by the <a href="#operation/getShippingRatesSetUsingGET" target="_blank">"get the details of a shipping rates set" resource</a>.
      *
      * @var string|null
      */
     protected $type;
     /**
-     * The dispatch country code in ISO 3166-1 alfa-2 format, returned only for shipping rates of the `PHYSICAL` type.
+     * The dispatch country code in ISO 3166-1 alfa-2 format. Optional field, if provided, it must match the value returned by the <a href="#operation/getShippingRatesSetUsingGET" target="_blank">"get the details of a shipping rates set" resource</a>.
      *
      * @var string|null
      */
     protected $dispatchCountry;
-    /**
-     * @var SaleShippingRatesIdGetResponse200features|null
-     */
-    protected $features;
 
     public function isInitialized($property): bool
     {
@@ -140,7 +136,7 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
     }
 
     /**
-     * Whether the shipping rates set is physical or electronic. Note that this field is returned only when the shipping rates set was created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or via API with this new field explicitly provided.
+     * Whether the shipping rates set is physical or electronic. Optional field, if provided, it must match the value returned by the <a href="#operation/getShippingRatesSetUsingGET" target="_blank">"get the details of a shipping rates set" resource</a>.
      */
     public function getType(): ?string
     {
@@ -148,7 +144,7 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
     }
 
     /**
-     * Whether the shipping rates set is physical or electronic. Note that this field is returned only when the shipping rates set was created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or via API with this new field explicitly provided.
+     * Whether the shipping rates set is physical or electronic. Optional field, if provided, it must match the value returned by the <a href="#operation/getShippingRatesSetUsingGET" target="_blank">"get the details of a shipping rates set" resource</a>.
      */
     public function setType(?string $type): self
     {
@@ -159,7 +155,7 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
     }
 
     /**
-     * The dispatch country code in ISO 3166-1 alfa-2 format, returned only for shipping rates of the `PHYSICAL` type.
+     * The dispatch country code in ISO 3166-1 alfa-2 format. Optional field, if provided, it must match the value returned by the <a href="#operation/getShippingRatesSetUsingGET" target="_blank">"get the details of a shipping rates set" resource</a>.
      */
     public function getDispatchCountry(): ?string
     {
@@ -167,25 +163,12 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
     }
 
     /**
-     * The dispatch country code in ISO 3166-1 alfa-2 format, returned only for shipping rates of the `PHYSICAL` type.
+     * The dispatch country code in ISO 3166-1 alfa-2 format. Optional field, if provided, it must match the value returned by the <a href="#operation/getShippingRatesSetUsingGET" target="_blank">"get the details of a shipping rates set" resource</a>.
      */
     public function setDispatchCountry(?string $dispatchCountry): self
     {
         $this->initialized['dispatchCountry'] = true;
         $this->dispatchCountry = $dispatchCountry;
-
-        return $this;
-    }
-
-    public function getFeatures(): ?SaleShippingRatesIdGetResponse200features
-    {
-        return $this->features;
-    }
-
-    public function setFeatures(?SaleShippingRatesIdGetResponse200features $features): self
-    {
-        $this->initialized['features'] = true;
-        $this->features = $features;
 
         return $this;
     }

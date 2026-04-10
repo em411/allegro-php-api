@@ -42,7 +42,7 @@ class ShippingRate extends \ArrayObject
      */
     protected $firstItemRate;
     /**
-     * Rate for every other item, after the first, in the same parcel for the given delivery method. The rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource.
+     * Deprecated. Rate for every other item, after the first, in the same parcel for the given delivery method. In case of shipping rates with no specified type, the rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource. In case of shipping rates of the `PHYSICAL` or `ELECTRONIC` type, the rate amount must be "0.00".
      *
      * @var ShippingRateNextItemRate|null
      */
@@ -130,7 +130,7 @@ class ShippingRate extends \ArrayObject
     }
 
     /**
-     * Rate for every other item, after the first, in the same parcel for the given delivery method. The rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource.
+     * Deprecated. Rate for every other item, after the first, in the same parcel for the given delivery method. In case of shipping rates with no specified type, the rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource. In case of shipping rates of the `PHYSICAL` or `ELECTRONIC` type, the rate amount must be "0.00".
      */
     public function getNextItemRate(): ?ShippingRateNextItemRate
     {
@@ -138,7 +138,7 @@ class ShippingRate extends \ArrayObject
     }
 
     /**
-     * Rate for every other item, after the first, in the same parcel for the given delivery method. The rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource.
+     * Deprecated. Rate for every other item, after the first, in the same parcel for the given delivery method. In case of shipping rates with no specified type, the rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource. In case of shipping rates of the `PHYSICAL` or `ELECTRONIC` type, the rate amount must be "0.00".
      */
     public function setNextItemRate(?ShippingRateNextItemRate $nextItemRate): self
     {
