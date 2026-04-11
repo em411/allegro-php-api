@@ -18,7 +18,7 @@ class GetOrdersCarriersUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEn
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
 
     /**
-     * Shipping carriers are essential to provide accurate tracking experience for customers. Use this resource to get a list of all available shipping carriers.
+     * Shipping carriers are essential to provide accurate tracking experience for customers. Use this resource to get a list of all available shipping carriers. This resource is rate limited to 50 requests per second.
      *
      * The response of this resource can be stored in accordance with returned caching headers. Read more: <a href="../../news/nowy-zasob-do-pobrania-identyfikatorow-przewoznikow-8dmljjGRGUE" target="_blank">PL</a> / <a href="../../news/new-resource-to-retrieve-available-delivery-company-id-VL6zDDdr4hk" target="_blank">EN</a>.
      *
