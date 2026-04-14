@@ -19,7 +19,7 @@ class PlaceBid extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implements
     protected $offerId;
 
     /**
-     * Place a bid in an auction. Read more: <a href="../../news/nowe-zasoby-zloz-oferte-kupna-w-licytacji-q018m02vDT1" target="_blank">PL</a> / <a href="../../news/new-resources-place-a-bid-in-an-auction-rjWwEj1e7sG" target="_blank">EN</a>.
+     * Use this resource to place a bid in an auction. Read more: <a href="../../news/nowe-zasoby-zloz-oferte-kupna-w-licytacji-q018m02vDT1" target="_blank">PL</a> / <a href="../../news/new-resources-place-a-bid-in-an-auction-rjWwEj1e7sG" target="_blank">EN</a>.
      *
      * @param string $offerId          the offer ID
      * @param array  $headerParameters {
