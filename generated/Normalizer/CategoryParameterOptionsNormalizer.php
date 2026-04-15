@@ -49,12 +49,6 @@ class CategoryParameterOptionsNormalizer implements DenormalizerInterface, Norma
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Em411\Allegro\Api\Model\CategoryParameterOptions();
-        if (\array_key_exists('variantsAllowed', $data) && \is_int($data['variantsAllowed'])) {
-            $data['variantsAllowed'] = (bool) $data['variantsAllowed'];
-        }
-        if (\array_key_exists('variantsEqual', $data) && \is_int($data['variantsEqual'])) {
-            $data['variantsEqual'] = (bool) $data['variantsEqual'];
-        }
         if (\array_key_exists('describesProduct', $data) && \is_int($data['describesProduct'])) {
             $data['describesProduct'] = (bool) $data['describesProduct'];
         }
@@ -63,18 +57,6 @@ class CategoryParameterOptionsNormalizer implements DenormalizerInterface, Norma
         }
         if (null === $data || false === \is_array($data)) {
             return $object;
-        }
-        if (\array_key_exists('variantsAllowed', $data) && null !== $data['variantsAllowed']) {
-            $object->setVariantsAllowed($data['variantsAllowed']);
-            unset($data['variantsAllowed']);
-        } elseif (\array_key_exists('variantsAllowed', $data) && null === $data['variantsAllowed']) {
-            $object->setVariantsAllowed(null);
-        }
-        if (\array_key_exists('variantsEqual', $data) && null !== $data['variantsEqual']) {
-            $object->setVariantsEqual($data['variantsEqual']);
-            unset($data['variantsEqual']);
-        } elseif (\array_key_exists('variantsEqual', $data) && null === $data['variantsEqual']) {
-            $object->setVariantsEqual(null);
         }
         if (\array_key_exists('ambiguousValueId', $data) && null !== $data['ambiguousValueId']) {
             $object->setAmbiguousValueId($data['ambiguousValueId']);
@@ -112,12 +94,6 @@ class CategoryParameterOptionsNormalizer implements DenormalizerInterface, Norma
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('variantsAllowed') && null !== $data->getVariantsAllowed()) {
-            $dataArray['variantsAllowed'] = $data->getVariantsAllowed();
-        }
-        if ($data->isInitialized('variantsEqual') && null !== $data->getVariantsEqual()) {
-            $dataArray['variantsEqual'] = $data->getVariantsEqual();
-        }
         if ($data->isInitialized('ambiguousValueId')) {
             $dataArray['ambiguousValueId'] = $data->getAmbiguousValueId();
         }

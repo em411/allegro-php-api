@@ -903,18 +903,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\WrapsListingAndCommissionsFees::class => WrapsListingAndCommissionsFeesNormalizer::class,
 
-        \Em411\Allegro\Api\Model\VariantSet::class => VariantSetNormalizer::class,
-
-        \Em411\Allegro\Api\Model\VariantSetResponse::class => VariantSetResponseNormalizer::class,
-
-        \Em411\Allegro\Api\Model\VariantSetOffer::class => VariantSetOfferNormalizer::class,
-
-        \Em411\Allegro\Api\Model\VariantSetParameter::class => VariantSetParameterNormalizer::class,
-
-        \Em411\Allegro\Api\Model\VariantSets::class => VariantSetsNormalizer::class,
-
-        \Em411\Allegro\Api\Model\VariantSetsVariantSet::class => VariantSetsVariantSetNormalizer::class,
-
         \Em411\Allegro\Api\Model\ListingOffer::class => ListingOfferNormalizer::class,
 
         \Em411\Allegro\Api\Model\ListingCategoryWithCount::class => ListingCategoryWithCountNormalizer::class,
@@ -2977,12 +2965,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\WarrantiesListWarrantyBasic::class => false,
             \Em411\Allegro\Api\Model\WrapperTypeForPreviewConditions::class => false,
             \Em411\Allegro\Api\Model\WrapsListingAndCommissionsFees::class => false,
-            \Em411\Allegro\Api\Model\VariantSet::class => false,
-            \Em411\Allegro\Api\Model\VariantSetResponse::class => false,
-            \Em411\Allegro\Api\Model\VariantSetOffer::class => false,
-            \Em411\Allegro\Api\Model\VariantSetParameter::class => false,
-            \Em411\Allegro\Api\Model\VariantSets::class => false,
-            \Em411\Allegro\Api\Model\VariantSetsVariantSet::class => false,
             \Em411\Allegro\Api\Model\ListingOffer::class => false,
             \Em411\Allegro\Api\Model\ListingCategoryWithCount::class => false,
             \Em411\Allegro\Api\Model\ListingCategory::class => false,

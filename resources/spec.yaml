@@ -31,7 +31,6 @@ tags:
   - name: Products
   - name: Batch offer modification
   - name: Automatic pricing
-  - name: Offer variants
   - name: Offer tags
     description: Tags are only available to sellers registered on allegro.pl and can only be assigned to offers with base marketplace `allegro-pl`.
   - name: Tax settings
@@ -5242,8 +5241,6 @@ paths:
                                 - '202870_2'
                         unit: null
                         options:
-                          variantsAllowed: true
-                          variantsEqual: false
                           ambiguousValueId: null
                           dependsOnParameterId: '202870'
                           describesProduct: false
@@ -5280,8 +5277,6 @@ paths:
                                 - '202870_2'
                         unit: null
                         options:
-                          variantsAllowed: false
-                          variantsEqual: false
                           ambiguousValueId: null
                           dependsOnParameterId: '202870'
                           describesProduct: false
@@ -5316,8 +5311,6 @@ paths:
                                 - '202870_2'
                         unit: null
                         options:
-                          variantsAllowed: false
-                          variantsEqual: true
                           ambiguousValueId: null
                           dependsOnParameterId: '202870'
                           describesProduct: false
@@ -5382,8 +5375,6 @@ paths:
                                 - '202870_2'
                         unit: kg
                         options:
-                          variantsAllowed: false
-                          variantsEqual: false
                           ambiguousValueId: null
                           dependsOnParameterId: '202870'
                           describesProduct: false
@@ -5419,8 +5410,6 @@ paths:
                                 - '202870_2'
                         unit: cm
                         options:
-                          variantsAllowed: false
-                          variantsEqual: false
                           ambiguousValueId: null
                           dependsOnParameterId: '202870'
                           describesProduct: true
@@ -8946,282 +8935,6 @@ paths:
       security:
         - bearer-token-for-user:
             - allegro:api:billing:read
-  /sale/offer-variants:
-    post:
-      tags:
-        - Offer variants
-      summary: Create variant set
-      description: |-
-        Use this resource to create variant set.
-
-         A valid variant set must consist of three required elements:
-         - name:
-           - it can't be blank and must not be longer than 75 characters
-         - parameters:
-           - it should contain parameter identifiers used for offer grouping
-           - parameter identifiers from the offers and special `color/pattern` value (for grouping via image) are permitted
-           - it must contain at least one element (up to 2)
-         - offers:
-           - it must contain at least 2 offers (500 at most)
-           - `colorPattern` value must be set for every offer if `color/pattern` parameter is used
-           - `colorPattern` value can't be blank and must not be longer than 50 characters
-           - `colorPattern` can take arbitrary string value like `red`, `b323592c-522f-4ec1-b9ea-3764538e0ac4` (UUID), etc.
-           - offers having the same image should have identical `colorPattern` value
-           - offers must have `publication.marketplaces.base` equal to `allegro-pl`
-
-
-         Let's assume we have 4 offers:
-           - offer with id 2 having an image of a red t-shirt and S as a value of parameter with id 21
-           - offer with id 3 having an image of a red t-shirt and M as a value of parameter with id 21
-           - offer with id 4 having an image of a blue t-shirt and S as a value of parameter with id 21
-           - offer with id 5 having an image of a blue t-shirt and M as a value of parameter with id 21
-
-
-         You can build a variant set by grouping offers using combination of available parameters - examples are available in <i>Request samples</i>.
-
-
-         More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje). Read more: <a href="../../tutorials/jak-utworzyc-oferte-wielowariantowa-oA6ZYBg5XFo#utworz-oferte-wielowariantowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-create-a-multi-variant-offer-nn9DOL3nXs2#create-a-multi-variant-offer" target="_blank">EN</a>.
-      deprecated: true
-      operationId: createVariantSet
-      parameters:
-        - name: Accept-Language
-          in: header
-          required: false
-          description: Expected language of messages.
-          example: pl-PL
-          schema:
-            type: string
-            format: BCP-47 language code
-            enum:
-              - en-US
-              - pl-PL
-      responses:
-        '201':
-          description: Variant set created successfully
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/VariantSetResponse'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '422':
-          description: Unprocessable Entity
-      requestBody:
-        $ref: '#/components/requestBodies/VariantSetRequest'
-      security:
-        - bearer-token-for-user:
-            - allegro:api:sale:offers:write
-    get:
-      tags:
-        - Offer variants
-      summary: Get the user's variant sets
-      description: 'Use this resource to get created variant sets. The returned variant sets are ordered by name. Read more: <a href="../../tutorials/jak-utworzyc-oferte-wielowariantowa-oA6ZYBg5XFo#pobierz-liste-ofert-wielowariantowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-create-a-multi-variant-offer-nn9DOL3nXs2#retrieve-a-multi-variant-offer" target="_blank">EN</a>.'
-      deprecated: true
-      operationId: getVariantSets
-      parameters:
-        - name: offset
-          in: query
-          description: Index of first returned variant set.
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-            maximum: 9950
-        - name: limit
-          in: query
-          description: Maximum number of returned variant sets.
-          required: false
-          schema:
-            type: integer
-            default: 10
-            minimum: 1
-            maximum: 50
-        - name: query
-          in: query
-          description: Filter variant sets by name or offer id.
-          required: false
-          schema:
-            type: string
-            maxLength: 50
-        - name: Accept-Language
-          in: header
-          required: false
-          description: Expected language of messages.
-          example: pl-PL
-          schema:
-            type: string
-            format: BCP-47 language code
-            enum:
-              - en-US
-              - pl-PL
-      responses:
-        '200':
-          description: Variant sets returned successfully
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/VariantSets'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-      security:
-        - bearer-token-for-user:
-            - allegro:api:sale:offers:read
-  /sale/offer-variants/{setId}:
-    put:
-      tags:
-        - Offer variants
-      summary: Update variant set
-      description: |-
-        Use this resource to edit variant set.
-
-         A valid variant set must consist of three required elements:
-         - name:
-           - it can't be blank and must not be longer than 75 characters
-         - parameters:
-           - it should contain parameter identifiers used for offer grouping
-           - parameter identifiers from the offers and special `color/pattern` value (for grouping via image) are permitted
-           - it must contain at least one element (up to 2)
-         - offers:
-           - it must contain at least 2 offers (500 at most)
-           - `colorPattern` value must be set for every offer if `color/pattern` parameter is used
-           - `colorPattern` value can't be blank and must not be longer than 50 characters
-           - `colorPattern` can take arbitrary string value like `red`, `b323592c-522f-4ec1-b9ea-3764538e0ac4` (UUID), etc.
-           - offers having the same image should have identical `colorPattern` value
-           - offers must have `publication.marketplaces.base` equal to `allegro-pl`
-
-
-         Let's assume we have 4 offers:
-           - offer with id 2 having an image of a red t-shirt and S as a value of parameter with id 21
-           - offer with id 3 having an image of a red t-shirt and M as a value of parameter with id 21
-           - offer with id 4 having an image of a blue t-shirt and S as a value of parameter with id 21
-           - offer with id 5 having an image of a blue t-shirt and M as a value of parameter with id 21
-
-
-         You can build a variant set by grouping offers using combination of available parameters - examples are available in <i>Request samples</i>.
-
-
-         More general information about variant sets can be found [here](https://allegro.pl/pomoc/faq/wielowariantowosc-jak-polaczyc-oferty-xGgaOByGgTb#dodatkowe-informacje). Read more: <a href="../../tutorials/jak-utworzyc-oferte-wielowariantowa-oA6ZYBg5XFo#edytuj-oferte-wielowariantowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-create-a-multi-variant-offer-nn9DOL3nXs2#update-a-multi-variant-offer" target="_blank">EN</a>.
-      deprecated: true
-      operationId: updateVariantSet
-      parameters:
-        - name: setId
-          in: path
-          description: Variant set identifier.
-          required: true
-          schema:
-            type: string
-        - name: Accept-Language
-          in: header
-          required: false
-          description: Expected language of messages.
-          example: pl-PL
-          schema:
-            type: string
-            format: BCP-47 language code
-            enum:
-              - en-US
-              - pl-PL
-      responses:
-        '200':
-          description: Variant set updated successfully
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/VariantSetResponse'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '422':
-          description: Unprocessable Entity
-      requestBody:
-        $ref: '#/components/requestBodies/VariantSetRequest'
-      security:
-        - bearer-token-for-user:
-            - allegro:api:sale:offers:write
-    get:
-      tags:
-        - Offer variants
-      summary: Get a variant set
-      description: 'Use this resource to get variant set by set id. Read more: <a href="../../tutorials/jak-utworzyc-oferte-wielowariantowa-oA6ZYBg5XFo#edytuj-oferte-wielowariantowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-create-a-multi-variant-offer-nn9DOL3nXs2#update-a-multi-variant-offer" target="_blank">EN</a>.'
-      deprecated: true
-      operationId: getVariantSet
-      parameters:
-        - name: setId
-          in: path
-          description: Variant set identifier.
-          required: true
-          schema:
-            type: string
-        - name: Accept-Language
-          in: header
-          required: false
-          description: Expected language of messages.
-          example: pl-PL
-          schema:
-            type: string
-            format: BCP-47 language code
-            enum:
-              - en-US
-              - pl-PL
-      responses:
-        '200':
-          description: Variant set returned successfully
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/VariantSetResponse'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-      security:
-        - bearer-token-for-user:
-            - allegro:api:sale:offers:read
-    delete:
-      tags:
-        - Offer variants
-      summary: Delete a variant set
-      description: 'Use this resource to delete variant set by id. Offers included in variant set will not be stopped or modified by this operation. Read more: <a href="../../tutorials/jak-utworzyc-oferte-wielowariantowa-oA6ZYBg5XFo#usun-oferte-wielowariantowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-create-a-multi-variant-offer-nn9DOL3nXs2#remove-a-multi-variant-offer" target="_blank">EN</a>.'
-      deprecated: true
-      operationId: deleteVariantSet
-      parameters:
-        - name: setId
-          in: path
-          description: Variant set identifier.
-          required: true
-          schema:
-            type: string
-        - name: Accept-Language
-          in: header
-          required: false
-          description: Expected language of messages.
-          example: pl-PL
-          schema:
-            type: string
-            format: BCP-47 language code
-            enum:
-              - en-US
-              - pl-PL
-      responses:
-        '204':
-          description: Variant set deleted successfully
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Variant set not found
-      security:
-        - bearer-token-for-user:
-            - allegro:api:sale:offers:write
   /sale/images:
     post:
       tags:
@@ -19213,7 +18926,7 @@ paths:
   /fulfillment/returns/refund-dispositions:
     get:
       summary: Get refund dispositions report
-      description: 'Use this resource to get refund dispositions for returns handled in One Fulfillment. The response contains data from the last 90 days only. The response contains both buyer returns and operational returns. When there is no matching disposition, the `report` array is empty.  Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-pobrac-raport-dyspozycji-zwrotu-srodkow" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-retrieve-the-refund-disposition-report" target="_blank">EN</a>.'
+      description: 'Use this resource to get refund dispositions for returns handled in One Fulfillment. The response contains data from the last 90 days only. The response contains both buyer returns and operational returns. When there is no matching disposition, the `report` array is empty. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-pobrac-raport-dyspozycji-zwrotu-srodkow" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-retrieve-the-refund-disposition-report" target="_blank">EN</a>.'
       tags:
         - Fulfillment Returns
       operationId: getRefundDispositionsReport
@@ -20551,49 +20264,6 @@ components:
           schema:
             $ref: '#/components/schemas/AdditionalServicesGroupRequest'
       description: Additional service group body
-      required: true
-    VariantSetRequest:
-      content:
-        application/vnd.allegro.public.v1+json:
-          schema:
-            $ref: '#/components/schemas/VariantSet'
-          examples:
-            offerParameterOnly:
-              summary: offer parameter only
-              value:
-                name: t-shirt
-                offers:
-                  - id: '2'
-                  - id: '3'
-                parameters:
-                  - id: '21'
-            colorPatternParameterOnly:
-              summary: color/pattern parameter only
-              value:
-                name: t-shirt
-                offers:
-                  - id: '2'
-                    colorPattern: red
-                  - id: '4'
-                    colorPattern: blue
-                parameters:
-                  - id: color/pattern
-            offerAndColorPatternParameters:
-              summary: offer and color/pattern parameters
-              value:
-                name: t-shirt
-                offers:
-                  - id: '2'
-                    colorPattern: red
-                  - id: '3'
-                    colorPattern: red
-                  - id: '4'
-                    colorPattern: blue
-                  - id: '5'
-                    colorPattern: blue
-                parameters:
-                  - id: color/pattern
-                  - id: '21'
       required: true
     MessageRequest:
       content:
@@ -22568,10 +22238,6 @@ components:
         advertisement:
           type: boolean
           description: Indicates whether offers of type ADVERTISEMENT can be listed in this category.
-        variantsByColorPatternAllowed:
-          type: boolean
-          deprecated: true
-          description: Indicates whether you can combine offers from this category into variant sets based on the color and pattern.
         offersWithProductPublicationEnabled:
           type: boolean
           description: Information whether the category supports assigning offers to a product.
@@ -25116,14 +24782,6 @@ components:
     CategoryParameterOptions:
       type: object
       properties:
-        variantsAllowed:
-          type: boolean
-          deprecated: true
-          description: Parameters with this option enabled can be used for offer variants creation.
-        variantsEqual:
-          type: boolean
-          deprecated: true
-          description: All offer variants must have the same values in parameters with this option enabled.
         ambiguousValueId:
           type: string
           nullable: true
@@ -27078,79 +26736,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Describes_listing_fee'
-    VariantSet:
-      type: object
-      required:
-        - offers
-        - name
-        - parameters
-      properties:
-        offers:
-          type: array
-          items:
-            $ref: '#/components/schemas/VariantSet_Offer'
-        name:
-          type: string
-          maxLength: 75
-        parameters:
-          type: array
-          items:
-            $ref: '#/components/schemas/VariantSet_Parameter'
-    VariantSetResponse:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-        - $ref: '#/components/schemas/VariantSet'
-    VariantSet_Offer:
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          type: string
-        colorPattern:
-          type: string
-          maxLength: 50
-          description: Label that allows to group variants via image. All variants having the same image should have identical identifier in this field.
-    VariantSet_Parameter:
-      type: object
-      required:
-        - id
-      properties:
-        id:
-          type: string
-    VariantSets:
-      type: object
-      properties:
-        count:
-          type: integer
-          minimum: 0
-          description: Total number of variant sets matching the query.
-          example: 2
-        offerVariants:
-          type: array
-          items:
-            $ref: '#/components/schemas/VariantSets_VariantSet'
-      example:
-        count: 10
-        offerVariants:
-          - id: 459fd49f-461f-4230-b22a-daff449b8548
-            name: t-shirts
-          - id: 70e6effe-7ae6-45f6-8566-80867f466d0a
-            name: shoes
-    VariantSets_VariantSet:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Variant set id.
-          example: d538f15b-1d8b-4a77-bff7-36733d7e1f07
-        name:
-          type: string
-          description: Variant set name.
-          example: Extra variant
     ListingOffer:
       type: object
       properties:
@@ -38216,7 +37801,6 @@ x-tagGroups:
       - Products
       - Batch offer modification
       - Automatic pricing
-      - Offer variants
       - Offer tags
       - Tax settings
       - Compatibility List

@@ -26,14 +26,6 @@ class CategoryOptionsDto extends \ArrayObject
      */
     protected $advertisement;
     /**
-     * Indicates whether you can combine offers from this category into variant sets based on the color and pattern.
-     *
-     * @deprecated
-     *
-     * @var bool|null
-     */
-    protected $variantsByColorPatternAllowed;
-    /**
      * Information whether the category supports assigning offers to a product.
      *
      * @var bool|null
@@ -72,29 +64,6 @@ class CategoryOptionsDto extends \ArrayObject
     {
         $this->initialized['advertisement'] = true;
         $this->advertisement = $advertisement;
-
-        return $this;
-    }
-
-    /**
-     * Indicates whether you can combine offers from this category into variant sets based on the color and pattern.
-     *
-     * @deprecated
-     */
-    public function getVariantsByColorPatternAllowed(): ?bool
-    {
-        return $this->variantsByColorPatternAllowed;
-    }
-
-    /**
-     * Indicates whether you can combine offers from this category into variant sets based on the color and pattern.
-     *
-     * @deprecated
-     */
-    public function setVariantsByColorPatternAllowed(?bool $variantsByColorPatternAllowed): self
-    {
-        $this->initialized['variantsByColorPatternAllowed'] = true;
-        $this->variantsByColorPatternAllowed = $variantsByColorPatternAllowed;
 
         return $this;
     }

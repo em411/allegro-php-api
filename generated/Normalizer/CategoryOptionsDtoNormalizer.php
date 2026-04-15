@@ -52,9 +52,6 @@ class CategoryOptionsDtoNormalizer implements DenormalizerInterface, NormalizerI
         if (\array_key_exists('advertisement', $data) && \is_int($data['advertisement'])) {
             $data['advertisement'] = (bool) $data['advertisement'];
         }
-        if (\array_key_exists('variantsByColorPatternAllowed', $data) && \is_int($data['variantsByColorPatternAllowed'])) {
-            $data['variantsByColorPatternAllowed'] = (bool) $data['variantsByColorPatternAllowed'];
-        }
         if (\array_key_exists('offersWithProductPublicationEnabled', $data) && \is_int($data['offersWithProductPublicationEnabled'])) {
             $data['offersWithProductPublicationEnabled'] = (bool) $data['offersWithProductPublicationEnabled'];
         }
@@ -72,12 +69,6 @@ class CategoryOptionsDtoNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['advertisement']);
         } elseif (\array_key_exists('advertisement', $data) && null === $data['advertisement']) {
             $object->setAdvertisement(null);
-        }
-        if (\array_key_exists('variantsByColorPatternAllowed', $data) && null !== $data['variantsByColorPatternAllowed']) {
-            $object->setVariantsByColorPatternAllowed($data['variantsByColorPatternAllowed']);
-            unset($data['variantsByColorPatternAllowed']);
-        } elseif (\array_key_exists('variantsByColorPatternAllowed', $data) && null === $data['variantsByColorPatternAllowed']) {
-            $object->setVariantsByColorPatternAllowed(null);
         }
         if (\array_key_exists('offersWithProductPublicationEnabled', $data) && null !== $data['offersWithProductPublicationEnabled']) {
             $object->setOffersWithProductPublicationEnabled($data['offersWithProductPublicationEnabled']);
@@ -111,9 +102,6 @@ class CategoryOptionsDtoNormalizer implements DenormalizerInterface, NormalizerI
         $dataArray = [];
         if ($data->isInitialized('advertisement') && null !== $data->getAdvertisement()) {
             $dataArray['advertisement'] = $data->getAdvertisement();
-        }
-        if ($data->isInitialized('variantsByColorPatternAllowed') && null !== $data->getVariantsByColorPatternAllowed()) {
-            $dataArray['variantsByColorPatternAllowed'] = $data->getVariantsByColorPatternAllowed();
         }
         if ($data->isInitialized('offersWithProductPublicationEnabled') && null !== $data->getOffersWithProductPublicationEnabled()) {
             $dataArray['offersWithProductPublicationEnabled'] = $data->getOffersWithProductPublicationEnabled();

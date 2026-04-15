@@ -20,22 +20,6 @@ class CategoryParameterOptions extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * Parameters with this option enabled can be used for offer variants creation.
-     *
-     * @deprecated
-     *
-     * @var bool|null
-     */
-    protected $variantsAllowed;
-    /**
-     * All offer variants must have the same values in parameters with this option enabled.
-     *
-     * @deprecated
-     *
-     * @var bool|null
-     */
-    protected $variantsEqual;
-    /**
      * Indicates what value in the dictionary is defined as an ambiguous one. Only parameters with dictionaries might have this option defined.
      *
      * @var string|null
@@ -65,52 +49,6 @@ class CategoryParameterOptions extends \ArrayObject
     public function isInitialized($property): bool
     {
         return \array_key_exists($property, $this->initialized);
-    }
-
-    /**
-     * Parameters with this option enabled can be used for offer variants creation.
-     *
-     * @deprecated
-     */
-    public function getVariantsAllowed(): ?bool
-    {
-        return $this->variantsAllowed;
-    }
-
-    /**
-     * Parameters with this option enabled can be used for offer variants creation.
-     *
-     * @deprecated
-     */
-    public function setVariantsAllowed(?bool $variantsAllowed): self
-    {
-        $this->initialized['variantsAllowed'] = true;
-        $this->variantsAllowed = $variantsAllowed;
-
-        return $this;
-    }
-
-    /**
-     * All offer variants must have the same values in parameters with this option enabled.
-     *
-     * @deprecated
-     */
-    public function getVariantsEqual(): ?bool
-    {
-        return $this->variantsEqual;
-    }
-
-    /**
-     * All offer variants must have the same values in parameters with this option enabled.
-     *
-     * @deprecated
-     */
-    public function setVariantsEqual(?bool $variantsEqual): self
-    {
-        $this->initialized['variantsEqual'] = true;
-        $this->variantsEqual = $variantsEqual;
-
-        return $this;
     }
 
     /**
