@@ -8067,7 +8067,7 @@ paths:
       tags:
         - After sale services
       summary: Get the user's return policies
-      description: 'Use this resource to get seller return policies listing. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-zwrotow-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-return-policies-assigned-to-the-account" target="_blank">EN</a>.'
+      description: 'Use this resource to get the seller''s return policies. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-zwrotow-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-return-policies-assigned-to-the-account" target="_blank">EN</a>.'
       operationId: getPublicSellerListingUsingGET_1
       parameters:
         - name: limit
@@ -8339,7 +8339,7 @@ paths:
       tags:
         - After sale services
       summary: Get the user's implied warranties
-      description: 'Use this resource to get seller implied warranties listing. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-reklamacji-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-implied-warranties-assigned-to-the-account" target="_blank">EN</a>.'
+      description: 'Use this resource to get the seller''s implied warranties. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-reklamacji-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-implied-warranties-assigned-to-the-account" target="_blank">EN</a>.'
       operationId: getPublicSellerListingUsingGET
       parameters:
         - name: limit
@@ -8545,7 +8545,7 @@ paths:
       tags:
         - After sale services
       summary: Get the user's warranties
-      description: 'Use this resource to get seller warranties listing. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-informacje-o-gwarancjach-przypisanych-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-warranties-assigned-to-the-account" target="_blank">EN</a>.'
+      description: 'Use this resource to get the seller''s warranties. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-informacje-o-gwarancjach-przypisanych-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-warranties-assigned-to-the-account" target="_blank">EN</a>.'
       operationId: getPublicSellerListingUsingGET_2
       parameters:
         - name: limit
@@ -14452,7 +14452,7 @@ paths:
       tags:
         - Billing
       summary: Get a list of billing entries
-      description: 'The billing entries are sorted in a descending order (newest first) by date on which they occurred. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#historia-operacji-billingowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#billing-operations" target="_blank">EN</a>.'
+      description: 'Use this resource to get a list of billing entries. The billing entries are sorted in descending order (newest first) by the date on which they occurred. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#historia-operacji-billingowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#billing-operations" target="_blank">EN</a>.'
       operationId: getBillingEntries
       parameters:
         - name: marketplaceId
@@ -14574,7 +14574,7 @@ paths:
       tags:
         - Billing
       summary: Get a list of billing types
-      description: 'List of all billing types. Type names are localized according to "Accept-Language" header. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#historia-operacji-billingowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#billing-operations" target="_blank">EN</a>.'
+      description: 'Use this resource to get a list of all billing types. Type names are localized according to the "Accept-Language" header. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#historia-operacji-billingowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#billing-operations" target="_blank">EN</a>.'
       operationId: getBillingTypes
       security:
         - bearer-token-for-application: []
@@ -23156,29 +23156,25 @@ components:
           MANUAL: '#/components/schemas/CompatibilityListManual'
           PRODUCT_BASED: '#/components/schemas/CompatibilityListProductBased'
     CompatibilityListProductOfferResponse:
-      type: object
-      properties:
-        type:
-          type: string
-          default: MANUAL
-          example: MANUAL
-          description: 'Type of the compatibility list, two values are acceptable: `MANUAL`, `PRODUCT_BASED`. <ul> <li>`MANUAL` -  for offers not associated with product - compatibility list is created with items provided by user directly in the body of the request.</li> <li>`PRODUCT_BASED` - for offers associated with product - if compatibility list is provided in the product details (GET/sale/products/{productId}), it needs to be included in the offer in unchanged form. </li> </ul>'
-      required:
-        - type
+      oneOf:
+        - $ref: '#/components/schemas/CompatibilityListManual'
+        - $ref: '#/components/schemas/CompatibilityListProductBasedProductOfferResponse'
       discriminator:
         propertyName: type
         mapping:
           MANUAL: '#/components/schemas/CompatibilityListManual'
           PRODUCT_BASED: '#/components/schemas/CompatibilityListProductBasedProductOfferResponse'
     CompatibilityListManual:
-      allOf:
-        - $ref: '#/components/schemas/CompatibilityList'
-        - $ref: '#/components/schemas/CompatibilityListManualType'
-    CompatibilityListManualType:
       type: object
       required:
+        - type
         - items
       properties:
+        type:
+          type: string
+          enum:
+            - MANUAL
+          description: Type of the compatibility list.
         items:
           type: array
           items:
@@ -23201,29 +23197,29 @@ components:
                 $ref: '#/components/schemas/CompatibilityListItemProductBased'
               description: Text representation of the compatibility list items. Provided for informational purposes only - ignored when creating (Post) or updating (Put) compatibility list in the offer.
     CompatibilityListProductBasedProductOfferResponse:
-      allOf:
-        - $ref: '#/components/schemas/CompatibilityList'
-        - type: object
-          required:
-            - items
-          properties:
-            items:
-              type: array
-              items:
-                $ref: '#/components/schemas/CompatibilityListItemProductBased'
-              description: Text representation of the compatibility list items. Provided for informational purposes only - ignored when creating (Post) or updating (Put) compatibility list in the offer.
-    CompatibilityListItem:
       type: object
+      required:
+        - type
+        - items
       properties:
         type:
           type: string
-      required:
-        - type
+          enum:
+            - PRODUCT_BASED
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompatibilityListItemProductBased'
+          description: Text representation of the compatibility list items. Provided for informational purposes only - ignored when creating (Post) or updating (Put) compatibility list in the offer.
+    CompatibilityListItem:
       discriminator:
         propertyName: type
         mapping:
           TEXT: '#/components/schemas/CompatibilityListTextItem'
           ID: '#/components/schemas/CompatibilityListIdItem'
+      oneOf:
+        - $ref: '#/components/schemas/CompatibilityListTextItem'
+        - $ref: '#/components/schemas/CompatibilityListIdItem'
       example:
         type: TEXT
         text: CITROËN C6 (TD_) 2005/09-2011/12 2.7 HDi 204KM/150kW
@@ -23235,42 +23231,40 @@ components:
           description: Text description of the compatible item.
           example: AUDI 90 (89, 89Q, 8A, B3) 1988/06-1991/09 2.3 E 20V quattro 170KM/125kW 1501
     CompatibilityListTextItem:
-      allOf:
-        - $ref: '#/components/schemas/CompatibilityListItem'
-        - type: object
-          required:
-            - text
-          properties:
-            type:
-              type: string
-              default: TEXT
-            text:
-              type: string
-              description: Text description of the compatible item. Maximum length of the text depends on category where compatible item is used. Should be used in categories where TEXT version of compatible list is supported. See <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource. <a href="../../compatibility_list" target="_blank">Read more</a>.
-              example: CITROËN C6 (TD_) 2005/09-2011/12 2.7 HDi 204KM/150kW
+      type: object
+      required:
+        - type
+        - text
+      properties:
+        type:
+          type: string
+          enum:
+            - TEXT
+        text:
+          type: string
+          description: Text description of the compatible item. Maximum length of the text depends on category where compatible item is used. Should be used in categories where TEXT version of compatible list is supported. See <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource. <a href="../../compatibility_list" target="_blank">Read more</a>.
+          example: CITROËN C6 (TD_) 2005/09-2011/12 2.7 HDi 204KM/150kW
     CompatibilityListIdItem:
-      allOf:
-        - $ref: '#/components/schemas/CompatibilityListItem'
-        - type: object
-          required:
-            - id
-          properties:
-            type:
-              type: string
-              default: ID
-            id:
-              type: string
-              description: Id of the compatible item. Should be used in categories where ID version of compatible list is supported. See <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource. <a href="../../compatibility_list" target="_blank">Read more</a>.
-              example: 0006563f-f2b9-44ea-ae67-4678679be1f1
-            text:
-              type: string
-              description: Text description of the compatible item. When creating (Post) or updating (Put) a compatibility list the field is ignored.
-              example: CITROËN C6 (TD_) 2005/09-2011/12 2.7 HDi 204KM/150kW
-            additionalInfo:
-              type: array
-              items:
-                $ref: '#/components/schemas/CompatibilityListIdItemAdditionalInfo'
-              description: Details of the compatible item represented by ID.
+      type: object
+      required:
+        - type
+        - id
+      properties:
+        type:
+          type: string
+          enum:
+            - ID
+        id:
+          type: string
+          description: Id of the compatible item. Should be used in categories where ID version of compatible list is supported. See <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource. <a href="../../compatibility_list" target="_blank">Read more</a>.
+          example: 0006563f-f2b9-44ea-ae67-4678679be1f1
+        text:
+          type: string
+          description: Text description of the compatible item. When creating (Post) or updating (Put) a compatibility list the field is ignored.
+        additionalInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompatibilityListIdItemAdditionalInfo'
     CompatibilityListIdItemAdditionalInfo:
       type: object
       required:
@@ -29749,7 +29743,7 @@ components:
               $ref: '#/components/schemas/AdditionalMarketplacesRequest'
             compatibilityList:
               allOf:
-                - $ref: '#/components/schemas/CompatibilityListManualType'
+                - $ref: '#/components/schemas/CompatibilityListManual'
               description: For the `/sale/product-offers` resources you can send only definition of the MANUAL compatibility list. If compatibility list is provided for the product assigned to the offer, it will be used automatically.
             language:
               type: string
@@ -29783,7 +29777,7 @@ components:
               $ref: '#/components/schemas/ProductOfferAdditionalServicesRequest'
             compatibilityList:
               allOf:
-                - $ref: '#/components/schemas/CompatibilityListManualType'
+                - $ref: '#/components/schemas/CompatibilityListManual'
               description: For the `/sale/product-offers` resources you can send only definition of the MANUAL compatibility list. If compatibility list is provided for the product assigned to the offer, it will be used automatically.
             delivery:
               allOf:

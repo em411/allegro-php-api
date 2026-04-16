@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CompatibilityListManual extends CompatibilityListProductOfferResponse
+class CompatibilityListManual extends CompatibilityList
 {
     /**
      * @var array
@@ -22,7 +22,7 @@ class CompatibilityListManual extends CompatibilityListProductOfferResponse
     /**
      * List of the compatible items. Maximum number of elements on the list depends on type of included compatible items. Configuration and details concerning the compatible items in selected category are provided in the response for GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource in `validationRules` object.
      *
-     * @var list<CompatibilityListItem>|null
+     * @var list<mixed>|null
      */
     protected $items;
 
@@ -34,7 +34,7 @@ class CompatibilityListManual extends CompatibilityListProductOfferResponse
     /**
      * List of the compatible items. Maximum number of elements on the list depends on type of included compatible items. Configuration and details concerning the compatible items in selected category are provided in the response for GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource in `validationRules` object.
      *
-     * @return list<CompatibilityListItem>|null
+     * @return list<mixed>|null
      */
     public function getItems(): ?array
     {
@@ -44,7 +44,7 @@ class CompatibilityListManual extends CompatibilityListProductOfferResponse
     /**
      * List of the compatible items. Maximum number of elements on the list depends on type of included compatible items. Configuration and details concerning the compatible items in selected category are provided in the response for GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource in `validationRules` object.
      *
-     * @param list<CompatibilityListItem>|null $items
+     * @param list<mixed>|null $items
      */
     public function setItems(?array $items): self
     {

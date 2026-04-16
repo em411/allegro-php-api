@@ -61,7 +61,7 @@ class CompatibilityListManualNormalizer implements DenormalizerInterface, Normal
         if (\array_key_exists('items', $data) && null !== $data['items']) {
             $values = [];
             foreach ($data['items'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\CompatibilityListItem::class, 'json', $context);
+                $values[] = $value;
             }
             $object->setItems($values);
             unset($data['items']);
@@ -83,7 +83,7 @@ class CompatibilityListManualNormalizer implements DenormalizerInterface, Normal
         $dataArray['type'] = $data->getType();
         $values = [];
         foreach ($data->getItems() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = $value;
         }
         $dataArray['items'] = $values;
         foreach ($data as $key => $value_1) {

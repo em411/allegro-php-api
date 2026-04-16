@@ -13,12 +13,16 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CompatibilityListIdItem extends CompatibilityListItem
+class CompatibilityListIdItem extends \ArrayObject
 {
     /**
      * @var array
      */
     protected $initialized = [];
+    /**
+     * @var string|null
+     */
+    protected $type;
     /**
      * Id of the compatible item. Should be used in categories where ID version of compatible list is supported. See <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource. <a href="../../compatibility_list" target="_blank">Read more</a>.
      *
@@ -32,8 +36,6 @@ class CompatibilityListIdItem extends CompatibilityListItem
      */
     protected $text;
     /**
-     * Details of the compatible item represented by ID.
-     *
      * @var list<CompatibilityListIdItemAdditionalInfo>|null
      */
     protected $additionalInfo;
@@ -41,6 +43,19 @@ class CompatibilityListIdItem extends CompatibilityListItem
     public function isInitialized($property): bool
     {
         return \array_key_exists($property, $this->initialized);
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->initialized['type'] = true;
+        $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -82,8 +97,6 @@ class CompatibilityListIdItem extends CompatibilityListItem
     }
 
     /**
-     * Details of the compatible item represented by ID.
-     *
      * @return list<CompatibilityListIdItemAdditionalInfo>|null
      */
     public function getAdditionalInfo(): ?array
@@ -92,8 +105,6 @@ class CompatibilityListIdItem extends CompatibilityListItem
     }
 
     /**
-     * Details of the compatible item represented by ID.
-     *
      * @param list<CompatibilityListIdItemAdditionalInfo>|null $additionalInfo
      */
     public function setAdditionalInfo(?array $additionalInfo): self

@@ -13,12 +13,16 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CompatibilityListProductBasedProductOfferResponse extends CompatibilityListProductOfferResponse
+class CompatibilityListProductBasedProductOfferResponse extends \ArrayObject
 {
     /**
      * @var array
      */
     protected $initialized = [];
+    /**
+     * @var string|null
+     */
+    protected $type;
     /**
      * Text representation of the compatibility list items. Provided for informational purposes only - ignored when creating (Post) or updating (Put) compatibility list in the offer.
      *
@@ -29,6 +33,19 @@ class CompatibilityListProductBasedProductOfferResponse extends CompatibilityLis
     public function isInitialized($property): bool
     {
         return \array_key_exists($property, $this->initialized);
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->initialized['type'] = true;
+        $this->type = $type;
+
+        return $this;
     }
 
     /**
