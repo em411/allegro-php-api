@@ -34,6 +34,8 @@ class SmartOfferClassificationReport extends \ArrayObject
     /**
      * Delivery methods marked with Smart! label.
      *
+     * @deprecated
+     *
      * @var list<SmartDeliveryMethod>|null
      */
     protected $smartDeliveryMethods;
@@ -90,6 +92,8 @@ class SmartOfferClassificationReport extends \ArrayObject
     /**
      * Delivery methods marked with Smart! label.
      *
+     * @deprecated
+     *
      * @return list<SmartDeliveryMethod>|null
      */
     public function getSmartDeliveryMethods(): ?array
@@ -101,6 +105,8 @@ class SmartOfferClassificationReport extends \ArrayObject
      * Delivery methods marked with Smart! label.
      *
      * @param list<SmartDeliveryMethod>|null $smartDeliveryMethods
+     *
+     * @deprecated
      */
     public function setSmartDeliveryMethods(?array $smartDeliveryMethods): self
     {

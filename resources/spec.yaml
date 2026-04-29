@@ -34962,6 +34962,7 @@ components:
           example:
             - id: 2488f7b7-5d1c-4d65-b85c-4cbcf253fd93
             - id: c3066682-97a3-42fe-9eb5-3beeccab840c
+          deprecated: true
         conditions:
           type: array
           description: Set of conditions to be met in order for that particular offer to be Smart!. Each condition filters out improperly configured delivery methods or checks some offer attributes. Order of conditions matters. Please keep in mind that this is a **PREVIEW** of an offer classification if being conducted right now - actual classification is triggered only by attribute changes and as of now it cannot be manually done on demand.
@@ -34983,11 +34984,13 @@ components:
               passedDeliveryMethods:
                 type: array
                 description: Set of delivery methods that meet this condition. May be null if the condition does not apply to delivery methods.
+                deprecated: true
                 items:
                   $ref: '#/components/schemas/DeliveryMethodId'
               failedDeliveryMethods:
                 type: array
                 description: Set of delivery methods that fail to meet this condition. May be null if the condition does not apply to delivery methods.
+                deprecated: true
                 items:
                   $ref: '#/components/schemas/DeliveryMethodId'
           example:
@@ -37315,7 +37318,7 @@ components:
           description: The most recent date when the issue has been opened or reopened
         subject:
           type: string
-          description: 'Subject of the issue, possible values in english based on the reason field: - NO_PRODUCT_RECEIVED - I have not received the product - NO_PRODUCT_IN_PARCEL - no product in the parcel - NO_PROOF_OF_PURCHASE_MANUAL_OR_WARRANTY - no proof of purchase, manual, or warranty - MISSING_PRODUCT_ELEMENT - missing product element - PRODUCT_AND_PARCEL_DAMAGED_IN_TRANSIT - product and parcel damaged (in transit) - PRODUCT_DAMAGED_PARCEL_INTACT - the product is damaged, but the parcel is intact - DEFECT_FOUND_DURING_USE - defects emerged during use - NOT_AS_DESCRIBED - does not match the description - SELLER_DOES_NOT_WANT_TO_ACCEPT_RETURN - the seller does not want to accept the return - PROBLEM_WITH_SENDING_PRODUCT_BACK - I have a problem returning the product - NO_REFUND_AFTER_RETURNING_PRODUCT - no refund after returning the product - NO_REFUND_AFTER_CANCELING_ORDER - no refund after canceling the order - DID_NOT_RECEIVE_GOODS_AFTER_PAYMENT - I did not receive the goods after payment - RECEIVED_ITEMS_NOT_MATCHING_DESCRIPTION - I received an order inconsistent with the description - RECEIVED_INCOMPLETE_ORDER - I received an incomplete order - ITEM_IS_DAMAGED - the product is damaged - PROBLEM_WITH_WITHDRAWAL_CANCELLATION_OF_PURCHASE - problem with withdrawal/cancelation of purchase - PROBLEM_WITH_GOODS_RETURN_CANCELLATION_OF_PURCHASE - I have a problem returning the goods/canceling the purchase'
+          description: 'Subject of the issue, possible values in english based on the reason field: - NO_PRODUCT_RECEIVED - I have not received the product - NO_PRODUCT_IN_PARCEL - no product in the parcel - NO_PROOF_OF_PURCHASE_MANUAL_OR_WARRANTY - no proof of purchase, manual, or warranty - MISSING_PRODUCT_ELEMENT - missing product element - PRODUCT_AND_PARCEL_DAMAGED_IN_TRANSIT - product and parcel damaged (in transit) - PRODUCT_DAMAGED_PARCEL_INTACT - the product is damaged, but the parcel is intact - DEFECT_FOUND_DURING_USE - defects emerged during use - NOT_AS_DESCRIBED - does not match the description - SELLER_DOES_NOT_WANT_TO_ACCEPT_RETURN - the seller does not want to accept the return - PROBLEM_WITH_SENDING_PRODUCT_BACK - I have a problem returning the product - NO_REFUND_AFTER_RETURNING_PRODUCT - no refund after returning the product - NO_REFUND_AFTER_CANCELING_ORDER - no refund after canceling the order - DID_NOT_RECEIVE_GOODS_AFTER_PAYMENT - I did not receive the goods after payment - RECEIVED_ITEMS_NOT_MATCHING_DESCRIPTION - I received an order inconsistent with the description - RECEIVED_INCOMPLETE_ORDER - I received an incomplete order - ITEM_IS_DAMAGED - the product is damaged - PROBLEM_WITH_WITHDRAWAL_CANCELLATION_OF_PURCHASE - problem with withdrawal/cancelation of purchase - PROBLEM_WITH_GOODS_RETURN_CANCELLATION_OF_PURCHASE - I have a problem returning the goods/canceling the purchase - OTHER - my reason is not on the list'
           nullable: true
           example: PRODUCT_AND_PARCEL_DAMAGED_IN_TRANSIT
         buyer:
