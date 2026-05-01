@@ -37576,6 +37576,7 @@ components:
             - ITEM_IS_DAMAGED
             - PROBLEM_WITH_WITHDRAWAL_CANCELLATION_OF_PURCHASE
             - PROBLEM_WITH_GOODS_RETURN_CANCELLATION_OF_PURCHASE
+            - OTHER
           example: NO_PRODUCT_IN_PARCEL
         description:
           type: string
