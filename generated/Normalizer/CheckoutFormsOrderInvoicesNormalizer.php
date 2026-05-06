@@ -55,6 +55,12 @@ class CheckoutFormsOrderInvoicesNormalizer implements DenormalizerInterface, Nor
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
+        if (\array_key_exists('orderMode', $data) && null !== $data['orderMode']) {
+            $object->setOrderMode($data['orderMode']);
+            unset($data['orderMode']);
+        } elseif (\array_key_exists('orderMode', $data) && null === $data['orderMode']) {
+            $object->setOrderMode(null);
+        }
         if (\array_key_exists('invoices', $data) && null !== $data['invoices']) {
             $values = [];
             foreach ($data['invoices'] as $value) {
@@ -93,6 +99,9 @@ class CheckoutFormsOrderInvoicesNormalizer implements DenormalizerInterface, Nor
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
+        if ($data->isInitialized('orderMode') && null !== $data->getOrderMode()) {
+            $dataArray['orderMode'] = $data->getOrderMode();
+        }
         if ($data->isInitialized('invoices') && null !== $data->getInvoices()) {
             $values = [];
             foreach ($data->getInvoices() as $value) {

@@ -1091,6 +1091,16 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\CheckoutFormLineItemTax::class => CheckoutFormLineItemTaxNormalizer::class,
 
+        \Em411\Allegro\Api\Model\CheckoutFormLineItemsSetSerialNumbersRequest::class => CheckoutFormLineItemsSetSerialNumbersRequestNormalizer::class,
+
+        \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersRequest::class => CheckoutFormLineItemSetSerialNumbersRequestNormalizer::class,
+
+        \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntries::class => CheckoutFormLineItemSerialNumbersEntriesNormalizer::class,
+
+        \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbers::class => CheckoutFormLineItemSerialNumbersNormalizer::class,
+
+        \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntry::class => CheckoutFormLineItemSerialNumbersEntryNormalizer::class,
+
         \Em411\Allegro\Api\Model\LineItemDiscount::class => LineItemDiscountNormalizer::class,
 
         \Em411\Allegro\Api\Model\CheckoutFormNoteReference::class => CheckoutFormNoteReferenceNormalizer::class,
@@ -1110,6 +1120,10 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoiceFile::class => CheckoutFormsOrderInvoiceFileNormalizer::class,
 
         \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoiceFileSecurityVerification::class => CheckoutFormsOrderInvoiceFileSecurityVerificationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoiceFileVerification::class => CheckoutFormsOrderInvoiceFileVerificationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoiceFileVerificationDetails::class => CheckoutFormsOrderInvoiceFileVerificationDetailsNormalizer::class,
 
         \Em411\Allegro\Api\Model\CheckFormsNewOrderInvoice::class => CheckFormsNewOrderInvoiceNormalizer::class,
 
@@ -3051,6 +3065,11 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\LineItemVoucher::class => false,
             \Em411\Allegro\Api\Model\LineItemVoucherValue::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormLineItemTax::class => false,
+            \Em411\Allegro\Api\Model\CheckoutFormLineItemsSetSerialNumbersRequest::class => false,
+            \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersRequest::class => false,
+            \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntries::class => false,
+            \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbers::class => false,
+            \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntry::class => false,
             \Em411\Allegro\Api\Model\LineItemDiscount::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormNoteReference::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormMarketplace::class => false,
@@ -3061,6 +3080,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\CheckoutFormsOrderLink::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoiceFile::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoiceFileSecurityVerification::class => false,
+            \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoiceFileVerification::class => false,
+            \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoiceFileVerificationDetails::class => false,
             \Em411\Allegro\Api\Model\CheckFormsNewOrderInvoice::class => false,
             \Em411\Allegro\Api\Model\CheckFormsNewOrderInvoiceFile::class => false,
             \Em411\Allegro\Api\Model\CheckFormsNewOrderInvoiceId::class => false,

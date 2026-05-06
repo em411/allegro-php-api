@@ -31,6 +31,12 @@ class CheckoutFormsOrderInvoiceFile extends \ArrayObject
      * @var CheckoutFormsOrderInvoiceFileSecurityVerification|null
      */
     protected $securityVerification;
+    /**
+     * Additional invoice file verification.
+     *
+     * @var CheckoutFormsOrderInvoiceFileVerification|null
+     */
+    protected $verification;
 
     public function isInitialized($property): bool
     {
@@ -72,6 +78,25 @@ class CheckoutFormsOrderInvoiceFile extends \ArrayObject
     {
         $this->initialized['securityVerification'] = true;
         $this->securityVerification = $securityVerification;
+
+        return $this;
+    }
+
+    /**
+     * Additional invoice file verification.
+     */
+    public function getVerification(): ?CheckoutFormsOrderInvoiceFileVerification
+    {
+        return $this->verification;
+    }
+
+    /**
+     * Additional invoice file verification.
+     */
+    public function setVerification(?CheckoutFormsOrderInvoiceFileVerification $verification): self
+    {
+        $this->initialized['verification'] = true;
+        $this->verification = $verification;
 
         return $this;
     }

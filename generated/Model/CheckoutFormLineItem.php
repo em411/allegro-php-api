@@ -81,6 +81,12 @@ class CheckoutFormLineItem extends \ArrayObject
      * @var list<LineItemDiscount>|null
      */
     protected $discounts;
+    /**
+     * Serial numbers required for export orders.
+     *
+     * @var CheckoutFormLineItemSerialNumbers|null
+     */
+    protected $serialNumbers;
 
     public function isInitialized($property): bool
     {
@@ -299,6 +305,25 @@ class CheckoutFormLineItem extends \ArrayObject
     {
         $this->initialized['discounts'] = true;
         $this->discounts = $discounts;
+
+        return $this;
+    }
+
+    /**
+     * Serial numbers required for export orders.
+     */
+    public function getSerialNumbers(): ?CheckoutFormLineItemSerialNumbers
+    {
+        return $this->serialNumbers;
+    }
+
+    /**
+     * Serial numbers required for export orders.
+     */
+    public function setSerialNumbers(?CheckoutFormLineItemSerialNumbers $serialNumbers): self
+    {
+        $this->initialized['serialNumbers'] = true;
+        $this->serialNumbers = $serialNumbers;
 
         return $this;
     }

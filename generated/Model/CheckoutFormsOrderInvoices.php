@@ -20,6 +20,12 @@ class CheckoutFormsOrderInvoices extends \ArrayObject
      */
     protected $initialized = [];
     /**
+     * Whether an order is in a regular mode or in a special mode for exports to Ukraine.
+     *
+     * @var string|null
+     */
+    protected $orderMode;
+    /**
      * @var list<CheckoutFormsOrderInvoice>|null
      */
     protected $invoices;
@@ -37,6 +43,25 @@ class CheckoutFormsOrderInvoices extends \ArrayObject
     public function isInitialized($property): bool
     {
         return \array_key_exists($property, $this->initialized);
+    }
+
+    /**
+     * Whether an order is in a regular mode or in a special mode for exports to Ukraine.
+     */
+    public function getOrderMode(): ?string
+    {
+        return $this->orderMode;
+    }
+
+    /**
+     * Whether an order is in a regular mode or in a special mode for exports to Ukraine.
+     */
+    public function setOrderMode(?string $orderMode): self
+    {
+        $this->initialized['orderMode'] = true;
+        $this->orderMode = $orderMode;
+
+        return $this;
     }
 
     /**

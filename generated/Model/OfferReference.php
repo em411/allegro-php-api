@@ -41,6 +41,12 @@ class OfferReference extends \ArrayObject
      * @var OfferProductSetReference|null
      */
     protected $productSet;
+    /**
+     * HS number of the purchased product. See: [Harmonized System (HS) Codes](https://www.trade.gov/harmonized-system-hs-codes).
+     *
+     * @var string|null
+     */
+    protected $hsNumber;
 
     public function isInitialized($property): bool
     {
@@ -113,6 +119,25 @@ class OfferReference extends \ArrayObject
     {
         $this->initialized['productSet'] = true;
         $this->productSet = $productSet;
+
+        return $this;
+    }
+
+    /**
+     * HS number of the purchased product. See: [Harmonized System (HS) Codes](https://www.trade.gov/harmonized-system-hs-codes).
+     */
+    public function getHsNumber(): ?string
+    {
+        return $this->hsNumber;
+    }
+
+    /**
+     * HS number of the purchased product. See: [Harmonized System (HS) Codes](https://www.trade.gov/harmonized-system-hs-codes).
+     */
+    public function setHsNumber(?string $hsNumber): self
+    {
+        $this->initialized['hsNumber'] = true;
+        $this->hsNumber = $hsNumber;
 
         return $this;
     }

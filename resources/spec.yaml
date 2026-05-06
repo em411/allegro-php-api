@@ -5093,7 +5093,7 @@ paths:
       tags:
         - Categories and parameters
       summary: Get IDs of Allegro categories
-      description: 'Use this resource to traverse the Allegro categories tree. It returns the list of the given category''s children or a list of the main Allegro categories. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#uzupelnij-kategorie-i-parametry" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#provide-category-and-parameters" target="_blank">EN</a>.'
+      description: 'Use this resource to traverse the Allegro categories tree. It returns the list of the given category''s children or a list of the main Allegro categories. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#kategorie-oraz-parametry" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#categories-and-parameters" target="_blank">EN</a>.'
       operationId: getCategoriesUsingGET
       security:
         - bearer-token-for-application: []
@@ -9737,6 +9737,64 @@ paths:
                 $ref: '#/components/schemas/ErrorsHolder'
         '422':
           description: Some of the provided data is invalid, e.g. unrecognized status value or given status is not allowed to be set (e.g. `RETURNED` status).
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      security:
+        - bearer-token-for-user:
+            - allegro:api:orders:write
+  /order/checkout-forms/{id}/serial-numbers:
+    post:
+      tags:
+        - Order management
+      summary: Set line items' serial numbers
+      description: 'Use to set serial numbers in the given line items of seller order. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#zmiana-statusu-realizacji-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#order-fulfillment-status-change" target="_blank">EN</a>.'
+      operationId: setOrderLineItemsSerialNumbersUsingPOST
+      parameters:
+        - name: id
+          in: path
+          description: Order identifier.
+          required: true
+          schema:
+            type: string
+        - name: checkoutForm.revision
+          in: query
+          description: Checkout form revision.
+          required: false
+          schema:
+            type: string
+          example: 819b5836
+        - name: Accept-Language
+          in: header
+          required: false
+          description: Expected language of messages.
+          example: en-US
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/CheckoutFormLineItemsSetSerialNumbersRequest'
+      responses:
+        '204':
+          description: Serial numbers set successfully
+        '401':
+          description: Authentication failed, e.g. token is expired
+        '404':
+          description: Order or line item not found or doesn’t belong to the seller
+        '409':
+          description: Conflict. Provided revision is outdated.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Some of the provided data is invalid, e.g. quantity of serial numbers exceeds the quantity of the line item, or the number of serial number modifications is exceeded, or line item ids in the request body are duplicated.
           content:
             application/vnd.allegro.public.v1+json:
               schema:
@@ -27552,6 +27610,10 @@ components:
           $ref: '#/components/schemas/ExternalId'
         productSet:
           $ref: '#/components/schemas/OfferProductSetReference'
+        hsNumber:
+          type: string
+          description: 'HS number of the purchased product. See: [Harmonized System (HS) Codes](https://www.trade.gov/harmonized-system-hs-codes)'
+          example: '09012100'
       description: Offer identifier.
     OfferProductSetReference:
       type: object
@@ -28322,6 +28384,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LineItemDiscount'
+        serialNumbers:
+          $ref: '#/components/schemas/CheckoutFormLineItemSerialNumbers'
       description: Order item
     LineItemDeposit:
       type: object
@@ -28420,6 +28484,60 @@ components:
           description: The exemption of taxation.
           nullable: true
           example: MONEY_EQUIVALENT
+    CheckoutFormLineItemsSetSerialNumbersRequest:
+      type: object
+      description: Serial numbers update request for export orders.
+      properties:
+        lineItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutFormLineItemSetSerialNumbersRequest'
+      required:
+        - lineItems
+    CheckoutFormLineItemSetSerialNumbersRequest:
+      type: object
+      description: Serial numbers update for given line item of export order.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Line item identifier
+          example: 62ae358b-8f65-4fc4-9c77-bedf604a2e2b
+        serialNumbers:
+          $ref: '#/components/schemas/CheckoutFormLineItemSerialNumbersEntries'
+      required:
+        - id
+        - serialNumbers
+    CheckoutFormLineItemSerialNumbersEntries:
+      type: object
+      description: Serial numbers entered by the Seller. The seller is expected to provide serial numbers when processing an order whose destination country requires them and the product category qualifies for serial numbers.
+      properties:
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutFormLineItemSerialNumbersEntry'
+      required:
+        - entries
+    CheckoutFormLineItemSerialNumbers:
+      type: object
+      description: Serial numbers required for export orders.
+      properties:
+        expected:
+          type: boolean
+          description: Informs whether the serial numbers are expected to be entered by the Seller. The seller is expected to provide serial numbers when processing an order whose destination country requires them and the product category qualifies for serial numbers.
+          example: true
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutFormLineItemSerialNumbersEntry'
+    CheckoutFormLineItemSerialNumbersEntry:
+      type: object
+      properties:
+        value:
+          type: string
+          description: Serial number entered by the Seller.
+      required:
+        - value
     LineItemDiscount:
       type: object
       properties:
@@ -28472,6 +28590,13 @@ components:
     CheckoutFormsOrderInvoices:
       type: object
       properties:
+        orderMode:
+          type: string
+          enum:
+            - REGULAR
+            - UKRAINE_EXPORT
+          example: UKRAINE_EXPORT
+          description: Whether an order is in a regular mode or in a special mode for exports to Ukraine
         invoices:
           type: array
           items:
@@ -28524,6 +28649,8 @@ components:
           example: '2025-11-07T12:56:10.349Z'
         securityVerification:
           $ref: '#/components/schemas/CheckoutFormsOrderInvoiceFileSecurityVerification'
+        verification:
+          $ref: '#/components/schemas/CheckoutFormsOrderInvoiceFileVerification'
     CheckoutFormsOrderInvoiceFileSecurityVerification:
       type: object
       properties:
@@ -28538,6 +28665,43 @@ components:
           type: string
           format: date-time
           example: '2025-11-07T12:56:10.349Z'
+    CheckoutFormsOrderInvoiceFileVerification:
+      type: object
+      description: Additional invoice file verification.
+      properties:
+        status:
+          type: string
+          enum:
+            - NOT_APPLICABLE
+            - WAITING
+            - ACCEPTED
+            - ACCEPTED_WITH_WARNINGS
+            - REJECTED
+          example: ACCEPTED_WITH_WARNINGS
+          description: Verification status. Always NOT_APPLICABLE in the REGULAR orderMode. In the UKRAINE_EXPORT orderMode can be WAITING, ACCEPTED, ACCEPTED_WITH_WARNINGS or REJECTED.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckoutFormsOrderInvoiceFileVerificationDetails'
+          description: Contains warnings and errors when status is ACCEPTED_WITH_WARNINGS or REJECTED. Empty in other statuses.
+    CheckoutFormsOrderInvoiceFileVerificationDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - WARNING
+            - ERROR
+          example: WARNING
+          description: WARNING if the issue doesn't prevent the invoice from being accepted, ERROR if the issue prevents the invoice from being accepted
+        code:
+          type: string
+          example: MISSING_EORI_NUMBER
+          description: Technical code of the warning or error
+        message:
+          type: string
+          example: EORI number is missing from the invoice
+          description: User friendly message to display.
     CheckFormsNewOrderInvoice:
       type: object
       required:

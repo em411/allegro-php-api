@@ -70,6 +70,12 @@ class CheckoutFormsOrderInvoiceFileNormalizer implements DenormalizerInterface, 
         } elseif (\array_key_exists('securityVerification', $data) && null === $data['securityVerification']) {
             $object->setSecurityVerification(null);
         }
+        if (\array_key_exists('verification', $data) && null !== $data['verification']) {
+            $object->setVerification($this->denormalizer->denormalize($data['verification'], \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoiceFileVerification::class, 'json', $context));
+            unset($data['verification']);
+        } elseif (\array_key_exists('verification', $data) && null === $data['verification']) {
+            $object->setVerification(null);
+        }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value;
@@ -90,6 +96,9 @@ class CheckoutFormsOrderInvoiceFileNormalizer implements DenormalizerInterface, 
         }
         if ($data->isInitialized('securityVerification') && null !== $data->getSecurityVerification()) {
             $dataArray['securityVerification'] = $this->normalizer->normalize($data->getSecurityVerification(), 'json', $context);
+        }
+        if ($data->isInitialized('verification') && null !== $data->getVerification()) {
+            $dataArray['verification'] = $this->normalizer->normalize($data->getVerification(), 'json', $context);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

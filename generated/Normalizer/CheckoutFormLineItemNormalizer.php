@@ -139,6 +139,12 @@ class CheckoutFormLineItemNormalizer implements DenormalizerInterface, Normalize
         } elseif (\array_key_exists('discounts', $data) && null === $data['discounts']) {
             $object->setDiscounts(null);
         }
+        if (\array_key_exists('serialNumbers', $data) && null !== $data['serialNumbers']) {
+            $object->setSerialNumbers($this->denormalizer->denormalize($data['serialNumbers'], \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbers::class, 'json', $context));
+            unset($data['serialNumbers']);
+        } elseif (\array_key_exists('serialNumbers', $data) && null === $data['serialNumbers']) {
+            $object->setSerialNumbers(null);
+        }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value_3;
@@ -188,6 +194,9 @@ class CheckoutFormLineItemNormalizer implements DenormalizerInterface, Normalize
                 $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
             }
             $dataArray['discounts'] = $values_2;
+        }
+        if ($data->isInitialized('serialNumbers') && null !== $data->getSerialNumbers()) {
+            $dataArray['serialNumbers'] = $this->normalizer->normalize($data->getSerialNumbers(), 'json', $context);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {

@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OfferReferenceNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class CheckoutFormLineItemSetSerialNumbersRequestNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class OfferReferenceNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\OfferReference::class === $type;
+        return \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersRequest::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\OfferReference::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersRequest::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,7 +48,7 @@ class OfferReferenceNormalizer implements DenormalizerInterface, NormalizerInter
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\OfferReference();
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersRequest();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -58,29 +58,11 @@ class OfferReferenceNormalizer implements DenormalizerInterface, NormalizerInter
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
         }
-        if (\array_key_exists('name', $data) && null !== $data['name']) {
-            $object->setName($data['name']);
-            unset($data['name']);
-        } elseif (\array_key_exists('name', $data) && null === $data['name']) {
-            $object->setName(null);
-        }
-        if (\array_key_exists('external', $data) && null !== $data['external']) {
-            $object->setExternal($this->denormalizer->denormalize($data['external'], \Em411\Allegro\Api\Model\ExternalId::class, 'json', $context));
-            unset($data['external']);
-        } elseif (\array_key_exists('external', $data) && null === $data['external']) {
-            $object->setExternal(null);
-        }
-        if (\array_key_exists('productSet', $data) && null !== $data['productSet']) {
-            $object->setProductSet($this->denormalizer->denormalize($data['productSet'], \Em411\Allegro\Api\Model\OfferProductSetReference::class, 'json', $context));
-            unset($data['productSet']);
-        } elseif (\array_key_exists('productSet', $data) && null === $data['productSet']) {
-            $object->setProductSet(null);
-        }
-        if (\array_key_exists('hsNumber', $data) && null !== $data['hsNumber']) {
-            $object->setHsNumber($data['hsNumber']);
-            unset($data['hsNumber']);
-        } elseif (\array_key_exists('hsNumber', $data) && null === $data['hsNumber']) {
-            $object->setHsNumber(null);
+        if (\array_key_exists('serialNumbers', $data) && null !== $data['serialNumbers']) {
+            $object->setSerialNumbers($this->denormalizer->denormalize($data['serialNumbers'], \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntries::class, 'json', $context));
+            unset($data['serialNumbers']);
+        } elseif (\array_key_exists('serialNumbers', $data) && null === $data['serialNumbers']) {
+            $object->setSerialNumbers(null);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -95,16 +77,7 @@ class OfferReferenceNormalizer implements DenormalizerInterface, NormalizerInter
     {
         $dataArray = [];
         $dataArray['id'] = $data->getId();
-        $dataArray['name'] = $data->getName();
-        if ($data->isInitialized('external') && null !== $data->getExternal()) {
-            $dataArray['external'] = $this->normalizer->normalize($data->getExternal(), 'json', $context);
-        }
-        if ($data->isInitialized('productSet') && null !== $data->getProductSet()) {
-            $dataArray['productSet'] = $this->normalizer->normalize($data->getProductSet(), 'json', $context);
-        }
-        if ($data->isInitialized('hsNumber') && null !== $data->getHsNumber()) {
-            $dataArray['hsNumber'] = $data->getHsNumber();
-        }
+        $dataArray['serialNumbers'] = $this->normalizer->normalize($data->getSerialNumbers(), 'json', $context);
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
@@ -116,6 +89,6 @@ class OfferReferenceNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\OfferReference::class => false];
+        return [\Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersRequest::class => false];
     }
 }

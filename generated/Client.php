@@ -1595,7 +1595,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to traverse the Allegro categories tree. It returns the list of the given category's children or a list of the main Allegro categories. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#uzupelnij-kategorie-i-parametry" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#provide-category-and-parameters" target="_blank">EN</a>.
+     * Use this resource to traverse the Allegro categories tree. It returns the list of the given category's children or a list of the main Allegro categories. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#kategorie-oraz-parametry" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#categories-and-parameters" target="_blank">EN</a>.
      *
      * @param array $queryParameters {
      *
@@ -3298,6 +3298,34 @@ class Client extends Runtime\Client\Client
     public function setOrderFulfillmentUsingPUT(string $id, ?Model\CheckoutFormFulfillment $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\SetOrderFulfillmentUsingPUT($id, $requestBody, $queryParameters, $headerParameters), $fetch);
+    }
+
+    /**
+     * Use to set serial numbers in the given line items of seller order. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#zmiana-statusu-realizacji-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#order-fulfillment-status-change" target="_blank">EN</a>.
+     *
+     * @param string $id              order identifier
+     * @param array  $queryParameters {
+     *
+     * @var string $checkoutForm.revision Checkout form revision.
+     *             }
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return \Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\SetOrderLineItemsSerialNumbersUsingPOSTUnauthorizedException
+     * @throws Exception\SetOrderLineItemsSerialNumbersUsingPOSTNotFoundException
+     * @throws Exception\SetOrderLineItemsSerialNumbersUsingPOSTConflictException
+     * @throws Exception\SetOrderLineItemsSerialNumbersUsingPOSTUnprocessableEntityException
+     */
+    public function setOrderLineItemsSerialNumbersUsingPOST(string $id, ?Model\CheckoutFormLineItemsSetSerialNumbersRequest $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\SetOrderLineItemsSerialNumbersUsingPOST($id, $requestBody, $queryParameters, $headerParameters), $fetch);
     }
 
     /**
