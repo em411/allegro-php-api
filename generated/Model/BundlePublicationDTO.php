@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferBundleDTOPublication extends \ArrayObject
+class BundlePublicationDTO extends \ArrayObject
 {
     /**
      * @var array

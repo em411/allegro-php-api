@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class OfferBundleDTOPublicationNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class BundlePublicationDTONormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class OfferBundleDTOPublicationNormalizer implements DenormalizerInterface, Norm
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\OfferBundleDTOPublication::class === $type;
+        return \Em411\Allegro\Api\Model\BundlePublicationDTO::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\OfferBundleDTOPublication::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\BundlePublicationDTO::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,7 +48,7 @@ class OfferBundleDTOPublicationNormalizer implements DenormalizerInterface, Norm
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\OfferBundleDTOPublication();
+        $object = new \Em411\Allegro\Api\Model\BundlePublicationDTO();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -89,6 +89,6 @@ class OfferBundleDTOPublicationNormalizer implements DenormalizerInterface, Norm
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\OfferBundleDTOPublication::class => false];
+        return [\Em411\Allegro\Api\Model\BundlePublicationDTO::class => false];
     }
 }

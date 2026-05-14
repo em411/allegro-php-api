@@ -765,11 +765,11 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\OfferBundleDTO::class => OfferBundleDTONormalizer::class,
 
-        \Em411\Allegro\Api\Model\OfferBundleDTOPublication::class => OfferBundleDTOPublicationNormalizer::class,
-
         \Em411\Allegro\Api\Model\OfferBundlesDTO::class => OfferBundlesDTONormalizer::class,
 
         \Em411\Allegro\Api\Model\OfferBundlesDTONextPage::class => OfferBundlesDTONextPageNormalizer::class,
+
+        \Em411\Allegro\Api\Model\BundlePublicationDTO::class => BundlePublicationDTONormalizer::class,
 
         \Em411\Allegro\Api\Model\BundleMarketplaceDTO::class => BundleMarketplaceDTONormalizer::class,
 
@@ -2902,9 +2902,9 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\BundledOfferDTO::class => false,
             \Em411\Allegro\Api\Model\BundleDiscountDTO::class => false,
             \Em411\Allegro\Api\Model\OfferBundleDTO::class => false,
-            \Em411\Allegro\Api\Model\OfferBundleDTOPublication::class => false,
             \Em411\Allegro\Api\Model\OfferBundlesDTO::class => false,
             \Em411\Allegro\Api\Model\OfferBundlesDTONextPage::class => false,
+            \Em411\Allegro\Api\Model\BundlePublicationDTO::class => false,
             \Em411\Allegro\Api\Model\BundleMarketplaceDTO::class => false,
             \Em411\Allegro\Api\Model\UpdateOfferBundleDiscountDTO::class => false,
             \Em411\Allegro\Api\Model\SellerCreateRebateRequestDto::class => false,

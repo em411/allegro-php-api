@@ -69,17 +69,21 @@ class OfferBundleDTONormalizer implements DenormalizerInterface, NormalizerInter
             $object->setOffers(null);
         }
         if (\array_key_exists('publication', $data) && null !== $data['publication']) {
-            $object->setPublication($this->denormalizer->denormalize($data['publication'], \Em411\Allegro\Api\Model\OfferBundleDTOPublication::class, 'json', $context));
+            $values_1 = [];
+            foreach ($data['publication'] as $value_1) {
+                $values_1[] = $this->denormalizer->denormalize($value_1, \Em411\Allegro\Api\Model\BundlePublicationDTO::class, 'json', $context);
+            }
+            $object->setPublication($values_1);
             unset($data['publication']);
         } elseif (\array_key_exists('publication', $data) && null === $data['publication']) {
             $object->setPublication(null);
         }
         if (\array_key_exists('discounts', $data) && null !== $data['discounts']) {
-            $values_1 = [];
-            foreach ($data['discounts'] as $value_1) {
-                $values_1[] = $this->denormalizer->denormalize($value_1, \Em411\Allegro\Api\Model\BundleDiscountDTO::class, 'json', $context);
+            $values_2 = [];
+            foreach ($data['discounts'] as $value_2) {
+                $values_2[] = $this->denormalizer->denormalize($value_2, \Em411\Allegro\Api\Model\BundleDiscountDTO::class, 'json', $context);
             }
-            $object->setDiscounts($values_1);
+            $object->setDiscounts($values_2);
             unset($data['discounts']);
         } elseif (\array_key_exists('discounts', $data) && null === $data['discounts']) {
             $object->setDiscounts(null);
@@ -96,9 +100,9 @@ class OfferBundleDTONormalizer implements DenormalizerInterface, NormalizerInter
         } elseif (\array_key_exists('createdBy', $data) && null === $data['createdBy']) {
             $object->setCreatedBy(null);
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_2;
+                $object[$key] = $value_3;
             }
         }
 
@@ -114,17 +118,21 @@ class OfferBundleDTONormalizer implements DenormalizerInterface, NormalizerInter
             $values[] = $this->normalizer->normalize($value, 'json', $context);
         }
         $dataArray['offers'] = $values;
-        $dataArray['publication'] = $this->normalizer->normalize($data->getPublication(), 'json', $context);
         $values_1 = [];
-        foreach ($data->getDiscounts() as $value_1) {
+        foreach ($data->getPublication() as $value_1) {
             $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
         }
-        $dataArray['discounts'] = $values_1;
+        $dataArray['publication'] = $values_1;
+        $values_2 = [];
+        foreach ($data->getDiscounts() as $value_2) {
+            $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+        }
+        $dataArray['discounts'] = $values_2;
         $dataArray['createdAt'] = $data->getCreatedAt()->format('Y-m-d\TH:i:sP');
         $dataArray['createdBy'] = $data->getCreatedBy();
-        foreach ($data as $key => $value_2) {
+        foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_2;
+                $dataArray[$key] = $value_3;
             }
         }
 

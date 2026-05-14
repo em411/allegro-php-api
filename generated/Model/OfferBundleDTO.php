@@ -34,7 +34,7 @@ class OfferBundleDTO extends \ArrayObject
     /**
      * Bundle status on each marketplace.
      *
-     * @var OfferBundleDTOPublication|null
+     * @var list<BundlePublicationDTO>|null
      */
     protected $publication;
     /**
@@ -105,16 +105,20 @@ class OfferBundleDTO extends \ArrayObject
 
     /**
      * Bundle status on each marketplace.
+     *
+     * @return list<BundlePublicationDTO>|null
      */
-    public function getPublication(): ?OfferBundleDTOPublication
+    public function getPublication(): ?array
     {
         return $this->publication;
     }
 
     /**
      * Bundle status on each marketplace.
+     *
+     * @param list<BundlePublicationDTO>|null $publication
      */
-    public function setPublication(?OfferBundleDTOPublication $publication): self
+    public function setPublication(?array $publication): self
     {
         $this->initialized['publication'] = true;
         $this->publication = $publication;

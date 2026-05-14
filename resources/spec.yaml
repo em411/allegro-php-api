@@ -25757,19 +25757,9 @@ components:
             $ref: '#/components/schemas/BundledOfferDTO'
         publication:
           description: Bundle status on each marketplace.
-          required:
-            - marketplace
-            - status
-          properties:
-            marketplace:
-              $ref: '#/components/schemas/BundleMarketplaceDTO'
-            status:
-              description: Bundle's status.
-              type: string
-              enum:
-                - ACTIVE
-                - SUSPENDED
-              example: ACTIVE
+          type: array
+          items:
+            $ref: '#/components/schemas/BundlePublicationDTO'
         discounts:
           description: Discounts on marketplaces.
           nullable: true
@@ -25808,6 +25798,21 @@ components:
               description: Next page ID.
               type: string
               example: MjAyNC0wOS0xMFQwNjo0OTowMi40NTBa
+    BundlePublicationDTO:
+      type: object
+      required:
+        - marketplace
+        - status
+      properties:
+        marketplace:
+          $ref: '#/components/schemas/BundleMarketplaceDTO'
+        status:
+          description: Bundle's status.
+          type: string
+          enum:
+            - ACTIVE
+            - SUSPENDED
+          example: ACTIVE
     BundleMarketplaceDTO:
       type: object
       required:
