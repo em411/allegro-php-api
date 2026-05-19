@@ -30539,7 +30539,7 @@ components:
         allegro-cz:
           sellingMode:
             price:
-              amount: '233.01'
+              amount: '233'
               currency: CZK
     AdditionalMarketplacesResponse:
       type: object
@@ -30576,7 +30576,7 @@ components:
         allegro-cz:
           sellingMode:
             price:
-              amount: '233.51'
+              amount: '233'
               currency: CZK
           publication:
             state: REFUSED
