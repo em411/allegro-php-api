@@ -30,7 +30,7 @@ class CompatibilityListIdItem extends \ArrayObject
      */
     protected $id;
     /**
-     * Text description of the compatible item. When creating (Post) or updating (Put) a compatibility list the field is ignored.
+     * Text description of the compatible item. When creating (POST) or updating (PATCH) a compatibility list the field is ignored.
      *
      * @var string|null
      */
@@ -78,7 +78,7 @@ class CompatibilityListIdItem extends \ArrayObject
     }
 
     /**
-     * Text description of the compatible item. When creating (Post) or updating (Put) a compatibility list the field is ignored.
+     * Text description of the compatible item. When creating (POST) or updating (PATCH) a compatibility list the field is ignored.
      */
     public function getText(): ?string
     {
@@ -86,7 +86,7 @@ class CompatibilityListIdItem extends \ArrayObject
     }
 
     /**
-     * Text description of the compatible item. When creating (Post) or updating (Put) a compatibility list the field is ignored.
+     * Text description of the compatible item. When creating (POST) or updating (PATCH) a compatibility list the field is ignored.
      */
     public function setText(?string $text): self
     {

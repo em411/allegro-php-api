@@ -23322,7 +23322,7 @@ components:
           example: 0006563f-f2b9-44ea-ae67-4678679be1f1
         text:
           type: string
-          description: Text description of the compatible item. When creating (Post) or updating (Put) a compatibility list the field is ignored.
+          description: Text description of the compatible item. When creating (POST) or updating (PATCH) a compatibility list the field is ignored.
         additionalInfo:
           type: array
           items:
