@@ -1779,28 +1779,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\TaxExemption::class => TaxExemptionNormalizer::class,
 
-        \Em411\Allegro\Api\Model\AllegroPricesAccountChangeRequest::class => AllegroPricesAccountChangeRequestNormalizer::class,
-
-        \Em411\Allegro\Api\Model\AllegroPricesAccountChangeRequestAdditionalMarketplacesItem::class => AllegroPricesAccountChangeRequestAdditionalMarketplacesItemNormalizer::class,
-
-        \Em411\Allegro\Api\Model\AllegroPricesAccountConsentChangeResponse::class => AllegroPricesAccountConsentChangeResponseNormalizer::class,
-
-        \Em411\Allegro\Api\Model\AllegroPricesAccountConsentChangeResponseAdditionalMarketplacesItem::class => AllegroPricesAccountConsentChangeResponseAdditionalMarketplacesItemNormalizer::class,
-
-        \Em411\Allegro\Api\Model\AllegroPricesOfferChangeRequest::class => AllegroPricesOfferChangeRequestNormalizer::class,
-
-        \Em411\Allegro\Api\Model\AllegroPricesOfferChangeRequestAdditionalMarketplacesItem::class => AllegroPricesOfferChangeRequestAdditionalMarketplacesItemNormalizer::class,
-
-        \Em411\Allegro\Api\Model\AllegroPricesOfferConsentChangeResponse::class => AllegroPricesOfferConsentChangeResponseNormalizer::class,
-
-        \Em411\Allegro\Api\Model\AllegroPricesOfferConsentChangeResponseAdditionalMarketplacesItem::class => AllegroPricesOfferConsentChangeResponseAdditionalMarketplacesItemNormalizer::class,
-
-        \Em411\Allegro\Api\Model\AllegroPricesEligibilityResponse::class => AllegroPricesEligibilityResponseNormalizer::class,
-
-        \Em411\Allegro\Api\Model\AllegroPricesEligibilityResponseAdditionalMarketplacesItem::class => AllegroPricesEligibilityResponseAdditionalMarketplacesItemNormalizer::class,
-
-        \Em411\Allegro\Api\Model\AllegroPricesQualificationResponse::class => AllegroPricesQualificationResponseNormalizer::class,
-
         \Em411\Allegro\Api\Model\AccountParticipationMarketplaceRequest::class => AccountParticipationMarketplaceRequestNormalizer::class,
 
         \Em411\Allegro\Api\Model\AllegroPricesAccountParticipationRequest::class => AllegroPricesAccountParticipationRequestNormalizer::class,
@@ -2247,6 +2225,14 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\DeliveryServicesDto::class => DeliveryServicesDtoNormalizer::class,
 
+        \Em411\Allegro\Api\Model\DeliveryOptionDto::class => DeliveryOptionDtoNormalizer::class,
+
+        \Em411\Allegro\Api\Model\DeliveryOptionDtoLimits::class => DeliveryOptionDtoLimitsNormalizer::class,
+
+        \Em411\Allegro\Api\Model\DeliveryOptionDtoLimitsDimensions::class => DeliveryOptionDtoLimitsDimensionsNormalizer::class,
+
+        \Em411\Allegro\Api\Model\DeliveryProposalDto::class => DeliveryProposalDtoNormalizer::class,
+
         \Em411\Allegro\Api\Model\LimitWithCurrencyDto::class => LimitWithCurrencyDtoNormalizer::class,
 
         \Em411\Allegro\Api\Model\WeightValue::class => WeightValueNormalizer::class,
@@ -2426,6 +2412,10 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\PaymentsRefundsPostResponse403::class => PaymentsRefundsPostResponse403Normalizer::class,
 
         \Em411\Allegro\Api\Model\OrderRefundClaimsGetResponse200::class => OrderRefundClaimsGetResponse200Normalizer::class,
+
+        \Em411\Allegro\Api\Model\ShipmentManagementDeliveryProposalsOrderIdGetResponse403::class => ShipmentManagementDeliveryProposalsOrderIdGetResponse403Normalizer::class,
+
+        \Em411\Allegro\Api\Model\ShipmentManagementDeliveryProposalsOrderIdGetResponse504::class => ShipmentManagementDeliveryProposalsOrderIdGetResponse504Normalizer::class,
 
         \Em411\Allegro\Api\Model\ShipmentManagementDeliveryServicesGetResponse403::class => ShipmentManagementDeliveryServicesGetResponse403Normalizer::class,
 
@@ -3409,17 +3399,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\TaxRate::class => false,
             \Em411\Allegro\Api\Model\TaxRateValue::class => false,
             \Em411\Allegro\Api\Model\TaxExemption::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesAccountChangeRequest::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesAccountChangeRequestAdditionalMarketplacesItem::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesAccountConsentChangeResponse::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesAccountConsentChangeResponseAdditionalMarketplacesItem::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesOfferChangeRequest::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesOfferChangeRequestAdditionalMarketplacesItem::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesOfferConsentChangeResponse::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesOfferConsentChangeResponseAdditionalMarketplacesItem::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesEligibilityResponse::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesEligibilityResponseAdditionalMarketplacesItem::class => false,
-            \Em411\Allegro\Api\Model\AllegroPricesQualificationResponse::class => false,
             \Em411\Allegro\Api\Model\AccountParticipationMarketplaceRequest::class => false,
             \Em411\Allegro\Api\Model\AllegroPricesAccountParticipationRequest::class => false,
             \Em411\Allegro\Api\Model\AccountParticipationMarketplace::class => false,
@@ -3643,6 +3622,10 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\DeliveryServiceDto::class => false,
             \Em411\Allegro\Api\Model\DeliveryServiceIdDto::class => false,
             \Em411\Allegro\Api\Model\DeliveryServicesDto::class => false,
+            \Em411\Allegro\Api\Model\DeliveryOptionDto::class => false,
+            \Em411\Allegro\Api\Model\DeliveryOptionDtoLimits::class => false,
+            \Em411\Allegro\Api\Model\DeliveryOptionDtoLimitsDimensions::class => false,
+            \Em411\Allegro\Api\Model\DeliveryProposalDto::class => false,
             \Em411\Allegro\Api\Model\LimitWithCurrencyDto::class => false,
             \Em411\Allegro\Api\Model\WeightValue::class => false,
             \Em411\Allegro\Api\Model\DimensionValue::class => false,
@@ -3733,6 +3716,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\PaymentsRefundsGetResponse403::class => false,
             \Em411\Allegro\Api\Model\PaymentsRefundsPostResponse403::class => false,
             \Em411\Allegro\Api\Model\OrderRefundClaimsGetResponse200::class => false,
+            \Em411\Allegro\Api\Model\ShipmentManagementDeliveryProposalsOrderIdGetResponse403::class => false,
+            \Em411\Allegro\Api\Model\ShipmentManagementDeliveryProposalsOrderIdGetResponse504::class => false,
             \Em411\Allegro\Api\Model\ShipmentManagementDeliveryServicesGetResponse403::class => false,
             \Em411\Allegro\Api\Model\ShipmentManagementDeliveryServicesGetResponse504::class => false,
             \Em411\Allegro\Api\Model\ShipmentManagementShipmentsCreateCommandsPostResponse400::class => false,

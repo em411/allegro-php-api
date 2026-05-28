@@ -20,7 +20,9 @@ class ShipmentCreateRequestDto extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * Id of delivery method, chosen by buyer in order.
+     * Id of delivery method, chosen by buyer in the order. This field will be removed in the future. Use the `carrier`, `cashOnDelivery`, and `packages.transportingInfo` fields instead.
+     *
+     * @deprecated
      *
      * @var string|null
      */
@@ -88,7 +90,9 @@ class ShipmentCreateRequestDto extends \ArrayObject
     }
 
     /**
-     * Id of delivery method, chosen by buyer in order.
+     * Id of delivery method, chosen by buyer in the order. This field will be removed in the future. Use the `carrier`, `cashOnDelivery`, and `packages.transportingInfo` fields instead.
+     *
+     * @deprecated
      */
     public function getDeliveryMethodId(): ?string
     {
@@ -96,7 +100,9 @@ class ShipmentCreateRequestDto extends \ArrayObject
     }
 
     /**
-     * Id of delivery method, chosen by buyer in order.
+     * Id of delivery method, chosen by buyer in the order. This field will be removed in the future. Use the `carrier`, `cashOnDelivery`, and `packages.transportingInfo` fields instead.
+     *
+     * @deprecated
      */
     public function setDeliveryMethodId(?string $deliveryMethodId): self
     {

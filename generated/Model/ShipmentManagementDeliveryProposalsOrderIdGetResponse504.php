@@ -13,31 +13,43 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AllegroPricesOfferConsentChangeResponseAdditionalMarketplacesItem extends \ArrayObject
+class ShipmentManagementDeliveryProposalsOrderIdGetResponse504 extends \ArrayObject
 {
     /**
      * @var array
      */
     protected $initialized = [];
     /**
-     * @var string|null
+     * Array of errors.
+     *
+     * @var list<Error504>|null
      */
-    protected $status;
+    protected $errors;
 
     public function isInitialized($property): bool
     {
         return \array_key_exists($property, $this->initialized);
     }
 
-    public function getStatus(): ?string
+    /**
+     * Array of errors.
+     *
+     * @return list<Error504>|null
+     */
+    public function getErrors(): ?array
     {
-        return $this->status;
+        return $this->errors;
     }
 
-    public function setStatus(?string $status): self
+    /**
+     * Array of errors.
+     *
+     * @param list<Error504>|null $errors
+     */
+    public function setErrors(?array $errors): self
     {
-        $this->initialized['status'] = true;
-        $this->status = $status;
+        $this->initialized['errors'] = true;
+        $this->errors = $errors;
 
         return $this;
     }

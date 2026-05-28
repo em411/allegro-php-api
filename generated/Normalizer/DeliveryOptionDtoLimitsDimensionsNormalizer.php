@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class AllegroPricesAccountChangeRequestAdditionalMarketplacesItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class DeliveryOptionDtoLimitsDimensionsNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class AllegroPricesAccountChangeRequestAdditionalMarketplacesItemNormalizer impl
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\AllegroPricesAccountChangeRequestAdditionalMarketplacesItem::class === $type;
+        return \Em411\Allegro\Api\Model\DeliveryOptionDtoLimitsDimensions::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\AllegroPricesAccountChangeRequestAdditionalMarketplacesItem::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\DeliveryOptionDtoLimitsDimensions::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,15 +48,27 @@ class AllegroPricesAccountChangeRequestAdditionalMarketplacesItemNormalizer impl
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\AllegroPricesAccountChangeRequestAdditionalMarketplacesItem();
+        $object = new \Em411\Allegro\Api\Model\DeliveryOptionDtoLimitsDimensions();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('status', $data) && null !== $data['status']) {
-            $object->setStatus($data['status']);
-            unset($data['status']);
-        } elseif (\array_key_exists('status', $data) && null === $data['status']) {
-            $object->setStatus(null);
+        if (\array_key_exists('length', $data) && null !== $data['length']) {
+            $object->setLength($this->denormalizer->denormalize($data['length'], \Em411\Allegro\Api\Model\DimensionValue::class, 'json', $context));
+            unset($data['length']);
+        } elseif (\array_key_exists('length', $data) && null === $data['length']) {
+            $object->setLength(null);
+        }
+        if (\array_key_exists('width', $data) && null !== $data['width']) {
+            $object->setWidth($this->denormalizer->denormalize($data['width'], \Em411\Allegro\Api\Model\DimensionValue::class, 'json', $context));
+            unset($data['width']);
+        } elseif (\array_key_exists('width', $data) && null === $data['width']) {
+            $object->setWidth(null);
+        }
+        if (\array_key_exists('height', $data) && null !== $data['height']) {
+            $object->setHeight($this->denormalizer->denormalize($data['height'], \Em411\Allegro\Api\Model\DimensionValue::class, 'json', $context));
+            unset($data['height']);
+        } elseif (\array_key_exists('height', $data) && null === $data['height']) {
+            $object->setHeight(null);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,8 +82,14 @@ class AllegroPricesAccountChangeRequestAdditionalMarketplacesItemNormalizer impl
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('status') && null !== $data->getStatus()) {
-            $dataArray['status'] = $data->getStatus();
+        if ($data->isInitialized('length') && null !== $data->getLength()) {
+            $dataArray['length'] = $this->normalizer->normalize($data->getLength(), 'json', $context);
+        }
+        if ($data->isInitialized('width') && null !== $data->getWidth()) {
+            $dataArray['width'] = $this->normalizer->normalize($data->getWidth(), 'json', $context);
+        }
+        if ($data->isInitialized('height') && null !== $data->getHeight()) {
+            $dataArray['height'] = $this->normalizer->normalize($data->getHeight(), 'json', $context);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -84,6 +102,6 @@ class AllegroPricesAccountChangeRequestAdditionalMarketplacesItemNormalizer impl
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\AllegroPricesAccountChangeRequestAdditionalMarketplacesItem::class => false];
+        return [\Em411\Allegro\Api\Model\DeliveryOptionDtoLimitsDimensions::class => false];
     }
 }

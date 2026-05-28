@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class AllegroPricesQualificationResponseNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ShipmentManagementDeliveryProposalsOrderIdGetResponse403Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class AllegroPricesQualificationResponseNormalizer implements DenormalizerInterf
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\AllegroPricesQualificationResponse::class === $type;
+        return \Em411\Allegro\Api\Model\ShipmentManagementDeliveryProposalsOrderIdGetResponse403::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\AllegroPricesQualificationResponse::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\ShipmentManagementDeliveryProposalsOrderIdGetResponse403::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,19 +48,23 @@ class AllegroPricesQualificationResponseNormalizer implements DenormalizerInterf
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\AllegroPricesQualificationResponse();
+        $object = new \Em411\Allegro\Api\Model\ShipmentManagementDeliveryProposalsOrderIdGetResponse403();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('status', $data) && null !== $data['status']) {
-            $object->setStatus($data['status']);
-            unset($data['status']);
-        } elseif (\array_key_exists('status', $data) && null === $data['status']) {
-            $object->setStatus(null);
+        if (\array_key_exists('errors', $data) && null !== $data['errors']) {
+            $values = [];
+            foreach ($data['errors'] as $value) {
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\Error403::class, 'json', $context);
+            }
+            $object->setErrors($values);
+            unset($data['errors']);
+        } elseif (\array_key_exists('errors', $data) && null === $data['errors']) {
+            $object->setErrors(null);
         }
-        foreach ($data as $key => $value) {
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
+                $object[$key] = $value_1;
             }
         }
 
@@ -70,12 +74,16 @@ class AllegroPricesQualificationResponseNormalizer implements DenormalizerInterf
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('status') && null !== $data->getStatus()) {
-            $dataArray['status'] = $data->getStatus();
+        if ($data->isInitialized('errors') && null !== $data->getErrors()) {
+            $values = [];
+            foreach ($data->getErrors() as $value) {
+                $values[] = $this->normalizer->normalize($value, 'json', $context);
+            }
+            $dataArray['errors'] = $values;
         }
-        foreach ($data as $key => $value) {
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
+                $dataArray[$key] = $value_1;
             }
         }
 
@@ -84,6 +92,6 @@ class AllegroPricesQualificationResponseNormalizer implements DenormalizerInterf
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\AllegroPricesQualificationResponse::class => false];
+        return [\Em411\Allegro\Api\Model\ShipmentManagementDeliveryProposalsOrderIdGetResponse403::class => false];
     }
 }

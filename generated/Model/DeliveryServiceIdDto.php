@@ -20,7 +20,7 @@ class DeliveryServiceIdDto extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * Id of delivery method, chosen by buyer in order.
+     * Id of delivery method, chosen by buyer in order. If the Method ID is blank, then the system will automatically read it from the order.
      *
      * @var string|null
      */
@@ -38,7 +38,7 @@ class DeliveryServiceIdDto extends \ArrayObject
     }
 
     /**
-     * Id of delivery method, chosen by buyer in order.
+     * Id of delivery method, chosen by buyer in order. If the Method ID is blank, then the system will automatically read it from the order.
      */
     public function getDeliveryMethodId(): ?string
     {
@@ -46,7 +46,7 @@ class DeliveryServiceIdDto extends \ArrayObject
     }
 
     /**
-     * Id of delivery method, chosen by buyer in order.
+     * Id of delivery method, chosen by buyer in order. If the Method ID is blank, then the system will automatically read it from the order.
      */
     public function setDeliveryMethodId(?string $deliveryMethodId): self
     {

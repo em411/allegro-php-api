@@ -4938,7 +4938,24 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to get delivery services available for user. It returns services provided by Allegro and contracts with carriers owned by user and configured by GUI. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-liste-uslug-dostawy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-a-list-of-delivery-services" target="_blank">EN</a>.
+     * Use this resource to retrieve two order characteristics. The first is a pre-populated request body for creating a shipment in SwA. The second is a list of possible delivery types for processing the order, including their limits.
+     *
+     * @param string $orderId order ID
+     * @param string $fetch   Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\DeliveryProposalDto|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\GetDeliveryProposalsUnauthorizedException
+     * @throws Exception\GetDeliveryProposalsForbiddenException
+     * @throws Exception\GetDeliveryProposalsGatewayTimeoutException
+     */
+    public function getDeliveryProposals(string $orderId, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\GetDeliveryProposals($orderId), $fetch);
+    }
+
+    /**
+     * Use this resource to get delivery services available for user. It returns services provided by Allegro and contracts with carriers owned by user and configured by GUI. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-liste-uslug-dostawy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-a-list-of-delivery-services" target="_blank">EN</a>.<br/> This resource is deprecated and will be removed in Q1 2027. Consider using the new resource '/shipment-management/delivery-proposals/{orderId}' resource instead.
      *
      * @param array $headerParameters {
      *
@@ -4959,7 +4976,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to create shipment for delivery. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-utworzyc-nowa-paczke" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-create-a-new-shipment" target="_blank">EN</a>.
+     * Use this resource to create shipment for delivery. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-utworzyc-nowa-paczke" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-create-a-new-shipment" target="_blank">EN</a>. Please check also new resource '/shipment-management/delivery-proposals/{orderId}' to get prefilled request body for this resource.
      *
      * @param array $headerParameters {
      *
@@ -5267,92 +5284,6 @@ class Client extends Runtime\Client\Client
     public function getTaxSettingsForCategory(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new Endpoint\GetTaxSettingsForCategory($queryParameters, $headerParameters, $accept), $fetch);
-    }
-
-    /**
-     * Use this resource to get the current Allegro Prices consent value for the offer on each of the available marketplaces. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#allegro-ceny-jak-zarzadzac-zgodami-na-uczestnictwo-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#allegro-prices-how-to-manage-program-participation-consents" target="_blank">EN</a>.
-     *
-     * @param string $offerId          the offer ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\AllegroPricesOfferConsentChangeResponse|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\GetAllegroPricesConsentForOfferUnauthorizedException
-     * @throws Exception\GetAllegroPricesConsentForOfferForbiddenException
-     * @throws Exception\GetAllegroPricesConsentForOfferNotFoundException
-     */
-    public function getAllegroPricesConsentForOffer(string $offerId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\GetAllegroPricesConsentForOffer($offerId, $headerParameters), $fetch);
-    }
-
-    /**
-     * Use this resource to update the Allegro Prices consent value for the offer on chosen marketplaces. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#allegro-ceny-jak-zarzadzac-zgodami-na-uczestnictwo-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#allegro-prices-how-to-manage-program-participation-consents" target="_blank">EN</a>.
-     *
-     * @param string $offerId          the offer ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\AllegroPricesOfferConsentChangeResponse|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\UpdateAllegroPricesConsentForOfferBadRequestException
-     * @throws Exception\UpdateAllegroPricesConsentForOfferUnauthorizedException
-     * @throws Exception\UpdateAllegroPricesConsentForOfferForbiddenException
-     * @throws Exception\UpdateAllegroPricesConsentForOfferNotFoundException
-     * @throws Exception\UpdateAllegroPricesConsentForOfferUnprocessableEntityException
-     */
-    public function updateAllegroPricesConsentForOffer(string $offerId, ?Model\AllegroPricesOfferChangeRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\UpdateAllegroPricesConsentForOffer($offerId, $requestBody, $headerParameters), $fetch);
-    }
-
-    /**
-     * Use this resource to get the current Allegro Prices eligibility information for the account on each of the available marketplaces. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#allegro-ceny-jak-zarzadzac-zgodami-na-uczestnictwo-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#allegro-prices-how-to-manage-program-participation-consents" target="_blank">EN</a>.
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\AllegroPricesEligibilityResponse|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\GetAllegroPricesEligibilityForAccountUnauthorizedException
-     */
-    public function getAllegroPricesEligibilityForAccount(array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\GetAllegroPricesEligibilityForAccount($headerParameters), $fetch);
-    }
-
-    /**
-     * Use this resource to update the Allegro Prices consent value for the account on chosen marketplaces. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#allegro-ceny-jak-zarzadzac-zgodami-na-uczestnictwo-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#allegro-prices-how-to-manage-program-participation-consents" target="_blank">EN</a>.
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\AllegroPricesAccountConsentChangeResponse|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\UpdateAllegroPricesConsentForAccountBadRequestException
-     * @throws Exception\UpdateAllegroPricesConsentForAccountUnauthorizedException
-     * @throws Exception\UpdateAllegroPricesConsentForAccountUnprocessableEntityException
-     */
-    public function updateAllegroPricesConsentForAccount(?Model\AllegroPricesAccountChangeRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\UpdateAllegroPricesConsentForAccount($requestBody, $headerParameters), $fetch);
     }
 
     /**

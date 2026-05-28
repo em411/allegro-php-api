@@ -14970,12 +14970,67 @@ paths:
           description: Forbidden
           content: {}
       deprecated: false
-  /shipment-management/delivery-services:
+  /shipment-management/delivery-proposals/{orderId}:
     get:
       tags:
         - Shipment management
+      summary: Get available delivery options
+      description: Use this resource to retrieve two order characteristics. The first is a pre-populated request body for creating a shipment in SwA. The second is a list of possible delivery types for processing the order, including their limits.
+      operationId: getDeliveryProposals
+      parameters:
+        - name: orderId
+          in: path
+          description: Order ID.
+          example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
+          required: true
+          schema:
+            type: string
+            format: UUID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/DeliveryProposalDto'
+        '401':
+          description: Unauthorized
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error403'
+        '504':
+          description: Gateway Timeout
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                properties:
+                  errors:
+                    type: array
+                    description: Array of errors.
+                    items:
+                      $ref: '#/components/schemas/Error504'
+      security:
+        - bearer-token-for-user:
+            - allegro:api:shipments:write
+  /shipment-management/delivery-services:
+    get:
+      deprecated: true
+      tags:
+        - Shipment management
       summary: Get available delivery services
-      description: 'Use this resource to get delivery services available for user. It returns services provided by Allegro and contracts with carriers owned by user and configured by GUI. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-liste-uslug-dostawy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-a-list-of-delivery-services" target="_blank">EN</a>.'
+      description: 'Use this resource to get delivery services available for user. It returns services provided by Allegro and contracts with carriers owned by user and configured by GUI. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-liste-uslug-dostawy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-a-list-of-delivery-services" target="_blank">EN</a>.<br/> This resource is deprecated and will be removed in Q1 2027. Consider using the new resource ''/shipment-management/delivery-proposals/{orderId}'' resource instead.'
       operationId: getDeliveryServices
       parameters:
         - name: Accept-Language
@@ -15036,7 +15091,7 @@ paths:
       tags:
         - Shipment management
       summary: Create new shipment
-      description: 'Use this resource to create shipment for delivery. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-utworzyc-nowa-paczke" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-create-a-new-shipment" target="_blank">EN</a>.'
+      description: 'Use this resource to create shipment for delivery. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-utworzyc-nowa-paczke" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-create-a-new-shipment" target="_blank">EN</a>. Please check also new resource ''/shipment-management/delivery-proposals/{orderId}'' to get prefilled request body for this resource.'
       operationId: createNewShipment
       parameters:
         - name: Accept-Language
@@ -16107,281 +16162,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
-  /sale/allegro-prices-offer-consents/{offerId}:
-    get:
-      deprecated: true
-      tags:
-        - Allegro Prices
-      operationId: getAllegroPricesConsentForOffer
-      summary: Get the current consents' state for an offer
-      description: 'Use this resource to get the current Allegro Prices consent value for the offer on each of the available marketplaces. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#allegro-ceny-jak-zarzadzac-zgodami-na-uczestnictwo-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#allegro-prices-how-to-manage-program-participation-consents" target="_blank">EN</a>.'
-      parameters:
-        - name: offerId
-          description: The offer ID.
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: Accept-Language
-          in: header
-          required: false
-          description: Expected language of messages.
-          example: en-US
-          schema:
-            type: string
-            format: BCP-47 language code
-            enum:
-              - en-US
-              - pl-PL
-              - uk-UA
-              - sk-SK
-              - cs-CZ
-              - hu-HU
-      responses:
-        '200':
-          description: Consent value returned successfully.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/AllegroPricesOfferConsentChangeResponse'
-              example:
-                status: ALLOWED
-                additionalMarketplaces:
-                  allegro-cz:
-                    status: ALLOWED
-                  allegro-xy:
-                    status: ALLOWED
-        '401':
-          description: Unauthorized.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '403':
-          description: Offer does not belong to seller.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '404':
-          description: Offer not found.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-      security:
-        - bearer-token-for-user:
-            - allegro:api:campaigns
-    put:
-      deprecated: true
-      tags:
-        - Allegro Prices
-      operationId: updateAllegroPricesConsentForOffer
-      summary: Update consents for an offer
-      description: 'Use this resource to update the Allegro Prices consent value for the offer on chosen marketplaces. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#allegro-ceny-jak-zarzadzac-zgodami-na-uczestnictwo-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#allegro-prices-how-to-manage-program-participation-consents" target="_blank">EN</a>.'
-      parameters:
-        - name: offerId
-          description: The offer ID.
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: Accept-Language
-          in: header
-          required: false
-          description: Expected language of messages.
-          example: en-US
-          schema:
-            type: string
-            format: BCP-47 language code
-            enum:
-              - en-US
-              - pl-PL
-              - uk-UA
-              - sk-SK
-              - cs-CZ
-              - hu-HU
-      requestBody:
-        content:
-          application/vnd.allegro.public.v1+json:
-            schema:
-              $ref: '#/components/schemas/AllegroPricesOfferChangeRequest'
-            example:
-              status: DENIED
-              additionalMarketplaces:
-                allegro-cz:
-                  status: DENIED
-        required: true
-      responses:
-        '200':
-          description: Allegro Prices consents' state for the offer updated successfully.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/AllegroPricesOfferConsentChangeResponse'
-              example:
-                status: DENIED
-                additionalMarketplaces:
-                  allegro-cz:
-                    status: DENIED
-                  allegro-xy:
-                    status: ALLOWED
-        '400':
-          description: Bad request.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '401':
-          description: Unauthorized.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '403':
-          description: Offer does not belong to seller.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '404':
-          description: Offer not found.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '422':
-          description: Unprocessable Entity.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-      security:
-        - bearer-token-for-user:
-            - allegro:api:campaigns
-  /sale/allegro-prices-account-eligibility:
-    get:
-      deprecated: true
-      tags:
-        - Allegro Prices
-      operationId: getAllegroPricesEligibilityForAccount
-      summary: Get the current eligibility information for the account
-      description: 'Use this resource to get the current Allegro Prices eligibility information for the account on each of the available marketplaces. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#allegro-ceny-jak-zarzadzac-zgodami-na-uczestnictwo-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#allegro-prices-how-to-manage-program-participation-consents" target="_blank">EN</a>.'
-      parameters:
-        - name: Accept-Language
-          in: header
-          required: false
-          description: Expected language of messages.
-          example: en-US
-          schema:
-            type: string
-            format: BCP-47 language code
-            enum:
-              - en-US
-              - pl-PL
-              - uk-UA
-              - sk-SK
-              - cs-CZ
-              - hu-HU
-      responses:
-        '200':
-          description: Allegro Prices eligibility information for the account returned successfully.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/AllegroPricesEligibilityResponse'
-              example:
-                consent: ALLOWED
-                qualification:
-                  status: QUALIFIED
-                additionalMarketplaces:
-                  allegro-cz:
-                    consent: ALLOWED
-                    qualification:
-                      status: QUALIFIED
-                  allegro-xy:
-                    consent: ALLOWED
-                    qualification:
-                      status: QUALIFIED
-        '401':
-          description: Unauthorized.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-      security:
-        - bearer-token-for-user:
-            - allegro:api:campaigns
-  /sale/allegro-prices-account-consent:
-    put:
-      deprecated: true
-      tags:
-        - Allegro Prices
-      operationId: updateAllegroPricesConsentForAccount
-      summary: Update consents for the account
-      description: 'Use this resource to update the Allegro Prices consent value for the account on chosen marketplaces. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#allegro-ceny-jak-zarzadzac-zgodami-na-uczestnictwo-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#allegro-prices-how-to-manage-program-participation-consents" target="_blank">EN</a>.'
-      parameters:
-        - name: Accept-Language
-          in: header
-          required: false
-          description: Expected language of messages.
-          example: en-US
-          schema:
-            type: string
-            format: BCP-47 language code
-            enum:
-              - en-US
-              - pl-PL
-              - uk-UA
-              - sk-SK
-              - cs-CZ
-              - hu-HU
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AllegroPricesAccountChangeRequest'
-            example:
-              status: ALLOWED
-              additionalMarketplaces:
-                allegro-cz:
-                  status: DENIED
-        required: true
-      responses:
-        '200':
-          description: Allegro Prices consents' state for the account was updated successfully.
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/AllegroPricesAccountConsentChangeResponse'
-              example:
-                status: ALLOWED
-                additionalMarketplaces:
-                  allegro-cz:
-                    status: DENIED
-                  allegro-xy:
-                    status: ALLOWED
-        '400':
-          description: Bad request
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '401':
-          description: Unauthorized
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-      security:
-        - bearer-token-for-user:
-            - allegro:api:campaigns
   /sale/allegro-prices/accounts/participations:
     get:
       tags:
@@ -33397,131 +33177,6 @@ components:
           type: string
           description: Value of exemption.
           example: MARGIN_SCHEME
-    AllegroPricesAccountChangeRequest:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - ALLOWED
-            - DENIED
-          example: ALLOWED
-        additionalMarketplaces:
-          description: Consent statuses on marketplaces other than the base marketplace of the account.
-          type: object
-          additionalProperties:
-            x-additionalPropertiesName: marketplaceId
-            type: object
-            properties:
-              status:
-                type: string
-                enum:
-                  - ALLOWED
-                  - DENIED
-                example: ALLOWED
-    AllegroPricesAccountConsentChangeResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - ALLOWED
-            - DENIED
-          example: ALLOWED
-        additionalMarketplaces:
-          description: Consent statuses on marketplaces other than the base marketplace of the account.
-          type: object
-          additionalProperties:
-            x-additionalPropertiesName: marketplaceId
-            type: object
-            properties:
-              status:
-                type: string
-                enum:
-                  - ALLOWED
-                  - DENIED
-                example: ALLOWED
-    AllegroPricesOfferChangeRequest:
-      type: object
-      properties:
-        status:
-          description: Use it to update the consent on the base marketplace of the offer.
-          type: string
-          enum:
-            - ALLOWED
-            - DENIED
-          example: ALLOWED
-        additionalMarketplaces:
-          type: object
-          description: Use it to update the consent on marketplaces other than the base marketplace of the offer.
-          additionalProperties:
-            x-additionalPropertiesName: marketplaceId
-            type: object
-            properties:
-              status:
-                type: string
-                enum:
-                  - ALLOWED
-                  - DENIED
-                example: ALLOWED
-    AllegroPricesOfferConsentChangeResponse:
-      type: object
-      properties:
-        status:
-          description: Consent status on the base marketplace of the offer.
-          type: string
-          enum:
-            - ALLOWED
-            - DENIED
-          example: ALLOWED
-        additionalMarketplaces:
-          description: Consent statuses on marketplaces other than the base marketplace of the offer.
-          type: object
-          additionalProperties:
-            x-additionalPropertiesName: marketplaceId
-            type: object
-            properties:
-              status:
-                type: string
-                enum:
-                  - ALLOWED
-                  - DENIED
-                example: ALLOWED
-    AllegroPricesEligibilityResponse:
-      type: object
-      properties:
-        consent:
-          type: string
-          enum:
-            - ALLOWED
-            - DENIED
-          example: ALLOWED
-        qualification:
-          $ref: '#/components/schemas/AllegroPricesQualificationResponse'
-        additionalMarketplaces:
-          description: Eligibility state on marketplces other than the base marketplace of the account.
-          type: object
-          additionalProperties:
-            x-additionalPropertiesName: marketplaceId
-            type: object
-            properties:
-              consent:
-                type: string
-                enum:
-                  - ALLOWED
-                  - DENIED
-                example: ALLOWED
-              qualification:
-                $ref: '#/components/schemas/AllegroPricesQualificationResponse'
-    AllegroPricesQualificationResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - QUALIFIED
-            - DISQUALIFIED
-          example: QUALIFIED
     AccountParticipationMarketplaceRequest:
       type: object
       description: Marketplace participation update request
@@ -36373,6 +36028,16 @@ components:
           type: string
           description: ISO 4217 currency code.
           example: PLN
+    PackageTypeDto:
+      pattern: DOX|PACKAGE|PALLET|OTHER
+      description: 'Available values: PACKAGE|DOX|PALLET|OTHER.'
+      type: string
+      enum:
+        - DOX
+        - PACKAGE
+        - PALLET
+        - OTHER
+      example: PACKAGE
     PackageRequestDto:
       required:
         - height
@@ -36383,10 +36048,7 @@ components:
       type: object
       properties:
         type:
-          pattern: DOX|PACKAGE|PALLET|OTHER
-          type: string
-          description: 'Available values: PACKAGE|DOX|PALLET|OTHER.'
-          example: PACKAGE
+          $ref: '#/components/schemas/PackageTypeDto'
         length:
           $ref: '#/components/schemas/DimensionValue'
         width:
@@ -36401,7 +36063,6 @@ components:
           example: Smartphones
     ShipmentCreateRequestDto:
       required:
-        - deliveryMethodId
         - sender
         - receiver
         - packages
@@ -36409,7 +36070,8 @@ components:
       properties:
         deliveryMethodId:
           type: string
-          description: Id of delivery method, chosen by buyer in order.
+          description: Id of delivery method, chosen by buyer in the order. This field will be removed in the future. Use the `carrier`, `cashOnDelivery`, and `packages.transportingInfo` fields instead.
+          deprecated: true
           example: c3066682-97a3-42fe-9eb5-3beeccab840c
         credentialsId:
           type: string
@@ -36736,7 +36398,8 @@ components:
           example: ba88f0fb-acf3-438a-877e-580da50c0874
         deliveryMethodId:
           type: string
-          description: Id of delivery method, chosen by buyer in order.
+          description: Id of delivery method, chosen by buyer in order. In the future this information will be no longer available. Instead of it use carrier, cashOnDelivery and packages.transportingInfo properties.
+          deprecated: true
           example: c3066682-97a3-42fe-9eb5-3beeccab840c
         credentialsId:
           type: string
@@ -36952,6 +36615,7 @@ components:
           example: true
     DeliveryServiceDto:
       type: object
+      deprecated: true
       description: Primary object for Ship with Allegro. It's strongly related to delivery-method selected by buyer in purchase process and represent how shipment will be delivered. Delivery services contains set of features like cash on delivery support, additional parcel protection, additional services used to shipment creation.
       properties:
         id:
@@ -37010,7 +36674,7 @@ components:
       properties:
         deliveryMethodId:
           type: string
-          description: Id of delivery method, chosen by buyer in order.
+          description: Id of delivery method, chosen by buyer in order. If the Method ID is blank, then the system will automatically read it from the order.
           example: c3066682-97a3-42fe-9eb5-3beeccab840c
         credentialsId:
           type: string
@@ -37018,12 +36682,82 @@ components:
           example: c9e6f40a-3d25-48fc-838c-055ceb1c5bc0
     DeliveryServicesDto:
       type: object
+      deprecated: true
       description: List of all available delivery services for merchant. List will be unique for each merchant.
       properties:
         services:
           type: array
           items:
             $ref: '#/components/schemas/DeliveryServiceDto'
+    DeliveryTypeDto:
+      type: string
+      description: Representation of possible delivery types.
+      enum:
+        - DOOR
+        - APM
+        - PUDO
+    DeliveryPaymentDto:
+      type: string
+      description: Representation of possible payment types for a delivery.
+      enum:
+        - PREPAID
+        - POSTPAID
+    CountryCodeDto:
+      type: string
+      description: Country code in ISO 3166-1 alfa-2 format (two-letter code).
+      example: PL
+    DeliveryOptionDto:
+      type: object
+      description: Representation of delivery options, along with their limits.
+      properties:
+        deliveryType:
+          $ref: '#/components/schemas/DeliveryTypeDto'
+        paymentType:
+          $ref: '#/components/schemas/DeliveryPaymentDto'
+        packageType:
+          $ref: '#/components/schemas/PackageTypeDto'
+        originCountry:
+          $ref: '#/components/schemas/CountryCodeDto'
+        destinationCountry:
+          $ref: '#/components/schemas/CountryCodeDto'
+        limits:
+          type: object
+          properties:
+            cashOnDelivery:
+              $ref: '#/components/schemas/MoneyDto'
+            insurance:
+              $ref: '#/components/schemas/MoneyDto'
+            dimensions:
+              type: object
+              properties:
+                length:
+                  $ref: '#/components/schemas/DimensionValue'
+                width:
+                  $ref: '#/components/schemas/DimensionValue'
+                height:
+                  $ref: '#/components/schemas/DimensionValue'
+            weight:
+              $ref: '#/components/schemas/WeightValue'
+        additionalServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalServiceDto'
+        additionalProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalPropertyDto'
+    DeliveryProposalDto:
+      type: object
+      description: Representation of possible transport options for the order.
+      properties:
+        orderId:
+          type: string
+        suggestedInput:
+          $ref: '#/components/schemas/ShipmentCreateRequestDto'
+        deliveryOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryOptionDto'
     LimitWithCurrencyDto:
       type: object
       properties:

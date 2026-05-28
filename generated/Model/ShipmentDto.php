@@ -24,7 +24,9 @@ class ShipmentDto extends \ArrayObject
      */
     protected $id;
     /**
-     * Id of delivery method, chosen by buyer in order.
+     * Id of delivery method, chosen by buyer in order. In the future this information will be no longer available. Instead of it use carrier, cashOnDelivery and packages.transportingInfo properties.
+     *
+     * @deprecated
      *
      * @var string|null
      */
@@ -133,7 +135,9 @@ class ShipmentDto extends \ArrayObject
     }
 
     /**
-     * Id of delivery method, chosen by buyer in order.
+     * Id of delivery method, chosen by buyer in order. In the future this information will be no longer available. Instead of it use carrier, cashOnDelivery and packages.transportingInfo properties.
+     *
+     * @deprecated
      */
     public function getDeliveryMethodId(): ?string
     {
@@ -141,7 +145,9 @@ class ShipmentDto extends \ArrayObject
     }
 
     /**
-     * Id of delivery method, chosen by buyer in order.
+     * Id of delivery method, chosen by buyer in order. In the future this information will be no longer available. Instead of it use carrier, cashOnDelivery and packages.transportingInfo properties.
+     *
+     * @deprecated
      */
     public function setDeliveryMethodId(?string $deliveryMethodId): self
     {

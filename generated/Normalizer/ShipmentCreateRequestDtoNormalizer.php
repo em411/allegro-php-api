@@ -142,7 +142,9 @@ class ShipmentCreateRequestDtoNormalizer implements DenormalizerInterface, Norma
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['deliveryMethodId'] = $data->getDeliveryMethodId();
+        if ($data->isInitialized('deliveryMethodId') && null !== $data->getDeliveryMethodId()) {
+            $dataArray['deliveryMethodId'] = $data->getDeliveryMethodId();
+        }
         if ($data->isInitialized('credentialsId') && null !== $data->getCredentialsId()) {
             $dataArray['credentialsId'] = $data->getCredentialsId();
         }
