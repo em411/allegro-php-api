@@ -20950,6 +20950,12 @@ components:
           example: https://allegro.pl/oferta/item-name-7678887152
         reason:
           $ref: '#/components/schemas/CustomerReturnItemReason'
+        serialNumbers:
+          type: array
+          description: List of serial numbers of included items
+          items:
+            type: string
+            example: 4CE0460D0G
     CustomerReturnRefund:
       type: object
       description: This field is present in the case of cash on delivery, bank transfer, Allegro Pay, and Allegro Pay Business payment options.

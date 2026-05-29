@@ -88,9 +88,19 @@ class CustomerReturnItemNormalizer implements DenormalizerInterface, NormalizerI
         } elseif (\array_key_exists('reason', $data) && null === $data['reason']) {
             $object->setReason(null);
         }
-        foreach ($data as $key => $value) {
+        if (\array_key_exists('serialNumbers', $data) && null !== $data['serialNumbers']) {
+            $values = [];
+            foreach ($data['serialNumbers'] as $value) {
+                $values[] = $value;
+            }
+            $object->setSerialNumbers($values);
+            unset($data['serialNumbers']);
+        } elseif (\array_key_exists('serialNumbers', $data) && null === $data['serialNumbers']) {
+            $object->setSerialNumbers(null);
+        }
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
+                $object[$key] = $value_1;
             }
         }
 
@@ -118,9 +128,16 @@ class CustomerReturnItemNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('reason') && null !== $data->getReason()) {
             $dataArray['reason'] = $this->normalizer->normalize($data->getReason(), 'json', $context);
         }
-        foreach ($data as $key => $value) {
+        if ($data->isInitialized('serialNumbers') && null !== $data->getSerialNumbers()) {
+            $values = [];
+            foreach ($data->getSerialNumbers() as $value) {
+                $values[] = $value;
+            }
+            $dataArray['serialNumbers'] = $values;
+        }
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
+                $dataArray[$key] = $value_1;
             }
         }
 

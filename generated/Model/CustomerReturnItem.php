@@ -45,6 +45,12 @@ class CustomerReturnItem extends \ArrayObject
      * @var CustomerReturnItemReason|null
      */
     protected $reason;
+    /**
+     * List of serial numbers of included items.
+     *
+     * @var list<string>|null
+     */
+    protected $serialNumbers;
 
     public function isInitialized($property): bool
     {
@@ -131,6 +137,29 @@ class CustomerReturnItem extends \ArrayObject
     {
         $this->initialized['reason'] = true;
         $this->reason = $reason;
+
+        return $this;
+    }
+
+    /**
+     * List of serial numbers of included items.
+     *
+     * @return list<string>|null
+     */
+    public function getSerialNumbers(): ?array
+    {
+        return $this->serialNumbers;
+    }
+
+    /**
+     * List of serial numbers of included items.
+     *
+     * @param list<string>|null $serialNumbers
+     */
+    public function setSerialNumbers(?array $serialNumbers): self
+    {
+        $this->initialized['serialNumbers'] = true;
+        $this->serialNumbers = $serialNumbers;
 
         return $this;
     }
