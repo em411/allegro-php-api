@@ -5235,14 +5235,14 @@ paths:
                           parametersWithValue:
                             - id: '202870'
                               oneOfValueIds:
-                                - '202870_1'
+                                - 202870_1
                           parametersWithoutValue: []
                         displayedIf:
                           parametersWithValue:
                             - id: '202870'
                               oneOfValueIds:
-                                - '202870_1'
-                                - '202870_2'
+                                - 202870_1
+                                - 202870_2
                         unit: null
                         options:
                           ambiguousValueId: null
@@ -5271,14 +5271,14 @@ paths:
                           parametersWithValue:
                             - id: '202870'
                               oneOfValueIds:
-                                - '202870_1'
+                                - 202870_1
                           parametersWithoutValue: []
                         displayedIf:
                           parametersWithValue:
                             - id: '202870'
                               oneOfValueIds:
-                                - '202870_1'
-                                - '202870_2'
+                                - 202870_1
+                                - 202870_2
                         unit: null
                         options:
                           ambiguousValueId: null
@@ -5305,14 +5305,14 @@ paths:
                           parametersWithValue:
                             - id: '202870'
                               oneOfValueIds:
-                                - '202870_1'
+                                - 202870_1
                           parametersWithoutValue: []
                         displayedIf:
                           parametersWithValue:
                             - id: '202870'
                               oneOfValueIds:
-                                - '202870_1'
-                                - '202870_2'
+                                - 202870_1
+                                - 202870_2
                         unit: null
                         options:
                           ambiguousValueId: null
@@ -5320,40 +5320,40 @@ paths:
                           describesProduct: false
                           customValuesEnabled: false
                         dictionary:
-                          - id: '11323_1'
+                          - id: 11323_1
                             value: Nowy
                             dependsOnValueIds:
-                              - '202870_1'
+                              - 202870_1
                             formerData:
                               values:
                                 - Nowa
                                 - Nowe
-                          - id: '11323_2'
+                          - id: 11323_2
                             value: Używany
                             dependsOnValueIds:
-                              - '202870_2'
-                          - id: '11323_238066'
+                              - 202870_2
+                          - id: 11323_238066
                             value: Po zwrocie
                             dependsOnValueIds:
-                              - '202870_1'
-                              - '202870_2'
+                              - 202870_1
+                              - 202870_2
                             formerData:
                               ids:
-                                - '11323_1223635'
+                                - 11323_1223635
                               values:
                                 - Po demontażu
-                          - id: '11323_238058'
+                          - id: 11323_238058
                             value: Powystawowy
                             dependsOnValueIds:
-                              - '202870_1'
-                          - id: '11323_238062'
+                              - 202870_1
+                          - id: 11323_238062
                             value: Uszkodzony
                             dependsOnValueIds:
-                              - '202870_1'
-                          - id: '11323_246534'
+                              - 202870_1
+                          - id: 11323_246534
                             value: Odnowiony przez producenta
                             dependsOnValueIds:
-                              - '202870_2'
+                              - 202870_2
                         restrictions:
                           multipleChoices: false
                 float:
@@ -5369,14 +5369,14 @@ paths:
                           parametersWithValue:
                             - id: '202870'
                               oneOfValueIds:
-                                - '202870_1'
+                                - 202870_1
                           parametersWithoutValue: []
                         displayedIf:
                           parametersWithValue:
                             - id: '202870'
                               oneOfValueIds:
-                                - '202870_1'
-                                - '202870_2'
+                                - 202870_1
+                                - 202870_2
                         unit: kg
                         options:
                           ambiguousValueId: null
@@ -5404,14 +5404,14 @@ paths:
                           parametersWithValue:
                             - id: '202870'
                               oneOfValueIds:
-                                - '202870_1'
+                                - 202870_1
                           parametersWithoutValue: []
                         displayedIf:
                           parametersWithValue:
                             - id: '202870'
                               oneOfValueIds:
-                                - '202870_1'
-                                - '202870_2'
+                                - 202870_1
+                                - 202870_2
                         unit: cm
                         options:
                           ambiguousValueId: null
@@ -5514,26 +5514,26 @@ paths:
                         required: false
                         unit: null
                         dictionary:
-                          - id: '11323_1'
+                          - id: 11323_1
                             value: Nowy
                             formerData:
                               values:
                                 - Nowa
                                 - Nowe
-                          - id: '11323_2'
+                          - id: 11323_2
                             value: Używany
-                          - id: '11323_238066'
+                          - id: 11323_238066
                             value: Po zwrocie
                             formerData:
                               ids:
-                                - '11323_1223635'
+                                - 11323_1223635
                               values:
                                 - Po demontażu
-                          - id: '11323_238058'
+                          - id: 11323_238058
                             value: Powystawowy
-                          - id: '11323_238062'
+                          - id: 11323_238062
                             value: Uszkodzony
-                          - id: '11323_246534'
+                          - id: 11323_246534
                             value: Odnowiony przez producenta
                         restrictions:
                           multipleChoices: false
@@ -24424,7 +24424,7 @@ components:
           type: array
           items:
             type: string
-            example: '13294_4'
+            example: 13294_4
       description: Offer's parameter.
     CategoryParameter:
       type: object
@@ -24534,7 +24534,7 @@ components:
                   id:
                     type: string
                     description: The ID of the dictionary value. Use it to set the value in an offer or in a product.
-                    example: '11323_1'
+                    example: 11323_1
                   value:
                     type: string
                     description: The label of the dictionary value.
@@ -24628,7 +24628,7 @@ components:
           type: string
           nullable: true
           description: Indicates what value in the dictionary is defined as an ambiguous one. Only parameters with dictionaries might have this option defined.
-          example: '128788_36'
+          example: 128788_36
         dependsOnParameterId:
           type: string
           nullable: true
@@ -24668,7 +24668,7 @@ components:
           description: Former IDs which this dictionary value had in this category earlier. This field is not visible in JSON as long as there is no former ID. Otherwise the array contains at least one ID.
           items:
             type: string
-            example: '11322_1'
+            example: 11322_1
         values:
           type: array
           description: Former values which this dictionary value had earlier. This field is not visible in JSON as long as there is no former name. Otherwise the array contains at least one name.
@@ -24700,7 +24700,7 @@ components:
                   id:
                     type: string
                     description: The ID of the dictionary value. Use it to set the value in an offer or in a product.
-                    example: '11323_1'
+                    example: 11323_1
                   value:
                     type: string
                     description: The label of the dictionary value in Polish.
@@ -24710,7 +24710,7 @@ components:
                     description: The IDs of dictionary values from another parameter that this parameter value can be combined with. The other parameter has the id from `options.dependsOnParameterId`. Empty if this parameter value can be combined with any value from other parameters. Otherwise, this value might be set in the offer only when one of the given values of `dependsOnValueIds` is set as well.
                     items:
                       type: string
-                      example: '211062_246554'
+                      example: 211062_246554
                   formerData:
                     $ref: '#/components/schemas/FormerParameterValueData'
     IntegerCategoryParameter:
@@ -24848,7 +24848,7 @@ components:
             type: string
           description: A list of value ids. One of them must be chosen in order to fulfill this condition. Not empty.
           example:
-            - '11323_1'
+            - 11323_1
     CategoryParameterWithoutValue:
       type: object
       required:
@@ -29042,11 +29042,11 @@ components:
         current:
           type: string
           description: Current product parameter value.
-          example: '20334_1'
+          example: 20334_1
         proposal:
           type: string
           description: Proposed product parameter value.
-          example: '20334_2'
+          example: 20334_2
         reason:
           type: string
           description: Verification message.
@@ -30412,7 +30412,7 @@ components:
           type: array
           items:
             type: string
-            example: '129970_850936'
+            example: 129970_850936
       description: Offer's parameter.
     ParameterProductOfferResponse:
       type: object
@@ -30438,7 +30438,7 @@ components:
           type: array
           items:
             type: string
-            example: '129970_850936'
+            example: 129970_850936
       description: Parameter.
     DiscountsProductOfferRequest:
       type: object
