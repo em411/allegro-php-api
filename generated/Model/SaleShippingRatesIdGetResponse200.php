@@ -42,7 +42,7 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
      */
     protected $lastModified;
     /**
-     * Whether the shipping rates set is physical or electronic. Note that this field is returned only when the shipping rates set was created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or via API with this new field explicitly provided.
+     * Whether the shipping rates set is physical or electronic. Note that this field is returned for all electronic shipping rates and for the physical shipping rates created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or API with this new field explicitly provided.
      *
      * @var string|null
      */
@@ -140,7 +140,7 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
     }
 
     /**
-     * Whether the shipping rates set is physical or electronic. Note that this field is returned only when the shipping rates set was created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or via API with this new field explicitly provided.
+     * Whether the shipping rates set is physical or electronic. Note that this field is returned for all electronic shipping rates and for the physical shipping rates created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or API with this new field explicitly provided.
      */
     public function getType(): ?string
     {
@@ -148,7 +148,7 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
     }
 
     /**
-     * Whether the shipping rates set is physical or electronic. Note that this field is returned only when the shipping rates set was created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or via API with this new field explicitly provided.
+     * Whether the shipping rates set is physical or electronic. Note that this field is returned for all electronic shipping rates and for the physical shipping rates created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or API with this new field explicitly provided.
      */
     public function setType(?string $type): self
     {

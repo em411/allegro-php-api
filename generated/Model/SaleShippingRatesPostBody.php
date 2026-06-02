@@ -42,13 +42,13 @@ class SaleShippingRatesPostBody extends \ArrayObject
      */
     protected $lastModified;
     /**
-     * Whether the shipping rates set is physical or electronic. Note that passing the type and dispatchCountry fields in the payload will result in creating a new custom shipping price list based on the specified dispatch country.
+     * Whether the shipping rates set is physical or electronic. Note that passing the `PHYSICAL` type in the payload will result in creating a new custom shipping price list based on the specified dispatch country.
      *
      * @var string|null
      */
     protected $type;
     /**
-     * The dispatch country code in ISO 3166-1 alfa-2 format, must be passed only for shipping rates of the `PHYSICAL` type.
+     * The dispatch country code in ISO 3166-1 alfa-2 format. It must be passed if the `PHYSICAL` type is provided.
      *
      * @var string|null
      */
@@ -136,7 +136,7 @@ class SaleShippingRatesPostBody extends \ArrayObject
     }
 
     /**
-     * Whether the shipping rates set is physical or electronic. Note that passing the type and dispatchCountry fields in the payload will result in creating a new custom shipping price list based on the specified dispatch country.
+     * Whether the shipping rates set is physical or electronic. Note that passing the `PHYSICAL` type in the payload will result in creating a new custom shipping price list based on the specified dispatch country.
      */
     public function getType(): ?string
     {
@@ -144,7 +144,7 @@ class SaleShippingRatesPostBody extends \ArrayObject
     }
 
     /**
-     * Whether the shipping rates set is physical or electronic. Note that passing the type and dispatchCountry fields in the payload will result in creating a new custom shipping price list based on the specified dispatch country.
+     * Whether the shipping rates set is physical or electronic. Note that passing the `PHYSICAL` type in the payload will result in creating a new custom shipping price list based on the specified dispatch country.
      */
     public function setType(?string $type): self
     {
@@ -155,7 +155,7 @@ class SaleShippingRatesPostBody extends \ArrayObject
     }
 
     /**
-     * The dispatch country code in ISO 3166-1 alfa-2 format, must be passed only for shipping rates of the `PHYSICAL` type.
+     * The dispatch country code in ISO 3166-1 alfa-2 format. It must be passed if the `PHYSICAL` type is provided.
      */
     public function getDispatchCountry(): ?string
     {
@@ -163,7 +163,7 @@ class SaleShippingRatesPostBody extends \ArrayObject
     }
 
     /**
-     * The dispatch country code in ISO 3166-1 alfa-2 format, must be passed only for shipping rates of the `PHYSICAL` type.
+     * The dispatch country code in ISO 3166-1 alfa-2 format. It must be passed if the `PHYSICAL` type is provided.
      */
     public function setDispatchCountry(?string $dispatchCountry): self
     {

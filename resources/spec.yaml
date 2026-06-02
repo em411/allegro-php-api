@@ -5993,13 +5993,13 @@ paths:
                       enum:
                         - PHYSICAL
                         - ELECTRONIC
-                      description: Whether the shipping rates set is physical or electronic. Note that passing the type and dispatchCountry fields in the payload will result in creating a new custom shipping price list based on the specified dispatch country.
+                      description: Whether the shipping rates set is physical or electronic. Note that passing the `PHYSICAL` type in the payload will result in creating a new custom shipping price list based on the specified dispatch country.
                     dispatchCountry:
                       type: string
                       nullable: true
                       maxLength: 2
                       example: PL
-                      description: The dispatch country code in ISO 3166-1 alfa-2 format, must be passed only for shipping rates of the `PHYSICAL` type.
+                      description: The dispatch country code in ISO 3166-1 alfa-2 format. It must be passed if the `PHYSICAL` type is provided.
       responses:
         '201':
           description: OK
@@ -6090,7 +6090,7 @@ paths:
                         enum:
                           - PHYSICAL
                           - ELECTRONIC
-                        description: Whether the shipping rates set is physical or electronic. Note that this field is returned only when the shipping rates set was created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or via API with this new field explicitly provided.
+                        description: Whether the shipping rates set is physical or electronic. Note that this field is returned for all electronic shipping rates and for the physical shipping rates created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or API with this new field explicitly provided.
                       dispatchCountry:
                         type: string
                         nullable: true
