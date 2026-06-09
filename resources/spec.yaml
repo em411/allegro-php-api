@@ -16107,6 +16107,7 @@ paths:
                 - CZ
                 - SK
                 - HU
+                - LT
         - name: Accept-Language
           in: header
           required: false
