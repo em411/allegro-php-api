@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class CheckoutFormLineItemSerialNumbersEntriesNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class CheckoutFormLineItemSetSerialNumbersEntryRequestNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class CheckoutFormLineItemSerialNumbersEntriesNormalizer implements Denormalizer
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntries::class === $type;
+        return \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersEntryRequest::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntries::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersEntryRequest::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,23 +48,19 @@ class CheckoutFormLineItemSerialNumbersEntriesNormalizer implements Denormalizer
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntries();
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersEntryRequest();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('entries', $data) && null !== $data['entries']) {
-            $values = [];
-            foreach ($data['entries'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntry::class, 'json', $context);
-            }
-            $object->setEntries($values);
-            unset($data['entries']);
-        } elseif (\array_key_exists('entries', $data) && null === $data['entries']) {
-            $object->setEntries(null);
+        if (\array_key_exists('value', $data) && null !== $data['value']) {
+            $object->setValue($data['value']);
+            unset($data['value']);
+        } elseif (\array_key_exists('value', $data) && null === $data['value']) {
+            $object->setValue(null);
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+                $object[$key] = $value;
             }
         }
 
@@ -74,14 +70,10 @@ class CheckoutFormLineItemSerialNumbersEntriesNormalizer implements Denormalizer
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $values = [];
-        foreach ($data->getEntries() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
-        }
-        $dataArray['entries'] = $values;
-        foreach ($data as $key => $value_1) {
+        $dataArray['value'] = $data->getValue();
+        foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+                $dataArray[$key] = $value;
             }
         }
 
@@ -90,6 +82,6 @@ class CheckoutFormLineItemSerialNumbersEntriesNormalizer implements Denormalizer
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntries::class => false];
+        return [\Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersEntryRequest::class => false];
     }
 }

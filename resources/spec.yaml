@@ -28296,20 +28296,28 @@ components:
           description: Line item identifier
           example: 62ae358b-8f65-4fc4-9c77-bedf604a2e2b
         serialNumbers:
-          $ref: '#/components/schemas/CheckoutFormLineItemSerialNumbersEntries'
+          $ref: '#/components/schemas/CheckoutFormLineItemSetSerialNumbersEntriesRequest'
       required:
         - id
         - serialNumbers
-    CheckoutFormLineItemSerialNumbersEntries:
+    CheckoutFormLineItemSetSerialNumbersEntriesRequest:
       type: object
       description: Serial numbers entered by the Seller. The seller is expected to provide serial numbers when processing an order whose destination country requires them and the product category qualifies for serial numbers.
       properties:
         entries:
           type: array
           items:
-            $ref: '#/components/schemas/CheckoutFormLineItemSerialNumbersEntry'
+            $ref: '#/components/schemas/CheckoutFormLineItemSetSerialNumbersEntryRequest'
       required:
         - entries
+    CheckoutFormLineItemSetSerialNumbersEntryRequest:
+      type: object
+      properties:
+        value:
+          type: string
+          description: Serial number entered by the Seller.
+      required:
+        - value
     CheckoutFormLineItemSerialNumbers:
       type: object
       description: Serial numbers required for export orders.
@@ -28328,6 +28336,9 @@ components:
         value:
           type: string
           description: Serial number entered by the Seller.
+        returned:
+          type: boolean
+          description: Flag indicating if the given serial number has been declared for return by the Buyer.
       required:
         - value
     LineItemDiscount:

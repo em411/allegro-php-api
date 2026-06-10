@@ -28,7 +28,7 @@ class CheckoutFormLineItemSetSerialNumbersRequest extends \ArrayObject
     /**
      * Serial numbers entered by the Seller. The seller is expected to provide serial numbers when processing an order whose destination country requires them and the product category qualifies for serial numbers.
      *
-     * @var CheckoutFormLineItemSerialNumbersEntries|null
+     * @var CheckoutFormLineItemSetSerialNumbersEntriesRequest|null
      */
     protected $serialNumbers;
 
@@ -59,7 +59,7 @@ class CheckoutFormLineItemSetSerialNumbersRequest extends \ArrayObject
     /**
      * Serial numbers entered by the Seller. The seller is expected to provide serial numbers when processing an order whose destination country requires them and the product category qualifies for serial numbers.
      */
-    public function getSerialNumbers(): ?CheckoutFormLineItemSerialNumbersEntries
+    public function getSerialNumbers(): ?CheckoutFormLineItemSetSerialNumbersEntriesRequest
     {
         return $this->serialNumbers;
     }
@@ -67,7 +67,7 @@ class CheckoutFormLineItemSetSerialNumbersRequest extends \ArrayObject
     /**
      * Serial numbers entered by the Seller. The seller is expected to provide serial numbers when processing an order whose destination country requires them and the product category qualifies for serial numbers.
      */
-    public function setSerialNumbers(?CheckoutFormLineItemSerialNumbersEntries $serialNumbers): self
+    public function setSerialNumbers(?CheckoutFormLineItemSetSerialNumbersEntriesRequest $serialNumbers): self
     {
         $this->initialized['serialNumbers'] = true;
         $this->serialNumbers = $serialNumbers;

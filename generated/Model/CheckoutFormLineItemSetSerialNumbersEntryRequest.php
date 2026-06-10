@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormLineItemSerialNumbersEntry extends \ArrayObject
+class CheckoutFormLineItemSetSerialNumbersEntryRequest extends \ArrayObject
 {
     /**
      * @var array
@@ -25,12 +25,6 @@ class CheckoutFormLineItemSerialNumbersEntry extends \ArrayObject
      * @var string|null
      */
     protected $value;
-    /**
-     * Flag indicating if the given serial number has been declared for return by the Buyer.
-     *
-     * @var bool|null
-     */
-    protected $returned;
 
     public function isInitialized($property): bool
     {
@@ -52,25 +46,6 @@ class CheckoutFormLineItemSerialNumbersEntry extends \ArrayObject
     {
         $this->initialized['value'] = true;
         $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * Flag indicating if the given serial number has been declared for return by the Buyer.
-     */
-    public function getReturned(): ?bool
-    {
-        return $this->returned;
-    }
-
-    /**
-     * Flag indicating if the given serial number has been declared for return by the Buyer.
-     */
-    public function setReturned(?bool $returned): self
-    {
-        $this->initialized['returned'] = true;
-        $this->returned = $returned;
 
         return $this;
     }

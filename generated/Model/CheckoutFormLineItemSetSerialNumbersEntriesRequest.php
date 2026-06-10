@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormLineItemSerialNumbersEntries extends \ArrayObject
+class CheckoutFormLineItemSetSerialNumbersEntriesRequest extends \ArrayObject
 {
     /**
      * @var array
      */
     protected $initialized = [];
     /**
-     * @var list<CheckoutFormLineItemSerialNumbersEntry>|null
+     * @var list<CheckoutFormLineItemSetSerialNumbersEntryRequest>|null
      */
     protected $entries;
 
@@ -30,7 +30,7 @@ class CheckoutFormLineItemSerialNumbersEntries extends \ArrayObject
     }
 
     /**
-     * @return list<CheckoutFormLineItemSerialNumbersEntry>|null
+     * @return list<CheckoutFormLineItemSetSerialNumbersEntryRequest>|null
      */
     public function getEntries(): ?array
     {
@@ -38,7 +38,7 @@ class CheckoutFormLineItemSerialNumbersEntries extends \ArrayObject
     }
 
     /**
-     * @param list<CheckoutFormLineItemSerialNumbersEntry>|null $entries
+     * @param list<CheckoutFormLineItemSetSerialNumbersEntryRequest>|null $entries
      */
     public function setEntries(?array $entries): self
     {

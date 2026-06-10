@@ -1095,7 +1095,9 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersRequest::class => CheckoutFormLineItemSetSerialNumbersRequestNormalizer::class,
 
-        \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntries::class => CheckoutFormLineItemSerialNumbersEntriesNormalizer::class,
+        \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersEntriesRequest::class => CheckoutFormLineItemSetSerialNumbersEntriesRequestNormalizer::class,
+
+        \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersEntryRequest::class => CheckoutFormLineItemSetSerialNumbersEntryRequestNormalizer::class,
 
         \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbers::class => CheckoutFormLineItemSerialNumbersNormalizer::class,
 
@@ -3057,7 +3059,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\CheckoutFormLineItemTax::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormLineItemsSetSerialNumbersRequest::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersRequest::class => false,
-            \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntries::class => false,
+            \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersEntriesRequest::class => false,
+            \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersEntryRequest::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbers::class => false,
             \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntry::class => false,
             \Em411\Allegro\Api\Model\LineItemDiscount::class => false,
