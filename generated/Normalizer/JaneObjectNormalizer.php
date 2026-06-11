@@ -775,6 +775,52 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\UpdateOfferBundleDiscountDTO::class => UpdateOfferBundleDiscountDTONormalizer::class,
 
+        \Em411\Allegro\Api\Model\FlexibleBundleCreateDTO::class => FlexibleBundleCreateDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleCreateDTODiscount::class => FlexibleBundleCreateDTODiscountNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleUpdateDTO::class => FlexibleBundleUpdateDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundlesListingDTO::class => FlexibleBundlesListingDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundlesListingDTONextPage::class => FlexibleBundlesListingDTONextPageNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleListingDTO::class => FlexibleBundleListingDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleListingDTODiscount::class => FlexibleBundleListingDTODiscountNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleGetDTO::class => FlexibleBundleGetDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleGetDTODiscount::class => FlexibleBundleGetDTODiscountNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleSlotDTO::class => FlexibleBundleSlotDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleGetSlotDTO::class => FlexibleBundleGetSlotDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleOfferDTO::class => FlexibleBundleOfferDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleGetOfferDTO::class => FlexibleBundleGetOfferDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleOfferMarketplaceDetailsDTO::class => FlexibleBundleOfferMarketplaceDetailsDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleOfferMarketplaceDetailsDTOAvailability::class => FlexibleBundleOfferMarketplaceDetailsDTOAvailabilityNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleOfferAvailabilityDTO::class => FlexibleBundleOfferAvailabilityDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleDiscountDTO::class => FlexibleBundleDiscountDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleDiscountDTOBundle::class => FlexibleBundleDiscountDTOBundleNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleDiscountDTOSlot::class => FlexibleBundleDiscountDTOSlotNormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleWholeBundleDiscountDTO::class => FlexibleBundleWholeBundleDiscountDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleSlotsDiscountDTO::class => FlexibleBundleSlotsDiscountDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleSlotDiscountDTO::class => FlexibleBundleSlotDiscountDTONormalizer::class,
+
+        \Em411\Allegro\Api\Model\FlexibleBundleMarketplaceDiscountDTO::class => FlexibleBundleMarketplaceDiscountDTONormalizer::class,
+
         \Em411\Allegro\Api\Model\SellerCreateRebateRequestDto::class => SellerCreateRebateRequestDtoNormalizer::class,
 
         \Em411\Allegro\Api\Model\SellerRebateDto::class => SellerRebateDtoNormalizer::class,
@@ -2899,6 +2945,29 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\BundlePublicationDTO::class => false,
             \Em411\Allegro\Api\Model\BundleMarketplaceDTO::class => false,
             \Em411\Allegro\Api\Model\UpdateOfferBundleDiscountDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleCreateDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleCreateDTODiscount::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleUpdateDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundlesListingDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundlesListingDTONextPage::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleListingDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleListingDTODiscount::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleGetDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleGetDTODiscount::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleSlotDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleGetSlotDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleOfferDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleGetOfferDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleOfferMarketplaceDetailsDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleOfferMarketplaceDetailsDTOAvailability::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleOfferAvailabilityDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleDiscountDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleDiscountDTOBundle::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleDiscountDTOSlot::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleWholeBundleDiscountDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleSlotsDiscountDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleSlotDiscountDTO::class => false,
+            \Em411\Allegro\Api\Model\FlexibleBundleMarketplaceDiscountDTO::class => false,
             \Em411\Allegro\Api\Model\SellerCreateRebateRequestDto::class => false,
             \Em411\Allegro\Api\Model\SellerRebateDto::class => false,
             \Em411\Allegro\Api\Model\SellerRebatesDto::class => false,

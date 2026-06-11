@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Exception;
 
-class CreateOfferBundleUsingPOSTBadRequestException extends BadRequestException
+class CreateFlexibleBundleUsingPOSTBadRequestException extends BadRequestException
 {
     /**
      * @var \Em411\Allegro\Api\Model\ErrorsHolder

@@ -788,30 +788,6 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * You can create <a href="https://help.allegro.com/sell/en/a/how-to-create-offer-bundles-rj9eAL2XnhK?marketplaceId=allegro-pl" target="_blank">offer bundle</a> using this endpoint. Bundle has to contain at least two offers and at least one of them has to be set as an entry point. Bundle will be shown on offers' pages which are marked as entry points. You can also specify how many units of each offer will be in bundle using `requiredQuantity` property.
-     * <br> Additionally, discount can be specified for each marketplace separately. If you do not want to set discount, set `discounts` property to `null` or empty array. Also, you do not have to specify discount on all marketplaces. Fill marketplaces in 'discounts' array accordingly to your needs.
-     * <br> Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#utworz-zestaw-ofert" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#create-an-offer-bundle" target="_blank">EN</a>.
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\OfferBundleDTO|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\CreateOfferBundleUsingPOSTBadRequestException
-     * @throws Exception\CreateOfferBundleUsingPOSTUnauthorizedException
-     * @throws Exception\CreateOfferBundleUsingPOSTForbiddenException
-     * @throws Exception\CreateOfferBundleUsingPOSTUnprocessableEntityException
-     */
-    public function createOfferBundleUsingPOST(?Model\CreateOfferBundleDTO $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
-    {
-        return $this->executeEndpoint(new Endpoint\CreateOfferBundleUsingPOST($requestBody, $headerParameters), $fetch);
-    }
-
-    /**
      * Use this resource to delete offer bundle by its unique identifier. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#usun-wybrany-zestaw" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#remove-the-selected-offer-bundle" target="_blank">EN</a>.
      *
      * @param string $bundleId         bundle ID
@@ -874,6 +850,100 @@ class Client extends Runtime\Client\Client
     public function updateOfferBundleDiscountUsingPUT(string $bundleId, ?Model\UpdateOfferBundleDiscountDTO $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\UpdateOfferBundleDiscountUsingPUT($bundleId, $requestBody, $headerParameters), $fetch);
+    }
+
+    /**
+     * You can fetch page of seller's flexible bundles using this endpoint.
+     * <br> Paging: <br> To move to next page, specify `page.id` parameter with value obtained in response from previous request. Number of offer bundles on single page can be specified using `limit` parameter.
+     * <br> Filtering: <br> Offer bundles can be filtered to bundles which contain offer specified in `offer.id` parameter.
+     *
+     * @param array $queryParameters {
+     *
+     * @var int    $limit limit of bundles per page
+     * @var string $offer.id Filter bundles which contains offer.
+     * @var string $page.id ID of page which will be retrieved.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\FlexibleBundlesListingDTO|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\ListSellersFlexibleBundlesUsingGETBadRequestException
+     * @throws Exception\ListSellersFlexibleBundlesUsingGETUnauthorizedException
+     * @throws Exception\ListSellersFlexibleBundlesUsingGETForbiddenException
+     * @throws Exception\ListSellersFlexibleBundlesUsingGETUnprocessableEntityException
+     */
+    public function listSellersFlexibleBundlesUsingGET(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\ListSellersFlexibleBundlesUsingGET($queryParameters), $fetch);
+    }
+
+    /**
+     * You can create flexible bundle using this resource. <br> Requirements: <ul> <li> there are max 6 slots in bundle;</li> <li> order value for each slot must be unique (ranging from 0 to 5);</li> <li> each slot can contain up to 30 offers;</li> <li> all offers in slot must be from the same category leaf (based on assortment's tree);</li> <li> at least one slot has to be marked as entrypoint;</li> <li> offer can be used in bundle only once (cannot be used in multiple slots);</li> <li> only offers active on at least one marketplace can be used;</li> <li> B2B offers cannot be used;</li> <li> age-restricted offers (eg. alcohol) cannot be used;</li> <li> cannot use multiple offers which are representing same product;</li> <li> all offers in bundle have to be 1F or not 1F.</li> </ul> Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#zestawy-elastyczne" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#flexible-bundles" target="_blank">EN</a>.
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\FlexibleBundleGetDTO|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\CreateFlexibleBundleUsingPOSTBadRequestException
+     * @throws Exception\CreateFlexibleBundleUsingPOSTUnauthorizedException
+     * @throws Exception\CreateFlexibleBundleUsingPOSTForbiddenException
+     * @throws Exception\CreateFlexibleBundleUsingPOSTUnprocessableEntityException
+     */
+    public function createFlexibleBundleUsingPOST(?Model\FlexibleBundleCreateDTO $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\CreateFlexibleBundleUsingPOST($requestBody), $fetch);
+    }
+
+    /**
+     * Use this resource to delete flexible bundle by its unique identifier.
+     *
+     * @param string $bundleId bundle ID
+     * @param string $fetch    Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return \Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\DeleteFlexibleBundleUsingDELETEUnauthorizedException
+     * @throws Exception\DeleteFlexibleBundleUsingDELETENotFoundException
+     */
+    public function deleteFlexibleBundleUsingDELETE(string $bundleId, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\DeleteFlexibleBundleUsingDELETE($bundleId), $fetch);
+    }
+
+    /**
+     * Use this resource to retrieve flexible bundle by its unique identifier.
+     *
+     * @param string $bundleId bundle ID
+     * @param string $fetch    Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\FlexibleBundleGetDTO|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\GetFlexibleBundleUsingGETUnauthorizedException
+     * @throws Exception\GetFlexibleBundleUsingGETNotFoundException
+     */
+    public function getFlexibleBundleUsingGET(string $bundleId, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\GetFlexibleBundleUsingGET($bundleId), $fetch);
+    }
+
+    /**
+     * You can update flexible bundle using this resource.
+     * <br> Requirements: <ul> <li> there are max 6 slots in bundle;</li> <li> order value for each slot must be unique (ranging from 0 to 5);</li> <li> each slot can contain up to 30 offers;</li> <li> all offers in slot must be from the same category leaf (based on assortment's tree);</li> <li> at least one slot has to be marked as entrypoint;</li> <li> offer can be used in bundle only once (cannot be used in multiple slots);</li> <li> only offers active on at least one marketplace can be used;</li> <li> B2B offers cannot be used;</li> <li> age-restricted offers (eg. alcohol) cannot be used;</li> <li> cannot use multiple offers which are representing same product;</li> <li> all offers in bundle have to be 1F or not 1F.</li> </ul> Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#aktualizuj-wybrany-zestaw-elastyczny" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#update-a-selected-flexible-bundle" target="_blank">EN</a>.
+     *
+     * @param string $bundleId bundle ID
+     * @param string $fetch    Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\FlexibleBundleGetDTO|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\UpdateFlexibleBundleUsingPUTBadRequestException
+     * @throws Exception\UpdateFlexibleBundleUsingPUTUnauthorizedException
+     * @throws Exception\UpdateFlexibleBundleUsingPUTForbiddenException
+     * @throws Exception\UpdateFlexibleBundleUsingPUTUnprocessableEntityException
+     */
+    public function updateFlexibleBundleUsingPUT(string $bundleId, ?Model\FlexibleBundleUpdateDTO $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\UpdateFlexibleBundleUsingPUT($bundleId, $requestBody), $fetch);
     }
 
     /**
@@ -5287,7 +5357,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to retrieve the account participation status for all supported marketplaces in the Allegro Prices program.
+     * Use this resource to retrieve the account participation status for all supported marketplaces in the Allegro Prices program. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-pobrac-aktualny-status-uczestnictwa-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-retrieve-the-current-program-participation-status" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *
@@ -5306,7 +5376,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to update the account participation status for one or more marketplaces in the Allegro Prices program.
+     * Use this resource to update the account participation status for one or more marketplaces in the Allegro Prices program. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zmienic-status-uczestnictwa-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-change-the-program-participation-status" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *
@@ -5327,7 +5397,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to submit a command to add offers to the Allegro Prices program. Returns a command ID that can be used to track the processing status.
+     * Use this resource to submit a command to add offers to the Allegro Prices program. Returns a command ID that can be used to track the processing status. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-dodanie-ofert-do-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-add-offers-to-the-program" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *
@@ -5349,7 +5419,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to retrieve the status and details of a previously submitted offer command.
+     * Use this resource to retrieve the status and details of a previously submitted offer command. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-dodanie-ofert-do-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-add-offers-to-the-program" target="_blank">EN</a>.
      *
      * @param string $commandId        the unique identifier of the command
      * @param array  $headerParameters {
@@ -5371,7 +5441,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to submit a command to exclude offers from the Allegro Prices program. Returns a command ID that can be used to track the processing status.
+     * Use this resource to submit a command to exclude offers from the Allegro Prices program. Returns a command ID that can be used to track the processing status. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-wykluczenie-ofert-z-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-exclude-offers-from-the-program" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *
@@ -5393,7 +5463,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to retrieve the status and details of a previously submitted exclusion command.
+     * Use this resource to retrieve the status and details of a previously submitted exclusion command. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-wykluczenie-ofert-z-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-exclude-offers-from-the-program" target="_blank">EN</a>.
      *
      * @param string $commandId        the unique identifier of the command
      * @param array  $headerParameters {
@@ -5415,7 +5485,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to retrieve a list of offers and their status in the Allegro Prices program with optional filtering and pagination. Allows filtering by offer IDs, marketplace, and scope (WITH_DECLARATION, DISCOUNTED, or EXCLUDED). Only offers in ACTIVATING, ACTIVE, or ENDED statuses are considered.
+     * Use this resource to retrieve a list of offers and their status in the Allegro Prices program with optional filtering and pagination. Allows filtering by offer IDs, marketplace, and scope (WITH_DECLARATION, DISCOUNTED, or EXCLUDED). Only offers in ACTIVATING, ACTIVE, or ENDED statuses are considered. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-pobrac-liste-ofert-i-ich-obecny-status-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-retrieve-a-list-of-offers-and-their-status-in-the-program" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *

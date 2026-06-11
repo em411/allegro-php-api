@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Exception;
 
-class CreateOfferBundleUsingPOSTUnauthorizedException extends UnauthorizedException
+class DeleteFlexibleBundleUsingDELETEUnauthorizedException extends UnauthorizedException
 {
     /**
      * @var \Em411\Allegro\Api\Model\AuthError

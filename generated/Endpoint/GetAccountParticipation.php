@@ -18,7 +18,7 @@ class GetAccountParticipation extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
 
     /**
-     * Use this resource to retrieve the account participation status for all supported marketplaces in the Allegro Prices program.
+     * Use this resource to retrieve the account participation status for all supported marketplaces in the Allegro Prices program. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-pobrac-aktualny-status-uczestnictwa-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-retrieve-the-current-program-participation-status" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *

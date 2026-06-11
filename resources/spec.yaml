@@ -37,6 +37,7 @@ tags:
   - name: Compatibility List
   - name: Rebates and promotions
   - name: Offer bundles
+  - name: Flexible bundles
   - name: Badge campaigns
   - name: Allegro Prices
   - name: AlleDiscount
@@ -2440,105 +2441,8 @@ paths:
         - bearer-token-for-user:
             - allegro:api:sale:settings:read
   /sale/bundles:
-    post:
-      tags:
-        - Offer bundles
-      summary: Create a new offer bundle
-      description: |-
-        You can create <a href="https://help.allegro.com/sell/en/a/how-to-create-offer-bundles-rj9eAL2XnhK?marketplaceId=allegro-pl" target="_blank">offer bundle</a> using this endpoint. Bundle has to contain at least two offers and at least one of them has to be set as an entry point. Bundle will be shown on offers' pages which are marked as entry points. You can also specify how many units of each offer will be in bundle using `requiredQuantity` property.
-        <br> Additionally, discount can be specified for each marketplace separately. If you do not want to set discount, set `discounts` property to `null` or empty array. Also, you do not have to specify discount on all marketplaces. Fill marketplaces in 'discounts' array accordingly to your needs.
-        <br> Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#utworz-zestaw-ofert" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#create-an-offer-bundle" target="_blank">EN</a>.
-      operationId: createOfferBundleUsingPOST
-      parameters:
-        - name: Accept-Language
-          in: header
-          required: false
-          description: Expected language of messages.
-          example: pl-PL
-          schema:
-            type: string
-            format: BCP-47 language code
-            enum:
-              - en-US
-              - pl-PL
-              - uk-UA
-              - sk-SK
-              - cs-CZ
-              - hu-HU
-      responses:
-        '201':
-          description: 'Successfully created the requested offer bundle. Once bundle is created it can be in one of two statuses on each marketplace separately: <ul> <li> `ACTIVE` means that bundle will be displayed on offer page; <li> `SUSPENDED` means that bundle will NOT be displayed on offer page. </ul> Bundle is SUSPENDED on all marketplaces when at least one of offers is ended or out of stock. Bundle is SUSPENDED on specific marketplace when at least one of offers: <ul> <li> is not visible on that marketplace;</li> <li> is in campaign which lowers its price on that marketplace;</li> </ul> or when discount cannot be spread across offers considering their current prices on that marketplace.'
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/OfferBundleDTO'
-              example:
-                id: a42d09c2-2669-4e7c-989b-7c341e84f787
-                offers:
-                  - id: '123456789'
-                    requiredQuantity: 1
-                    entryPoint: true
-                  - id: '987654321'
-                    requiredQuantity: 2
-                    entryPoint: false
-                publication:
-                  - marketplace:
-                      id: allegro-pl
-                    status: ACTIVE
-                discounts:
-                  - marketplace:
-                      id: allegro-pl
-                    amount: '10.15'
-                    currency: PLN
-                createdAt: '2023-09-21T10:22:02.999Z'
-                createdBy: USER
-        '400':
-          description: Bad request
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '401':
-          description: Unauthenticated action
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/AuthError'
-        '403':
-          description: Forbidden action
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-        '422':
-          description: Validation failed – request had correct syntax, but violated validation rules
-          content:
-            application/vnd.allegro.public.v1+json:
-              schema:
-                $ref: '#/components/schemas/ErrorsHolder'
-      requestBody:
-        content:
-          application/vnd.allegro.public.v1+json:
-            schema:
-              $ref: '#/components/schemas/CreateOfferBundleDTO'
-            example:
-              offers:
-                - id: '123456789'
-                  requiredQuantity: 1
-                  entryPoint: true
-                - id: '987654321'
-                  requiredQuantity: 2
-                  entryPoint: false
-              discounts:
-                - marketplace:
-                    id: allegro-pl
-                  amount: '10.15'
-                  currency: PLN
-        required: true
-      security:
-        - bearer-token-for-user:
-            - allegro:api:sale:offers:write
     get:
+      deprecated: true
       tags:
         - Offer bundles
       summary: List seller's bundles
@@ -2645,6 +2549,7 @@ paths:
             - allegro:api:sale:offers:read
   /sale/bundles/{bundleId}:
     get:
+      deprecated: true
       tags:
         - Offer bundles
       summary: Get bundle by ID
@@ -2715,6 +2620,7 @@ paths:
         - bearer-token-for-user:
             - allegro:api:sale:offers:read
     delete:
+      deprecated: true
       tags:
         - Offer bundles
       summary: Delete bundle by ID
@@ -2762,6 +2668,7 @@ paths:
             - allegro:api:sale:offers:write
   /sale/bundles/{bundleId}/discount:
     put:
+      deprecated: true
       tags:
         - Offer bundles
       summary: Update discount associated with bundle
@@ -2852,6 +2759,1020 @@ paths:
                   amount: '10.15'
                   currency: PLN
         required: true
+      security:
+        - bearer-token-for-user:
+            - allegro:api:sale:offers:write
+  /sale/flexible-bundles:
+    post:
+      tags:
+        - Flexible bundles
+      summary: Create new flexible bundle
+      description: 'You can create flexible bundle using this resource. <br> Requirements: <ul> <li> there are max 6 slots in bundle;</li> <li> order value for each slot must be unique (ranging from 0 to 5);</li> <li> each slot can contain up to 30 offers;</li> <li> all offers in slot must be from the same category leaf (based on assortment''s tree);</li> <li> at least one slot has to be marked as entrypoint;</li> <li> offer can be used in bundle only once (cannot be used in multiple slots);</li> <li> only offers active on at least one marketplace can be used;</li> <li> B2B offers cannot be used;</li> <li> age-restricted offers (eg. alcohol) cannot be used;</li> <li> cannot use multiple offers which are representing same product;</li> <li> all offers in bundle have to be 1F or not 1F.</li> </ul> Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#zestawy-elastyczne" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#flexible-bundles" target="_blank">EN</a>.'
+      operationId: createFlexibleBundleUsingPOST
+      responses:
+        '201':
+          description: Successfully created the requested flexible bundle. While creating bundle, for each offer their availability to buy in a bundle is calculated on each marketplace. Offer can be unavailable to buy in bundle when it is not active on marketplace or it's stock is not sufficient. Reason why offer is not available is returned for each marketplace.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/FlexibleBundleGetDTO'
+              examples:
+                bundle-without-discount:
+                  summary: Bundle without discount
+                  value:
+                    id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: USER
+                    slots:
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bc
+                        order: 0
+                        entryPoint: true
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520231'
+                            excludedFromDiscount: false
+                            entryPoint: true
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                          - id: '17500520232'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: false
+                                  reasons:
+                                    - NOT_AVAILABLE_TO_PURCHASE
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bd
+                        order: 1
+                        entryPoint: false
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520233'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                    discount: null
+                bundle-with-whole-bundle-discount:
+                  summary: Bundle with whole bundle discount
+                  value:
+                    id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: USER
+                    slots:
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bc
+                        order: 0
+                        entryPoint: true
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520231'
+                            excludedFromDiscount: false
+                            entryPoint: true
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                          - id: '17500520232'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: false
+                                  reasons:
+                                    - STOCK_NOT_SUFFICIENT
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bd
+                        order: 1
+                        entryPoint: false
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520233'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                    discount:
+                      type: WHOLE_BUNDLE_DISCOUNT
+                      bundle:
+                        minimumBoughtOffers: 2
+                        discounts:
+                          - marketplaceId: allegro-pl
+                            percentage: 10
+                          - marketplaceId: allegro-cz
+                            percentage: 15
+                      slot: null
+                bundle-with-slots-discount:
+                  summary: Bundle with slots discount
+                  value:
+                    id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: USER
+                    slots:
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bc
+                        order: 0
+                        entryPoint: true
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520231'
+                            excludedFromDiscount: false
+                            entryPoint: true
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                          - id: '17500520232'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: false
+                                  reasons:
+                                    - STOCK_NOT_SUFFICIENT
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bd
+                        order: 1
+                        entryPoint: false
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520233'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                    discount:
+                      type: SLOT_DISCOUNT
+                      bundle: null
+                      slot:
+                        slots:
+                          - order: 0
+                            discounts:
+                              - marketplaceId: allegro-pl
+                                percentage: 5
+                              - marketplaceId: allegro-cz
+                                percentage: 15
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthenticated action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Validation failed – request had correct syntax, but violated validation rules
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/FlexibleBundleCreateDTO'
+            examples:
+              bundle-without-discount:
+                summary: Bundle without discount
+                value:
+                  slots:
+                    - order: 0
+                      entryPoint: true
+                      requiredQuantity: 1
+                      offers:
+                        - id: '12345678'
+                          excludedFromDiscount: false
+                        - id: '23456789'
+                          excludedFromDiscount: false
+                    - order: 1
+                      entryPoint: false
+                      requiredQuantity: 1
+                      offers:
+                        - id: '34567890'
+                          excludedFromDiscount: false
+                        - id: '45678901'
+                          excludedFromDiscount: true
+                  discount: null
+              bundle-with-whole-bundle-discount:
+                summary: Bundle with whole bundle discount
+                value:
+                  slots:
+                    - order: 0
+                      entryPoint: true
+                      requiredQuantity: 1
+                      offers:
+                        - id: '12345678'
+                          excludedFromDiscount: false
+                        - id: '23456789'
+                          excludedFromDiscount: false
+                    - order: 1
+                      entryPoint: false
+                      requiredQuantity: 1
+                      offers:
+                        - id: '34567890'
+                          excludedFromDiscount: false
+                        - id: '45678901'
+                          excludedFromDiscount: true
+                  discount:
+                    type: WHOLE_BUNDLE_DISCOUNT
+                    bundle:
+                      minimumBoughtOffers: 2
+                      discounts:
+                        - marketplaceId: allegro-pl
+                          percentage: 10
+                        - marketplaceId: allegro-cz
+                          percentage: 15
+              bundle-with-slots-discount:
+                summary: Bundle with slots discount
+                value:
+                  slots:
+                    - order: 0
+                      entryPoint: true
+                      requiredQuantity: 2
+                      offers:
+                        - id: '11111111'
+                          excludedFromDiscount: false
+                    - order: 1
+                      entryPoint: false
+                      requiredQuantity: 1
+                      offers:
+                        - id: '22222222'
+                          excludedFromDiscount: false
+                  discount:
+                    type: SLOT_DISCOUNT
+                    slot:
+                      slots:
+                        - order: 0
+                          discounts:
+                            - marketplaceId: allegro-pl
+                              percentage: 5
+                            - marketplaceId: allegro-cz
+                              percentage: 10
+                        - order: 1
+                          discounts:
+                            - marketplaceId: allegro-cz
+                              percentage: 20
+        required: true
+      security:
+        - bearer-token-for-user:
+            - allegro:api:sale:offers:write
+    get:
+      tags:
+        - Flexible bundles
+      summary: List seller's flexible bundles
+      description: |-
+        You can fetch page of seller's flexible bundles using this endpoint.
+        <br> Paging: <br> To move to next page, specify `page.id` parameter with value obtained in response from previous request. Number of offer bundles on single page can be specified using `limit` parameter.
+        <br> Filtering: <br> Offer bundles can be filtered to bundles which contain offer specified in `offer.id` parameter.
+      operationId: listSellersFlexibleBundlesUsingGET
+      parameters:
+        - name: limit
+          in: query
+          description: Limit of bundles per page.
+          example: 200
+          required: false
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 1000
+            default: 20
+        - name: offer.id
+          in: query
+          description: Filter bundles which contains offer.
+          schema:
+            type: string
+          example: '123456789'
+        - name: page.id
+          in: query
+          description: ID of page which will be retrieved.
+          schema:
+            type: string
+          example: MjAyNC0wOS0xMFQwNjo0OTowMi40NTBa
+      responses:
+        '200':
+          description: Page of seller's flexible bundles.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/FlexibleBundlesListingDTO'
+              example:
+                bundles:
+                  - id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: USER
+                    slotsRepresentatives:
+                      - '17500520231'
+                      - '17500520232'
+                    discount:
+                      type: WHOLE_BUNDLE_DISCOUNT
+                      bundle:
+                        minimumBoughtOffers: 2
+                        discounts:
+                          - marketplaceId: allegro-pl
+                            percentage: 10
+                          - marketplaceId: allegro-cz
+                            percentage: 15
+                  - id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: USER
+                    slotsRepresentatives:
+                      - '17500520234'
+                      - '17500520235'
+                      - '17500520236'
+                    discount:
+                      type: SLOT_DISCOUNT
+                      slot:
+                        slots:
+                          - order: 0
+                            discounts:
+                              - marketplaceId: allegro-pl
+                                percentage: 5
+                              - marketplaceId: allegro-cz
+                                percentage: 10
+                          - order: 1
+                            discounts:
+                              - marketplaceId: allegro-pl
+                                percentage: 10
+                  - id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: ALLEGRO
+                    slotsRepresentatives:
+                      - '17500520237'
+                      - '17500520238'
+                      - '17500520239'
+                    discount: null
+                nextPage:
+                  id: eyJsYXN0SWQiOiJidW5kbGUtNzg5In0=
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthenticated action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Validation failed – request had correct syntax, but violated validation rules
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      security:
+        - bearer-token-for-user:
+            - allegro:api:sale:offers:read
+  /sale/flexible-bundles/{bundleId}:
+    get:
+      tags:
+        - Flexible bundles
+      summary: Get flexible bundle by ID
+      description: Use this resource to retrieve flexible bundle by its unique identifier.
+      operationId: getFlexibleBundleUsingGET
+      parameters:
+        - name: bundleId
+          in: path
+          description: Bundle ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully returned the requested flexible bundle
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/FlexibleBundleGetDTO'
+              examples:
+                bundle-without-discount:
+                  summary: Bundle without discount
+                  value:
+                    id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: ALLEGRO
+                    slots:
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bc
+                        order: 0
+                        entryPoint: true
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520231'
+                            excludedFromDiscount: false
+                            entryPoint: true
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                          - id: '17500520232'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: false
+                                  reasons:
+                                    - NOT_AVAILABLE_TO_PURCHASE
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bd
+                        order: 1
+                        entryPoint: false
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520233'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                    discount: null
+                bundle-with-whole-bundle-discount:
+                  summary: Bundle with whole bundle discount
+                  value:
+                    id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: USER
+                    slots:
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bc
+                        order: 0
+                        entryPoint: true
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520231'
+                            excludedFromDiscount: false
+                            entryPoint: true
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                          - id: '17500520232'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: false
+                                  reasons:
+                                    - STOCK_NOT_SUFFICIENT
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bd
+                        order: 1
+                        entryPoint: false
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520233'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                    discount:
+                      type: WHOLE_BUNDLE_DISCOUNT
+                      bundle:
+                        minimumBoughtOffers: 2
+                        discounts:
+                          - marketplaceId: allegro-pl
+                            percentage: 10
+                          - marketplaceId: allegro-cz
+                            percentage: 15
+                      slot: null
+                bundle-with-slots-discount:
+                  summary: Bundle with slots discount
+                  value:
+                    id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: USER
+                    slots:
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bc
+                        order: 0
+                        entryPoint: true
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520231'
+                            excludedFromDiscount: false
+                            entryPoint: true
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                          - id: '17500520232'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: false
+                                  reasons:
+                                    - STOCK_NOT_SUFFICIENT
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bd
+                        order: 1
+                        entryPoint: false
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520233'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                    discount:
+                      type: SLOT_DISCOUNT
+                      bundle: null
+                      slot:
+                        slots:
+                          - order: 0
+                            discounts:
+                              - marketplaceId: allegro-pl
+                                percentage: 5
+                              - marketplaceId: allegro-cz
+                                percentage: 15
+        '401':
+          description: Unauthenticated action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '404':
+          description: Bundle not found
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      security:
+        - bearer-token-for-user:
+            - allegro:api:sale:offers:read
+    put:
+      tags:
+        - Flexible bundles
+      summary: Updates flexible bundle
+      description: |-
+        You can update flexible bundle using this resource.
+        <br> Requirements: <ul> <li> there are max 6 slots in bundle;</li> <li> order value for each slot must be unique (ranging from 0 to 5);</li> <li> each slot can contain up to 30 offers;</li> <li> all offers in slot must be from the same category leaf (based on assortment's tree);</li> <li> at least one slot has to be marked as entrypoint;</li> <li> offer can be used in bundle only once (cannot be used in multiple slots);</li> <li> only offers active on at least one marketplace can be used;</li> <li> B2B offers cannot be used;</li> <li> age-restricted offers (eg. alcohol) cannot be used;</li> <li> cannot use multiple offers which are representing same product;</li> <li> all offers in bundle have to be 1F or not 1F.</li> </ul> Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#aktualizuj-wybrany-zestaw-elastyczny" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#update-a-selected-flexible-bundle" target="_blank">EN</a>.
+      operationId: updateFlexibleBundleUsingPUT
+      parameters:
+        - name: bundleId
+          in: path
+          description: Bundle ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successfully updated the requested flexible bundle. While updating bundle, for each offer their availability to buy in a bundle is calculated on each marketplace. Offer can be unavailable to buy in bundle when it is not active on marketplace or it's stock is not sufficient. Reason why offer is not available is returned for each marketplace.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/FlexibleBundleGetDTO'
+              examples:
+                bundle-without-discount:
+                  summary: Bundle without discount
+                  value:
+                    id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: ALLEGRO
+                    slots:
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bc
+                        order: 0
+                        entryPoint: true
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520231'
+                            excludedFromDiscount: false
+                            entryPoint: true
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                          - id: '17500520232'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: false
+                                  reasons:
+                                    - NOT_AVAILABLE_TO_PURCHASE
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bd
+                        order: 1
+                        entryPoint: false
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520233'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                    discount: null
+                bundle-with-whole-bundle-discount:
+                  summary: Bundle with whole bundle discount
+                  value:
+                    id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: USER
+                    slots:
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bc
+                        order: 0
+                        entryPoint: true
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520231'
+                            excludedFromDiscount: false
+                            entryPoint: true
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                          - id: '17500520232'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: false
+                                  reasons:
+                                    - STOCK_NOT_SUFFICIENT
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bd
+                        order: 1
+                        entryPoint: false
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520233'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                    discount:
+                      type: WHOLE_BUNDLE_DISCOUNT
+                      bundle:
+                        minimumBoughtOffers: 2
+                        discounts:
+                          - marketplaceId: allegro-pl
+                            percentage: 10
+                          - marketplaceId: allegro-cz
+                            percentage: 15
+                      slot: null
+                bundle-with-slots-discount:
+                  summary: Bundle with slots discount
+                  value:
+                    id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                    createdAt: '2025-09-21T10:22:02.999Z'
+                    createdBy: USER
+                    slots:
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bc
+                        order: 0
+                        entryPoint: true
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520231'
+                            excludedFromDiscount: false
+                            entryPoint: true
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                          - id: '17500520232'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: false
+                                  reasons:
+                                    - STOCK_NOT_SUFFICIENT
+                      - id: bac2128a-ec95-4d19-a241-d8be7001b8bd
+                        order: 1
+                        entryPoint: false
+                        requiredQuantity: 1
+                        offers:
+                          - id: '17500520233'
+                            excludedFromDiscount: false
+                            entryPoint: false
+                            marketplaces:
+                              - id: allegro-pl
+                                availability:
+                                  available: true
+                                  reasons: []
+                              - id: allegro-cz
+                                availability:
+                                  available: true
+                                  reasons: []
+                    discount:
+                      type: SLOT_DISCOUNT
+                      bundle: null
+                      slot:
+                        slots:
+                          - order: 0
+                            discounts:
+                              - marketplaceId: allegro-pl
+                                percentage: 5
+                              - marketplaceId: allegro-cz
+                                percentage: 15
+        '400':
+          description: Bad request
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthenticated action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: Validation failed – request had correct syntax, but violated validation rules
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      requestBody:
+        content:
+          application/vnd.allegro.public.v1+json:
+            schema:
+              $ref: '#/components/schemas/FlexibleBundleUpdateDTO'
+            examples:
+              bundle-without-discount:
+                summary: Bundle without discount
+                value:
+                  slots:
+                    - id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                      order: 0
+                      entryPoint: true
+                      requiredQuantity: 1
+                      offers:
+                        - id: '12345678'
+                          excludedFromDiscount: false
+                        - id: '23456789'
+                          excludedFromDiscount: false
+                    - id: null
+                      order: 1
+                      entryPoint: false
+                      requiredQuantity: 1
+                      offers:
+                        - id: '34567890'
+                          excludedFromDiscount: false
+                        - id: '45678901'
+                          excludedFromDiscount: true
+                  discount: null
+              bundle-with-whole-bundle-discount:
+                summary: Bundle with whole bundle discount
+                value:
+                  slots:
+                    - id: bac2128a-ec95-4d19-a241-d8be7001b8b8
+                      order: 0
+                      entryPoint: true
+                      requiredQuantity: 1
+                      offers:
+                        - id: '12345678'
+                          excludedFromDiscount: false
+                        - id: '23456789'
+                          excludedFromDiscount: false
+                    - id: null
+                      order: 1
+                      entryPoint: false
+                      requiredQuantity: 1
+                      offers:
+                        - id: '34567890'
+                          excludedFromDiscount: false
+                        - id: '45678901'
+                          excludedFromDiscount: true
+                  discount:
+                    type: WHOLE_BUNDLE_DISCOUNT
+                    bundle:
+                      minimumBoughtOffers: 2
+                      discounts:
+                        - marketplaceId: allegro-pl
+                          percentage: 10
+                        - marketplaceId: allegro-cz
+                          percentage: 15
+              bundle-with-slots-discount:
+                summary: Bundle with slots discount
+                value:
+                  slots:
+                    - id: slot-1
+                      order: 0
+                      entryPoint: true
+                      requiredQuantity: 1
+                      offers:
+                        - id: '12345678'
+                          excludedFromDiscount: false
+                        - id: '23456789'
+                          excludedFromDiscount: false
+                    - id: null
+                      order: 1
+                      entryPoint: false
+                      requiredQuantity: 1
+                      offers:
+                        - id: '34567890'
+                          excludedFromDiscount: false
+                        - id: '45678901'
+                          excludedFromDiscount: true
+                  discount:
+                    type: SLOT_DISCOUNT
+                    slot:
+                      slots:
+                        - order: 0
+                          discounts:
+                            - marketplaceId: allegro-pl
+                              percentage: 5
+                            - marketplaceId: allegro-cz
+                              percentage: 10
+                        - order: 1
+                          discounts:
+                            - marketplaceId: allegro-cz
+                              percentage: 20
+        required: true
+      security:
+        - bearer-token-for-user:
+            - allegro:api:sale:offers:write
+    delete:
+      tags:
+        - Flexible bundles
+      summary: Delete flexible bundle by ID
+      description: Use this resource to delete flexible bundle by its unique identifier.
+      operationId: deleteFlexibleBundleUsingDELETE
+      parameters:
+        - name: bundleId
+          in: path
+          description: Bundle ID.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Bundle successfully deleted.
+        '401':
+          description: Unauthenticated action
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '404':
+          description: Bundle not found
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
       security:
         - bearer-token-for-user:
             - allegro:api:sale:offers:write
@@ -16168,7 +17089,7 @@ paths:
       tags:
         - Allegro Prices
       summary: Get account participation status
-      description: Use this resource to retrieve the account participation status for all supported marketplaces in the Allegro Prices program.
+      description: 'Use this resource to retrieve the account participation status for all supported marketplaces in the Allegro Prices program. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-pobrac-aktualny-status-uczestnictwa-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-retrieve-the-current-program-participation-status" target="_blank">EN</a>.'
       operationId: getAccountParticipation
       security:
         - bearer-token-for-user:
@@ -16206,7 +17127,7 @@ paths:
       tags:
         - Allegro Prices
       summary: Update account participation
-      description: Use this resource to update the account participation status for one or more marketplaces in the Allegro Prices program.
+      description: 'Use this resource to update the account participation status for one or more marketplaces in the Allegro Prices program. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zmienic-status-uczestnictwa-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-change-the-program-participation-status" target="_blank">EN</a>.'
       operationId: updateAccountParticipation
       security:
         - bearer-token-for-user:
@@ -16259,7 +17180,7 @@ paths:
       tags:
         - Allegro Prices
       summary: Submit offers command
-      description: Use this resource to submit a command to add offers to the Allegro Prices program. Returns a command ID that can be used to track the processing status.
+      description: 'Use this resource to submit a command to add offers to the Allegro Prices program. Returns a command ID that can be used to track the processing status. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-dodanie-ofert-do-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-add-offers-to-the-program" target="_blank">EN</a>.'
       operationId: submitOfferCommands
       security:
         - bearer-token-for-user:
@@ -16318,7 +17239,7 @@ paths:
       tags:
         - Allegro Prices
       summary: Get submit offer command status
-      description: Use this resource to retrieve the status and details of a previously submitted offer command.
+      description: 'Use this resource to retrieve the status and details of a previously submitted offer command. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-dodanie-ofert-do-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-add-offers-to-the-program" target="_blank">EN</a>.'
       operationId: getSubmitOfferCommandStatus
       security:
         - bearer-token-for-user:
@@ -16474,7 +17395,7 @@ paths:
       tags:
         - Allegro Prices
       summary: Exclude offers command
-      description: Use this resource to submit a command to exclude offers from the Allegro Prices program. Returns a command ID that can be used to track the processing status.
+      description: 'Use this resource to submit a command to exclude offers from the Allegro Prices program. Returns a command ID that can be used to track the processing status. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-wykluczenie-ofert-z-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-exclude-offers-from-the-program" target="_blank">EN</a>.'
       operationId: excludeOfferCommands
       security:
         - bearer-token-for-user:
@@ -16533,7 +17454,7 @@ paths:
       tags:
         - Allegro Prices
       summary: Get exclude offer command status
-      description: Use this resource to retrieve the status and details of a previously submitted exclusion command.
+      description: 'Use this resource to retrieve the status and details of a previously submitted exclusion command. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-wykluczenie-ofert-z-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-exclude-offers-from-the-program" target="_blank">EN</a>.'
       operationId: getExcludeOfferCommandStatus
       security:
         - bearer-token-for-user:
@@ -16688,7 +17609,7 @@ paths:
       tags:
         - Allegro Prices
       summary: Query Allegro Prices offers status
-      description: Use this resource to retrieve a list of offers and their status in the Allegro Prices program with optional filtering and pagination. Allows filtering by offer IDs, marketplace, and scope (WITH_DECLARATION, DISCOUNTED, or EXCLUDED). Only offers in ACTIVATING, ACTIVE, or ENDED statuses are considered.
+      description: 'Use this resource to retrieve a list of offers and their status in the Allegro Prices program with optional filtering and pagination. Allows filtering by offer IDs, marketplace, and scope (WITH_DECLARATION, DISCOUNTED, or EXCLUDED). Only offers in ACTIVATING, ACTIVE, or ENDED statuses are considered. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-pobrac-liste-ofert-i-ich-obecny-status-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-retrieve-a-list-of-offers-and-their-status-in-the-program" target="_blank">EN</a>.'
       operationId: getAllegroPricesOffers
       security:
         - bearer-token-for-user:
@@ -25618,6 +26539,341 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BundleDiscountDTO'
+    FlexibleBundleCreateDTO:
+      type: object
+      required:
+        - slots
+      properties:
+        slots:
+          type: array
+          minItems: 2
+          maxItems: 6
+          items:
+            $ref: '#/components/schemas/FlexibleBundleSlotDTO'
+        discount:
+          type: object
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/FlexibleBundleDiscountDTO'
+    FlexibleBundleUpdateDTO:
+      type: object
+      required:
+        - slots
+      properties:
+        slots:
+          type: array
+          minItems: 2
+          maxItems: 6
+          items:
+            $ref: '#/components/schemas/FlexibleBundleSlotDTO'
+        discount:
+          $ref: '#/components/schemas/FlexibleBundleDiscountDTO'
+    FlexibleBundlesListingDTO:
+      type: object
+      required:
+        - bundles
+      properties:
+        bundles:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexibleBundleListingDTO'
+          description: List of bundles
+        nextPage:
+          description: Next page information.
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              description: Next page ID.
+              type: string
+              example: MjAyNC0wOS0xMFQwNjo0OTowMi40NTBa
+      description: Paginated list of bundles
+    FlexibleBundleListingDTO:
+      type: object
+      required:
+        - id
+        - createdBy
+        - createdAt
+        - slotsRepresentatives
+      properties:
+        id:
+          type: string
+          description: Bundle identifier
+        createdBy:
+          description: 'Who created this bundle. It is set to: <ul> <li> `USER` for all bundles created by seller on Allegro web page or via public API;</li> <li> `ALLEGRO` when bundle was created by Allegro. </li> </ul>'
+          type: string
+          enum:
+            - USER
+            - ALLEGRO
+          example: USER
+        createdAt:
+          description: When this bundle was created in <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO_8601</a> format.
+          type: string
+          format: date-time
+          example: '2025-05-01T10:12:32.321Z'
+        slotsRepresentatives:
+          type: array
+          items:
+            type: string
+          description: List of offer's ids, one per slot
+        discount:
+          type: object
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/FlexibleBundleDiscountDTO'
+          description: Optional discount configuration
+      description: Bundle summary information
+    FlexibleBundleGetDTO:
+      type: object
+      required:
+        - id
+        - createdBy
+        - createdAt
+        - slots
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Bundle identifier
+        createdBy:
+          description: 'Who created this bundle. It is set to: <ul> <li> `USER` for all bundles created by seller on Allegro web page or via public API;</li> <li> `ALLEGRO` when bundle was created by Allegro. </li> </ul>'
+          type: string
+          enum:
+            - USER
+            - ALLEGRO
+          example: USER
+        createdAt:
+          description: When this bundle was created in <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO_8601</a> format.
+          type: string
+          format: date-time
+          example: '2025-05-01T10:12:32.321Z'
+        slots:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexibleBundleGetSlotDTO'
+          description: List of slots in the bundle
+        discount:
+          type: object
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/FlexibleBundleDiscountDTO'
+          description: Optional discount configuration
+      description: Complete bundle information with slots and offers
+    FlexibleBundleSlotDTO:
+      type: object
+      required:
+        - order
+        - entryPoint
+        - requiredQuantity
+        - offers
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Slot identifier (not provided when creating new bundle)
+        order:
+          type: integer
+          minimum: 0
+          maximum: 5
+          description: Slot order in the bundle
+        entryPoint:
+          type: boolean
+          description: Indicates if this slot is an entry point
+        requiredQuantity:
+          type: integer
+          minimum: 1
+          description: Required quantity of offers from this slot
+        offers:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/FlexibleBundleOfferDTO'
+          description: List of offers in this slot
+      description: Slot definition in a bundle
+    FlexibleBundleGetSlotDTO:
+      type: object
+      required:
+        - id
+        - order
+        - entryPoint
+        - requiredQuantity
+        - offers
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Slot identifier
+        order:
+          type: integer
+          description: Slot order in the bundle
+        entryPoint:
+          type: boolean
+          description: Indicates if this slot is an entry point
+        requiredQuantity:
+          type: integer
+          description: Required quantity of offers from this slot
+        offers:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexibleBundleGetOfferDTO'
+          description: List of offers in this slot
+      description: Slot with offers and category
+    FlexibleBundleOfferDTO:
+      type: object
+      required:
+        - id
+        - excludedFromDiscount
+      properties:
+        id:
+          type: string
+          description: Offer identifier
+        excludedFromDiscount:
+          type: boolean
+          description: Indicates if offer is excluded from discount calculation
+      description: Offer definition in a slot
+    FlexibleBundleGetOfferDTO:
+      type: object
+      required:
+        - id
+        - excludedFromDiscount
+        - entryPoint
+        - marketplaces
+      properties:
+        id:
+          type: string
+          description: Offer identifier
+        excludedFromDiscount:
+          type: boolean
+          description: Indicates if offer is excluded from discount calculation
+        entryPoint:
+          type: boolean
+          description: Indicates if this offer is an entry point
+        marketplaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlexibleBundleOfferMarketplaceDetailsDTO'
+          description: Marketplace-specific details
+      description: Offer with properties and marketplace details
+    FlexibleBundleOfferMarketplaceDetailsDTO:
+      type: object
+      required:
+        - id
+        - availability
+      properties:
+        id:
+          type: string
+          description: Marketplace identifier
+        availability:
+          allOf:
+            - $ref: '#/components/schemas/FlexibleBundleOfferAvailabilityDTO'
+            - description: Availability information
+      description: Marketplace-specific offer details
+    FlexibleBundleOfferAvailabilityDTO:
+      type: object
+      required:
+        - available
+        - reasons
+      properties:
+        available:
+          type: boolean
+          description: Indicates if offer is available
+        reasons:
+          type: array
+          items:
+            type: string
+          description: List of unavailability reasons
+      description: Offer availability information
+    FlexibleBundleDiscountDTO:
+      type: object
+      nullable: true
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - WHOLE_BUNDLE_DISCOUNT
+            - SLOT_DISCOUNT
+          description: Type of discount. WHOLE_BUNDLE_DISCOUNT means that the discount amount will be distributed proportionally across the offers in the bundle. SLOT_DISCOUNT allows you to specify which slots in the bundle are discounted and by how much, eg. slot with smartphone cases can be discounted by 20%, but slot with earphones can be not discounted at all.
+        bundle:
+          type: object
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/FlexibleBundleWholeBundleDiscountDTO'
+          description: Whole bundle discount configuration (required when type is WHOLE_BUNDLE_DISCOUNT)
+        slot:
+          type: object
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/FlexibleBundleSlotsDiscountDTO'
+          description: Slots discount configuration (required when type is SLOT_DISCOUNT)
+      description: Discount configuration for bundle
+    FlexibleBundleWholeBundleDiscountDTO:
+      type: object
+      nullable: true
+      required:
+        - minimumBoughtOffers
+        - discounts
+      properties:
+        minimumBoughtOffers:
+          type: integer
+          minimum: 2
+          maximum: 6
+          description: Minimum number of bought offers to apply discount
+        discounts:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/FlexibleBundleMarketplaceDiscountDTO'
+          description: Discount values per marketplace (must be unique per marketplace)
+      description: Whole bundle discount configuration
+    FlexibleBundleSlotsDiscountDTO:
+      type: object
+      nullable: true
+      required:
+        - slots
+      properties:
+        slots:
+          type: array
+          minItems: 1
+          maxItems: 6
+          items:
+            $ref: '#/components/schemas/FlexibleBundleSlotDiscountDTO'
+          description: Discount configuration per slot (order must be unique)
+      description: Slots discount configuration
+    FlexibleBundleSlotDiscountDTO:
+      type: object
+      required:
+        - order
+        - discounts
+      properties:
+        order:
+          type: integer
+          minimum: 0
+          maximum: 5
+          description: Slot order
+        discounts:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/FlexibleBundleMarketplaceDiscountDTO'
+          description: Discount values per marketplace (must be unique per marketplace)
+      description: Discount configuration for specific slot
+    FlexibleBundleMarketplaceDiscountDTO:
+      type: object
+      required:
+        - marketplaceId
+        - percentage
+      properties:
+        marketplaceId:
+          type: string
+          description: Marketplace identifier
+        percentage:
+          type: integer
+          example: 10
+          description: Discount percentage
+      description: Discount value for specific marketplace
     SellerCreateRebateRequestDto:
       type: object
       required:
@@ -37729,6 +38985,7 @@ x-tagGroups:
       - Compatibility List
       - Rebates and promotions
       - Offer bundles
+      - Flexible bundles
       - Badge campaigns
       - Allegro Prices
       - AlleDiscount

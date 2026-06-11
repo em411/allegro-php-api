@@ -13,27 +13,27 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Exception;
 
-class CreateOfferBundleUsingPOSTUnprocessableEntityException extends UnprocessableEntityException
+class ListSellersFlexibleBundlesUsingGETUnauthorizedException extends UnauthorizedException
 {
     /**
-     * @var \Em411\Allegro\Api\Model\ErrorsHolder
+     * @var \Em411\Allegro\Api\Model\AuthError
      */
-    private $errorsHolder;
+    private $authError;
     /**
      * @var \Psr\Http\Message\ResponseInterface
      */
     private $response;
 
-    public function __construct(\Em411\Allegro\Api\Model\ErrorsHolder $errorsHolder, \Psr\Http\Message\ResponseInterface $response)
+    public function __construct(\Em411\Allegro\Api\Model\AuthError $authError, \Psr\Http\Message\ResponseInterface $response)
     {
-        parent::__construct('Validation failed – request had correct syntax, but violated validation rules');
-        $this->errorsHolder = $errorsHolder;
+        parent::__construct('Unauthenticated action');
+        $this->authError = $authError;
         $this->response = $response;
     }
 
-    public function getErrorsHolder(): \Em411\Allegro\Api\Model\ErrorsHolder
+    public function getAuthError(): \Em411\Allegro\Api\Model\AuthError
     {
-        return $this->errorsHolder;
+        return $this->authError;
     }
 
     public function getResponse(): \Psr\Http\Message\ResponseInterface

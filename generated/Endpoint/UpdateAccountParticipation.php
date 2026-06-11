@@ -18,7 +18,7 @@ class UpdateAccountParticipation extends \Em411\Allegro\Api\Runtime\Client\BaseE
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
 
     /**
-     * Use this resource to update the account participation status for one or more marketplaces in the Allegro Prices program.
+     * Use this resource to update the account participation status for one or more marketplaces in the Allegro Prices program. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zmienic-status-uczestnictwa-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-change-the-program-participation-status" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *

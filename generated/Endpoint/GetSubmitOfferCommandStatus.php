@@ -19,7 +19,7 @@ class GetSubmitOfferCommandStatus extends \Em411\Allegro\Api\Runtime\Client\Base
     protected $commandId;
 
     /**
-     * Use this resource to retrieve the status and details of a previously submitted offer command.
+     * Use this resource to retrieve the status and details of a previously submitted offer command. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-dodanie-ofert-do-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-add-offers-to-the-program" target="_blank">EN</a>.
      *
      * @param string $commandId        the unique identifier of the command
      * @param array  $headerParameters {

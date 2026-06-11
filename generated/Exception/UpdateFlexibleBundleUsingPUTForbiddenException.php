@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Exception;
 
-class CreateOfferBundleUsingPOSTForbiddenException extends ForbiddenException
+class UpdateFlexibleBundleUsingPUTForbiddenException extends ForbiddenException
 {
     /**
      * @var \Em411\Allegro\Api\Model\ErrorsHolder

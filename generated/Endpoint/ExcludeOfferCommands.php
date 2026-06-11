@@ -18,7 +18,7 @@ class ExcludeOfferCommands extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
 
     /**
-     * Use this resource to submit a command to exclude offers from the Allegro Prices program. Returns a command ID that can be used to track the processing status.
+     * Use this resource to submit a command to exclude offers from the Allegro Prices program. Returns a command ID that can be used to track the processing status. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-wykluczenie-ofert-z-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-exclude-offers-from-the-program" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *
