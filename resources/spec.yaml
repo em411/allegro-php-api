@@ -10070,7 +10070,7 @@ paths:
       tags:
         - Images and attachments
       summary: Get offer attachment details
-      description: Get details of an offer attachments, including download link, by attachment identifier ("attachmentId"). The attachment id can be retrieved by querying a particular offer, for example by using <a href="#operation/getProductOffer">`GET /sale/product-offers/{offerId}`</a>.
+      description: 'Get details of an offer attachments, including download link, by attachment identifier ("attachmentId"). The attachment id can be retrieved by querying a particular offer, for example by using <a href="#operation/getProductOffer">`GET /sale/product-offers/{offerId}`</a>. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#zalaczniki" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#attachments" target="_blank">EN</a>.'
       operationId: getOfferAttachment
       parameters:
         - name: attachmentId
@@ -10728,7 +10728,7 @@ paths:
       tags:
         - Order management
       summary: Get order invoices details
-      description: 'Use to get invoices details including antivirus scan results and EPT invoice verification status. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-informacje-o-fakturach-dodanych-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#retrieve-information-about-invoices" target="_blank">EN</a>.'
+      description: 'Use to get invoices details including antivirus scan results and EPT invoice verification status. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-informacje-o-dokumentach-rozliczeniowych-dodanych-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#retrieve-information-about-invoices" target="_blank">EN</a>.'
       operationId: getOrderInvoicesDetails
       parameters:
         - name: id
@@ -37511,8 +37511,9 @@ components:
       type: object
       properties:
         shipmentIds:
-          maxItems: 2147483647
+          maxItems: 100
           minItems: 1
+          description: An array of unique shipment identifiers to retrieve details for. Must contain between 1 and 100 IDs.
           type: array
           items:
             type: string
@@ -37734,7 +37735,6 @@ components:
           description: List with identifiers of the carriers that take part in the transport of this shipment. Often it is a single value list, when only one carrier is involved. There are shipments where multiple carriers are used to deliver the package, mainly in a case of international shipments, then there will be two or more values.
           example:
             - InPost
-            - WEDO
           items:
             type: string
             description: Name of the carrier company.

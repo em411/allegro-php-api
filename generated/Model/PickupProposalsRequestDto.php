@@ -20,6 +20,8 @@ class PickupProposalsRequestDto extends \ArrayObject
      */
     protected $initialized = [];
     /**
+     * An array of unique shipment identifiers to retrieve details for. Must contain between 1 and 100 IDs.
+     *
      * @var list<string>|null
      */
     protected $shipmentIds;
@@ -42,6 +44,8 @@ class PickupProposalsRequestDto extends \ArrayObject
     }
 
     /**
+     * An array of unique shipment identifiers to retrieve details for. Must contain between 1 and 100 IDs.
+     *
      * @return list<string>|null
      */
     public function getShipmentIds(): ?array
@@ -50,6 +54,8 @@ class PickupProposalsRequestDto extends \ArrayObject
     }
 
     /**
+     * An array of unique shipment identifiers to retrieve details for. Must contain between 1 and 100 IDs.
+     *
      * @param list<string>|null $shipmentIds
      */
     public function setShipmentIds(?array $shipmentIds): self
