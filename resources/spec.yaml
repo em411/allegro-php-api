@@ -29864,6 +29864,7 @@ components:
             - REJECTED_PRODUCT_CONFORMS_TO_CONTRACT
             - REJECTED_MINOR_DEFECT
             - REJECTED_OTHER
+            - REJECTED_CLAIM_WITHDRAWN_BY_BUYER
           example: ACCEPTED_PARTIAL_REFUND
         message:
           type: string
