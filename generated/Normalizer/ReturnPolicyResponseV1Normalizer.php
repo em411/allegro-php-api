@@ -49,6 +49,9 @@ class ReturnPolicyResponseV1Normalizer implements DenormalizerInterface, Normali
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Em411\Allegro\Api\Model\ReturnPolicyResponseV1();
+        if (\array_key_exists('isFulfillment', $data) && \is_int($data['isFulfillment'])) {
+            $data['isFulfillment'] = (bool) $data['isFulfillment'];
+        }
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -57,6 +60,12 @@ class ReturnPolicyResponseV1Normalizer implements DenormalizerInterface, Normali
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+        }
+        if (\array_key_exists('isFulfillment', $data) && null !== $data['isFulfillment']) {
+            $object->setIsFulfillment($data['isFulfillment']);
+            unset($data['isFulfillment']);
+        } elseif (\array_key_exists('isFulfillment', $data) && null === $data['isFulfillment']) {
+            $object->setIsFulfillment(null);
         }
         if (\array_key_exists('seller', $data) && null !== $data['seller']) {
             $object->setSeller($this->denormalizer->denormalize($data['seller'], \Em411\Allegro\Api\Model\Seller::class, 'json', $context));
@@ -119,6 +128,7 @@ class ReturnPolicyResponseV1Normalizer implements DenormalizerInterface, Normali
     {
         $dataArray = [];
         $dataArray['id'] = $data->getId();
+        $dataArray['isFulfillment'] = $data->getIsFulfillment();
         $dataArray['seller'] = $this->normalizer->normalize($data->getSeller(), 'json', $context);
         $dataArray['name'] = $data->getName();
         $dataArray['availability'] = $this->normalizer->normalize($data->getAvailability(), 'json', $context);

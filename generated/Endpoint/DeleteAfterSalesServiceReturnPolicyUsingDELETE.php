@@ -50,7 +50,7 @@ class DeleteAfterSalesServiceReturnPolicyUsingDELETE extends \Em411\Allegro\Api\
 
     public function getExtraHeaders(): array
     {
-        return ['Accept' => ['application/vnd.allegro.public.v2+json']];
+        return ['Accept' => ['application/vnd.allegro.public.v1 +json']];
     }
 
     public function getAuthenticationScopes(): array
@@ -70,7 +70,7 @@ class DeleteAfterSalesServiceReturnPolicyUsingDELETE extends \Em411\Allegro\Api\
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\ReturnPolicyResponseV2|null
+     * @return \Em411\Allegro\Api\Model\ReturnPolicyResponseV1|null
      *
      * @throws \Em411\Allegro\Api\Exception\DeleteAfterSalesServiceReturnPolicyUsingDELETEBadRequestException
      * @throws \Em411\Allegro\Api\Exception\DeleteAfterSalesServiceReturnPolicyUsingDELETEUnauthorizedException
@@ -81,8 +81,8 @@ class DeleteAfterSalesServiceReturnPolicyUsingDELETE extends \Em411\Allegro\Api\
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v2+json'))) {
-            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV2', 'json');
+        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1 +json'))) {
+            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV1', 'json');
         }
         if (204 === $status) {
             return null;

@@ -17,7 +17,6 @@ class GetAfterSalesServiceReturnPolicyUsingGET extends \Em411\Allegro\Api\Runtim
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
     protected $returnPolicyId;
-    protected $accept;
 
     /**
      * Use this resource to get a return policy details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-zwrotow-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-return-policies-assigned-to-the-account" target="_blank">EN</a>.
@@ -27,14 +26,11 @@ class GetAfterSalesServiceReturnPolicyUsingGET extends \Em411\Allegro\Api\Runtim
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
-     *
-     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.public.v2+json
      */
-    public function __construct(string $returnPolicyId, array $headerParameters = [], array $accept = [])
+    public function __construct(string $returnPolicyId, array $headerParameters = [])
     {
         $this->returnPolicyId = $returnPolicyId;
         $this->headerParameters = $headerParameters;
-        $this->accept = $accept;
     }
 
     public function getMethod(): string
@@ -54,11 +50,7 @@ class GetAfterSalesServiceReturnPolicyUsingGET extends \Em411\Allegro\Api\Runtim
 
     public function getExtraHeaders(): array
     {
-        if (empty($this->accept)) {
-            return ['Accept' => ['application/vnd.allegro.public.v1+json', 'application/vnd.allegro.public.v2+json']];
-        }
-
-        return $this->accept;
+        return ['Accept' => ['application/vnd.allegro.public.v1+json']];
     }
 
     public function getAuthenticationScopes(): array
@@ -78,7 +70,7 @@ class GetAfterSalesServiceReturnPolicyUsingGET extends \Em411\Allegro\Api\Runtim
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\ReturnPolicyResponseV1|\Em411\Allegro\Api\Model\ReturnPolicyResponseV2|null
+     * @return \Em411\Allegro\Api\Model\ReturnPolicyResponseV1|null
      *
      * @throws \Em411\Allegro\Api\Exception\GetAfterSalesServiceReturnPolicyUsingGETUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\GetAfterSalesServiceReturnPolicyUsingGETForbiddenException
@@ -88,13 +80,8 @@ class GetAfterSalesServiceReturnPolicyUsingGET extends \Em411\Allegro\Api\Runtim
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (200 === $status) {
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
-                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV1', 'json');
-            }
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v2+json')) {
-                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV2', 'json');
-            }
+        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV1', 'json');
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetAfterSalesServiceReturnPolicyUsingGETUnauthorizedException($response);

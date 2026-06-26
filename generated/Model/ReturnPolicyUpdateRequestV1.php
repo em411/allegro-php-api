@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReturnPolicyUpdateRequestV2 extends \ArrayObject
+class ReturnPolicyUpdateRequestV1 extends \ArrayObject
 {
     /**
      * @var array
@@ -48,7 +48,7 @@ class ReturnPolicyUpdateRequestV2 extends \ArrayObject
      */
     protected $address;
     /**
-     * @var ReturnPolicyContactV2|null
+     * @var ReturnPolicyContactV1|null
      */
     protected $contact;
     /**
@@ -152,12 +152,12 @@ class ReturnPolicyUpdateRequestV2 extends \ArrayObject
         return $this;
     }
 
-    public function getContact(): ?ReturnPolicyContactV2
+    public function getContact(): ?ReturnPolicyContactV1
     {
         return $this->contact;
     }
 
-    public function setContact(?ReturnPolicyContactV2 $contact): self
+    public function setContact(?ReturnPolicyContactV1 $contact): self
     {
         $this->initialized['contact'] = true;
         $this->contact = $contact;

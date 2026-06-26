@@ -26,6 +26,12 @@ class ReturnPolicyResponseV1 extends \ArrayObject
      */
     protected $id;
     /**
+     * Indicates if the return policy is for One Fulfillment offers.
+     *
+     * @var bool|null
+     */
+    protected $isFulfillment;
+    /**
      * @var Seller|null
      */
     protected $seller;
@@ -88,6 +94,25 @@ class ReturnPolicyResponseV1 extends \ArrayObject
     {
         $this->initialized['id'] = true;
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Indicates if the return policy is for One Fulfillment offers.
+     */
+    public function getIsFulfillment(): ?bool
+    {
+        return $this->isFulfillment;
+    }
+
+    /**
+     * Indicates if the return policy is for One Fulfillment offers.
+     */
+    public function setIsFulfillment(?bool $isFulfillment): self
+    {
+        $this->initialized['isFulfillment'] = true;
+        $this->isFulfillment = $isFulfillment;
 
         return $this;
     }

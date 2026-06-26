@@ -3195,7 +3195,7 @@ paths:
       tags:
         - Flexible bundles
       summary: Get flexible bundle by ID
-      description: Use this resource to retrieve flexible bundle by its unique identifier.
+      description: 'Use this resource to retrieve flexible bundle by its unique identifier. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-szczegoly-wybranego-zestawu" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#get-details-of-a-selected-bundle" target="_blank">EN</a>.'
       operationId: getFlexibleBundleUsingGET
       parameters:
         - name: bundleId
@@ -9037,9 +9037,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ReturnPoliciesList_ReturnPolicy_V1'
-            application/vnd.allegro.public.v2+json:
-              schema:
-                $ref: '#/components/schemas/ReturnPoliciesList_ReturnPolicy_V2'
         '401':
           description: Unauthorized
         '403':
@@ -9078,9 +9075,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ReturnPolicyResponseV1'
-            application/vnd.allegro.public.v2+json:
-              schema:
-                $ref: '#/components/schemas/ReturnPolicyResponseV2'
         '400':
           description: Bad Request
         '401':
@@ -9096,9 +9090,6 @@ paths:
           application/vnd.allegro.public.v1+json:
             schema:
               $ref: '#/components/schemas/ReturnPolicyRequestV1'
-          application/vnd.allegro.public.v2+json:
-            schema:
-              $ref: '#/components/schemas/ReturnPolicyRequestV2'
       security:
         - bearer-token-for-user:
             - allegro:api:sale:settings:write
@@ -9138,9 +9129,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ReturnPolicyResponseV1'
-            application/vnd.allegro.public.v2+json:
-              schema:
-                $ref: '#/components/schemas/ReturnPolicyResponseV2'
         '401':
           description: Unauthorized
         '403':
@@ -9185,9 +9173,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/ReturnPolicyResponseV1'
-            application/vnd.allegro.public.v2+json:
-              schema:
-                $ref: '#/components/schemas/ReturnPolicyResponseV2'
         '400':
           description: Bad Request
         '401':
@@ -9204,10 +9189,7 @@ paths:
         content:
           application/vnd.allegro.public.v1+json:
             schema:
-              $ref: '#/components/schemas/ReturnPolicyRequestV1'
-          application/vnd.allegro.public.v2+json:
-            schema:
-              $ref: '#/components/schemas/ReturnPolicyUpdateRequestV2'
+              $ref: '#/components/schemas/ReturnPolicyUpdateRequestV1'
       security:
         - bearer-token-for-user:
             - allegro:api:sale:settings:write
@@ -9243,9 +9225,9 @@ paths:
         '200':
           description: OK
           content:
-            application/vnd.allegro.public.v2+json:
+            application/vnd.allegro.public.v1 +json:
               schema:
-                $ref: '#/components/schemas/ReturnPolicyResponseV2'
+                $ref: '#/components/schemas/ReturnPolicyResponseV1'
         '204':
           description: No content
         '400':
@@ -22435,34 +22417,6 @@ components:
       type: object
       required:
         - name
-        - availability
-        - returnCost
-        - address
-        - options
-      properties:
-        name:
-          type: string
-          description: Return policy name.
-          maxLength: 200
-          example: Default
-        availability:
-          $ref: '#/components/schemas/ReturnPolicyAvailability'
-        withdrawalPeriod:
-          type: string
-          description: Period in ISO 8601 format. Only periods in full days are accepted.
-          example: P14D
-        returnCost:
-          $ref: '#/components/schemas/ReturnPolicyReturnCost'
-        address:
-          $ref: '#/components/schemas/ReturnPolicyAddress'
-        contact:
-          $ref: '#/components/schemas/ReturnPolicyContactV1'
-        options:
-          $ref: '#/components/schemas/ReturnPolicyOptions'
-    ReturnPolicyRequestV2:
-      type: object
-      required:
-        - name
         - isFulfillment
         - availability
       properties:
@@ -22484,10 +22438,10 @@ components:
         address:
           $ref: '#/components/schemas/ReturnPolicyAddress'
         contact:
-          $ref: '#/components/schemas/ReturnPolicyContactV2'
+          $ref: '#/components/schemas/ReturnPolicyContactV1'
         options:
           $ref: '#/components/schemas/ReturnPolicyOptions'
-    ReturnPolicyUpdateRequestV2:
+    ReturnPolicyUpdateRequestV1:
       type: object
       required:
         - name
@@ -22497,6 +22451,7 @@ components:
           type: string
           description: Return policy name.
           maxLength: 200
+          example: Default
         availability:
           $ref: '#/components/schemas/ReturnPolicyAvailability'
         withdrawalPeriod:
@@ -22508,44 +22463,10 @@ components:
         address:
           $ref: '#/components/schemas/ReturnPolicyAddress'
         contact:
-          $ref: '#/components/schemas/ReturnPolicyContactV2'
-        options:
-          $ref: '#/components/schemas/ReturnPolicyOptions'
-    ReturnPolicyResponseV1:
-      type: object
-      required:
-        - id
-        - seller
-        - name
-        - availability
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: The ID of the return policy definition.
-          example: 09f0b4cc-7880-11e9-8f9e-2a86e4085a59
-        seller:
-          $ref: '#/components/schemas/Seller'
-        name:
-          type: string
-          description: Return policy name.
-          maxLength: 200
-        availability:
-          $ref: '#/components/schemas/ReturnPolicyAvailability'
-        withdrawalPeriod:
-          type: string
-          nullable: true
-          description: Period in ISO 8601 format. Can be null if availability range is 'DISABLED'.
-          example: P14D
-        returnCost:
-          $ref: '#/components/schemas/ReturnPolicyReturnCost'
-        address:
-          $ref: '#/components/schemas/ReturnPolicyAddress'
-        contact:
           $ref: '#/components/schemas/ReturnPolicyContactV1'
         options:
           $ref: '#/components/schemas/ReturnPolicyOptions'
-    ReturnPolicyResponseV2:
+    ReturnPolicyResponseV1:
       type: object
       required:
         - id
@@ -22580,7 +22501,7 @@ components:
         address:
           $ref: '#/components/schemas/ReturnPolicyAddress'
         contact:
-          $ref: '#/components/schemas/ReturnPolicyContactV2'
+          $ref: '#/components/schemas/ReturnPolicyContactV1'
         options:
           $ref: '#/components/schemas/ReturnPolicyOptions'
     ReturnPolicyAvailability:
@@ -22643,20 +22564,6 @@ components:
           nullable: true
           example: 123 123 123
         email:
-          type: string
-          description: A valid email address of the seller
-          nullable: true
-          example: useridentifier@domain.com
-    ReturnPolicyContactV2:
-      type: object
-      nullable: true
-      properties:
-        phoneNumber:
-          type: string
-          description: A valid phone number of the seller
-          nullable: true
-          example: 123 123 123
-        emailAddress:
           type: string
           description: A valid email address of the seller
           nullable: true
@@ -27795,17 +27702,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReturnPolicyResponseV1'
-    ReturnPoliciesList_ReturnPolicy_V2:
-      type: object
-      properties:
-        count:
-          type: integer
-          format: int32
-          minimum: 0
-        returnPolicies:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReturnPolicyResponseV2'
     WarrantiesList_WarrantyBasic_:
       type: object
       properties:

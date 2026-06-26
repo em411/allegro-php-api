@@ -19,7 +19,7 @@ class GetFlexibleBundleUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEn
     protected $bundleId;
 
     /**
-     * Use this resource to retrieve flexible bundle by its unique identifier.
+     * Use this resource to retrieve flexible bundle by its unique identifier. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-szczegoly-wybranego-zestawu" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#get-details-of-a-selected-bundle" target="_blank">EN</a>.
      *
      * @param string $bundleId bundle ID
      */

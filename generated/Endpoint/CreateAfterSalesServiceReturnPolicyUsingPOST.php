@@ -16,24 +16,19 @@ namespace Em411\Allegro\Api\Endpoint;
 class CreateAfterSalesServiceReturnPolicyUsingPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implements \Em411\Allegro\Api\Runtime\Client\Endpoint
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
-    protected $accept;
 
     /**
      * Use this resource to create a return policy definition. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-informacje-o-warunkach-zwrotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-return-policy-information" target="_blank">EN</a>.
      *
-     * @param \Em411\Allegro\Api\Model\ReturnPolicyRequestV1|\Em411\Allegro\Api\Model\ReturnPolicyRequestV2|null $requestBody
-     * @param array                                                                                              $headerParameters {
+     * @param array $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
-     *
-     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.public.v2+json
      */
-    public function __construct($requestBody = null, array $headerParameters = [], array $accept = [])
+    public function __construct(?\Em411\Allegro\Api\Model\ReturnPolicyRequestV1 $requestBody = null, array $headerParameters = [])
     {
         $this->body = $requestBody;
         $this->headerParameters = $headerParameters;
-        $this->accept = $accept;
     }
 
     public function getMethod(): string
@@ -51,20 +46,13 @@ class CreateAfterSalesServiceReturnPolicyUsingPOST extends \Em411\Allegro\Api\Ru
         if ($this->body instanceof \Em411\Allegro\Api\Model\ReturnPolicyRequestV1) {
             return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
         }
-        if ($this->body instanceof \Em411\Allegro\Api\Model\ReturnPolicyRequestV2) {
-            return [['Content-Type' => ['application/vnd.allegro.public.v2+json']], $serializer->serialize($this->body, 'json')];
-        }
 
         return [[], null];
     }
 
     public function getExtraHeaders(): array
     {
-        if (empty($this->accept)) {
-            return ['Accept' => ['application/vnd.allegro.public.v1+json', 'application/vnd.allegro.public.v2+json']];
-        }
-
-        return $this->accept;
+        return ['Accept' => ['application/vnd.allegro.public.v1+json']];
     }
 
     public function getAuthenticationScopes(): array
@@ -84,7 +72,7 @@ class CreateAfterSalesServiceReturnPolicyUsingPOST extends \Em411\Allegro\Api\Ru
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\ReturnPolicyResponseV1|\Em411\Allegro\Api\Model\ReturnPolicyResponseV2|null
+     * @return \Em411\Allegro\Api\Model\ReturnPolicyResponseV1|null
      *
      * @throws \Em411\Allegro\Api\Exception\CreateAfterSalesServiceReturnPolicyUsingPOSTBadRequestException
      * @throws \Em411\Allegro\Api\Exception\CreateAfterSalesServiceReturnPolicyUsingPOSTUnauthorizedException
@@ -95,13 +83,8 @@ class CreateAfterSalesServiceReturnPolicyUsingPOST extends \Em411\Allegro\Api\Ru
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (201 === $status) {
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
-                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV1', 'json');
-            }
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v2+json')) {
-                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV2', 'json');
-            }
+        if ((null === $contentType) === false && (201 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV1', 'json');
         }
         if (400 === $status) {
             throw new \Em411\Allegro\Api\Exception\CreateAfterSalesServiceReturnPolicyUsingPOSTBadRequestException($response);

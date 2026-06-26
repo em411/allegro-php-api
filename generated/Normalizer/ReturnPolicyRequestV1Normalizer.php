@@ -49,6 +49,9 @@ class ReturnPolicyRequestV1Normalizer implements DenormalizerInterface, Normaliz
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Em411\Allegro\Api\Model\ReturnPolicyRequestV1();
+        if (\array_key_exists('isFulfillment', $data) && \is_int($data['isFulfillment'])) {
+            $data['isFulfillment'] = (bool) $data['isFulfillment'];
+        }
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -57,6 +60,12 @@ class ReturnPolicyRequestV1Normalizer implements DenormalizerInterface, Normaliz
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+        }
+        if (\array_key_exists('isFulfillment', $data) && null !== $data['isFulfillment']) {
+            $object->setIsFulfillment($data['isFulfillment']);
+            unset($data['isFulfillment']);
+        } elseif (\array_key_exists('isFulfillment', $data) && null === $data['isFulfillment']) {
+            $object->setIsFulfillment(null);
         }
         if (\array_key_exists('availability', $data) && null !== $data['availability']) {
             $object->setAvailability($this->denormalizer->denormalize($data['availability'], \Em411\Allegro\Api\Model\ReturnPolicyAvailability::class, 'json', $context));
@@ -107,16 +116,23 @@ class ReturnPolicyRequestV1Normalizer implements DenormalizerInterface, Normaliz
     {
         $dataArray = [];
         $dataArray['name'] = $data->getName();
+        $dataArray['isFulfillment'] = $data->getIsFulfillment();
         $dataArray['availability'] = $this->normalizer->normalize($data->getAvailability(), 'json', $context);
         if ($data->isInitialized('withdrawalPeriod') && null !== $data->getWithdrawalPeriod()) {
             $dataArray['withdrawalPeriod'] = $data->getWithdrawalPeriod();
         }
-        $dataArray['returnCost'] = $this->normalizer->normalize($data->getReturnCost(), 'json', $context);
-        $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+        if ($data->isInitialized('returnCost')) {
+            $dataArray['returnCost'] = $this->normalizer->normalize($data->getReturnCost(), 'json', $context);
+        }
+        if ($data->isInitialized('address')) {
+            $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+        }
         if ($data->isInitialized('contact')) {
             $dataArray['contact'] = $this->normalizer->normalize($data->getContact(), 'json', $context);
         }
-        $dataArray['options'] = $this->normalizer->normalize($data->getOptions(), 'json', $context);
+        if ($data->isInitialized('options')) {
+            $dataArray['options'] = $this->normalizer->normalize($data->getOptions(), 'json', $context);
+        }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;

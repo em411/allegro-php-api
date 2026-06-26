@@ -201,13 +201,9 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\ReturnPolicyRequestV1::class => ReturnPolicyRequestV1Normalizer::class,
 
-        \Em411\Allegro\Api\Model\ReturnPolicyRequestV2::class => ReturnPolicyRequestV2Normalizer::class,
-
-        \Em411\Allegro\Api\Model\ReturnPolicyUpdateRequestV2::class => ReturnPolicyUpdateRequestV2Normalizer::class,
+        \Em411\Allegro\Api\Model\ReturnPolicyUpdateRequestV1::class => ReturnPolicyUpdateRequestV1Normalizer::class,
 
         \Em411\Allegro\Api\Model\ReturnPolicyResponseV1::class => ReturnPolicyResponseV1Normalizer::class,
-
-        \Em411\Allegro\Api\Model\ReturnPolicyResponseV2::class => ReturnPolicyResponseV2Normalizer::class,
 
         \Em411\Allegro\Api\Model\ReturnPolicyAvailability::class => ReturnPolicyAvailabilityNormalizer::class,
 
@@ -216,8 +212,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\ReturnPolicyReturnCost::class => ReturnPolicyReturnCostNormalizer::class,
 
         \Em411\Allegro\Api\Model\ReturnPolicyContactV1::class => ReturnPolicyContactV1Normalizer::class,
-
-        \Em411\Allegro\Api\Model\ReturnPolicyContactV2::class => ReturnPolicyContactV2Normalizer::class,
 
         \Em411\Allegro\Api\Model\ReturnPolicyOptions::class => ReturnPolicyOptionsNormalizer::class,
 
@@ -934,8 +928,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\PublicationModification::class => PublicationModificationNormalizer::class,
 
         \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1::class => ReturnPoliciesListReturnPolicyV1Normalizer::class,
-
-        \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV2::class => ReturnPoliciesListReturnPolicyV2Normalizer::class,
 
         \Em411\Allegro\Api\Model\WarrantiesListWarrantyBasic::class => WarrantiesListWarrantyBasicNormalizer::class,
 
@@ -2658,15 +2650,12 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\AfterSalesServicesAddress::class => false,
             \Em411\Allegro\Api\Model\ReturnPolicyAddress::class => false,
             \Em411\Allegro\Api\Model\ReturnPolicyRequestV1::class => false,
-            \Em411\Allegro\Api\Model\ReturnPolicyRequestV2::class => false,
-            \Em411\Allegro\Api\Model\ReturnPolicyUpdateRequestV2::class => false,
+            \Em411\Allegro\Api\Model\ReturnPolicyUpdateRequestV1::class => false,
             \Em411\Allegro\Api\Model\ReturnPolicyResponseV1::class => false,
-            \Em411\Allegro\Api\Model\ReturnPolicyResponseV2::class => false,
             \Em411\Allegro\Api\Model\ReturnPolicyAvailability::class => false,
             \Em411\Allegro\Api\Model\RestrictionCause::class => false,
             \Em411\Allegro\Api\Model\ReturnPolicyReturnCost::class => false,
             \Em411\Allegro\Api\Model\ReturnPolicyContactV1::class => false,
-            \Em411\Allegro\Api\Model\ReturnPolicyContactV2::class => false,
             \Em411\Allegro\Api\Model\ReturnPolicyOptions::class => false,
             \Em411\Allegro\Api\Model\Attachment::class => false,
             \Em411\Allegro\Api\Model\UserRatingAnswerRequest::class => false,
@@ -3025,7 +3014,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\ParametersForPreviewPrice::class => false,
             \Em411\Allegro\Api\Model\PublicationModification::class => false,
             \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1::class => false,
-            \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV2::class => false,
             \Em411\Allegro\Api\Model\WarrantiesListWarrantyBasic::class => false,
             \Em411\Allegro\Api\Model\WrapperTypeForPreviewConditions::class => false,
             \Em411\Allegro\Api\Model\WrapsListingAndCommissionsFees::class => false,

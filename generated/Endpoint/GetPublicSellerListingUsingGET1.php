@@ -16,7 +16,6 @@ namespace Em411\Allegro\Api\Endpoint;
 class GetPublicSellerListingUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implements \Em411\Allegro\Api\Runtime\Client\Endpoint
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
-    protected $accept;
 
     /**
      * Use this resource to get the seller's return policies. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-zwrotow-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-return-policies-assigned-to-the-account" target="_blank">EN</a>.
@@ -31,14 +30,11 @@ class GetPublicSellerListingUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
-     *
-     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.public.v2+json
      */
-    public function __construct(array $queryParameters = [], array $headerParameters = [], array $accept = [])
+    public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
         $this->queryParameters = $queryParameters;
         $this->headerParameters = $headerParameters;
-        $this->accept = $accept;
     }
 
     public function getMethod(): string
@@ -58,11 +54,7 @@ class GetPublicSellerListingUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\
 
     public function getExtraHeaders(): array
     {
-        if (empty($this->accept)) {
-            return ['Accept' => ['application/vnd.allegro.public.v1+json', 'application/vnd.allegro.public.v2+json']];
-        }
-
-        return $this->accept;
+        return ['Accept' => ['application/vnd.allegro.public.v1+json']];
     }
 
     public function getAuthenticationScopes(): array
@@ -94,7 +86,7 @@ class GetPublicSellerListingUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1|\Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV2|null
+     * @return \Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1|null
      *
      * @throws \Em411\Allegro\Api\Exception\GetPublicSellerListingUsingGET1UnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\GetPublicSellerListingUsingGET1ForbiddenException
@@ -104,13 +96,8 @@ class GetPublicSellerListingUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (200 === $status) {
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
-                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1', 'json');
-            }
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v2+json')) {
-                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV2', 'json');
-            }
+        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1', 'json');
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetPublicSellerListingUsingGET1UnauthorizedException($response);
