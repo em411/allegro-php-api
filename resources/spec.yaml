@@ -23843,15 +23843,22 @@ components:
           PRODUCT_BASED: '#/components/schemas/CompatibilityListProductBasedProductOfferResponse'
     CompatibilityListManual:
       type: object
-      required:
-        - type
-        - items
       properties:
         type:
           type: string
           enum:
             - MANUAL
           description: Type of the compatibility list.
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompatibilityListItem'
+          description: List of the compatible items. Maximum number of elements on the list depends on type of included compatible items. Configuration and details concerning the compatible items in selected category are provided in the response for GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource in `validationRules` object.
+    CompatibilityListManualRequest:
+      type: object
+      required:
+        - items
+      properties:
         items:
           type: array
           items:
@@ -30721,7 +30728,8 @@ components:
           $ref: '#/components/schemas/Location'
         images:
           type: array
-          example: '["https://a.allegroimg.com/original/12068b/359d04074521b79df1b2807a6727"]'
+          example:
+            - https://a.allegroimg.com/original/12068b/359d04074521b79df1b2807a6727
           items:
             type: string
         description:
@@ -30867,7 +30875,7 @@ components:
               $ref: '#/components/schemas/AdditionalMarketplacesRequest'
             compatibilityList:
               allOf:
-                - $ref: '#/components/schemas/CompatibilityListManual'
+                - $ref: '#/components/schemas/CompatibilityListManualRequest'
               description: For the `/sale/product-offers` resources you can send only definition of the MANUAL compatibility list. If compatibility list is provided for the product assigned to the offer, it will be used automatically.
             language:
               type: string
@@ -30901,7 +30909,7 @@ components:
               $ref: '#/components/schemas/ProductOfferAdditionalServicesRequest'
             compatibilityList:
               allOf:
-                - $ref: '#/components/schemas/CompatibilityListManual'
+                - $ref: '#/components/schemas/CompatibilityListManualRequest'
               description: For the `/sale/product-offers` resources you can send only definition of the MANUAL compatibility list. If compatibility list is provided for the product assigned to the offer, it will be used automatically.
             delivery:
               allOf:

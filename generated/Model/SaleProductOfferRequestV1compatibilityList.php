@@ -20,12 +20,6 @@ class SaleProductOfferRequestV1compatibilityList extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * Type of the compatibility list.
-     *
-     * @var string|null
-     */
-    protected $type;
-    /**
      * List of the compatible items. Maximum number of elements on the list depends on type of included compatible items. Configuration and details concerning the compatible items in selected category are provided in the response for GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource in `validationRules` object.
      *
      * @var list<mixed>|null
@@ -35,25 +29,6 @@ class SaleProductOfferRequestV1compatibilityList extends \ArrayObject
     public function isInitialized($property): bool
     {
         return \array_key_exists($property, $this->initialized);
-    }
-
-    /**
-     * Type of the compatibility list.
-     */
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    /**
-     * Type of the compatibility list.
-     */
-    public function setType(?string $type): self
-    {
-        $this->initialized['type'] = true;
-        $this->type = $type;
-
-        return $this;
     }
 
     /**

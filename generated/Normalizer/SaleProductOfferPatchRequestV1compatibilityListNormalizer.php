@@ -52,12 +52,6 @@ class SaleProductOfferPatchRequestV1compatibilityListNormalizer implements Denor
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
-        if (\array_key_exists('type', $data) && null !== $data['type']) {
-            $object->setType($data['type']);
-            unset($data['type']);
-        } elseif (\array_key_exists('type', $data) && null === $data['type']) {
-            $object->setType(null);
-        }
         if (\array_key_exists('items', $data) && null !== $data['items']) {
             $values = [];
             foreach ($data['items'] as $value) {
@@ -80,7 +74,6 @@ class SaleProductOfferPatchRequestV1compatibilityListNormalizer implements Denor
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['type'] = $data->getType();
         $values = [];
         foreach ($data->getItems() as $value) {
             $values[] = $value;

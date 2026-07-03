@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleProductOfferPatchRequestV1compatibilityList extends \ArrayObject
+class CompatibilityListManualRequest extends \ArrayObject
 {
     /**
      * @var array

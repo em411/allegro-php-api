@@ -405,6 +405,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\CompatibilityListManual::class => CompatibilityListManualNormalizer::class,
 
+        \Em411\Allegro\Api\Model\CompatibilityListManualRequest::class => CompatibilityListManualRequestNormalizer::class,
+
         \Em411\Allegro\Api\Model\CompatibilityListProductBased::class => CompatibilityListProductBasedNormalizer::class,
 
         \Em411\Allegro\Api\Model\CompatibilityListProductBasedProductOfferResponse::class => CompatibilityListProductBasedProductOfferResponseNormalizer::class,
@@ -2752,6 +2754,7 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\CommandTaskWithStockSubjectSubject::class => false,
             \Em411\Allegro\Api\Model\CompatibilityList::class => false,
             \Em411\Allegro\Api\Model\CompatibilityListManual::class => false,
+            \Em411\Allegro\Api\Model\CompatibilityListManualRequest::class => false,
             \Em411\Allegro\Api\Model\CompatibilityListProductBased::class => false,
             \Em411\Allegro\Api\Model\CompatibilityListProductBasedProductOfferResponse::class => false,
             \Em411\Allegro\Api\Model\CompatibilityListItemProductBased::class => false,
