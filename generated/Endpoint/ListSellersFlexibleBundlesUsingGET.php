@@ -20,7 +20,7 @@ class ListSellersFlexibleBundlesUsingGET extends \Em411\Allegro\Api\Runtime\Clie
     /**
      * You can fetch page of seller's flexible bundles using this endpoint.
      * <br> Paging: <br> To move to next page, specify `page.id` parameter with value obtained in response from previous request. Number of offer bundles on single page can be specified using `limit` parameter.
-     * <br> Filtering: <br> Offer bundles can be filtered to bundles which contain offer specified in `offer.id` parameter.
+     * <br> Filtering: <br> Offer bundles can be filtered to bundles which contain offer specified in `offer.id` parameter. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-liste-zestawow-elastycznych" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#list-seller-s-flexible-bundles" target="_blank">EN</a>.
      *
      * @param array $queryParameters {
      *
