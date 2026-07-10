@@ -27012,17 +27012,6 @@ components:
               example: MAX
           required:
             - strategy
-        customCost:
-          deprecated: true
-          description: Feature is no longer supported, 'allowed' property is always false.
-          type: object
-          properties:
-            allowed:
-              type: boolean
-              example: false
-              description: If true the customer can enter a custom shipping cost.
-          required:
-            - allowed
         updatedAt:
           type: string
           example: '2025-08-24T14:15:22Z'
@@ -27030,7 +27019,6 @@ components:
       required:
         - marketplace
         - joinPolicy
-        - customCost
         - updatedAt
     DeliverySettingsRequest:
       type: object
@@ -27096,20 +27084,8 @@ components:
               example: SUM
           required:
             - strategy
-        customCost:
-          deprecated: true
-          description: Feature is no longer supported, attempting to set property 'allowed' to true will return 422.
-          type: object
-          properties:
-            allowed:
-              type: boolean
-              example: false
-              description: If true the customer can enter a custom shipping cost.
-          required:
-            - allowed
       required:
         - joinPolicy
-        - customCost
     StandardizedDescription:
       type: object
       description: The description section cannot have more than 40000 bytes in length.

@@ -851,8 +851,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\DeliverySettingsResponseJoinPolicy::class => DeliverySettingsResponseJoinPolicyNormalizer::class,
 
-        \Em411\Allegro\Api\Model\DeliverySettingsResponseCustomCost::class => DeliverySettingsResponseCustomCostNormalizer::class,
-
         \Em411\Allegro\Api\Model\DeliverySettingsRequest::class => DeliverySettingsRequestNormalizer::class,
 
         \Em411\Allegro\Api\Model\DeliverySettingsRequestMarketplace::class => DeliverySettingsRequestMarketplaceNormalizer::class,
@@ -862,8 +860,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\DeliverySettingsRequestAbroadFreeDelivery::class => DeliverySettingsRequestAbroadFreeDeliveryNormalizer::class,
 
         \Em411\Allegro\Api\Model\DeliverySettingsRequestJoinPolicy::class => DeliverySettingsRequestJoinPolicyNormalizer::class,
-
-        \Em411\Allegro\Api\Model\DeliverySettingsRequestCustomCost::class => DeliverySettingsRequestCustomCostNormalizer::class,
 
         \Em411\Allegro\Api\Model\StandardizedDescription::class => StandardizedDescriptionNormalizer::class,
 
@@ -2977,13 +2973,11 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\DeliverySettingsResponseFreeDelivery::class => false,
             \Em411\Allegro\Api\Model\DeliverySettingsResponseAbroadFreeDelivery::class => false,
             \Em411\Allegro\Api\Model\DeliverySettingsResponseJoinPolicy::class => false,
-            \Em411\Allegro\Api\Model\DeliverySettingsResponseCustomCost::class => false,
             \Em411\Allegro\Api\Model\DeliverySettingsRequest::class => false,
             \Em411\Allegro\Api\Model\DeliverySettingsRequestMarketplace::class => false,
             \Em411\Allegro\Api\Model\DeliverySettingsRequestFreeDelivery::class => false,
             \Em411\Allegro\Api\Model\DeliverySettingsRequestAbroadFreeDelivery::class => false,
             \Em411\Allegro\Api\Model\DeliverySettingsRequestJoinPolicy::class => false,
-            \Em411\Allegro\Api\Model\DeliverySettingsRequestCustomCost::class => false,
             \Em411\Allegro\Api\Model\StandardizedDescription::class => false,
             \Em411\Allegro\Api\Model\Discounts::class => false,
             \Em411\Allegro\Api\Model\DiscountsWholesalePriceList::class => false,

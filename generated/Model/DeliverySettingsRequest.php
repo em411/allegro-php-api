@@ -43,14 +43,6 @@ class DeliverySettingsRequest extends \ArrayObject
      * @var DeliverySettingsRequestJoinPolicy|null
      */
     protected $joinPolicy;
-    /**
-     * Feature is no longer supported, attempting to set property 'allowed' to true will return 422.
-     *
-     * @deprecated
-     *
-     * @var DeliverySettingsRequestCustomCost|null
-     */
-    protected $customCost;
 
     public function isInitialized($property): bool
     {
@@ -129,29 +121,6 @@ class DeliverySettingsRequest extends \ArrayObject
     {
         $this->initialized['joinPolicy'] = true;
         $this->joinPolicy = $joinPolicy;
-
-        return $this;
-    }
-
-    /**
-     * Feature is no longer supported, attempting to set property 'allowed' to true will return 422.
-     *
-     * @deprecated
-     */
-    public function getCustomCost(): ?DeliverySettingsRequestCustomCost
-    {
-        return $this->customCost;
-    }
-
-    /**
-     * Feature is no longer supported, attempting to set property 'allowed' to true will return 422.
-     *
-     * @deprecated
-     */
-    public function setCustomCost(?DeliverySettingsRequestCustomCost $customCost): self
-    {
-        $this->initialized['customCost'] = true;
-        $this->customCost = $customCost;
 
         return $this;
     }

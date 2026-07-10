@@ -76,12 +76,6 @@ class DeliverySettingsResponseNormalizer implements DenormalizerInterface, Norma
         } elseif (\array_key_exists('joinPolicy', $data) && null === $data['joinPolicy']) {
             $object->setJoinPolicy(null);
         }
-        if (\array_key_exists('customCost', $data) && null !== $data['customCost']) {
-            $object->setCustomCost($this->denormalizer->denormalize($data['customCost'], \Em411\Allegro\Api\Model\DeliverySettingsResponseCustomCost::class, 'json', $context));
-            unset($data['customCost']);
-        } elseif (\array_key_exists('customCost', $data) && null === $data['customCost']) {
-            $object->setCustomCost(null);
-        }
         if (\array_key_exists('updatedAt', $data) && null !== $data['updatedAt']) {
             $object->setUpdatedAt($data['updatedAt']);
             unset($data['updatedAt']);
@@ -108,7 +102,6 @@ class DeliverySettingsResponseNormalizer implements DenormalizerInterface, Norma
             $dataArray['abroadFreeDelivery'] = $this->normalizer->normalize($data->getAbroadFreeDelivery(), 'json', $context);
         }
         $dataArray['joinPolicy'] = $this->normalizer->normalize($data->getJoinPolicy(), 'json', $context);
-        $dataArray['customCost'] = $this->normalizer->normalize($data->getCustomCost(), 'json', $context);
         $dataArray['updatedAt'] = $data->getUpdatedAt();
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

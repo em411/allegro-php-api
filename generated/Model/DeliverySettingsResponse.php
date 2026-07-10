@@ -44,14 +44,6 @@ class DeliverySettingsResponse extends \ArrayObject
      */
     protected $joinPolicy;
     /**
-     * Feature is no longer supported, 'allowed' property is always false.
-     *
-     * @deprecated
-     *
-     * @var DeliverySettingsResponseCustomCost|null
-     */
-    protected $customCost;
-    /**
      * Date and time of the last modification of the set in UTC ISO 8601 format.
      *
      * @var string|null
@@ -135,29 +127,6 @@ class DeliverySettingsResponse extends \ArrayObject
     {
         $this->initialized['joinPolicy'] = true;
         $this->joinPolicy = $joinPolicy;
-
-        return $this;
-    }
-
-    /**
-     * Feature is no longer supported, 'allowed' property is always false.
-     *
-     * @deprecated
-     */
-    public function getCustomCost(): ?DeliverySettingsResponseCustomCost
-    {
-        return $this->customCost;
-    }
-
-    /**
-     * Feature is no longer supported, 'allowed' property is always false.
-     *
-     * @deprecated
-     */
-    public function setCustomCost(?DeliverySettingsResponseCustomCost $customCost): self
-    {
-        $this->initialized['customCost'] = true;
-        $this->customCost = $customCost;
 
         return $this;
     }
