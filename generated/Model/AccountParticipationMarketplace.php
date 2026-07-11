@@ -20,7 +20,7 @@ class AccountParticipationMarketplace extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * Marketplace identifier (e.g., allegro-pl, allegro-cz).
+     * Marketplace identifier. One of: 'allegro-pl', 'allegro-cz', 'allegro-sk', 'allegro-hu'.
      *
      * @var string|null
      */
@@ -38,7 +38,7 @@ class AccountParticipationMarketplace extends \ArrayObject
     }
 
     /**
-     * Marketplace identifier (e.g., allegro-pl, allegro-cz).
+     * Marketplace identifier. One of: 'allegro-pl', 'allegro-cz', 'allegro-sk', 'allegro-hu'.
      */
     public function getId(): ?string
     {
@@ -46,7 +46,7 @@ class AccountParticipationMarketplace extends \ArrayObject
     }
 
     /**
-     * Marketplace identifier (e.g., allegro-pl, allegro-cz).
+     * Marketplace identifier. One of: 'allegro-pl', 'allegro-cz', 'allegro-sk', 'allegro-hu'.
      */
     public function setId(?string $id): self
     {

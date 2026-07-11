@@ -34338,7 +34338,7 @@ components:
       properties:
         id:
           type: string
-          description: Marketplace identifier (must be a supported marketplace)
+          description: 'Marketplace identifier. Supported values: ''allegro-pl'', ''allegro-cz'', ''allegro-sk'', ''allegro-hu''.'
           example: allegro-pl
         status:
           type: string
@@ -34365,7 +34365,7 @@ components:
       properties:
         id:
           type: string
-          description: Marketplace identifier (e.g., allegro-pl, allegro-cz)
+          description: 'Marketplace identifier. One of: ''allegro-pl'', ''allegro-cz'', ''allegro-sk'', ''allegro-hu''.'
           example: allegro-pl
         status:
           type: string
@@ -34391,7 +34391,7 @@ components:
       properties:
         id:
           type: string
-          description: Marketplace identifier (e.g., allegro-pl, allegro-cz)
+          description: 'Marketplace identifier. Supported values: ''allegro-pl'', ''allegro-cz'', ''allegro-sk'', ''allegro-hu''.'
           example: allegro-pl
           minLength: 1
       required:
@@ -34637,7 +34637,7 @@ components:
       properties:
         id:
           type: string
-          description: Marketplace identifier (e.g., 'allegro-pl', 'allegro-cz', 'allegro-sk', 'allegro-hu')
+          description: 'Marketplace identifier. One of: ''allegro-pl'', ''allegro-cz'', ''allegro-sk'', ''allegro-hu''.'
           example: allegro-pl
       required:
         - id

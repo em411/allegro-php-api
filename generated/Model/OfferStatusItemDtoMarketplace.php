@@ -20,7 +20,7 @@ class OfferStatusItemDtoMarketplace extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * Marketplace identifier (e.g., 'allegro-pl', 'allegro-cz', 'allegro-sk', 'allegro-hu').
+     * Marketplace identifier. One of: 'allegro-pl', 'allegro-cz', 'allegro-sk', 'allegro-hu'.
      *
      * @var string|null
      */
@@ -32,7 +32,7 @@ class OfferStatusItemDtoMarketplace extends \ArrayObject
     }
 
     /**
-     * Marketplace identifier (e.g., 'allegro-pl', 'allegro-cz', 'allegro-sk', 'allegro-hu').
+     * Marketplace identifier. One of: 'allegro-pl', 'allegro-cz', 'allegro-sk', 'allegro-hu'.
      */
     public function getId(): ?string
     {
@@ -40,7 +40,7 @@ class OfferStatusItemDtoMarketplace extends \ArrayObject
     }
 
     /**
-     * Marketplace identifier (e.g., 'allegro-pl', 'allegro-cz', 'allegro-sk', 'allegro-hu').
+     * Marketplace identifier. One of: 'allegro-pl', 'allegro-cz', 'allegro-sk', 'allegro-hu'.
      */
     public function setId(?string $id): self
     {
