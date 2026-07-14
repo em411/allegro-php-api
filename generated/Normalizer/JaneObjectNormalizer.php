@@ -1289,6 +1289,10 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\AiCoCreatedContent::class => AiCoCreatedContentNormalizer::class,
 
+        \Em411\Allegro\Api\Model\ProductAiCoCreatedContent::class => ProductAiCoCreatedContentNormalizer::class,
+
+        \Em411\Allegro\Api\Model\AiCoCreatedImage::class => AiCoCreatedImageNormalizer::class,
+
         \Em411\Allegro\Api\Model\TrustedContent::class => TrustedContentNormalizer::class,
 
         \Em411\Allegro\Api\Model\SaleProductOffer::class => SaleProductOfferNormalizer::class,
@@ -3192,6 +3196,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
             \Em411\Allegro\Api\Model\ProductParameterDto::class => false,
             \Em411\Allegro\Api\Model\ProductParameterDtoOptions::class => false,
             \Em411\Allegro\Api\Model\AiCoCreatedContent::class => false,
+            \Em411\Allegro\Api\Model\ProductAiCoCreatedContent::class => false,
+            \Em411\Allegro\Api\Model\AiCoCreatedImage::class => false,
             \Em411\Allegro\Api\Model\TrustedContent::class => false,
             \Em411\Allegro\Api\Model\SaleProductOffer::class => false,
             \Em411\Allegro\Api\Model\SaleProductOfferSizeTable::class => false,

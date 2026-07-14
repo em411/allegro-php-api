@@ -130,6 +130,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
      */
     protected $updatedAt;
     /**
+     * Information about content declared as generated using AI.
+     *
+     * @var AiCoCreatedContent|null
+     */
+    protected $aiCoCreatedContent;
+    /**
      * @var Payments|null
      */
     protected $payments;
@@ -559,6 +565,25 @@ class SaleProductOfferResponseV1 extends \ArrayObject
     {
         $this->initialized['updatedAt'] = true;
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Information about content declared as generated using AI.
+     */
+    public function getAiCoCreatedContent(): ?AiCoCreatedContent
+    {
+        return $this->aiCoCreatedContent;
+    }
+
+    /**
+     * Information about content declared as generated using AI.
+     */
+    public function setAiCoCreatedContent(?AiCoCreatedContent $aiCoCreatedContent): self
+    {
+        $this->initialized['aiCoCreatedContent'] = true;
+        $this->aiCoCreatedContent = $aiCoCreatedContent;
 
         return $this;
     }

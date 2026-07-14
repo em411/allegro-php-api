@@ -30318,7 +30318,7 @@ components:
         description:
           $ref: '#/components/schemas/StandardizedDescription'
         aiCoCreatedContent:
-          $ref: '#/components/schemas/AiCoCreatedContent'
+          $ref: '#/components/schemas/ProductAiCoCreatedContent'
         trustedContent:
           $ref: '#/components/schemas/TrustedContent'
         hasProtectedBrand:
@@ -30375,6 +30375,8 @@ components:
           description: List of product parameters.
         description:
           $ref: '#/components/schemas/StandardizedDescription'
+        aiCoCreatedContent:
+          $ref: '#/components/schemas/ProductAiCoCreatedContent'
         language:
           type: string
           description: Language of product data (name, description, parameters's values).
@@ -30419,7 +30421,7 @@ components:
           items:
             $ref: '#/components/schemas/ProductParameterDto'
         aiCoCreatedContent:
-          $ref: '#/components/schemas/AiCoCreatedContent'
+          $ref: '#/components/schemas/ProductAiCoCreatedContent'
         trustedContent:
           $ref: '#/components/schemas/TrustedContent'
         hasProtectedBrand:
@@ -30657,17 +30659,35 @@ components:
       description: Product's parameter
     AiCoCreatedContent:
       type: object
-      required:
-        - paths
       properties:
-        paths:
+        images:
           type: array
           items:
-            type: string
-          example:
-            - images
-            - description
-      description: Each path will point to a specific field in object which is co-created by AI.
+            $ref: '#/components/schemas/AiCoCreatedImage'
+          description: List of images declared as generated using artificial intelligence. If an image is not present in this list, it was not declared as AI-generated.
+      description: Information about content declared as generated using AI.
+    ProductAiCoCreatedContent:
+      allOf:
+        - $ref: '#/components/schemas/AiCoCreatedContent'
+        - type: object
+          required:
+            - paths
+          properties:
+            paths:
+              type: array
+              items:
+                type: string
+              example:
+                - images
+                - description
+              description: Each path points to a specific field co-created by AI.
+          description: Information about content co-created by AI.
+    AiCoCreatedImage:
+      allOf:
+        - $ref: '#/components/schemas/ImageUrl'
+      required:
+        - url
+      description: An image declared as generated using AI.
     TrustedContent:
       type: object
       required:
@@ -30858,6 +30878,8 @@ components:
               description: Declared base language of the offer.
               format: BCP-47 language code
               example: pl-PL
+            aiCoCreatedContent:
+              $ref: '#/components/schemas/AiCoCreatedContent'
         - $ref: '#/components/schemas/SaleProductOfferRequestBase'
     SaleProductOfferPatchRequestV1:
       allOf:
@@ -30909,6 +30931,8 @@ components:
               description: Declared base language of the offer.
               format: BCP-47 language code
               example: pl-PL
+            aiCoCreatedContent:
+              $ref: '#/components/schemas/AiCoCreatedContent'
         - $ref: '#/components/schemas/SaleProductOfferRequestBase'
     SaleProductOfferResponseV1:
       allOf:
@@ -31030,6 +31054,8 @@ components:
               format: date-time
               example: '2019-05-29T12:00:00Z'
               description: 'Last update date: Format (ISO 8601) - yyyy-MM-dd''T''HH:mm:ss.SSSZ. Cannot be modified.'
+            aiCoCreatedContent:
+              $ref: '#/components/schemas/AiCoCreatedContent'
         - $ref: '#/components/schemas/SaleProductOffer'
     SalePartialProductOfferResponse:
       type: object

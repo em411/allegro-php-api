@@ -118,7 +118,7 @@ class SaleProductDtoNormalizer implements DenormalizerInterface, NormalizerInter
             $object->setDescription(null);
         }
         if (\array_key_exists('aiCoCreatedContent', $data) && null !== $data['aiCoCreatedContent']) {
-            $object->setAiCoCreatedContent($this->denormalizer->denormalize($data['aiCoCreatedContent'], \Em411\Allegro\Api\Model\AiCoCreatedContent::class, 'json', $context));
+            $object->setAiCoCreatedContent($this->denormalizer->denormalize($data['aiCoCreatedContent'], \Em411\Allegro\Api\Model\ProductAiCoCreatedContent::class, 'json', $context));
             unset($data['aiCoCreatedContent']);
         } elseif (\array_key_exists('aiCoCreatedContent', $data) && null === $data['aiCoCreatedContent']) {
             $object->setAiCoCreatedContent(null);

@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class AiCoCreatedContentNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class ProductAiCoCreatedContentNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,12 +32,12 @@ class AiCoCreatedContentNormalizer implements DenormalizerInterface, NormalizerI
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\AiCoCreatedContent::class === $type;
+        return \Em411\Allegro\Api\Model\ProductAiCoCreatedContent::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\AiCoCreatedContent::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\ProductAiCoCreatedContent::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
@@ -48,7 +48,7 @@ class AiCoCreatedContentNormalizer implements DenormalizerInterface, NormalizerI
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\AiCoCreatedContent();
+        $object = new \Em411\Allegro\Api\Model\ProductAiCoCreatedContent();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -62,9 +62,19 @@ class AiCoCreatedContentNormalizer implements DenormalizerInterface, NormalizerI
         } elseif (\array_key_exists('images', $data) && null === $data['images']) {
             $object->setImages(null);
         }
-        foreach ($data as $key => $value_1) {
+        if (\array_key_exists('paths', $data) && null !== $data['paths']) {
+            $values_1 = [];
+            foreach ($data['paths'] as $value_1) {
+                $values_1[] = $value_1;
+            }
+            $object->setPaths($values_1);
+            unset($data['paths']);
+        } elseif (\array_key_exists('paths', $data) && null === $data['paths']) {
+            $object->setPaths(null);
+        }
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+                $object[$key] = $value_2;
             }
         }
 
@@ -81,9 +91,14 @@ class AiCoCreatedContentNormalizer implements DenormalizerInterface, NormalizerI
             }
             $dataArray['images'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        $values_1 = [];
+        foreach ($data->getPaths() as $value_1) {
+            $values_1[] = $value_1;
+        }
+        $dataArray['paths'] = $values_1;
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+                $dataArray[$key] = $value_2;
             }
         }
 
@@ -92,6 +107,6 @@ class AiCoCreatedContentNormalizer implements DenormalizerInterface, NormalizerI
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\AiCoCreatedContent::class => false];
+        return [\Em411\Allegro\Api\Model\ProductAiCoCreatedContent::class => false];
     }
 }

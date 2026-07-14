@@ -76,6 +76,12 @@ class SaleProductOfferRequestV1 extends \ArrayObject
      */
     protected $language;
     /**
+     * Information about content declared as generated using AI.
+     *
+     * @var AiCoCreatedContent|null
+     */
+    protected $aiCoCreatedContent;
+    /**
      * @var array<string, mixed>|null
      */
     protected $category;
@@ -346,6 +352,25 @@ class SaleProductOfferRequestV1 extends \ArrayObject
     {
         $this->initialized['language'] = true;
         $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * Information about content declared as generated using AI.
+     */
+    public function getAiCoCreatedContent(): ?AiCoCreatedContent
+    {
+        return $this->aiCoCreatedContent;
+    }
+
+    /**
+     * Information about content declared as generated using AI.
+     */
+    public function setAiCoCreatedContent(?AiCoCreatedContent $aiCoCreatedContent): self
+    {
+        $this->initialized['aiCoCreatedContent'] = true;
+        $this->aiCoCreatedContent = $aiCoCreatedContent;
 
         return $this;
     }

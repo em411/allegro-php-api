@@ -74,9 +74,7 @@ class SaleProductDto extends \ArrayObject
      */
     protected $description;
     /**
-     * Each path will point to a specific field in object which is co-created by AI.
-     *
-     * @var AiCoCreatedContent|null
+     * @var ProductAiCoCreatedContent|null
      */
     protected $aiCoCreatedContent;
     /**
@@ -284,18 +282,12 @@ class SaleProductDto extends \ArrayObject
         return $this;
     }
 
-    /**
-     * Each path will point to a specific field in object which is co-created by AI.
-     */
-    public function getAiCoCreatedContent(): ?AiCoCreatedContent
+    public function getAiCoCreatedContent(): ?ProductAiCoCreatedContent
     {
         return $this->aiCoCreatedContent;
     }
 
-    /**
-     * Each path will point to a specific field in object which is co-created by AI.
-     */
-    public function setAiCoCreatedContent(?AiCoCreatedContent $aiCoCreatedContent): self
+    public function setAiCoCreatedContent(?ProductAiCoCreatedContent $aiCoCreatedContent): self
     {
         $this->initialized['aiCoCreatedContent'] = true;
         $this->aiCoCreatedContent = $aiCoCreatedContent;

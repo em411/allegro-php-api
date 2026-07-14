@@ -130,6 +130,12 @@ class SaleProductOfferRequestV1Normalizer implements DenormalizerInterface, Norm
         } elseif (\array_key_exists('language', $data) && null === $data['language']) {
             $object->setLanguage(null);
         }
+        if (\array_key_exists('aiCoCreatedContent', $data) && null !== $data['aiCoCreatedContent']) {
+            $object->setAiCoCreatedContent($this->denormalizer->denormalize($data['aiCoCreatedContent'], \Em411\Allegro\Api\Model\AiCoCreatedContent::class, 'json', $context));
+            unset($data['aiCoCreatedContent']);
+        } elseif (\array_key_exists('aiCoCreatedContent', $data) && null === $data['aiCoCreatedContent']) {
+            $object->setAiCoCreatedContent(null);
+        }
         if (\array_key_exists('category', $data) && null !== $data['category']) {
             $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['category'] as $key_1 => $value_3) {
@@ -286,6 +292,9 @@ class SaleProductOfferRequestV1Normalizer implements DenormalizerInterface, Norm
         }
         if ($data->isInitialized('language') && null !== $data->getLanguage()) {
             $dataArray['language'] = $data->getLanguage();
+        }
+        if ($data->isInitialized('aiCoCreatedContent') && null !== $data->getAiCoCreatedContent()) {
+            $dataArray['aiCoCreatedContent'] = $this->normalizer->normalize($data->getAiCoCreatedContent(), 'json', $context);
         }
         if ($data->isInitialized('category') && null !== $data->getCategory()) {
             $values_3 = [];

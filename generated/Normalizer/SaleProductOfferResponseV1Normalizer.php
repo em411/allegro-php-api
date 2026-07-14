@@ -212,6 +212,12 @@ class SaleProductOfferResponseV1Normalizer implements DenormalizerInterface, Nor
         } elseif (\array_key_exists('updatedAt', $data) && null === $data['updatedAt']) {
             $object->setUpdatedAt(null);
         }
+        if (\array_key_exists('aiCoCreatedContent', $data) && null !== $data['aiCoCreatedContent']) {
+            $object->setAiCoCreatedContent($this->denormalizer->denormalize($data['aiCoCreatedContent'], \Em411\Allegro\Api\Model\AiCoCreatedContent::class, 'json', $context));
+            unset($data['aiCoCreatedContent']);
+        } elseif (\array_key_exists('aiCoCreatedContent', $data) && null === $data['aiCoCreatedContent']) {
+            $object->setAiCoCreatedContent(null);
+        }
         if (\array_key_exists('payments', $data) && null !== $data['payments']) {
             $object->setPayments($this->denormalizer->denormalize($data['payments'], \Em411\Allegro\Api\Model\Payments::class, 'json', $context));
             unset($data['payments']);
@@ -375,6 +381,9 @@ class SaleProductOfferResponseV1Normalizer implements DenormalizerInterface, Nor
         }
         if ($data->isInitialized('updatedAt') && null !== $data->getUpdatedAt()) {
             $dataArray['updatedAt'] = $data->getUpdatedAt()->format('Y-m-d\TH:i:sP');
+        }
+        if ($data->isInitialized('aiCoCreatedContent') && null !== $data->getAiCoCreatedContent()) {
+            $dataArray['aiCoCreatedContent'] = $this->normalizer->normalize($data->getAiCoCreatedContent(), 'json', $context);
         }
         if ($data->isInitialized('payments') && null !== $data->getPayments()) {
             $dataArray['payments'] = $this->normalizer->normalize($data->getPayments(), 'json', $context);

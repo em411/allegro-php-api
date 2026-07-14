@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AiCoCreatedContent extends \ArrayObject
+class ProductAiCoCreatedContent extends \ArrayObject
 {
     /**
      * @var array
@@ -25,6 +25,12 @@ class AiCoCreatedContent extends \ArrayObject
      * @var list<AiCoCreatedImage>|null
      */
     protected $images;
+    /**
+     * Each path points to a specific field co-created by AI.
+     *
+     * @var list<string>|null
+     */
+    protected $paths;
 
     public function isInitialized($property): bool
     {
@@ -50,6 +56,29 @@ class AiCoCreatedContent extends \ArrayObject
     {
         $this->initialized['images'] = true;
         $this->images = $images;
+
+        return $this;
+    }
+
+    /**
+     * Each path points to a specific field co-created by AI.
+     *
+     * @return list<string>|null
+     */
+    public function getPaths(): ?array
+    {
+        return $this->paths;
+    }
+
+    /**
+     * Each path points to a specific field co-created by AI.
+     *
+     * @param list<string>|null $paths
+     */
+    public function setPaths(?array $paths): self
+    {
+        $this->initialized['paths'] = true;
+        $this->paths = $paths;
 
         return $this;
     }

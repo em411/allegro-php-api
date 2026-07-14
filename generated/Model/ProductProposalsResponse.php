@@ -54,6 +54,10 @@ class ProductProposalsResponse extends \ArrayObject
      */
     protected $description;
     /**
+     * @var ProductAiCoCreatedContent|null
+     */
+    protected $aiCoCreatedContent;
+    /**
      * Language of product data (name, description, parameters's values).
      *
      * @var string|null
@@ -181,6 +185,19 @@ class ProductProposalsResponse extends \ArrayObject
     {
         $this->initialized['description'] = true;
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getAiCoCreatedContent(): ?ProductAiCoCreatedContent
+    {
+        return $this->aiCoCreatedContent;
+    }
+
+    public function setAiCoCreatedContent(?ProductAiCoCreatedContent $aiCoCreatedContent): self
+    {
+        $this->initialized['aiCoCreatedContent'] = true;
+        $this->aiCoCreatedContent = $aiCoCreatedContent;
 
         return $this;
     }
