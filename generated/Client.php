@@ -4536,7 +4536,7 @@ class Client extends Runtime\Client\Client
      * Use this endpoint to get events from the last 24 hours concerning changes in the authorized seller's offers.
      * At present we support the following events:
      *   - OFFER_ACTIVATED - offer is visible on site and available for purchase, occurs when offer status changes from ACTIVATING to ACTIVE.
-     *   - OFFER_CHANGED - occurs when offer's fields has been changed e.g. description or photos.
+     *   - OFFER_CHANGED - occurs when offer's fields have been changed e.g. description or photos, but does not apply to shipping rates and dispatch time.
      *   - OFFER_ENDED - offer is no longer available for purchase, occurs when offer status changes from ACTIVE to ENDED.
      *   - OFFER_STOCK_CHANGED - stock in an offer was changed either via purchase or by seller.
      *   - OFFER_PRICE_CHANGED - occurs when price in an offer was changed.
