@@ -61,7 +61,7 @@ class ClassifiedPackagesNormalizer implements DenormalizerInterface, NormalizerI
         if (\array_key_exists('extraPackages', $data) && null !== $data['extraPackages']) {
             $values = [];
             foreach ($data['extraPackages'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\ClassifiedPackage::class, 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\ClassifiedExtraPackage::class, 'json', $context);
             }
             $object->setExtraPackages($values);
             unset($data['extraPackages']);

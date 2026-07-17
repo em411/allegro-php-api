@@ -24,7 +24,7 @@ class ClassifiedPackages extends \ArrayObject
      */
     protected $basePackage;
     /**
-     * @var list<ClassifiedPackage>|null
+     * @var list<ClassifiedExtraPackage>|null
      */
     protected $extraPackages;
 
@@ -47,7 +47,7 @@ class ClassifiedPackages extends \ArrayObject
     }
 
     /**
-     * @return list<ClassifiedPackage>|null
+     * @return list<ClassifiedExtraPackage>|null
      */
     public function getExtraPackages(): ?array
     {
@@ -55,7 +55,7 @@ class ClassifiedPackages extends \ArrayObject
     }
 
     /**
-     * @param list<ClassifiedPackage>|null $extraPackages
+     * @param list<ClassifiedExtraPackage>|null $extraPackages
      */
     public function setExtraPackages(?array $extraPackages): self
     {
