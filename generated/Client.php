@@ -896,7 +896,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to delete flexible bundle by its unique identifier.
+     * Use this resource to delete flexible bundle by its unique identifier. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#usun-wybrany-zestaw" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#delete-a-selected-bundle" target="_blank">EN</a>.
      *
      * @param string $bundleId bundle ID
      * @param string $fetch    Fetch mode to use (can be OBJECT or RESPONSE)
