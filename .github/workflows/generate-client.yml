@@ -24,7 +24,7 @@ concurrency:
 
 env:
   REMOTE_API_URL: https://developer.allegro.pl/swagger.yaml
-  OASDIFF_VERSION: v1.11.10
+  OASDIFF_VERSION: v1.35.0
   PHP_VERSION: '8.5'
   TEMP_DIR: .tmp            # keep throwaway files out of project root
 
