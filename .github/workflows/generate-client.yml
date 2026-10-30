@@ -2,7 +2,7 @@ name: Update API Client
 
 on:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '23 * * * *'   # hourly; off the hour since :00 runs are often delayed
   workflow_dispatch:
     inputs:
       force:
@@ -35,24 +35,7 @@ jobs:
         with:
           fetch-depth: 0     # needed so the tag action can see history
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.PHP_VERSION }}
-          ini-values: zend.enable_gc=0
-          tools: composer, parallel-lint
-
-      - name: Cache Composer packages
-        uses: actions/cache@v5
-        with:
-          path: vendor
-          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
-          restore-keys: composer-${{ runner.os }}-
-
-      - name: Install Dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
-
-      # ── Download & validate spec ───────────────────────
+      # ── Download & check spec (cheap, runs every time) ─
       - name: Download Remote OpenAPI Spec
         run: |
           mkdir -p "$TEMP_DIR"
@@ -61,7 +44,7 @@ jobs:
             -A "GitHubActions-AllegroSDK/1.0 (+https://github.com/${{ github.repository }})" \
             -o "$TEMP_DIR/new_spec.yaml" "$REMOTE_API_URL"
 
-      - name: Validate downloaded spec
+      - name: Check downloaded spec
         run: |
           FILE="$TEMP_DIR/new_spec.yaml"
 
@@ -73,27 +56,11 @@ jobs:
             exit 1
           fi
 
-          # Same YAML parser Jane uses, so if this passes, generation can read it
-          vendor/bin/yaml-lint "$FILE"
-
           if ! grep -qE '^(openapi|swagger):' "$FILE" || ! grep -q '^paths:' "$FILE"; then
             echo "::error::Not an OpenAPI/Swagger spec (missing openapi/swagger or paths key)"
             exit 1
           fi
           echo "✅ Valid spec — $(grep -cE '^  /' "$FILE") paths found"
-
-      # ── Sanitize spec ─────────────────────────────────
-      # Jane turns path params into PHP properties, so {command-id} would
-      # produce invalid code like $this->command-id. Rename to camelCase.
-      - name: Sanitize spec (fix hyphenated path params)
-        run: |
-          FILE="$TEMP_DIR/new_spec.yaml"
-          for PARAM in $(grep -oE '^  /[^:]*' "$FILE" | grep -oE '\{[^}]*-[^}]*\}' | tr -d '{}' | sort -u); do
-            CAMEL=$(echo "$PARAM" | sed -E 's/-([a-z])/\U\1/g')
-            sed -i -E "s/\{$PARAM\}/{$CAMEL}/g; s/^( *(- )?name: *['\"]?)$PARAM(['\"]?) *\$/\1$CAMEL\3/" "$FILE"
-            echo "  {$PARAM} → {$CAMEL}"
-          done
-          echo "✅ Spec sanitized"
 
       # ── Compare specs ──────────────────────────────────
       - name: Check for spec changes
@@ -121,6 +88,32 @@ jobs:
           fi
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
+      # ── Everything below runs only when the spec changed ──
+      - name: Setup PHP
+        if: steps.spec_check.outputs.changed == 'true'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          ini-values: zend.enable_gc=0
+          tools: composer, parallel-lint
+
+      - name: Cache Composer packages
+        if: steps.spec_check.outputs.changed == 'true'
+        uses: actions/cache@v5
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install Dependencies
+        if: steps.spec_check.outputs.changed == 'true'
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      # Same YAML parser Jane uses, so if this passes, generation can read it
+      - name: Validate spec syntax
+        if: steps.spec_check.outputs.changed == 'true'
+        run: vendor/bin/yaml-lint "$TEMP_DIR/new_spec.yaml"
+
       # ── Pre-pull oasdiff image once ────────────────────
       - name: Pull oasdiff image
         if: steps.spec_check.outputs.changed == 'true' && hashFiles('resources/spec.yaml') != ''
@@ -134,6 +127,24 @@ jobs:
           BUMP_TYPE="patch"
           RELEASE_NOTES="$TEMP_DIR/release_notes.md"
 
+          # The tag action derives the bump from commit messages (Angular rules)
+          # and only falls back to default_bump when none match, so the commit
+          # message has to carry the bump: BREAKING CHANGE footer → major,
+          # feat → minor, fix → patch.
+          write_outputs() {
+            case "$BUMP_TYPE" in
+              major) MSG=$'feat: synchronize with remote API spec\n\nBREAKING CHANGE: breaking changes in the remote Allegro API definition' ;;
+              minor) MSG='feat: synchronize with remote API spec' ;;
+              *)     MSG='fix: synchronize with remote API spec' ;;
+            esac
+            {
+              echo "bump_type=$BUMP_TYPE"
+              echo "commit_message<<EOF_COMMIT_MESSAGE"
+              echo "$MSG"
+              echo "EOF_COMMIT_MESSAGE"
+            } >> "$GITHUB_OUTPUT"
+          }
+
           cat <<'EOF' > "$RELEASE_NOTES"
           Automatic update triggered by changes in the remote Allegro API definition.
 
@@ -142,7 +153,7 @@ jobs:
           if [ ! -f "resources/spec.yaml" ]; then
             echo "📄 Initial import — defaulting to **patch**."
             echo "### 📄 Initial Import" >> "$RELEASE_NOTES"
-            echo "bump_type=$BUMP_TYPE" >> "$GITHUB_OUTPUT"
+            write_outputs
             exit 0
           fi
 
@@ -200,7 +211,7 @@ jobs:
             } >> "$RELEASE_NOTES"
           fi
 
-          echo "bump_type=$BUMP_TYPE" >> "$GITHUB_OUTPUT"
+          write_outputs
 
           # Job summary
           {
@@ -226,7 +237,7 @@ jobs:
         if: steps.spec_check.outputs.changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          commit_message: "feat: synchronize with remote API spec"
+          commit_message: ${{ steps.versioning.outputs.commit_message }}
           file_pattern: 'generated/** resources/spec.yaml'
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
