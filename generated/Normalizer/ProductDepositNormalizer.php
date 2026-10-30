@@ -64,6 +64,12 @@ class ProductDepositNormalizer implements DenormalizerInterface, NormalizerInter
         } elseif (\array_key_exists('quantity', $data) && null === $data['quantity']) {
             $object->setQuantity(null);
         }
+        if (\array_key_exists('price', $data) && null !== $data['price']) {
+            $object->setPrice($this->denormalizer->denormalize($data['price'], \Em411\Allegro\Api\Model\ProductDepositPrice::class, 'json', $context));
+            unset($data['price']);
+        } elseif (\array_key_exists('price', $data) && null === $data['price']) {
+            $object->setPrice(null);
+        }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value;
@@ -81,6 +87,9 @@ class ProductDepositNormalizer implements DenormalizerInterface, NormalizerInter
         }
         if ($data->isInitialized('quantity') && null !== $data->getQuantity()) {
             $dataArray['quantity'] = $data->getQuantity();
+        }
+        if ($data->isInitialized('price') && null !== $data->getPrice()) {
+            $dataArray['price'] = $this->normalizer->normalize($data->getPrice(), 'json', $context);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

@@ -20,16 +20,6 @@ class PostBadges extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implemen
     /**
      * This resource allows you to apply for a badge. Most badges involve additional fee charged.
      * Your badge application will be verified and you will be notified about the verification status via e-mail. You can use *Location* provided in header of the response to track your application status. Application will be removed after 30 days when status of the application was changed form PROCESSED or DECLINED.
-     * Fees will be charged in accordance with Annex No. 1 to the
-     *   <a href="https://allegro.pl/regulaminy/regulamin-strefy-okazji-9dGVAPB69In"
-     *     target="_blank">Daily deals zone terms and conditions</a>.
-     *
-     * By using this resource you agree to the
-     *   <a href="https://allegro.pl/regulaminy/regulamin-strefy-okazji-9dGVAPB69In"
-     *     target="_blank">Daily deals zone terms and conditions</a>
-     * or
-     *   <a href="https://allegro.pl/regulaminy/regulamin-programu-bonusowego-prowizja-nawet-0-5-0KPkAE7wkcv"
-     *     target="_blank">Commission discount terms and conditions</a>.
      * Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#zglos-oferte-do-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#submit-offer-to-a-campaign" target="_blank">EN</a>.
      *
      * @param array $headerParameters {

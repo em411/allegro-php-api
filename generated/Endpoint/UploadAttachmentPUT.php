@@ -17,6 +17,7 @@ class UploadAttachmentPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
     protected $attachmentId;
+    protected $accept;
 
     /**
      * Use this resource to upload attachment using identifier that was declared. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#dodanie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#add-an-attachment" target="_blank">EN</a>.
@@ -27,12 +28,15 @@ class UploadAttachmentPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
+     *
+     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
-    public function __construct(string $attachmentId, $requestBody = null, array $headerParameters = [])
+    public function __construct(string $attachmentId, $requestBody = null, array $headerParameters = [], array $accept = [])
     {
         $this->attachmentId = $attachmentId;
         $this->body = $requestBody;
         $this->headerParameters = $headerParameters;
+        $this->accept = $accept;
     }
 
     public function getMethod(): string
@@ -71,7 +75,11 @@ class UploadAttachmentPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
 
     public function getExtraHeaders(): array
     {
-        return ['Accept' => ['application/vnd.allegro.public.v1+json']];
+        if (empty($this->accept)) {
+            return ['Accept' => ['application/vnd.allegro.public.v1+json', 'application/vnd.allegro.beta.v1+json']];
+        }
+
+        return $this->accept;
     }
 
     public function getAuthenticationScopes(): array
@@ -103,8 +111,13 @@ class UploadAttachmentPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessageAttachmentId', 'json');
+        if (200 === $status) {
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessageAttachmentId', 'json');
+            }
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessageAttachmentId', 'json');
+            }
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\UploadAttachmentPUTUnauthorizedException($response);

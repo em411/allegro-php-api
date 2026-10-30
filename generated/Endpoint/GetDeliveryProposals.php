@@ -19,7 +19,7 @@ class GetDeliveryProposals extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     protected $orderId;
 
     /**
-     * Use this resource to retrieve two order characteristics. The first is a pre-populated request body for creating a shipment in SwA. The second is a list of possible delivery types for processing the order, including their limits.
+     * Use this resource to retrieve two order characteristics. The first is a pre-populated request body for creating a shipment in SwA. The second is a list of possible delivery types for processing the order, including their limits. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-proponowane-dane-i-ustawienia-dostawy-dla-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-the-proposed-delivery-details-and-settings-for-an-order" target="_blank">EN</a>.
      *
      * @param string $orderId order ID
      */

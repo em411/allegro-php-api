@@ -22,11 +22,11 @@ class GetBillingEntries extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint i
      *
      * @param array $queryParameters {
      *
-     * @var string $marketplaceId The marketplace ID where operation was made. By default the marketplace ID where the user is registered. **Note:** Business marketplace is not a separate user's billing and defaults back to the main marketplace for given country.
+     * @var string $marketplaceId The marketplace ID where the operation took place. By default, this is the marketplace ID where the user is registered. **Note:** The Business marketplace is not separate - it defaults to the main marketplace for the given country.
      * @var string $occurredAt.gte Date from which billing entries are filtered. If occurredAt.lte is also set, occurredAt.gte cannot be later.
      * @var string $occurredAt.lte Date to which billing entries are filtered. If occurredAt.gte is also set, occurredAt.lte cannot be earlier.
      * @var array  $type.id List of billing types by which billing entries are filtered.
-     * @var string $offer.id Offer ID by which billing entries are filtered.
+     * @var string $offer.id Offer ID by which billing entries are filtered. Can be either a numeric ID or a UUID.
      * @var string $order.id Order UUID by which billing entries are filtered.
      * @var int    $limit number of returned operations
      * @var int    $offset Index of the first returned payment operation from all search results.

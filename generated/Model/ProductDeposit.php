@@ -31,6 +31,12 @@ class ProductDeposit extends \ArrayObject
      * @var int|null
      */
     protected $quantity;
+    /**
+     * Seller-provided price of a single deposit. Required for deposit types with `pricingMode` set to `CUSTOM`; the currency must match the type's `currency` returned by GET /deposit/types. The amount must be nonnegative and use the precision supported by that currency. For deposit types with `pricingMode` set to `FIXED`, omit this field or set it to null when submitting a deposit; providing a price object is rejected. In responses, this field is returned only for `CUSTOM` deposits and omitted for `FIXED` deposits.
+     *
+     * @var ProductDepositPrice|null
+     */
+    protected $price;
 
     public function isInitialized($property): bool
     {
@@ -71,6 +77,25 @@ class ProductDeposit extends \ArrayObject
     {
         $this->initialized['quantity'] = true;
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * Seller-provided price of a single deposit. Required for deposit types with `pricingMode` set to `CUSTOM`; the currency must match the type's `currency` returned by GET /deposit/types. The amount must be nonnegative and use the precision supported by that currency. For deposit types with `pricingMode` set to `FIXED`, omit this field or set it to null when submitting a deposit; providing a price object is rejected. In responses, this field is returned only for `CUSTOM` deposits and omitted for `FIXED` deposits.
+     */
+    public function getPrice(): ?ProductDepositPrice
+    {
+        return $this->price;
+    }
+
+    /**
+     * Seller-provided price of a single deposit. Required for deposit types with `pricingMode` set to `CUSTOM`; the currency must match the type's `currency` returned by GET /deposit/types. The amount must be nonnegative and use the precision supported by that currency. For deposit types with `pricingMode` set to `FIXED`, omit this field or set it to null when submitting a deposit; providing a price object is rejected. In responses, this field is returned only for `CUSTOM` deposits and omitted for `FIXED` deposits.
+     */
+    public function setPrice(?ProductDepositPrice $price): self
+    {
+        $this->initialized['price'] = true;
+        $this->price = $price;
 
         return $this;
     }

@@ -44,12 +44,6 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
      */
     protected $firstItemRate;
     /**
-     * Rules for the shipping cost of another item in the parcel.
-     *
-     * @var SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsNextItemRate|null
-     */
-    protected $nextItemRate;
-    /**
      * Rules for the shipping time.
      *
      * @var SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsShippingTime|null
@@ -133,25 +127,6 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
     {
         $this->initialized['firstItemRate'] = true;
         $this->firstItemRate = $firstItemRate;
-
-        return $this;
-    }
-
-    /**
-     * Rules for the shipping cost of another item in the parcel.
-     */
-    public function getNextItemRate(): ?SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsNextItemRate
-    {
-        return $this->nextItemRate;
-    }
-
-    /**
-     * Rules for the shipping cost of another item in the parcel.
-     */
-    public function setNextItemRate(?SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsNextItemRate $nextItemRate): self
-    {
-        $this->initialized['nextItemRate'] = true;
-        $this->nextItemRate = $nextItemRate;
 
         return $this;
     }

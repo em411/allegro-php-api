@@ -26,7 +26,7 @@ class UploadOrderInvoiceFileUnprocessableEntityException extends UnprocessableEn
 
     public function __construct(\Em411\Allegro\Api\Model\ErrorsHolder $errorsHolder, \Psr\Http\Message\ResponseInterface $response)
     {
-        parent::__construct('Uploaded file is empty or order\'s payment is rejected');
+        parent::__construct('Uploaded file is empty, is not a PDF or files count limit has been reached for order');
         $this->errorsHolder = $errorsHolder;
         $this->response = $response;
     }

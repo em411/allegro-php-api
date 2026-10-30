@@ -91,6 +91,7 @@ class GetTasksUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
     /**
      * @return \Em411\Allegro\Api\Model\TaskReport|null
      *
+     * @throws \Em411\Allegro\Api\Exception\GetTasksUsingGETBadRequestException
      * @throws \Em411\Allegro\Api\Exception\GetTasksUsingGETUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\GetTasksUsingGETForbiddenException
      * @throws \Em411\Allegro\Api\Exception\GetTasksUsingGETNotFoundException
@@ -102,6 +103,9 @@ class GetTasksUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
         $body = (string) $response->getBody();
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\TaskReport', 'json');
+        }
+        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\GetTasksUsingGETBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetTasksUsingGETUnauthorizedException($response);

@@ -25,6 +25,12 @@ class OfferImageLinkUploadRequest extends \ArrayObject
      * @var string|null
      */
     protected $url;
+    /**
+     * Sets the uploaded image to be marked as "AI". Optional - can be omitted or set to true/false. If the `isAiCoCreated` query parameter is also provided, its value must not conflict with this field, otherwise a `400` response is returned.
+     *
+     * @var bool|null
+     */
+    protected $isAiCoCreated;
 
     public function isInitialized($property): bool
     {
@@ -46,6 +52,25 @@ class OfferImageLinkUploadRequest extends \ArrayObject
     {
         $this->initialized['url'] = true;
         $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Sets the uploaded image to be marked as "AI". Optional - can be omitted or set to true/false. If the `isAiCoCreated` query parameter is also provided, its value must not conflict with this field, otherwise a `400` response is returned.
+     */
+    public function getIsAiCoCreated(): ?bool
+    {
+        return $this->isAiCoCreated;
+    }
+
+    /**
+     * Sets the uploaded image to be marked as "AI". Optional - can be omitted or set to true/false. If the `isAiCoCreated` query parameter is also provided, its value must not conflict with this field, otherwise a `400` response is returned.
+     */
+    public function setIsAiCoCreated(?bool $isAiCoCreated): self
+    {
+        $this->initialized['isAiCoCreated'] = true;
+        $this->isAiCoCreated = $isAiCoCreated;
 
         return $this;
     }

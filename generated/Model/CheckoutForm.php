@@ -68,6 +68,10 @@ class CheckoutForm extends \ArrayObject
      */
     protected $surcharges;
     /**
+     * @var list<CheckoutFormCodBookedPayment>|null
+     */
+    protected $codBookedPayments;
+    /**
      * @var CheckoutFormNoteReference|null
      */
     protected $note;
@@ -259,6 +263,25 @@ class CheckoutForm extends \ArrayObject
     {
         $this->initialized['surcharges'] = true;
         $this->surcharges = $surcharges;
+
+        return $this;
+    }
+
+    /**
+     * @return list<CheckoutFormCodBookedPayment>|null
+     */
+    public function getCodBookedPayments(): ?array
+    {
+        return $this->codBookedPayments;
+    }
+
+    /**
+     * @param list<CheckoutFormCodBookedPayment>|null $codBookedPayments
+     */
+    public function setCodBookedPayments(?array $codBookedPayments): self
+    {
+        $this->initialized['codBookedPayments'] = true;
+        $this->codBookedPayments = $codBookedPayments;
 
         return $this;
     }

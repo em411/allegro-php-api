@@ -26,7 +26,7 @@ class UploadOrderInvoiceFileConflictException extends ConflictException
 
     public function __construct(\Em411\Allegro\Api\Model\ErrorsHolder $errorsHolder, \Psr\Http\Message\ResponseInterface $response)
     {
-        parent::__construct('Invoice with given id already has invoice file uploaded');
+        parent::__construct('Invoice with given id already has invoice file uploaded or identical file has been already uploaded');
         $this->errorsHolder = $errorsHolder;
         $this->response = $response;
     }

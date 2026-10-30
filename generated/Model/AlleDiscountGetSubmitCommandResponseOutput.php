@@ -50,7 +50,7 @@ class AlleDiscountGetSubmitCommandResponseOutput extends \ArrayObject
      */
     protected $newOfferParticipation;
     /**
-     * @var list<ErrorsHolder>|null
+     * @var list<Error>|null
      */
     protected $errors;
 
@@ -148,7 +148,7 @@ class AlleDiscountGetSubmitCommandResponseOutput extends \ArrayObject
     }
 
     /**
-     * @return list<ErrorsHolder>|null
+     * @return list<Error>|null
      */
     public function getErrors(): ?array
     {
@@ -156,7 +156,7 @@ class AlleDiscountGetSubmitCommandResponseOutput extends \ArrayObject
     }
 
     /**
-     * @param list<ErrorsHolder>|null $errors
+     * @param list<Error>|null $errors
      */
     public function setErrors(?array $errors): self
     {

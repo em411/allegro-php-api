@@ -43,22 +43,6 @@ class SmartOfferClassificationReportConditionsItem extends \ArrayObject
      * @var bool|null
      */
     protected $fulfilled;
-    /**
-     * Set of delivery methods that meet this condition. May be null if the condition does not apply to delivery methods.
-     *
-     * @deprecated
-     *
-     * @var list<DeliveryMethodId>|null
-     */
-    protected $passedDeliveryMethods;
-    /**
-     * Set of delivery methods that fail to meet this condition. May be null if the condition does not apply to delivery methods.
-     *
-     * @deprecated
-     *
-     * @var list<DeliveryMethodId>|null
-     */
-    protected $failedDeliveryMethods;
 
     public function isInitialized($property): bool
     {
@@ -137,60 +121,6 @@ class SmartOfferClassificationReportConditionsItem extends \ArrayObject
     {
         $this->initialized['fulfilled'] = true;
         $this->fulfilled = $fulfilled;
-
-        return $this;
-    }
-
-    /**
-     * Set of delivery methods that meet this condition. May be null if the condition does not apply to delivery methods.
-     *
-     * @deprecated
-     *
-     * @return list<DeliveryMethodId>|null
-     */
-    public function getPassedDeliveryMethods(): ?array
-    {
-        return $this->passedDeliveryMethods;
-    }
-
-    /**
-     * Set of delivery methods that meet this condition. May be null if the condition does not apply to delivery methods.
-     *
-     * @param list<DeliveryMethodId>|null $passedDeliveryMethods
-     *
-     * @deprecated
-     */
-    public function setPassedDeliveryMethods(?array $passedDeliveryMethods): self
-    {
-        $this->initialized['passedDeliveryMethods'] = true;
-        $this->passedDeliveryMethods = $passedDeliveryMethods;
-
-        return $this;
-    }
-
-    /**
-     * Set of delivery methods that fail to meet this condition. May be null if the condition does not apply to delivery methods.
-     *
-     * @deprecated
-     *
-     * @return list<DeliveryMethodId>|null
-     */
-    public function getFailedDeliveryMethods(): ?array
-    {
-        return $this->failedDeliveryMethods;
-    }
-
-    /**
-     * Set of delivery methods that fail to meet this condition. May be null if the condition does not apply to delivery methods.
-     *
-     * @param list<DeliveryMethodId>|null $failedDeliveryMethods
-     *
-     * @deprecated
-     */
-    public function setFailedDeliveryMethods(?array $failedDeliveryMethods): self
-    {
-        $this->initialized['failedDeliveryMethods'] = true;
-        $this->failedDeliveryMethods = $failedDeliveryMethods;
 
         return $this;
     }

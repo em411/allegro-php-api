@@ -62,7 +62,7 @@ class SenderAddressDto extends \ArrayObject
      */
     protected $email;
     /**
-     * Cell phone.
+     * Phone number with an international prefix starting with `+` or `00`.
      *
      * @var string|null
      */
@@ -214,7 +214,7 @@ class SenderAddressDto extends \ArrayObject
     }
 
     /**
-     * Cell phone.
+     * Phone number with an international prefix starting with `+` or `00`.
      */
     public function getPhone(): ?string
     {
@@ -222,7 +222,7 @@ class SenderAddressDto extends \ArrayObject
     }
 
     /**
-     * Cell phone.
+     * Phone number with an international prefix starting with `+` or `00`.
      */
     public function setPhone(?string $phone): self
     {

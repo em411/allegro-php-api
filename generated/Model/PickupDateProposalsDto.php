@@ -24,12 +24,6 @@ class PickupDateProposalsDto extends \ArrayObject
      */
     protected $shipmentId;
     /**
-     * @deprecated
-     *
-     * @var list<PickupDateProposalDto>|null
-     */
-    protected $proposalItems;
-    /**
      * @var list<PickupTimeDto>|null
      */
     protected $pickupTimes;
@@ -48,29 +42,6 @@ class PickupDateProposalsDto extends \ArrayObject
     {
         $this->initialized['shipmentId'] = true;
         $this->shipmentId = $shipmentId;
-
-        return $this;
-    }
-
-    /**
-     * @deprecated
-     *
-     * @return list<PickupDateProposalDto>|null
-     */
-    public function getProposalItems(): ?array
-    {
-        return $this->proposalItems;
-    }
-
-    /**
-     * @param list<PickupDateProposalDto>|null $proposalItems
-     *
-     * @deprecated
-     */
-    public function setProposalItems(?array $proposalItems): self
-    {
-        $this->initialized['proposalItems'] = true;
-        $this->proposalItems = $proposalItems;
 
         return $this;
     }

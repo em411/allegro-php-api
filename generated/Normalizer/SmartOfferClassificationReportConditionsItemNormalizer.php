@@ -79,29 +79,9 @@ class SmartOfferClassificationReportConditionsItemNormalizer implements Denormal
         } elseif (\array_key_exists('fulfilled', $data) && null === $data['fulfilled']) {
             $object->setFulfilled(null);
         }
-        if (\array_key_exists('passedDeliveryMethods', $data) && null !== $data['passedDeliveryMethods']) {
-            $values = [];
-            foreach ($data['passedDeliveryMethods'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\DeliveryMethodId::class, 'json', $context);
-            }
-            $object->setPassedDeliveryMethods($values);
-            unset($data['passedDeliveryMethods']);
-        } elseif (\array_key_exists('passedDeliveryMethods', $data) && null === $data['passedDeliveryMethods']) {
-            $object->setPassedDeliveryMethods(null);
-        }
-        if (\array_key_exists('failedDeliveryMethods', $data) && null !== $data['failedDeliveryMethods']) {
-            $values_1 = [];
-            foreach ($data['failedDeliveryMethods'] as $value_1) {
-                $values_1[] = $this->denormalizer->denormalize($value_1, \Em411\Allegro\Api\Model\DeliveryMethodId::class, 'json', $context);
-            }
-            $object->setFailedDeliveryMethods($values_1);
-            unset($data['failedDeliveryMethods']);
-        } elseif (\array_key_exists('failedDeliveryMethods', $data) && null === $data['failedDeliveryMethods']) {
-            $object->setFailedDeliveryMethods(null);
-        }
-        foreach ($data as $key => $value_2) {
+        foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_2;
+                $object[$key] = $value;
             }
         }
 
@@ -123,23 +103,9 @@ class SmartOfferClassificationReportConditionsItemNormalizer implements Denormal
         if ($data->isInitialized('fulfilled') && null !== $data->getFulfilled()) {
             $dataArray['fulfilled'] = $data->getFulfilled();
         }
-        if ($data->isInitialized('passedDeliveryMethods') && null !== $data->getPassedDeliveryMethods()) {
-            $values = [];
-            foreach ($data->getPassedDeliveryMethods() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
-            }
-            $dataArray['passedDeliveryMethods'] = $values;
-        }
-        if ($data->isInitialized('failedDeliveryMethods') && null !== $data->getFailedDeliveryMethods()) {
-            $values_1 = [];
-            foreach ($data->getFailedDeliveryMethods() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
-            }
-            $dataArray['failedDeliveryMethods'] = $values_1;
-        }
-        foreach ($data as $key => $value_2) {
+        foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_2;
+                $dataArray[$key] = $value;
             }
         }
 

@@ -63,6 +63,12 @@ class SaleProductOfferRequestV1productSetItem extends \ArrayObject
      * @var list<ProductDeposit>|null
      */
     protected $deposits;
+    /**
+     * Composition of the product, consisting of components and their ingredients.
+     *
+     * @var ProductSetElementCompositionRequestComposition|null
+     */
+    protected $composition;
 
     public function isInitialized($property): bool
     {
@@ -206,6 +212,25 @@ class SaleProductOfferRequestV1productSetItem extends \ArrayObject
     {
         $this->initialized['deposits'] = true;
         $this->deposits = $deposits;
+
+        return $this;
+    }
+
+    /**
+     * Composition of the product, consisting of components and their ingredients.
+     */
+    public function getComposition(): ?ProductSetElementCompositionRequestComposition
+    {
+        return $this->composition;
+    }
+
+    /**
+     * Composition of the product, consisting of components and their ingredients.
+     */
+    public function setComposition(?ProductSetElementCompositionRequestComposition $composition): self
+    {
+        $this->initialized['composition'] = true;
+        $this->composition = $composition;
 
         return $this;
     }

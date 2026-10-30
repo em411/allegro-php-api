@@ -91,6 +91,7 @@ class BatchOfferModificationCommandTaskStatusesUsingGET extends \Em411\Allegro\A
     /**
      * @return \Em411\Allegro\Api\Model\TaskWithSubjectReport|null
      *
+     * @throws \Em411\Allegro\Api\Exception\BatchOfferModificationCommandTaskStatusesUsingGETBadRequestException
      * @throws \Em411\Allegro\Api\Exception\BatchOfferModificationCommandTaskStatusesUsingGETUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\BatchOfferModificationCommandTaskStatusesUsingGETNotFoundException
      * @throws \Em411\Allegro\Api\Exception\BatchOfferModificationCommandTaskStatusesUsingGETUnprocessableEntityException
@@ -101,6 +102,9 @@ class BatchOfferModificationCommandTaskStatusesUsingGET extends \Em411\Allegro\A
         $body = (string) $response->getBody();
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\TaskWithSubjectReport', 'json');
+        }
+        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\BatchOfferModificationCommandTaskStatusesUsingGETBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\BatchOfferModificationCommandTaskStatusesUsingGETUnauthorizedException($response);

@@ -36,17 +36,11 @@ class ShippingRate extends \ArrayObject
      */
     protected $maxPackageWeight;
     /**
-     * Rate for the first item in the parcel for the given delivery method. The rate amount and currency must comply with the shippingRatesConstraints.firstItemRate restrictions described in the delivery-methods resource.
+     * Rate for the first item in the parcel for the given delivery method. The rate amount and currency must comply with the shippingRatesConstraints.firstItemRate restrictions described in the delivery-methods resource. Note that there is no additional payment for any subsequent item in the parcel.
      *
      * @var ShippingRateFirstItemRate|null
      */
     protected $firstItemRate;
-    /**
-     * Deprecated. Rate for every other item, after the first, in the same parcel for the given delivery method. In case of shipping rates with no specified type, the rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource. In case of shipping rates of the `PHYSICAL` or `ELECTRONIC` type, the rate amount must be "0.00".
-     *
-     * @var ShippingRateNextItemRate|null
-     */
-    protected $nextItemRate;
     /**
      * Custom shipping time for the given delivery method (allowed only for methods with shippingRatesConstraints.shippingTime.customizable set to true in the delivery-methods resource). If not set the default shipping time specified in the delivery-methods resource is used.
      *
@@ -111,7 +105,7 @@ class ShippingRate extends \ArrayObject
     }
 
     /**
-     * Rate for the first item in the parcel for the given delivery method. The rate amount and currency must comply with the shippingRatesConstraints.firstItemRate restrictions described in the delivery-methods resource.
+     * Rate for the first item in the parcel for the given delivery method. The rate amount and currency must comply with the shippingRatesConstraints.firstItemRate restrictions described in the delivery-methods resource. Note that there is no additional payment for any subsequent item in the parcel.
      */
     public function getFirstItemRate(): ?ShippingRateFirstItemRate
     {
@@ -119,31 +113,12 @@ class ShippingRate extends \ArrayObject
     }
 
     /**
-     * Rate for the first item in the parcel for the given delivery method. The rate amount and currency must comply with the shippingRatesConstraints.firstItemRate restrictions described in the delivery-methods resource.
+     * Rate for the first item in the parcel for the given delivery method. The rate amount and currency must comply with the shippingRatesConstraints.firstItemRate restrictions described in the delivery-methods resource. Note that there is no additional payment for any subsequent item in the parcel.
      */
     public function setFirstItemRate(?ShippingRateFirstItemRate $firstItemRate): self
     {
         $this->initialized['firstItemRate'] = true;
         $this->firstItemRate = $firstItemRate;
-
-        return $this;
-    }
-
-    /**
-     * Deprecated. Rate for every other item, after the first, in the same parcel for the given delivery method. In case of shipping rates with no specified type, the rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource. In case of shipping rates of the `PHYSICAL` or `ELECTRONIC` type, the rate amount must be "0.00".
-     */
-    public function getNextItemRate(): ?ShippingRateNextItemRate
-    {
-        return $this->nextItemRate;
-    }
-
-    /**
-     * Deprecated. Rate for every other item, after the first, in the same parcel for the given delivery method. In case of shipping rates with no specified type, the rate amount and currency must comply with the shippingRatesConstraints.nextItemRate restrictions described in the delivery-methods resource. In case of shipping rates of the `PHYSICAL` or `ELECTRONIC` type, the rate amount must be "0.00".
-     */
-    public function setNextItemRate(?ShippingRateNextItemRate $nextItemRate): self
-    {
-        $this->initialized['nextItemRate'] = true;
-        $this->nextItemRate = $nextItemRate;
 
         return $this;
     }

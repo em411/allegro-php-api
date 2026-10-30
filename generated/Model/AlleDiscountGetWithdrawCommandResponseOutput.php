@@ -48,7 +48,7 @@ class AlleDiscountGetWithdrawCommandResponseOutput extends \ArrayObject
      */
     protected $withdrawnOfferParticipation;
     /**
-     * @var list<ErrorsHolder>|null
+     * @var list<Error>|null
      */
     protected $errors;
 
@@ -142,7 +142,7 @@ class AlleDiscountGetWithdrawCommandResponseOutput extends \ArrayObject
     }
 
     /**
-     * @return list<ErrorsHolder>|null
+     * @return list<Error>|null
      */
     public function getErrors(): ?array
     {
@@ -150,7 +150,7 @@ class AlleDiscountGetWithdrawCommandResponseOutput extends \ArrayObject
     }
 
     /**
-     * @param list<ErrorsHolder>|null $errors
+     * @param list<Error>|null $errors
      */
     public function setErrors(?array $errors): self
     {

@@ -87,6 +87,12 @@ class CheckoutFormLineItem extends \ArrayObject
      * @var CheckoutFormLineItemSerialNumbers|null
      */
     protected $serialNumbers;
+    /**
+     * Information about Allegro Ads related to the line item.
+     *
+     * @var LineItemAllegroAds|null
+     */
+    protected $allegroAds;
 
     public function isInitialized($property): bool
     {
@@ -324,6 +330,25 @@ class CheckoutFormLineItem extends \ArrayObject
     {
         $this->initialized['serialNumbers'] = true;
         $this->serialNumbers = $serialNumbers;
+
+        return $this;
+    }
+
+    /**
+     * Information about Allegro Ads related to the line item.
+     */
+    public function getAllegroAds(): ?LineItemAllegroAds
+    {
+        return $this->allegroAds;
+    }
+
+    /**
+     * Information about Allegro Ads related to the line item.
+     */
+    public function setAllegroAds(?LineItemAllegroAds $allegroAds): self
+    {
+        $this->initialized['allegroAds'] = true;
+        $this->allegroAds = $allegroAds;
 
         return $this;
     }

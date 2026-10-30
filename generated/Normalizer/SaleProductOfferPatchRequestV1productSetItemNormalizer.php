@@ -101,6 +101,12 @@ class SaleProductOfferPatchRequestV1productSetItemNormalizer implements Denormal
         } elseif (\array_key_exists('deposits', $data) && null === $data['deposits']) {
             $object->setDeposits(null);
         }
+        if (\array_key_exists('composition', $data) && null !== $data['composition']) {
+            $object->setComposition($this->denormalizer->denormalize($data['composition'], \Em411\Allegro\Api\Model\ProductSetElementCompositionRequestComposition::class, 'json', $context));
+            unset($data['composition']);
+        } elseif (\array_key_exists('composition', $data) && null === $data['composition']) {
+            $object->setComposition(null);
+        }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value_1;
@@ -137,6 +143,9 @@ class SaleProductOfferPatchRequestV1productSetItemNormalizer implements Denormal
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
             $dataArray['deposits'] = $values;
+        }
+        if ($data->isInitialized('composition')) {
+            $dataArray['composition'] = $this->normalizer->normalize($data->getComposition(), 'json', $context);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {

@@ -17,6 +17,7 @@ class ListMessagesGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
     protected $threadId;
+    protected $accept;
 
     /**
      * Use this resource to list messages in thread with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#lista-wiadomosci-dla-wybranego-watku" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#list-of-the-messages-for-the-particular-thread" target="_blank">EN</a>.
@@ -25,21 +26,25 @@ class ListMessagesGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
      * @param array  $queryParameters {
      *
      * @var int    $limit the maximum number of messages returned in the response
-     * @var int    $offset index of the first returned message from all results
-     * @var string $before message creation date before filter parameter (exclusive) - cannot be used with offset
-     * @var string $after Message creation date after filter parameter (exclusive).
+     * @var int    $offset Index of the first returned message from all results. Available only for content version 'application/vnd.allegro.public.v1+json'.
+     * @var string $before Message creation date before filter parameter (exclusive) - cannot be used with offset. Available only for content version 'application/vnd.allegro.public.v1+json'.
+     * @var string $after Message creation date after filter parameter (exclusive). Available only for content version 'application/vnd.allegro.public.v1+json'.
+     * @var string $page.id ID of the page of messages to retrieve. Available only for content version 'application/vnd.allegro.beta.v1+json'.
      *             }
      *
      * @param array $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
+     *
+     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
-    public function __construct(string $threadId, array $queryParameters = [], array $headerParameters = [])
+    public function __construct(string $threadId, array $queryParameters = [], array $headerParameters = [], array $accept = [])
     {
         $this->threadId = $threadId;
         $this->queryParameters = $queryParameters;
         $this->headerParameters = $headerParameters;
+        $this->accept = $accept;
     }
 
     public function getMethod(): string
@@ -59,7 +64,11 @@ class ListMessagesGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
 
     public function getExtraHeaders(): array
     {
-        return ['Accept' => ['application/vnd.allegro.public.v1+json']];
+        if (empty($this->accept)) {
+            return ['Accept' => ['application/vnd.allegro.public.v1+json', 'application/vnd.allegro.beta.v1+json']];
+        }
+
+        return $this->accept;
     }
 
     public function getAuthenticationScopes(): array
@@ -70,13 +79,14 @@ class ListMessagesGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
     protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(['limit', 'offset', 'before', 'after']);
+        $optionsResolver->setDefined(['limit', 'offset', 'before', 'after', 'page.id']);
         $optionsResolver->setRequired([]);
         $optionsResolver->setDefaults(['limit' => 20, 'offset' => 0]);
         $optionsResolver->addAllowedTypes('limit', ['int']);
         $optionsResolver->addAllowedTypes('offset', ['int']);
         $optionsResolver->addAllowedTypes('before', ['string']);
         $optionsResolver->addAllowedTypes('after', ['string']);
+        $optionsResolver->addAllowedTypes('page.id', ['string']);
 
         return $optionsResolver;
     }
@@ -93,7 +103,7 @@ class ListMessagesGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\MessagesList|null
+     * @return \Em411\Allegro\Api\Model\MessagesList|\Em411\Allegro\Api\Model\MessagesListVBeta1|null
      *
      * @throws \Em411\Allegro\Api\Exception\ListMessagesGETUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\ListMessagesGETForbiddenException
@@ -104,8 +114,13 @@ class ListMessagesGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessagesList', 'json');
+        if (200 === $status) {
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessagesList', 'json');
+            }
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessagesListVBeta1', 'json');
+            }
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\ListMessagesGETUnauthorizedException($response);

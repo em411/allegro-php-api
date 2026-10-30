@@ -17,6 +17,7 @@ class GetThreadGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implem
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
     protected $threadId;
+    protected $accept;
 
     /**
      * Use this resource to get thread with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#szczegolowe-informacje-o-danym-watku" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#information-about-a-particular-thread" target="_blank">EN</a>.
@@ -26,11 +27,14 @@ class GetThreadGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implem
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
+     *
+     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
-    public function __construct(string $threadId, array $headerParameters = [])
+    public function __construct(string $threadId, array $headerParameters = [], array $accept = [])
     {
         $this->threadId = $threadId;
         $this->headerParameters = $headerParameters;
+        $this->accept = $accept;
     }
 
     public function getMethod(): string
@@ -50,7 +54,11 @@ class GetThreadGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implem
 
     public function getExtraHeaders(): array
     {
-        return ['Accept' => ['application/vnd.allegro.public.v1+json']];
+        if (empty($this->accept)) {
+            return ['Accept' => ['application/vnd.allegro.public.v1+json', 'application/vnd.allegro.beta.v1+json']];
+        }
+
+        return $this->accept;
     }
 
     public function getAuthenticationScopes(): array
@@ -70,7 +78,7 @@ class GetThreadGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implem
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\Thread|null
+     * @return \Em411\Allegro\Api\Model\Thread|\Em411\Allegro\Api\Model\ThreadVBeta1|null
      *
      * @throws \Em411\Allegro\Api\Exception\GetThreadGETUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\GetThreadGETNotFoundException
@@ -79,8 +87,13 @@ class GetThreadGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implem
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\Thread', 'json');
+        if (200 === $status) {
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\Thread', 'json');
+            }
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ThreadVBeta1', 'json');
+            }
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetThreadGETUnauthorizedException($response);

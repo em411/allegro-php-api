@@ -70,6 +70,18 @@ class BillingEntryNormalizer implements DenormalizerInterface, NormalizerInterfa
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
         }
+        if (\array_key_exists('asset', $data) && null !== $data['asset']) {
+            $object->setAsset($data['asset']);
+            unset($data['asset']);
+        } elseif (\array_key_exists('asset', $data) && null === $data['asset']) {
+            $object->setAsset(null);
+        }
+        if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
+            $object->setMarketplaceId($data['marketplaceId']);
+            unset($data['marketplaceId']);
+        } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
+            $object->setMarketplaceId(null);
+        }
         if (\array_key_exists('offer', $data) && null !== $data['offer']) {
             $object->setOffer($this->denormalizer->denormalize($data['offer'], \Em411\Allegro\Api\Model\BillingEntryOffer::class, 'json', $context));
             unset($data['offer']);
@@ -130,6 +142,12 @@ class BillingEntryNormalizer implements DenormalizerInterface, NormalizerInterfa
         }
         if ($data->isInitialized('type') && null !== $data->getType()) {
             $dataArray['type'] = $this->normalizer->normalize($data->getType(), 'json', $context);
+        }
+        if ($data->isInitialized('asset') && null !== $data->getAsset()) {
+            $dataArray['asset'] = $data->getAsset();
+        }
+        if ($data->isInitialized('marketplaceId') && null !== $data->getMarketplaceId()) {
+            $dataArray['marketplaceId'] = $data->getMarketplaceId();
         }
         if ($data->isInitialized('offer') && null !== $data->getOffer()) {
             $dataArray['offer'] = $this->normalizer->normalize($data->getOffer(), 'json', $context);

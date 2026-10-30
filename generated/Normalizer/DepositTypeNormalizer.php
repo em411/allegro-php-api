@@ -70,11 +70,23 @@ class DepositTypeNormalizer implements DenormalizerInterface, NormalizerInterfac
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
         }
+        if (\array_key_exists('pricingMode', $data) && null !== $data['pricingMode']) {
+            $object->setPricingMode($data['pricingMode']);
+            unset($data['pricingMode']);
+        } elseif (\array_key_exists('pricingMode', $data) && null === $data['pricingMode']) {
+            $object->setPricingMode(null);
+        }
         if (\array_key_exists('price', $data) && null !== $data['price']) {
-            $object->setPrice($this->denormalizer->denormalize($data['price'], \Em411\Allegro\Api\Model\Price::class, 'json', $context));
+            $object->setPrice($this->denormalizer->denormalize($data['price'], \Em411\Allegro\Api\Model\DepositTypePrice::class, 'json', $context));
             unset($data['price']);
         } elseif (\array_key_exists('price', $data) && null === $data['price']) {
             $object->setPrice(null);
+        }
+        if (\array_key_exists('currency', $data) && null !== $data['currency']) {
+            $object->setCurrency($data['currency']);
+            unset($data['currency']);
+        } elseif (\array_key_exists('currency', $data) && null === $data['currency']) {
+            $object->setCurrency(null);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -97,8 +109,14 @@ class DepositTypeNormalizer implements DenormalizerInterface, NormalizerInterfac
         if ($data->isInitialized('marketplaceId') && null !== $data->getMarketplaceId()) {
             $dataArray['marketplaceId'] = $data->getMarketplaceId();
         }
+        if ($data->isInitialized('pricingMode') && null !== $data->getPricingMode()) {
+            $dataArray['pricingMode'] = $data->getPricingMode();
+        }
         if ($data->isInitialized('price') && null !== $data->getPrice()) {
             $dataArray['price'] = $this->normalizer->normalize($data->getPrice(), 'json', $context);
+        }
+        if ($data->isInitialized('currency') && null !== $data->getCurrency()) {
+            $dataArray['currency'] = $data->getCurrency();
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {

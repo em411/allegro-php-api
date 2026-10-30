@@ -32,6 +32,18 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
      */
     protected $name;
     /**
+     * Whether the shipping rates set is physical or electronic. Note that once a shipping rates set is created, it cannot be changed later.
+     *
+     * @var string|null
+     */
+    protected $type;
+    /**
+     * The dispatch country code in ISO 3166-1 alfa-2 format. It must be passed if the `PHYSICAL` type is provided. Note that once a shipping rates set is created, it cannot be changed later.
+     *
+     * @var string|null
+     */
+    protected $dispatchCountry;
+    /**
      * @var list<ShippingRate>|null
      */
     protected $rates;
@@ -41,18 +53,6 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
      * @var string|null
      */
     protected $lastModified;
-    /**
-     * Whether the shipping rates set is physical or electronic. Note that this field is returned for all electronic shipping rates and for the physical shipping rates created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or API with this new field explicitly provided.
-     *
-     * @var string|null
-     */
-    protected $type;
-    /**
-     * The dispatch country code in ISO 3166-1 alfa-2 format, returned only for shipping rates of the `PHYSICAL` type.
-     *
-     * @var string|null
-     */
-    protected $dispatchCountry;
     /**
      * @var SaleShippingRatesIdGetResponse200features|null
      */
@@ -102,6 +102,44 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
     }
 
     /**
+     * Whether the shipping rates set is physical or electronic. Note that once a shipping rates set is created, it cannot be changed later.
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * Whether the shipping rates set is physical or electronic. Note that once a shipping rates set is created, it cannot be changed later.
+     */
+    public function setType(?string $type): self
+    {
+        $this->initialized['type'] = true;
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * The dispatch country code in ISO 3166-1 alfa-2 format. It must be passed if the `PHYSICAL` type is provided. Note that once a shipping rates set is created, it cannot be changed later.
+     */
+    public function getDispatchCountry(): ?string
+    {
+        return $this->dispatchCountry;
+    }
+
+    /**
+     * The dispatch country code in ISO 3166-1 alfa-2 format. It must be passed if the `PHYSICAL` type is provided. Note that once a shipping rates set is created, it cannot be changed later.
+     */
+    public function setDispatchCountry(?string $dispatchCountry): self
+    {
+        $this->initialized['dispatchCountry'] = true;
+        $this->dispatchCountry = $dispatchCountry;
+
+        return $this;
+    }
+
+    /**
      * @return list<ShippingRate>|null
      */
     public function getRates(): ?array
@@ -135,44 +173,6 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
     {
         $this->initialized['lastModified'] = true;
         $this->lastModified = $lastModified;
-
-        return $this;
-    }
-
-    /**
-     * Whether the shipping rates set is physical or electronic. Note that this field is returned for all electronic shipping rates and for the physical shipping rates created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or API with this new field explicitly provided.
-     */
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    /**
-     * Whether the shipping rates set is physical or electronic. Note that this field is returned for all electronic shipping rates and for the physical shipping rates created via a new custom shipping price list form in [delivery-settings](https://salescenter.allegro.com/delivery-settings) or API with this new field explicitly provided.
-     */
-    public function setType(?string $type): self
-    {
-        $this->initialized['type'] = true;
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * The dispatch country code in ISO 3166-1 alfa-2 format, returned only for shipping rates of the `PHYSICAL` type.
-     */
-    public function getDispatchCountry(): ?string
-    {
-        return $this->dispatchCountry;
-    }
-
-    /**
-     * The dispatch country code in ISO 3166-1 alfa-2 format, returned only for shipping rates of the `PHYSICAL` type.
-     */
-    public function setDispatchCountry(?string $dispatchCountry): self
-    {
-        $this->initialized['dispatchCountry'] = true;
-        $this->dispatchCountry = $dispatchCountry;
 
         return $this;
     }

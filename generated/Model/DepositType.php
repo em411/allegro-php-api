@@ -38,11 +38,23 @@ class DepositType extends \ArrayObject
      */
     protected $marketplaceId;
     /**
-     * The price data.
+     * Determines how the deposit price is provided. `FIXED` uses the catalog price returned in `price`. `CUSTOM` requires a seller-provided price in the currency returned in `currency`.
      *
-     * @var Price|null
+     * @var string|null
+     */
+    protected $pricingMode;
+    /**
+     * Fixed catalog price. Returned only for `FIXED` deposit types and omitted for `CUSTOM` deposit types.
+     *
+     * @var DepositTypePrice|null
      */
     protected $price;
+    /**
+     * Currency required for the seller-provided deposit price, as a 3-letter ISO 4217 code. Returned only for `CUSTOM` deposit types and omitted for `FIXED` deposit types.
+     *
+     * @var string|null
+     */
+    protected $currency;
 
     public function isInitialized($property): bool
     {
@@ -107,20 +119,58 @@ class DepositType extends \ArrayObject
     }
 
     /**
-     * The price data.
+     * Determines how the deposit price is provided. `FIXED` uses the catalog price returned in `price`. `CUSTOM` requires a seller-provided price in the currency returned in `currency`.
      */
-    public function getPrice(): ?Price
+    public function getPricingMode(): ?string
+    {
+        return $this->pricingMode;
+    }
+
+    /**
+     * Determines how the deposit price is provided. `FIXED` uses the catalog price returned in `price`. `CUSTOM` requires a seller-provided price in the currency returned in `currency`.
+     */
+    public function setPricingMode(?string $pricingMode): self
+    {
+        $this->initialized['pricingMode'] = true;
+        $this->pricingMode = $pricingMode;
+
+        return $this;
+    }
+
+    /**
+     * Fixed catalog price. Returned only for `FIXED` deposit types and omitted for `CUSTOM` deposit types.
+     */
+    public function getPrice(): ?DepositTypePrice
     {
         return $this->price;
     }
 
     /**
-     * The price data.
+     * Fixed catalog price. Returned only for `FIXED` deposit types and omitted for `CUSTOM` deposit types.
      */
-    public function setPrice(?Price $price): self
+    public function setPrice(?DepositTypePrice $price): self
     {
         $this->initialized['price'] = true;
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Currency required for the seller-provided deposit price, as a 3-letter ISO 4217 code. Returned only for `CUSTOM` deposit types and omitted for `FIXED` deposit types.
+     */
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    /**
+     * Currency required for the seller-provided deposit price, as a 3-letter ISO 4217 code. Returned only for `CUSTOM` deposit types and omitted for `FIXED` deposit types.
+     */
+    public function setCurrency(?string $currency): self
+    {
+        $this->initialized['currency'] = true;
+        $this->currency = $currency;
 
         return $this;
     }
