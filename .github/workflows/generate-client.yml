@@ -24,7 +24,6 @@ concurrency:
 
 env:
   REMOTE_API_URL: https://developer.allegro.pl/swagger.yaml
-  OASDIFF_VERSION: v1.35.0
   PHP_VERSION: '8.5'
   TEMP_DIR: .tmp            # keep throwaway files out of project root
 
@@ -119,10 +118,29 @@ jobs:
         if: steps.spec_check.outputs.changed == 'true'
         run: vendor/bin/yaml-lint "$TEMP_DIR/new_spec.yaml"
 
-      # ── Pre-pull oasdiff image once ────────────────────
-      - name: Pull oasdiff image
+      # ── Diff specs ─────────────────────────────────────
+      # review: false keeps the specs from being uploaded to oasdiff.com, and
+      # github-token: '' stops the action from posting PR comments.
+      - name: Diff specs (JSON, for version detection)
         if: steps.spec_check.outputs.changed == 'true' && hashFiles('resources/spec.yaml') != ''
-        run: docker pull "tufin/oasdiff:${OASDIFF_VERSION}"
+        uses: oasdiff/oasdiff-action/changelog@v0.1.21
+        with:
+          base: resources/spec.yaml
+          revision: ${{ env.TEMP_DIR }}/new_spec.yaml
+          format: json
+          output-to-file: ${{ env.TEMP_DIR }}/changelog.json
+          review: false
+          github-token: ''
+
+      - name: Diff specs (text, for release notes)
+        if: steps.spec_check.outputs.changed == 'true' && hashFiles('resources/spec.yaml') != ''
+        uses: oasdiff/oasdiff-action/changelog@v0.1.21
+        with:
+          base: resources/spec.yaml
+          revision: ${{ env.TEMP_DIR }}/new_spec.yaml
+          output-to-file: ${{ env.TEMP_DIR }}/changelog.txt
+          review: false
+          github-token: ''
 
       # ── Semantic version detection ─────────────────────
       - name: Detect Semantic Version Bump
@@ -169,59 +187,33 @@ jobs:
             exit 0
           fi
 
-          OASDIFF="docker run --rm -v ${{ github.workspace }}:/work tufin/oasdiff:${OASDIFF_VERSION}"
+          # oasdiff levels: 3 = ERR (breaking), 2 = WARN, 1 = INFO (new endpoints /
+          # features). With no changes the action writes plain text instead of
+          # JSON, so a failed parse counts as "no changes at that level".
+          has_level() {
+            jq -e --argjson level "$1" 'type == "array" and any(.[]; .level == $level)' \
+              "$TEMP_DIR/changelog.json" >/dev/null 2>&1
+          }
 
-          echo "Running oasdiff breaking check..."
-
-          set +e
-          # Without --fail-on, oasdiff exits 0 even when it finds breaking changes
-          $OASDIFF breaking /work/resources/spec.yaml "/work/$TEMP_DIR/new_spec.yaml" \
-            --fail-on ERR > "$TEMP_DIR/breaking_diff.txt" 2>&1
-          RC=$?
-          set -e
-
-          if [ "$RC" -ge 2 ]; then
-            echo "::error::oasdiff 'breaking' failed with exit code $RC"
-            cat "$TEMP_DIR/breaking_diff.txt"
-            exit 1
-          fi
-
-          if [ "$RC" -eq 1 ]; then
+          if has_level 3; then
             echo "🚨 Breaking changes detected → MAJOR"
             BUMP_TYPE="major"
-            {
-              echo "### 🚨 Breaking API Changes"
-              echo '```text'
-              cat "$TEMP_DIR/breaking_diff.txt"
-              echo '```'
-            } >> "$RELEASE_NOTES"
+            echo "### 🚨 Breaking API Changes" >> "$RELEASE_NOTES"
+          elif has_level 1; then
+            echo "✨ New features detected → MINOR"
+            BUMP_TYPE="minor"
+            echo "### ✨ New API Features" >> "$RELEASE_NOTES"
           else
-            echo "Running oasdiff changelog..."
-
-            $OASDIFF changelog /work/resources/spec.yaml "/work/$TEMP_DIR/new_spec.yaml" \
-              --format json > "$TEMP_DIR/changelog.json"
-            $OASDIFF changelog /work/resources/spec.yaml "/work/$TEMP_DIR/new_spec.yaml" \
-              > "$TEMP_DIR/changelog.txt"
-
-            # oasdiff levels: 1 = INFO (new endpoints / features), 2 = WARN, 3 = ERR
-            # level 1 → MINOR
-            if jq -e 'if type == "array" then [.[] | select(.level == 1)] | length > 0 else false end' \
-                "$TEMP_DIR/changelog.json" >/dev/null 2>&1; then
-              echo "✨ New features detected → MINOR"
-              BUMP_TYPE="minor"
-              echo "### ✨ New API Features" >> "$RELEASE_NOTES"
-            else
-              echo "🐛 Non-breaking fixes → PATCH"
-              BUMP_TYPE="patch"
-              echo "### 🐛 Non-Breaking Changes" >> "$RELEASE_NOTES"
-            fi
-
-            {
-              echo '```text'
-              cat "$TEMP_DIR/changelog.txt"
-              echo '```'
-            } >> "$RELEASE_NOTES"
+            echo "🐛 Non-breaking fixes → PATCH"
+            BUMP_TYPE="patch"
+            echo "### 🐛 Non-Breaking Changes" >> "$RELEASE_NOTES"
           fi
+
+          {
+            echo '```text'
+            cat "$TEMP_DIR/changelog.txt"
+            echo '```'
+          } >> "$RELEASE_NOTES"
 
           write_outputs
 
@@ -244,6 +236,13 @@ jobs:
         run: parallel-lint --no-colors -e php generated/
 
       # ── Commit, tag, release ───────────────────────────
+      # Generation takes ~20 min, so main may have moved on (e.g. a merged PR);
+      # fast-forward to it so the push isn't rejected. Fails if main changed
+      # generated/ or the spec in the meantime, rather than overwriting it.
+      - name: Fast-forward to latest main
+        if: steps.spec_check.outputs.changed == 'true'
+        run: git pull --ff-only origin "$GITHUB_REF_NAME"
+
       - name: Commit Changes
         id: auto-commit
         if: steps.spec_check.outputs.changed == 'true'
@@ -260,6 +259,9 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Tag (and read the bump from) the commit just made, not GITHUB_SHA,
+          # which is the commit the run started from
+          commit_sha: ${{ steps.auto-commit.outputs.commit_hash }}
           default_bump: ${{ steps.versioning.outputs.bump_type }}
           release_branches: main
 
