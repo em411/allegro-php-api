@@ -9,6 +9,11 @@ on:
         description: 'Force regeneration even if spec is unchanged'
         type: boolean
         default: false
+      bump:
+        description: 'Version bump (auto = detect from spec diff; override e.g. for generator upgrades)'
+        type: choice
+        options: [auto, major, minor, patch]
+        default: auto
 
 permissions:
   contents: write
@@ -123,6 +128,8 @@ jobs:
       - name: Detect Semantic Version Bump
         id: versioning
         if: steps.spec_check.outputs.changed == 'true'
+        env:
+          BUMP_OVERRIDE: ${{ inputs.bump }}   # empty on scheduled runs
         run: |
           BUMP_TYPE="patch"
           RELEASE_NOTES="$TEMP_DIR/release_notes.md"
@@ -132,8 +139,13 @@ jobs:
           # message has to carry the bump: BREAKING CHANGE footer → major,
           # feat → minor, fix → patch.
           write_outputs() {
+            if [ -n "$BUMP_OVERRIDE" ] && [ "$BUMP_OVERRIDE" != "auto" ]; then
+              echo "✋ Bump manually set: $BUMP_TYPE → $BUMP_OVERRIDE"
+              BUMP_TYPE="$BUMP_OVERRIDE"
+              printf '\n### ✋ Version bump manually set to **%s**\n' "$BUMP_TYPE" >> "$RELEASE_NOTES"
+            fi
             case "$BUMP_TYPE" in
-              major) MSG=$'feat: synchronize with remote API spec\n\nBREAKING CHANGE: breaking changes in the remote Allegro API definition' ;;
+              major) MSG=$'feat: synchronize with remote API spec\n\nBREAKING CHANGE: see the release notes for details' ;;
               minor) MSG='feat: synchronize with remote API spec' ;;
               *)     MSG='fix: synchronize with remote API spec' ;;
             esac
