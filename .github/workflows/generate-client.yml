@@ -62,19 +62,6 @@ jobs:
           fi
           echo "✅ Valid spec — $(grep -cE '^  /' "$FILE") paths found"
 
-      # ── Sanitize spec ─────────────────────────────────
-      # Jane turns path params into PHP properties, so {command-id} would
-      # produce invalid code like $this->command-id. Rename to camelCase.
-      - name: Sanitize spec (fix hyphenated path params)
-        run: |
-          FILE="$TEMP_DIR/new_spec.yaml"
-          for PARAM in $(grep -oE '^  /[^:]*' "$FILE" | grep -oE '\{[^}]*-[^}]*\}' | tr -d '{}' | sort -u); do
-            CAMEL=$(echo "$PARAM" | sed -E 's/-([a-z])/\U\1/g')
-            sed -i -E "s/\{$PARAM\}/{$CAMEL}/g; s/^( *(- )?name: *['\"]?)$PARAM(['\"]?) *\$/\1$CAMEL\3/" "$FILE"
-            echo "  {$PARAM} → {$CAMEL}"
-          done
-          echo "✅ Spec sanitized"
-
       # ── Compare specs ──────────────────────────────────
       - name: Check for spec changes
         id: spec_check
