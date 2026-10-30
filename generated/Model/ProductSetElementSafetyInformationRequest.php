@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductSetElementSafetyInformationRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductSetElementSafetyInformationRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -24,7 +28,7 @@ class ProductSetElementSafetyInformationRequest extends \ArrayObject
      *   - `ATTACHMENTS` - if you add attachments.  Reference <a href="https://developer.allegro.pl/documentation#operation/createOfferAttachmentUsingPOST">Docs</a>
      *   - `TEXT` - if you provide product safety information in the form of a text description.
      *
-     * @var mixed|null
+     * @var TextSafetyInformation|AttachmentsSafetyInformation|null
      */
     protected $safetyInformation;
 
@@ -37,6 +41,8 @@ class ProductSetElementSafetyInformationRequest extends \ArrayObject
      * Product's safety information. You can indicate it as:
      *   - `ATTACHMENTS` - if you add attachments.  Reference <a href="https://developer.allegro.pl/documentation#operation/createOfferAttachmentUsingPOST">Docs</a>
      *   - `TEXT` - if you provide product safety information in the form of a text description.
+     *
+     * @return TextSafetyInformation|AttachmentsSafetyInformation|null
      */
     public function getSafetyInformation()
     {
@@ -47,6 +53,8 @@ class ProductSetElementSafetyInformationRequest extends \ArrayObject
      * Product's safety information. You can indicate it as:
      * - `ATTACHMENTS` - if you add attachments.  Reference <a href="https://developer.allegro.pl/documentation#operation/createOfferAttachmentUsingPOST">Docs</a>
      * - `TEXT` - if you provide product safety information in the form of a text description.
+     *
+     * @param TextSafetyInformation|AttachmentsSafetyInformation|null $safetyInformation
      */
     public function setSafetyInformation($safetyInformation): self
     {
@@ -54,5 +62,10 @@ class ProductSetElementSafetyInformationRequest extends \ArrayObject
         $this->safetyInformation = $safetyInformation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['safetyInformation' => ['safetyInformation', 'getSafetyInformation', 'setSafetyInformation']];
     }
 }

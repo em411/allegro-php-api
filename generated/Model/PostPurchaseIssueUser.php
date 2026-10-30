@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PostPurchaseIssueUser extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PostPurchaseIssueUser implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -57,5 +61,10 @@ class PostPurchaseIssueUser extends \ArrayObject
         $this->login = $login;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'login' => ['login', 'getLogin', 'setLogin']];
     }
 }

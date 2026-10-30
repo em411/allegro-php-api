@@ -21,11 +21,10 @@ class GetOfferPromoOptionsUsingGET extends \Em411\Allegro\Api\Runtime\Client\Bas
     /**
      * Use this resource to get promotion packages assigned to an offer. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-opcje-promowania-przypisane-do-oferty" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-promo-options-assigned-to-an-offer" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $offerId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetOfferPromoOptionsUsingGET extends \Em411\Allegro\Api\Runtime\Client\Bas
 
     public function getUri(): string
     {
-        return str_replace(['{offerId}'], [$this->offerId], '/sale/offers/{offerId}/promo-options');
+        return str_replace(['{offerId}'], [rawurlencode($this->offerId)], '/sale/offers/{offerId}/promo-options');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -79,13 +78,13 @@ class GetOfferPromoOptionsUsingGET extends \Em411\Allegro\Api\Runtime\Client\Bas
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\OfferPromoOptions', 'json');
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetOfferPromoOptionsUsingGETUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (403 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetOfferPromoOptionsUsingGETForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

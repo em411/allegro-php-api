@@ -42,33 +42,36 @@ class CompatibleProductDtoNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CompatibleProductDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CompatibleProductDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('text', $data) && null !== $data['text']) {
             $object->setText($data['text']);
             unset($data['text']);
         } elseif (\array_key_exists('text', $data) && null === $data['text']) {
             $object->setText(null);
+            unset($data['text']);
         }
         if (\array_key_exists('group', $data) && null !== $data['group']) {
             $object->setGroup($this->denormalizer->denormalize($data['group'], \Em411\Allegro\Api\Model\CompatibleProductDtoGroup::class, 'json', $context));
             unset($data['group']);
         } elseif (\array_key_exists('group', $data) && null === $data['group']) {
             $object->setGroup(null);
+            unset($data['group']);
         }
         if (\array_key_exists('attributes', $data) && null !== $data['attributes']) {
             $values = [];
@@ -79,6 +82,7 @@ class CompatibleProductDtoNormalizer implements DenormalizerInterface, Normalize
             unset($data['attributes']);
         } elseif (\array_key_exists('attributes', $data) && null === $data['attributes']) {
             $object->setAttributes(null);
+            unset($data['attributes']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -99,16 +103,16 @@ class CompatibleProductDtoNormalizer implements DenormalizerInterface, Normalize
             $dataArray['text'] = $data->getText();
         }
         if ($data->isInitialized('group') && null !== $data->getGroup()) {
-            $dataArray['group'] = $this->normalizer->normalize($data->getGroup(), 'json', $context);
+            $dataArray['group'] = null === $data->getGroup() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getGroup(), 'json', $context));
         }
         if ($data->isInitialized('attributes') && null !== $data->getAttributes()) {
             $values = [];
             foreach ($data->getAttributes() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['attributes'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

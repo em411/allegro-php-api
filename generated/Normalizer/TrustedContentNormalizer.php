@@ -42,15 +42,15 @@ class TrustedContentNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\TrustedContent();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\TrustedContent();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('paths', $data) && null !== $data['paths']) {
             $values = [];
@@ -61,6 +61,7 @@ class TrustedContentNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['paths']);
         } elseif (\array_key_exists('paths', $data) && null === $data['paths']) {
             $object->setPaths(null);
+            unset($data['paths']);
         }
         if (\array_key_exists('productPaths', $data) && null !== $data['productPaths']) {
             $values_1 = [];
@@ -71,6 +72,7 @@ class TrustedContentNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['productPaths']);
         } elseif (\array_key_exists('productPaths', $data) && null === $data['productPaths']) {
             $object->setProductPaths(null);
+            unset($data['productPaths']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -94,7 +96,7 @@ class TrustedContentNormalizer implements DenormalizerInterface, NormalizerInter
             $values_1[] = $value_1;
         }
         $dataArray['productPaths'] = $values_1;
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

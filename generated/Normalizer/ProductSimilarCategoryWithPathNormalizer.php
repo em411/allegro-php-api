@@ -42,21 +42,22 @@ class ProductSimilarCategoryWithPathNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductSimilarCategoryWithPath();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductSimilarCategoryWithPath();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('path', $data) && null !== $data['path']) {
             $values = [];
@@ -67,6 +68,7 @@ class ProductSimilarCategoryWithPathNormalizer implements DenormalizerInterface,
             unset($data['path']);
         } elseif (\array_key_exists('path', $data) && null === $data['path']) {
             $object->setPath(null);
+            unset($data['path']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,11 +88,11 @@ class ProductSimilarCategoryWithPathNormalizer implements DenormalizerInterface,
         if ($data->isInitialized('path') && null !== $data->getPath()) {
             $values = [];
             foreach ($data->getPath() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['path'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

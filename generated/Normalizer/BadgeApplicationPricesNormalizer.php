@@ -42,21 +42,22 @@ class BadgeApplicationPricesNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BadgeApplicationPrices();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BadgeApplicationPrices();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('bargain', $data) && null !== $data['bargain']) {
             $object->setBargain($this->denormalizer->denormalize($data['bargain'], \Em411\Allegro\Api\Model\BadgeApplicationBargainPrice::class, 'json', $context));
             unset($data['bargain']);
         } elseif (\array_key_exists('bargain', $data) && null === $data['bargain']) {
             $object->setBargain(null);
+            unset($data['bargain']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,10 +71,10 @@ class BadgeApplicationPricesNormalizer implements DenormalizerInterface, Normali
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('bargain')) {
-            $dataArray['bargain'] = $this->normalizer->normalize($data->getBargain(), 'json', $context);
+        if ($data->isInitialized('bargain') && null !== $data->getBargain()) {
+            $dataArray['bargain'] = null === $data->getBargain() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBargain(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

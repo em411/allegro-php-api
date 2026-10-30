@@ -42,33 +42,36 @@ class AlleDiscountSubmitCommandResponseNormalizer implements DenormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AlleDiscountSubmitCommandResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AlleDiscountSubmitCommandResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('input', $data) && null !== $data['input']) {
             $object->setInput($this->denormalizer->denormalize($data['input'], \Em411\Allegro\Api\Model\AlleDiscountSubmitCommandResponseInput::class, 'json', $context));
             unset($data['input']);
         } elseif (\array_key_exists('input', $data) && null === $data['input']) {
             $object->setInput(null);
+            unset($data['input']);
         }
         if (\array_key_exists('output', $data) && null !== $data['output']) {
             $object->setOutput($this->denormalizer->denormalize($data['output'], \Em411\Allegro\Api\Model\AlleDiscountSubmitCommandResponseOutput::class, 'json', $context));
             unset($data['output']);
         } elseif (\array_key_exists('output', $data) && null === $data['output']) {
             $object->setOutput(null);
+            unset($data['output']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,12 +89,12 @@ class AlleDiscountSubmitCommandResponseNormalizer implements DenormalizerInterfa
             $dataArray['id'] = $data->getId();
         }
         if ($data->isInitialized('input') && null !== $data->getInput()) {
-            $dataArray['input'] = $this->normalizer->normalize($data->getInput(), 'json', $context);
+            $dataArray['input'] = null === $data->getInput() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getInput(), 'json', $context));
         }
         if ($data->isInitialized('output') && null !== $data->getOutput()) {
-            $dataArray['output'] = $this->normalizer->normalize($data->getOutput(), 'json', $context);
+            $dataArray['output'] = null === $data->getOutput() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOutput(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

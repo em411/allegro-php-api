@@ -42,21 +42,22 @@ class BadgePatchProcessNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BadgePatchProcess();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BadgePatchProcess();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('process', $data) && null !== $data['process']) {
             $object->setProcess($this->denormalizer->denormalize($data['process'], \Em411\Allegro\Api\Model\BadgePatchProcessProcess::class, 'json', $context));
             unset($data['process']);
         } elseif (\array_key_exists('process', $data) && null === $data['process']) {
             $object->setProcess(null);
+            unset($data['process']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,9 +72,9 @@ class BadgePatchProcessNormalizer implements DenormalizerInterface, NormalizerIn
     {
         $dataArray = [];
         if ($data->isInitialized('process') && null !== $data->getProcess()) {
-            $dataArray['process'] = $this->normalizer->normalize($data->getProcess(), 'json', $context);
+            $dataArray['process'] = null === $data->getProcess() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getProcess(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

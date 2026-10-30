@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReturnPolicyReturnCost extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ReturnPolicyReturnCost implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class ReturnPolicyReturnCost extends \ArrayObject
         $this->coveredBy = $coveredBy;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['coveredBy' => ['coveredBy', 'getCoveredBy', 'setCoveredBy']];
     }
 }

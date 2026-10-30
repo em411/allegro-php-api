@@ -42,13 +42,16 @@ class PromotionNormalizer implements DenormalizerInterface, NormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Promotion();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\Promotion();
         if (\array_key_exists('emphasized1d', $data) && \is_int($data['emphasized1d'])) {
             $data['emphasized1d'] = (bool) $data['emphasized1d'];
         }
@@ -58,26 +61,26 @@ class PromotionNormalizer implements DenormalizerInterface, NormalizerInterface,
         if (\array_key_exists('departmentPage', $data) && \is_int($data['departmentPage'])) {
             $data['departmentPage'] = (bool) $data['departmentPage'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('emphasized1d', $data) && null !== $data['emphasized1d']) {
             $object->setEmphasized1d($data['emphasized1d']);
             unset($data['emphasized1d']);
         } elseif (\array_key_exists('emphasized1d', $data) && null === $data['emphasized1d']) {
             $object->setEmphasized1d(null);
+            unset($data['emphasized1d']);
         }
         if (\array_key_exists('emphasized10d', $data) && null !== $data['emphasized10d']) {
             $object->setEmphasized10d($data['emphasized10d']);
             unset($data['emphasized10d']);
         } elseif (\array_key_exists('emphasized10d', $data) && null === $data['emphasized10d']) {
             $object->setEmphasized10d(null);
+            unset($data['emphasized10d']);
         }
         if (\array_key_exists('departmentPage', $data) && null !== $data['departmentPage']) {
             $object->setDepartmentPage($data['departmentPage']);
             unset($data['departmentPage']);
         } elseif (\array_key_exists('departmentPage', $data) && null === $data['departmentPage']) {
             $object->setDepartmentPage(null);
+            unset($data['departmentPage']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,7 +103,7 @@ class PromotionNormalizer implements DenormalizerInterface, NormalizerInterface,
         if ($data->isInitialized('departmentPage') && null !== $data->getDepartmentPage()) {
             $dataArray['departmentPage'] = $data->getDepartmentPage();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

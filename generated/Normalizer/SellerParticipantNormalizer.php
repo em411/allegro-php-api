@@ -42,51 +42,57 @@ class SellerParticipantNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SellerParticipant();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SellerParticipant();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('companyName', $data) && null !== $data['companyName']) {
             $object->setCompanyName($data['companyName']);
             unset($data['companyName']);
         } elseif (\array_key_exists('companyName', $data) && null === $data['companyName']) {
             $object->setCompanyName(null);
+            unset($data['companyName']);
         }
         if (\array_key_exists('login', $data) && null !== $data['login']) {
             $object->setLogin($data['login']);
             unset($data['login']);
         } elseif (\array_key_exists('login', $data) && null === $data['login']) {
             $object->setLogin(null);
+            unset($data['login']);
         }
         if (\array_key_exists('firstName', $data) && null !== $data['firstName']) {
             $object->setFirstName($data['firstName']);
             unset($data['firstName']);
         } elseif (\array_key_exists('firstName', $data) && null === $data['firstName']) {
             $object->setFirstName(null);
+            unset($data['firstName']);
         }
         if (\array_key_exists('lastName', $data) && null !== $data['lastName']) {
             $object->setLastName($data['lastName']);
             unset($data['lastName']);
         } elseif (\array_key_exists('lastName', $data) && null === $data['lastName']) {
             $object->setLastName(null);
+            unset($data['lastName']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\OperationParticipantAddress::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -107,12 +113,12 @@ class SellerParticipantNormalizer implements DenormalizerInterface, NormalizerIn
         $dataArray['firstName'] = $data->getFirstName();
         $dataArray['lastName'] = $data->getLastName();
         if ($data->isInitialized('address') && null !== $data->getAddress()) {
-            $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+            $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         }
         if ($data->isInitialized('id') && null !== $data->getId()) {
             $dataArray['id'] = $data->getId();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

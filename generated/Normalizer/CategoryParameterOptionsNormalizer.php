@@ -42,45 +42,49 @@ class CategoryParameterOptionsNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CategoryParameterOptions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CategoryParameterOptions();
         if (\array_key_exists('describesProduct', $data) && \is_int($data['describesProduct'])) {
             $data['describesProduct'] = (bool) $data['describesProduct'];
         }
         if (\array_key_exists('customValuesEnabled', $data) && \is_int($data['customValuesEnabled'])) {
             $data['customValuesEnabled'] = (bool) $data['customValuesEnabled'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('ambiguousValueId', $data) && null !== $data['ambiguousValueId']) {
             $object->setAmbiguousValueId($data['ambiguousValueId']);
             unset($data['ambiguousValueId']);
         } elseif (\array_key_exists('ambiguousValueId', $data) && null === $data['ambiguousValueId']) {
             $object->setAmbiguousValueId(null);
+            unset($data['ambiguousValueId']);
         }
         if (\array_key_exists('dependsOnParameterId', $data) && null !== $data['dependsOnParameterId']) {
             $object->setDependsOnParameterId($data['dependsOnParameterId']);
             unset($data['dependsOnParameterId']);
         } elseif (\array_key_exists('dependsOnParameterId', $data) && null === $data['dependsOnParameterId']) {
             $object->setDependsOnParameterId(null);
+            unset($data['dependsOnParameterId']);
         }
         if (\array_key_exists('describesProduct', $data) && null !== $data['describesProduct']) {
             $object->setDescribesProduct($data['describesProduct']);
             unset($data['describesProduct']);
         } elseif (\array_key_exists('describesProduct', $data) && null === $data['describesProduct']) {
             $object->setDescribesProduct(null);
+            unset($data['describesProduct']);
         }
         if (\array_key_exists('customValuesEnabled', $data) && null !== $data['customValuesEnabled']) {
             $object->setCustomValuesEnabled($data['customValuesEnabled']);
             unset($data['customValuesEnabled']);
         } elseif (\array_key_exists('customValuesEnabled', $data) && null === $data['customValuesEnabled']) {
             $object->setCustomValuesEnabled(null);
+            unset($data['customValuesEnabled']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -94,10 +98,10 @@ class CategoryParameterOptionsNormalizer implements DenormalizerInterface, Norma
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('ambiguousValueId')) {
+        if ($data->isInitialized('ambiguousValueId') && null !== $data->getAmbiguousValueId()) {
             $dataArray['ambiguousValueId'] = $data->getAmbiguousValueId();
         }
-        if ($data->isInitialized('dependsOnParameterId')) {
+        if ($data->isInitialized('dependsOnParameterId') && null !== $data->getDependsOnParameterId()) {
             $dataArray['dependsOnParameterId'] = $data->getDependsOnParameterId();
         }
         if ($data->isInitialized('describesProduct') && null !== $data->getDescribesProduct()) {
@@ -106,7 +110,7 @@ class CategoryParameterOptionsNormalizer implements DenormalizerInterface, Norma
         if ($data->isInitialized('customValuesEnabled') && null !== $data->getCustomValuesEnabled()) {
             $dataArray['customValuesEnabled'] = $data->getCustomValuesEnabled();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

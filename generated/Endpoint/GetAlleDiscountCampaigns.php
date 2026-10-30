@@ -20,15 +20,12 @@ class GetAlleDiscountCampaigns extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
     /**
      * List current AlleDiscount campaigns. Each campaign has its own list of goods (products) that indicate which offers can be submitted to it. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#lista-dostepnych-kampanii-alleobnizka" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#list-of-available-allediscount-campaigns" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $campaignId Id of the searched campaign. If present, returns at most one entry.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "campaignId"?: string, //Id of the searched campaign. If present, returns at most one entry.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -94,13 +91,13 @@ class GetAlleDiscountCampaigns extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AlleDiscountListCampaignsResponse', 'json');
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetAlleDiscountCampaignsNotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetAlleDiscountCampaignsBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
         if (401 === $status) {

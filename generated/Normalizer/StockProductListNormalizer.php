@@ -42,21 +42,21 @@ class StockProductListNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\StockProductList();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\StockProductList();
         if (\array_key_exists('count', $data) && \is_int($data['count'])) {
             $data['count'] = (float) $data['count'];
         }
         if (\array_key_exists('totalCount', $data) && \is_int($data['totalCount'])) {
             $data['totalCount'] = (float) $data['totalCount'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('stock', $data) && null !== $data['stock']) {
             $values = [];
@@ -67,18 +67,21 @@ class StockProductListNormalizer implements DenormalizerInterface, NormalizerInt
             unset($data['stock']);
         } elseif (\array_key_exists('stock', $data) && null === $data['stock']) {
             $object->setStock(null);
+            unset($data['stock']);
         }
         if (\array_key_exists('count', $data) && null !== $data['count']) {
             $object->setCount($data['count']);
             unset($data['count']);
         } elseif (\array_key_exists('count', $data) && null === $data['count']) {
             $object->setCount(null);
+            unset($data['count']);
         }
         if (\array_key_exists('totalCount', $data) && null !== $data['totalCount']) {
             $object->setTotalCount($data['totalCount']);
             unset($data['totalCount']);
         } elseif (\array_key_exists('totalCount', $data) && null === $data['totalCount']) {
             $object->setTotalCount(null);
+            unset($data['totalCount']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -95,7 +98,7 @@ class StockProductListNormalizer implements DenormalizerInterface, NormalizerInt
         if ($data->isInitialized('stock') && null !== $data->getStock()) {
             $values = [];
             foreach ($data->getStock() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['stock'] = $values;
         }
@@ -105,7 +108,7 @@ class StockProductListNormalizer implements DenormalizerInterface, NormalizerInt
         if ($data->isInitialized('totalCount') && null !== $data->getTotalCount()) {
             $dataArray['totalCount'] = $data->getTotalCount();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

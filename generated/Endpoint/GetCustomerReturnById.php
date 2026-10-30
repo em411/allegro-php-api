@@ -22,10 +22,9 @@ class GetCustomerReturnById extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
      * Use this resource to get customer returns by its identifier. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-szczegolowe-informacje-o-zwrocie" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-retrieve-detailed-information-about-customer-return" target="_blank">EN</a>.
      *
      * @param string $customerReturnId id of the customer return
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $customerReturnId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetCustomerReturnById extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
 
     public function getUri(): string
     {
-        return str_replace(['{customerReturnId}'], [$this->customerReturnId], '/order/customer-returns/{customerReturnId}');
+        return str_replace(['{customerReturnId}'], [rawurlencode($this->customerReturnId)], '/order/customer-returns/{customerReturnId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -82,22 +81,22 @@ class GetCustomerReturnById extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\CustomerReturn', 'json');
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCustomerReturnByIdBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCustomerReturnByIdUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (403 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCustomerReturnByIdForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCustomerReturnByIdNotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (406 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (406 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCustomerReturnByIdNotAcceptableException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferChangeCommand extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferChangeCommand implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class OfferChangeCommand extends \ArrayObject
         $this->offerCriteria = $offerCriteria;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['modification' => ['modification', 'getModification', 'setModification'], 'offerCriteria' => ['offerCriteria', 'getOfferCriteria', 'setOfferCriteria']];
     }
 }

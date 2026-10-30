@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Component extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Component implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class Component extends \ArrayObject
         $this->ingredients = $ingredients;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['name', 'getName', 'setName'], 'ingredients' => ['ingredients', 'getIngredients', 'setIngredients']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class RefundLineItemDeposit extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class RefundLineItemDeposit implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class RefundLineItemDeposit extends \ArrayObject
         $this->totalValue = $totalValue;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['lineItemId' => ['lineItemId', 'getLineItemId', 'setLineItemId'], 'totalValue' => ['totalValue', 'getTotalValue', 'setTotalValue']];
     }
 }

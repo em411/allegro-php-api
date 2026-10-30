@@ -42,21 +42,22 @@ class OfferListingDtoV1AdditionalMarketplaceStockNormalizer implements Denormali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1AdditionalMarketplaceStock();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1AdditionalMarketplaceStock();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('sold', $data) && null !== $data['sold']) {
             $object->setSold($data['sold']);
             unset($data['sold']);
         } elseif (\array_key_exists('sold', $data) && null === $data['sold']) {
             $object->setSold(null);
+            unset($data['sold']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +74,7 @@ class OfferListingDtoV1AdditionalMarketplaceStockNormalizer implements Denormali
         if ($data->isInitialized('sold') && null !== $data->getSold()) {
             $dataArray['sold'] = $data->getSold();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

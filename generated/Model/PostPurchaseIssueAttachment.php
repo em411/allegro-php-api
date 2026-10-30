@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PostPurchaseIssueAttachment extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PostPurchaseIssueAttachment implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -65,5 +69,10 @@ class PostPurchaseIssueAttachment extends \ArrayObject
         $this->url = $url;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['fileName' => ['fileName', 'getFileName', 'setFileName'], 'url' => ['url', 'getUrl', 'setUrl']];
     }
 }

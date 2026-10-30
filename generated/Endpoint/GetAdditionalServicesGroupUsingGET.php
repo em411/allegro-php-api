@@ -21,11 +21,10 @@ class GetAdditionalServicesGroupUsingGET extends \Em411\Allegro\Api\Runtime\Clie
     /**
      * Use this resource to get additional services group for a given ID. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-wybrana-grupe-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-a-group-of-additional-services-for-a-given-id" target="_blank">EN</a>.
      *
-     * @param string $groupId          additional Service Group ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $groupId additional Service Group ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $groupId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetAdditionalServicesGroupUsingGET extends \Em411\Allegro\Api\Runtime\Clie
 
     public function getUri(): string
     {
-        return str_replace(['{groupId}'], [$this->groupId], '/sale/offer-additional-services/groups/{groupId}');
+        return str_replace(['{groupId}'], [rawurlencode($this->groupId)], '/sale/offer-additional-services/groups/{groupId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -79,7 +78,7 @@ class GetAdditionalServicesGroupUsingGET extends \Em411\Allegro\Api\Runtime\Clie
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AdditionalServicesGroupResponse', 'json');
         }
         if (401 === $status) {

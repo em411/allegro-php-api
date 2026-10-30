@@ -42,39 +42,55 @@ class CourierBySellerShippingNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CourierBySellerShipping();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CourierBySellerShipping();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('method', $data) && null !== $data['method']) {
             $object->setMethod($data['method']);
             unset($data['method']);
         } elseif (\array_key_exists('method', $data) && null === $data['method']) {
             $object->setMethod(null);
+            unset($data['method']);
         }
         if (\array_key_exists('courier', $data) && null !== $data['courier']) {
             $object->setCourier($this->denormalizer->denormalize($data['courier'], \Em411\Allegro\Api\Model\Courier::class, 'json', $context));
             unset($data['courier']);
         } elseif (\array_key_exists('courier', $data) && null === $data['courier']) {
             $object->setCourier(null);
+            unset($data['courier']);
         }
         if (\array_key_exists('estimatedTimeOfArrival', $data) && null !== $data['estimatedTimeOfArrival']) {
-            $object->setEstimatedTimeOfArrival(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['estimatedTimeOfArrival']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['estimatedTimeOfArrival']);
+            if (false === $date) {
+                if (\is_string($data['estimatedTimeOfArrival']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['estimatedTimeOfArrival'])) {
+                    try {
+                        $date = new \DateTime($data['estimatedTimeOfArrival']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['estimatedTimeOfArrival'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['estimatedTimeOfArrival'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setEstimatedTimeOfArrival($date);
             unset($data['estimatedTimeOfArrival']);
         } elseif (\array_key_exists('estimatedTimeOfArrival', $data) && null === $data['estimatedTimeOfArrival']) {
             $object->setEstimatedTimeOfArrival(null);
+            unset($data['estimatedTimeOfArrival']);
         }
         if (\array_key_exists('countryCode', $data) && null !== $data['countryCode']) {
             $object->setCountryCode($data['countryCode']);
             unset($data['countryCode']);
         } elseif (\array_key_exists('countryCode', $data) && null === $data['countryCode']) {
             $object->setCountryCode(null);
+            unset($data['countryCode']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -92,7 +108,7 @@ class CourierBySellerShippingNormalizer implements DenormalizerInterface, Normal
             $dataArray['method'] = $data->getMethod();
         }
         if ($data->isInitialized('courier') && null !== $data->getCourier()) {
-            $dataArray['courier'] = $this->normalizer->normalize($data->getCourier(), 'json', $context);
+            $dataArray['courier'] = null === $data->getCourier() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCourier(), 'json', $context));
         }
         if ($data->isInitialized('estimatedTimeOfArrival') && null !== $data->getEstimatedTimeOfArrival()) {
             $dataArray['estimatedTimeOfArrival'] = $data->getEstimatedTimeOfArrival()->format('Y-m-d\TH:i:sP');
@@ -100,7 +116,7 @@ class CourierBySellerShippingNormalizer implements DenormalizerInterface, Normal
         if ($data->isInitialized('countryCode') && null !== $data->getCountryCode()) {
             $dataArray['countryCode'] = $data->getCountryCode();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

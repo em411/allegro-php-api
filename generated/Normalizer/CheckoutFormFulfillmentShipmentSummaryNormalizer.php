@@ -42,21 +42,22 @@ class CheckoutFormFulfillmentShipmentSummaryNormalizer implements DenormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormFulfillmentShipmentSummary();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormFulfillmentShipmentSummary();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('lineItemsSent', $data) && null !== $data['lineItemsSent']) {
             $object->setLineItemsSent($data['lineItemsSent']);
             unset($data['lineItemsSent']);
         } elseif (\array_key_exists('lineItemsSent', $data) && null === $data['lineItemsSent']) {
             $object->setLineItemsSent(null);
+            unset($data['lineItemsSent']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +74,7 @@ class CheckoutFormFulfillmentShipmentSummaryNormalizer implements DenormalizerIn
         if ($data->isInitialized('lineItemsSent') && null !== $data->getLineItemsSent()) {
             $dataArray['lineItemsSent'] = $data->getLineItemsSent();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

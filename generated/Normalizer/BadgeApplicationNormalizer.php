@@ -42,69 +42,78 @@ class BadgeApplicationNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BadgeApplication();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BadgeApplication();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
             $object->setCreatedAt($data['createdAt']);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('updatedAt', $data) && null !== $data['updatedAt']) {
             $object->setUpdatedAt($data['updatedAt']);
             unset($data['updatedAt']);
         } elseif (\array_key_exists('updatedAt', $data) && null === $data['updatedAt']) {
             $object->setUpdatedAt(null);
+            unset($data['updatedAt']);
         }
         if (\array_key_exists('campaign', $data) && null !== $data['campaign']) {
             $object->setCampaign($this->denormalizer->denormalize($data['campaign'], \Em411\Allegro\Api\Model\BadgeApplicationCampaign::class, 'json', $context));
             unset($data['campaign']);
         } elseif (\array_key_exists('campaign', $data) && null === $data['campaign']) {
             $object->setCampaign(null);
+            unset($data['campaign']);
         }
         if (\array_key_exists('offer', $data) && null !== $data['offer']) {
             $object->setOffer($this->denormalizer->denormalize($data['offer'], \Em411\Allegro\Api\Model\BadgeApplicationOffer::class, 'json', $context));
             unset($data['offer']);
         } elseif (\array_key_exists('offer', $data) && null === $data['offer']) {
             $object->setOffer(null);
+            unset($data['offer']);
         }
         if (\array_key_exists('prices', $data) && null !== $data['prices']) {
             $object->setPrices($this->denormalizer->denormalize($data['prices'], \Em411\Allegro\Api\Model\BadgeApplicationPrices::class, 'json', $context));
             unset($data['prices']);
         } elseif (\array_key_exists('prices', $data) && null === $data['prices']) {
             $object->setPrices(null);
+            unset($data['prices']);
         }
         if (\array_key_exists('campaignStock', $data) && null !== $data['campaignStock']) {
             $object->setCampaignStock($this->denormalizer->denormalize($data['campaignStock'], \Em411\Allegro\Api\Model\BadgeCampaignStock::class, 'json', $context));
             unset($data['campaignStock']);
         } elseif (\array_key_exists('campaignStock', $data) && null === $data['campaignStock']) {
             $object->setCampaignStock(null);
+            unset($data['campaignStock']);
         }
         if (\array_key_exists('process', $data) && null !== $data['process']) {
             $object->setProcess($this->denormalizer->denormalize($data['process'], \Em411\Allegro\Api\Model\BadgeApplicationProcess::class, 'json', $context));
             unset($data['process']);
         } elseif (\array_key_exists('process', $data) && null === $data['process']) {
             $object->setProcess(null);
+            unset($data['process']);
         }
         if (\array_key_exists('purchaseConstraints', $data) && null !== $data['purchaseConstraints']) {
             $object->setPurchaseConstraints($this->denormalizer->denormalize($data['purchaseConstraints'], \Em411\Allegro\Api\Model\BadgeApplicationPurchaseConstraints::class, 'json', $context));
             unset($data['purchaseConstraints']);
         } elseif (\array_key_exists('purchaseConstraints', $data) && null === $data['purchaseConstraints']) {
             $object->setPurchaseConstraints(null);
+            unset($data['purchaseConstraints']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -121,19 +130,19 @@ class BadgeApplicationNormalizer implements DenormalizerInterface, NormalizerInt
         $dataArray['id'] = $data->getId();
         $dataArray['createdAt'] = $data->getCreatedAt();
         $dataArray['updatedAt'] = $data->getUpdatedAt();
-        $dataArray['campaign'] = $this->normalizer->normalize($data->getCampaign(), 'json', $context);
-        $dataArray['offer'] = $this->normalizer->normalize($data->getOffer(), 'json', $context);
-        if ($data->isInitialized('prices')) {
-            $dataArray['prices'] = $this->normalizer->normalize($data->getPrices(), 'json', $context);
+        $dataArray['campaign'] = null === $data->getCampaign() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCampaign(), 'json', $context));
+        $dataArray['offer'] = null === $data->getOffer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOffer(), 'json', $context));
+        if ($data->isInitialized('prices') && null !== $data->getPrices()) {
+            $dataArray['prices'] = null === $data->getPrices() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPrices(), 'json', $context));
         }
-        if ($data->isInitialized('campaignStock')) {
-            $dataArray['campaignStock'] = $this->normalizer->normalize($data->getCampaignStock(), 'json', $context);
+        if ($data->isInitialized('campaignStock') && null !== $data->getCampaignStock()) {
+            $dataArray['campaignStock'] = null === $data->getCampaignStock() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCampaignStock(), 'json', $context));
         }
-        $dataArray['process'] = $this->normalizer->normalize($data->getProcess(), 'json', $context);
+        $dataArray['process'] = null === $data->getProcess() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getProcess(), 'json', $context));
         if ($data->isInitialized('purchaseConstraints') && null !== $data->getPurchaseConstraints()) {
-            $dataArray['purchaseConstraints'] = $this->normalizer->normalize($data->getPurchaseConstraints(), 'json', $context);
+            $dataArray['purchaseConstraints'] = null === $data->getPurchaseConstraints() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPurchaseConstraints(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

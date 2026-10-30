@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AvailableProductsList extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AvailableProductsList implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class AvailableProductsList extends \ArrayObject
         $this->totalCount = $totalCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['products' => ['products', 'getProducts', 'setProducts'], 'count' => ['count', 'getCount', 'setCount'], 'totalCount' => ['totalCount', 'getTotalCount', 'setTotalCount']];
     }
 }

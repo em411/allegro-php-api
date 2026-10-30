@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CategoryParametersScheduledChangesResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CategoryParametersScheduledChangesResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class CategoryParametersScheduledChangesResponse extends \ArrayObject
         $this->scheduledChanges = $scheduledChanges;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['scheduledChanges' => ['scheduledChanges', 'getScheduledChanges', 'setScheduledChanges']];
     }
 }

@@ -42,15 +42,15 @@ class SizeTableTemplateImageResponseNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SizeTableTemplateImageResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SizeTableTemplateImageResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('captions', $data) && null !== $data['captions']) {
             $values = [];
@@ -61,12 +61,14 @@ class SizeTableTemplateImageResponseNormalizer implements DenormalizerInterface,
             unset($data['captions']);
         } elseif (\array_key_exists('captions', $data) && null === $data['captions']) {
             $object->setCaptions(null);
+            unset($data['captions']);
         }
         if (\array_key_exists('url', $data) && null !== $data['url']) {
             $object->setUrl($data['url']);
             unset($data['url']);
         } elseif (\array_key_exists('url', $data) && null === $data['url']) {
             $object->setUrl(null);
+            unset($data['url']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,11 +84,11 @@ class SizeTableTemplateImageResponseNormalizer implements DenormalizerInterface,
         $dataArray = [];
         $values = [];
         foreach ($data->getCaptions() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['captions'] = $values;
         $dataArray['url'] = $data->getUrl();
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

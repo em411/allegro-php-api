@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BiddingOffersOfferIdBidPutBody extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BiddingOffersOfferIdBidPutBody implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class BiddingOffersOfferIdBidPutBody extends \ArrayObject
         $this->maxAmount = $maxAmount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['maxAmount' => ['maxAmount', 'getMaxAmount', 'setMaxAmount']];
     }
 }

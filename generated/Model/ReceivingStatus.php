@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReceivingStatus extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ReceivingStatus implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class ReceivingStatus extends \ArrayObject
         $this->reasonCode = $reasonCode;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['quantity' => ['quantity', 'getQuantity', 'setQuantity'], 'receivedType' => ['receivedType', 'getReceivedType', 'setReceivedType'], 'reasonCode' => ['reasonCode', 'getReasonCode', 'setReasonCode']];
     }
 }

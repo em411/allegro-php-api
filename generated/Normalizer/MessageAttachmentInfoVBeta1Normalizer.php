@@ -42,45 +42,50 @@ class MessageAttachmentInfoVBeta1Normalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\MessageAttachmentInfoVBeta1();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\MessageAttachmentInfoVBeta1();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('fileName', $data) && null !== $data['fileName']) {
             $object->setFileName($data['fileName']);
             unset($data['fileName']);
         } elseif (\array_key_exists('fileName', $data) && null === $data['fileName']) {
             $object->setFileName(null);
+            unset($data['fileName']);
         }
         if (\array_key_exists('mimeType', $data) && null !== $data['mimeType']) {
             $object->setMimeType($data['mimeType']);
             unset($data['mimeType']);
         } elseif (\array_key_exists('mimeType', $data) && null === $data['mimeType']) {
             $object->setMimeType(null);
+            unset($data['mimeType']);
         }
         if (\array_key_exists('url', $data) && null !== $data['url']) {
             $object->setUrl($data['url']);
             unset($data['url']);
         } elseif (\array_key_exists('url', $data) && null === $data['url']) {
             $object->setUrl(null);
+            unset($data['url']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -103,7 +108,7 @@ class MessageAttachmentInfoVBeta1Normalizer implements DenormalizerInterface, No
             $dataArray['url'] = $data->getUrl();
         }
         $dataArray['status'] = $data->getStatus();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

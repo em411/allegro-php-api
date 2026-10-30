@@ -42,30 +42,32 @@ class MessageAuthorNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\MessageAuthor();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\MessageAuthor();
         if (\array_key_exists('isInterlocutor', $data) && \is_int($data['isInterlocutor'])) {
             $data['isInterlocutor'] = (bool) $data['isInterlocutor'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('login', $data) && null !== $data['login']) {
             $object->setLogin($data['login']);
             unset($data['login']);
         } elseif (\array_key_exists('login', $data) && null === $data['login']) {
             $object->setLogin(null);
+            unset($data['login']);
         }
         if (\array_key_exists('isInterlocutor', $data) && null !== $data['isInterlocutor']) {
             $object->setIsInterlocutor($data['isInterlocutor']);
             unset($data['isInterlocutor']);
         } elseif (\array_key_exists('isInterlocutor', $data) && null === $data['isInterlocutor']) {
             $object->setIsInterlocutor(null);
+            unset($data['isInterlocutor']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -81,7 +83,7 @@ class MessageAuthorNormalizer implements DenormalizerInterface, NormalizerInterf
         $dataArray = [];
         $dataArray['login'] = $data->getLogin();
         $dataArray['isInterlocutor'] = $data->getIsInterlocutor();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,30 +42,32 @@ class WrapperTypeForPreviewConditionsNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\WrapperTypeForPreviewConditions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\WrapperTypeForPreviewConditions();
         if (\array_key_exists('includeQuotingBundles', $data) && \is_int($data['includeQuotingBundles'])) {
             $data['includeQuotingBundles'] = (bool) $data['includeQuotingBundles'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('includeQuotingBundles', $data) && null !== $data['includeQuotingBundles']) {
             $object->setIncludeQuotingBundles($data['includeQuotingBundles']);
             unset($data['includeQuotingBundles']);
         } elseif (\array_key_exists('includeQuotingBundles', $data) && null === $data['includeQuotingBundles']) {
             $object->setIncludeQuotingBundles(null);
+            unset($data['includeQuotingBundles']);
         }
         if (\array_key_exists('offer', $data) && null !== $data['offer']) {
             $object->setOffer($this->denormalizer->denormalize($data['offer'], \Em411\Allegro\Api\Model\ParametersForPreviewPrice::class, 'json', $context));
             unset($data['offer']);
         } elseif (\array_key_exists('offer', $data) && null === $data['offer']) {
             $object->setOffer(null);
+            unset($data['offer']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,9 +85,9 @@ class WrapperTypeForPreviewConditionsNormalizer implements DenormalizerInterface
             $dataArray['includeQuotingBundles'] = $data->getIncludeQuotingBundles();
         }
         if ($data->isInitialized('offer') && null !== $data->getOffer()) {
-            $dataArray['offer'] = $this->normalizer->normalize($data->getOffer(), 'json', $context);
+            $dataArray['offer'] = null === $data->getOffer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOffer(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

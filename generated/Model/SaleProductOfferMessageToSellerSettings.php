@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleProductOfferMessageToSellerSettings extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleProductOfferMessageToSellerSettings implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -82,5 +86,10 @@ class SaleProductOfferMessageToSellerSettings extends \ArrayObject
         $this->hint = $hint;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['mode' => ['mode', 'getMode', 'setMode'], 'hint' => ['hint', 'getHint', 'setHint']];
     }
 }

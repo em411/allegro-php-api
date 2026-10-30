@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PublicationChangeCommandDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PublicationChangeCommandDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class PublicationChangeCommandDto extends \ArrayObject
         $this->publication = $publication;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['offerCriteria' => ['offerCriteria', 'getOfferCriteria', 'setOfferCriteria'], 'publication' => ['publication', 'getPublication', 'setPublication']];
     }
 }

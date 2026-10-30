@@ -22,7 +22,7 @@ class StringCategoryParameter extends CategoryParameter
     /**
      * The restrictions on values of this parameter.
      *
-     * @var StringCategoryParameterrestrictions|null
+     * @var StringCategoryParameterRestrictions|null
      */
     protected $restrictions;
 
@@ -34,7 +34,7 @@ class StringCategoryParameter extends CategoryParameter
     /**
      * The restrictions on values of this parameter.
      */
-    public function getRestrictions(): ?StringCategoryParameterrestrictions
+    public function getRestrictions(): ?StringCategoryParameterRestrictions
     {
         return $this->restrictions;
     }
@@ -42,11 +42,16 @@ class StringCategoryParameter extends CategoryParameter
     /**
      * The restrictions on values of this parameter.
      */
-    public function setRestrictions(?StringCategoryParameterrestrictions $restrictions): self
+    public function setRestrictions(?StringCategoryParameterRestrictions $restrictions): self
     {
         $this->initialized['restrictions'] = true;
         $this->restrictions = $restrictions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['restrictions' => ['restrictions', 'getRestrictions', 'setRestrictions']]);
     }
 }

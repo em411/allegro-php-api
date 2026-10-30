@@ -42,63 +42,71 @@ class PosNormalizer implements DenormalizerInterface, NormalizerInterface, Denor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Pos();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Pos();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('externalId', $data) && null !== $data['externalId']) {
             $object->setExternalId($data['externalId']);
             unset($data['externalId']);
         } elseif (\array_key_exists('externalId', $data) && null === $data['externalId']) {
             $object->setExternalId(null);
+            unset($data['externalId']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('seller', $data) && null !== $data['seller']) {
             $object->setSeller($this->denormalizer->denormalize($data['seller'], \Em411\Allegro\Api\Model\Seller::class, 'json', $context));
             unset($data['seller']);
         } elseif (\array_key_exists('seller', $data) && null === $data['seller']) {
             $object->setSeller(null);
+            unset($data['seller']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\Address::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         if (\array_key_exists('phoneNumber', $data) && null !== $data['phoneNumber']) {
             $object->setPhoneNumber($data['phoneNumber']);
             unset($data['phoneNumber']);
         } elseif (\array_key_exists('phoneNumber', $data) && null === $data['phoneNumber']) {
             $object->setPhoneNumber(null);
+            unset($data['phoneNumber']);
         }
         if (\array_key_exists('email', $data) && null !== $data['email']) {
             $object->setEmail($data['email']);
             unset($data['email']);
         } elseif (\array_key_exists('email', $data) && null === $data['email']) {
             $object->setEmail(null);
+            unset($data['email']);
         }
         if (\array_key_exists('locations', $data) && null !== $data['locations']) {
             $values = [];
@@ -109,6 +117,7 @@ class PosNormalizer implements DenormalizerInterface, NormalizerInterface, Denor
             unset($data['locations']);
         } elseif (\array_key_exists('locations', $data) && null === $data['locations']) {
             $object->setLocations(null);
+            unset($data['locations']);
         }
         if (\array_key_exists('openHours', $data) && null !== $data['openHours']) {
             $values_1 = [];
@@ -119,12 +128,14 @@ class PosNormalizer implements DenormalizerInterface, NormalizerInterface, Denor
             unset($data['openHours']);
         } elseif (\array_key_exists('openHours', $data) && null === $data['openHours']) {
             $object->setOpenHours(null);
+            unset($data['openHours']);
         }
         if (\array_key_exists('serviceTime', $data) && null !== $data['serviceTime']) {
             $object->setServiceTime($data['serviceTime']);
             unset($data['serviceTime']);
         } elseif (\array_key_exists('serviceTime', $data) && null === $data['serviceTime']) {
             $object->setServiceTime(null);
+            unset($data['serviceTime']);
         }
         if (\array_key_exists('payments', $data) && null !== $data['payments']) {
             $values_2 = [];
@@ -135,30 +146,35 @@ class PosNormalizer implements DenormalizerInterface, NormalizerInterface, Denor
             unset($data['payments']);
         } elseif (\array_key_exists('payments', $data) && null === $data['payments']) {
             $object->setPayments(null);
+            unset($data['payments']);
         }
         if (\array_key_exists('confirmationType', $data) && null !== $data['confirmationType']) {
             $object->setConfirmationType($data['confirmationType']);
             unset($data['confirmationType']);
         } elseif (\array_key_exists('confirmationType', $data) && null === $data['confirmationType']) {
             $object->setConfirmationType(null);
+            unset($data['confirmationType']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
             $object->setCreatedAt($data['createdAt']);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('updatedAt', $data) && null !== $data['updatedAt']) {
             $object->setUpdatedAt($data['updatedAt']);
             unset($data['updatedAt']);
         } elseif (\array_key_exists('updatedAt', $data) && null === $data['updatedAt']) {
             $object->setUpdatedAt(null);
+            unset($data['updatedAt']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -180,10 +196,10 @@ class PosNormalizer implements DenormalizerInterface, NormalizerInterface, Denor
         }
         $dataArray['name'] = $data->getName();
         if ($data->isInitialized('seller') && null !== $data->getSeller()) {
-            $dataArray['seller'] = $this->normalizer->normalize($data->getSeller(), 'json', $context);
+            $dataArray['seller'] = null === $data->getSeller() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSeller(), 'json', $context));
         }
         $dataArray['type'] = $data->getType();
-        $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+        $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         if ($data->isInitialized('phoneNumber') && null !== $data->getPhoneNumber()) {
             $dataArray['phoneNumber'] = $data->getPhoneNumber();
         }
@@ -193,13 +209,13 @@ class PosNormalizer implements DenormalizerInterface, NormalizerInterface, Denor
         if ($data->isInitialized('locations') && null !== $data->getLocations()) {
             $values = [];
             foreach ($data->getLocations() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['locations'] = $values;
         }
         $values_1 = [];
         foreach ($data->getOpenHours() as $value_1) {
-            $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
         }
         $dataArray['openHours'] = $values_1;
         if ($data->isInitialized('serviceTime') && null !== $data->getServiceTime()) {
@@ -208,7 +224,7 @@ class PosNormalizer implements DenormalizerInterface, NormalizerInterface, Denor
         if ($data->isInitialized('payments') && null !== $data->getPayments()) {
             $values_2 = [];
             foreach ($data->getPayments() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = null === $value_2 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
             }
             $dataArray['payments'] = $values_2;
         }
@@ -220,7 +236,7 @@ class PosNormalizer implements DenormalizerInterface, NormalizerInterface, Denor
         if ($data->isInitialized('updatedAt') && null !== $data->getUpdatedAt()) {
             $dataArray['updatedAt'] = $data->getUpdatedAt();
         }
-        foreach ($data as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_3;
             }

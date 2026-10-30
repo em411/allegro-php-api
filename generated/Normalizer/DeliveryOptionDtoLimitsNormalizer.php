@@ -42,39 +42,43 @@ class DeliveryOptionDtoLimitsNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\DeliveryOptionDtoLimits();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\DeliveryOptionDtoLimits();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('cashOnDelivery', $data) && null !== $data['cashOnDelivery']) {
             $object->setCashOnDelivery($this->denormalizer->denormalize($data['cashOnDelivery'], \Em411\Allegro\Api\Model\MoneyDto::class, 'json', $context));
             unset($data['cashOnDelivery']);
         } elseif (\array_key_exists('cashOnDelivery', $data) && null === $data['cashOnDelivery']) {
             $object->setCashOnDelivery(null);
+            unset($data['cashOnDelivery']);
         }
         if (\array_key_exists('insurance', $data) && null !== $data['insurance']) {
             $object->setInsurance($this->denormalizer->denormalize($data['insurance'], \Em411\Allegro\Api\Model\MoneyDto::class, 'json', $context));
             unset($data['insurance']);
         } elseif (\array_key_exists('insurance', $data) && null === $data['insurance']) {
             $object->setInsurance(null);
+            unset($data['insurance']);
         }
         if (\array_key_exists('dimensions', $data) && null !== $data['dimensions']) {
             $object->setDimensions($this->denormalizer->denormalize($data['dimensions'], \Em411\Allegro\Api\Model\DeliveryOptionDtoLimitsDimensions::class, 'json', $context));
             unset($data['dimensions']);
         } elseif (\array_key_exists('dimensions', $data) && null === $data['dimensions']) {
             $object->setDimensions(null);
+            unset($data['dimensions']);
         }
         if (\array_key_exists('weight', $data) && null !== $data['weight']) {
             $object->setWeight($this->denormalizer->denormalize($data['weight'], \Em411\Allegro\Api\Model\WeightValue::class, 'json', $context));
             unset($data['weight']);
         } elseif (\array_key_exists('weight', $data) && null === $data['weight']) {
             $object->setWeight(null);
+            unset($data['weight']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,18 +93,18 @@ class DeliveryOptionDtoLimitsNormalizer implements DenormalizerInterface, Normal
     {
         $dataArray = [];
         if ($data->isInitialized('cashOnDelivery') && null !== $data->getCashOnDelivery()) {
-            $dataArray['cashOnDelivery'] = $this->normalizer->normalize($data->getCashOnDelivery(), 'json', $context);
+            $dataArray['cashOnDelivery'] = null === $data->getCashOnDelivery() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCashOnDelivery(), 'json', $context));
         }
         if ($data->isInitialized('insurance') && null !== $data->getInsurance()) {
-            $dataArray['insurance'] = $this->normalizer->normalize($data->getInsurance(), 'json', $context);
+            $dataArray['insurance'] = null === $data->getInsurance() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getInsurance(), 'json', $context));
         }
         if ($data->isInitialized('dimensions') && null !== $data->getDimensions()) {
-            $dataArray['dimensions'] = $this->normalizer->normalize($data->getDimensions(), 'json', $context);
+            $dataArray['dimensions'] = null === $data->getDimensions() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDimensions(), 'json', $context));
         }
         if ($data->isInitialized('weight') && null !== $data->getWeight()) {
-            $dataArray['weight'] = $this->normalizer->normalize($data->getWeight(), 'json', $context);
+            $dataArray['weight'] = null === $data->getWeight() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getWeight(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

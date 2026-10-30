@@ -42,33 +42,36 @@ class AdditionalEmailNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AdditionalEmail();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AdditionalEmail();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('email', $data) && null !== $data['email']) {
             $object->setEmail($data['email']);
             unset($data['email']);
         } elseif (\array_key_exists('email', $data) && null === $data['email']) {
             $object->setEmail(null);
+            unset($data['email']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
             $object->setCreatedAt($data['createdAt']);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,7 +88,7 @@ class AdditionalEmailNormalizer implements DenormalizerInterface, NormalizerInte
         $dataArray['id'] = $data->getId();
         $dataArray['email'] = $data->getEmail();
         $dataArray['createdAt'] = $data->getCreatedAt();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

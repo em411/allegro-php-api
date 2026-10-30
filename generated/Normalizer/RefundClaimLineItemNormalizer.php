@@ -42,39 +42,55 @@ class RefundClaimLineItemNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\RefundClaimLineItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\RefundClaimLineItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('quantity', $data) && null !== $data['quantity']) {
             $object->setQuantity($data['quantity']);
             unset($data['quantity']);
         } elseif (\array_key_exists('quantity', $data) && null === $data['quantity']) {
             $object->setQuantity(null);
+            unset($data['quantity']);
         }
         if (\array_key_exists('boughtAt', $data) && null !== $data['boughtAt']) {
-            $object->setBoughtAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['boughtAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['boughtAt']);
+            if (false === $date) {
+                if (\is_string($data['boughtAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['boughtAt'])) {
+                    try {
+                        $date = new \DateTime($data['boughtAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['boughtAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['boughtAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setBoughtAt($date);
             unset($data['boughtAt']);
         } elseif (\array_key_exists('boughtAt', $data) && null === $data['boughtAt']) {
             $object->setBoughtAt(null);
+            unset($data['boughtAt']);
         }
         if (\array_key_exists('offer', $data) && null !== $data['offer']) {
             $object->setOffer($this->denormalizer->denormalize($data['offer'], \Em411\Allegro\Api\Model\RefundClaimLineItemOffer::class, 'json', $context));
             unset($data['offer']);
         } elseif (\array_key_exists('offer', $data) && null === $data['offer']) {
             $object->setOffer(null);
+            unset($data['offer']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -98,9 +114,9 @@ class RefundClaimLineItemNormalizer implements DenormalizerInterface, Normalizer
             $dataArray['boughtAt'] = $data->getBoughtAt()->format('Y-m-d\TH:i:sP');
         }
         if ($data->isInitialized('offer') && null !== $data->getOffer()) {
-            $dataArray['offer'] = $this->normalizer->normalize($data->getOffer(), 'json', $context);
+            $dataArray['offer'] = null === $data->getOffer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOffer(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

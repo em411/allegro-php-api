@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormLineItemTax extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormLineItemTax implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class CheckoutFormLineItemTax extends \ArrayObject
         $this->exemption = $exemption;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['rate' => ['rate', 'getRate', 'setRate'], 'subject' => ['subject', 'getSubject', 'setSubject'], 'exemption' => ['exemption', 'getExemption', 'setExemption']];
     }
 }

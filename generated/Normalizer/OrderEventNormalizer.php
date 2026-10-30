@@ -42,39 +42,55 @@ class OrderEventNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OrderEvent();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OrderEvent();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('order', $data) && null !== $data['order']) {
             $object->setOrder($this->denormalizer->denormalize($data['order'], \Em411\Allegro\Api\Model\OrderEventData::class, 'json', $context));
             unset($data['order']);
         } elseif (\array_key_exists('order', $data) && null === $data['order']) {
             $object->setOrder(null);
+            unset($data['order']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('occurredAt', $data) && null !== $data['occurredAt']) {
-            $object->setOccurredAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['occurredAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['occurredAt']);
+            if (false === $date) {
+                if (\is_string($data['occurredAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['occurredAt'])) {
+                    try {
+                        $date = new \DateTime($data['occurredAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['occurredAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['occurredAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setOccurredAt($date);
             unset($data['occurredAt']);
         } elseif (\array_key_exists('occurredAt', $data) && null === $data['occurredAt']) {
             $object->setOccurredAt(null);
+            unset($data['occurredAt']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,10 +105,10 @@ class OrderEventNormalizer implements DenormalizerInterface, NormalizerInterface
     {
         $dataArray = [];
         $dataArray['id'] = $data->getId();
-        $dataArray['order'] = $this->normalizer->normalize($data->getOrder(), 'json', $context);
+        $dataArray['order'] = null === $data->getOrder() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOrder(), 'json', $context));
         $dataArray['type'] = $data->getType();
         $dataArray['occurredAt'] = $data->getOccurredAt()->format('Y-m-d\TH:i:sP');
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -21,11 +21,10 @@ class GetTableUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
     /**
      * Use this resource to get selected size table. Read more: <a href="../../news/tabele-rozmiarow-w-rest-api-LRV05q2dGtV" target="_blank">PL</a> / <a href="../../news/size-tables-in-rest-api-D7KP4DE1BH3" target="_blank">EN</a>.
      *
-     * @param string $tableId          table identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $tableId table identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $tableId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetTableUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
 
     public function getUri(): string
     {
-        return str_replace(['{tableId}'], [$this->tableId], '/sale/size-tables/{tableId}');
+        return str_replace(['{tableId}'], [rawurlencode($this->tableId)], '/sale/size-tables/{tableId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -80,7 +79,7 @@ class GetTableUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PublicTableDto', 'json');
         }
         if (401 === $status) {

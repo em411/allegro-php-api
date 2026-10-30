@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraints extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraints implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -148,5 +152,10 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
         $this->shippingTime = $shippingTime;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['allowed' => ['allowed', 'getAllowed', 'setAllowed'], 'maxQuantityPerPackage' => ['maxQuantityPerPackage', 'getMaxQuantityPerPackage', 'setMaxQuantityPerPackage'], 'maxPackageWeight' => ['maxPackageWeight', 'getMaxPackageWeight', 'setMaxPackageWeight'], 'firstItemRate' => ['firstItemRate', 'getFirstItemRate', 'setFirstItemRate'], 'shippingTime' => ['shippingTime', 'getShippingTime', 'setShippingTime']];
     }
 }

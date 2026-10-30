@@ -20,25 +20,22 @@ class GetCpsConversions extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint i
     /**
      * Use this resource to find your CPS (Cost Per Sale) conversions for specific filters. The response contains a list of CPS conversions that correspond with the specified parameters. Read more: <a href="../../tutorials/afiliacja-0A1bPnwVwUq#jak-pobrac-informacje-o-konwersji-cps" target="_blank">PL</a> / <a href="../../tutorials/affiliation-8do60yLKPIq#how-to-retrieve-cps-conversion-information" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $orderCreatedAt.gte The minimum date and time of order creation in ISO 8601 format.
-     * @var string $orderCreatedAt.lte The maximum date and time of order creation in ISO 8601 format.
-     * @var string $lastModifiedAt.gte The minimum date and time of the latest conversion modification in ISO 8601 format.
-     * @var string $lastModifiedAt.lte The maximum date and time of the latest conversion modification in ISO 8601 format.
-     * @var string $status Conversion status. The allowed values are:
-     *             CREATED
-     *             REJECTED
-     *             CONFIRMED.
-     * @var int    $offset the offset of elements in the response
-     * @var int    $limit maximum number of elements in response
-     * @var string $includePublisherUrlParameters Comma-separated keys of the ‘publisherUrlParameters’ map which will be included in the response. By default the map is empty.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "orderCreatedAt.gte"?: string, //The minimum date and time of order creation in ISO 8601 format.
+     *    "orderCreatedAt.lte"?: string, //The maximum date and time of order creation in ISO 8601 format.
+     *    "lastModifiedAt.gte"?: string, //The minimum date and time of the latest conversion modification in ISO 8601 format.
+     *    "lastModifiedAt.lte"?: string, //The maximum date and time of the latest conversion modification in ISO 8601 format.
+     *    "status"?: string, //Conversion status. The allowed values are:
+     * CREATED
+     * REJECTED
+     * CONFIRMED.
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //Maximum number of elements in response.
+     *    "includePublisherUrlParameters"?: array, //Comma-separated keys of the ‘publisherUrlParameters’ map which will be included in the response. By default the map is empty.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -84,7 +81,7 @@ class GetCpsConversions extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint i
         $optionsResolver->addAllowedTypes('status', ['string']);
         $optionsResolver->addAllowedTypes('offset', ['int']);
         $optionsResolver->addAllowedTypes('limit', ['int']);
-        $optionsResolver->addAllowedTypes('includePublisherUrlParameters', ['string']);
+        $optionsResolver->addAllowedTypes('includePublisherUrlParameters', ['array']);
 
         return $optionsResolver;
     }
@@ -100,6 +97,11 @@ class GetCpsConversions extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint i
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['includePublisherUrlParameters' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\CpsConversionResponse|null
      *
@@ -112,7 +114,7 @@ class GetCpsConversions extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint i
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\CpsConversionResponse', 'json');
         }
         if (400 === $status) {
@@ -124,7 +126,7 @@ class GetCpsConversions extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint i
         if (403 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetCpsConversionsForbiddenException($response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCpsConversionsUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

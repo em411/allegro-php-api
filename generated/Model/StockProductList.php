@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class StockProductList extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class StockProductList implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class StockProductList extends \ArrayObject
         $this->totalCount = $totalCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['stock' => ['stock', 'getStock', 'setStock'], 'count' => ['count', 'getCount', 'setCount'], 'totalCount' => ['totalCount', 'getTotalCount', 'setTotalCount']];
     }
 }

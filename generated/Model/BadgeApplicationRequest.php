@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BadgeApplicationRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BadgeApplicationRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -132,5 +136,10 @@ class BadgeApplicationRequest extends \ArrayObject
         $this->declaredStock = $declaredStock;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['campaign' => ['campaign', 'getCampaign', 'setCampaign'], 'offer' => ['offer', 'getOffer', 'setOffer'], 'prices' => ['prices', 'getPrices', 'setPrices'], 'purchaseConstraints' => ['purchaseConstraints', 'getPurchaseConstraints', 'setPurchaseConstraints'], 'declaredStock' => ['declaredStock', 'getDeclaredStock', 'setDeclaredStock']];
     }
 }

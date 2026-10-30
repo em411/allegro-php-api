@@ -42,21 +42,22 @@ class CustomerReturnRefundRejectionRequestNormalizer implements DenormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CustomerReturnRefundRejectionRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CustomerReturnRefundRejectionRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('rejection', $data) && null !== $data['rejection']) {
             $object->setRejection($this->denormalizer->denormalize($data['rejection'], \Em411\Allegro\Api\Model\CustomerReturnRefundRejectionRequestRejection::class, 'json', $context));
             unset($data['rejection']);
         } elseif (\array_key_exists('rejection', $data) && null === $data['rejection']) {
             $object->setRejection(null);
+            unset($data['rejection']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,8 +71,8 @@ class CustomerReturnRefundRejectionRequestNormalizer implements DenormalizerInte
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['rejection'] = $this->normalizer->normalize($data->getRejection(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['rejection'] = null === $data->getRejection() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRejection(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

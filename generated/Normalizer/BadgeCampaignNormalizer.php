@@ -42,78 +42,88 @@ class BadgeCampaignNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BadgeCampaign();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\BadgeCampaign();
         if (\array_key_exists('stockReservationIsRequired', $data) && \is_int($data['stockReservationIsRequired'])) {
             $data['stockReservationIsRequired'] = (bool) $data['stockReservationIsRequired'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('marketplace', $data) && null !== $data['marketplace']) {
             $object->setMarketplace($this->denormalizer->denormalize($data['marketplace'], \Em411\Allegro\Api\Model\MarketplaceReference::class, 'json', $context));
             unset($data['marketplace']);
         } elseif (\array_key_exists('marketplace', $data) && null === $data['marketplace']) {
             $object->setMarketplace(null);
+            unset($data['marketplace']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('eligibility', $data) && null !== $data['eligibility']) {
             $object->setEligibility($this->denormalizer->denormalize($data['eligibility'], \Em411\Allegro\Api\Model\UserCampaignEligibility::class, 'json', $context));
             unset($data['eligibility']);
         } elseif (\array_key_exists('eligibility', $data) && null === $data['eligibility']) {
             $object->setEligibility(null);
+            unset($data['eligibility']);
         }
         if (\array_key_exists('application', $data) && null !== $data['application']) {
             $object->setApplication($this->denormalizer->denormalize($data['application'], \Em411\Allegro\Api\Model\ApplicationTimePolicy::class, 'json', $context));
             unset($data['application']);
         } elseif (\array_key_exists('application', $data) && null === $data['application']) {
             $object->setApplication(null);
+            unset($data['application']);
         }
         if (\array_key_exists('visibility', $data) && null !== $data['visibility']) {
             $object->setVisibility($this->denormalizer->denormalize($data['visibility'], \Em411\Allegro\Api\Model\VisibilityTimePolicy::class, 'json', $context));
             unset($data['visibility']);
         } elseif (\array_key_exists('visibility', $data) && null === $data['visibility']) {
             $object->setVisibility(null);
+            unset($data['visibility']);
         }
         if (\array_key_exists('publication', $data) && null !== $data['publication']) {
             $object->setPublication($this->denormalizer->denormalize($data['publication'], \Em411\Allegro\Api\Model\PublicationTimePolicy::class, 'json', $context));
             unset($data['publication']);
         } elseif (\array_key_exists('publication', $data) && null === $data['publication']) {
             $object->setPublication(null);
+            unset($data['publication']);
         }
         if (\array_key_exists('regulationsLink', $data) && null !== $data['regulationsLink']) {
             $object->setRegulationsLink($data['regulationsLink']);
             unset($data['regulationsLink']);
         } elseif (\array_key_exists('regulationsLink', $data) && null === $data['regulationsLink']) {
             $object->setRegulationsLink(null);
+            unset($data['regulationsLink']);
         }
         if (\array_key_exists('stockReservationIsRequired', $data) && null !== $data['stockReservationIsRequired']) {
             $object->setStockReservationIsRequired($data['stockReservationIsRequired']);
             unset($data['stockReservationIsRequired']);
         } elseif (\array_key_exists('stockReservationIsRequired', $data) && null === $data['stockReservationIsRequired']) {
             $object->setStockReservationIsRequired(null);
+            unset($data['stockReservationIsRequired']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -129,17 +139,17 @@ class BadgeCampaignNormalizer implements DenormalizerInterface, NormalizerInterf
         $dataArray = [];
         $dataArray['id'] = $data->getId();
         $dataArray['name'] = $data->getName();
-        $dataArray['marketplace'] = $this->normalizer->normalize($data->getMarketplace(), 'json', $context);
+        $dataArray['marketplace'] = null === $data->getMarketplace() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMarketplace(), 'json', $context));
         $dataArray['type'] = $data->getType();
-        $dataArray['eligibility'] = $this->normalizer->normalize($data->getEligibility(), 'json', $context);
-        $dataArray['application'] = $this->normalizer->normalize($data->getApplication(), 'json', $context);
-        $dataArray['visibility'] = $this->normalizer->normalize($data->getVisibility(), 'json', $context);
-        $dataArray['publication'] = $this->normalizer->normalize($data->getPublication(), 'json', $context);
+        $dataArray['eligibility'] = null === $data->getEligibility() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getEligibility(), 'json', $context));
+        $dataArray['application'] = null === $data->getApplication() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getApplication(), 'json', $context));
+        $dataArray['visibility'] = null === $data->getVisibility() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getVisibility(), 'json', $context));
+        $dataArray['publication'] = null === $data->getPublication() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPublication(), 'json', $context));
         $dataArray['regulationsLink'] = $data->getRegulationsLink();
         if ($data->isInitialized('stockReservationIsRequired') && null !== $data->getStockReservationIsRequired()) {
             $dataArray['stockReservationIsRequired'] = $data->getStockReservationIsRequired();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

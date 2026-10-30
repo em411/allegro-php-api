@@ -21,11 +21,10 @@ class DeleteOfferUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
     /**
      * Use this resource to delete a draft offer. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#szkic-oferty" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#inactive-status" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $offerId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class DeleteOfferUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
 
     public function getUri(): string
     {
-        return str_replace(['{offerId}'], [$this->offerId], '/sale/offers/{offerId}');
+        return str_replace(['{offerId}'], [rawurlencode($this->offerId)], '/sale/offers/{offerId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

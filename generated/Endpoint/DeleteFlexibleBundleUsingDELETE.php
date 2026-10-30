@@ -35,7 +35,7 @@ class DeleteFlexibleBundleUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\
 
     public function getUri(): string
     {
-        return str_replace(['{bundleId}'], [$this->bundleId], '/sale/flexible-bundles/{bundleId}');
+        return str_replace(['{bundleId}'], [rawurlencode($this->bundleId)], '/sale/flexible-bundles/{bundleId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -64,10 +64,10 @@ class DeleteFlexibleBundleUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\
         if (204 === $status) {
             return null;
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeleteFlexibleBundleUsingDELETEUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeleteFlexibleBundleUsingDELETENotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

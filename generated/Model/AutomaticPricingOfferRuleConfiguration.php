@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AutomaticPricingOfferRuleConfiguration extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AutomaticPricingOfferRuleConfiguration implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class AutomaticPricingOfferRuleConfiguration extends \ArrayObject
         $this->priceRange = $priceRange;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['priceRange' => ['priceRange', 'getPriceRange', 'setPriceRange']];
     }
 }

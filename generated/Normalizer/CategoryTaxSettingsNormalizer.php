@@ -42,15 +42,15 @@ class CategoryTaxSettingsNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CategoryTaxSettings();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CategoryTaxSettings();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('subjects', $data) && null !== $data['subjects']) {
             $values = [];
@@ -61,6 +61,7 @@ class CategoryTaxSettingsNormalizer implements DenormalizerInterface, Normalizer
             unset($data['subjects']);
         } elseif (\array_key_exists('subjects', $data) && null === $data['subjects']) {
             $object->setSubjects(null);
+            unset($data['subjects']);
         }
         if (\array_key_exists('rates', $data) && null !== $data['rates']) {
             $values_1 = [];
@@ -71,6 +72,7 @@ class CategoryTaxSettingsNormalizer implements DenormalizerInterface, Normalizer
             unset($data['rates']);
         } elseif (\array_key_exists('rates', $data) && null === $data['rates']) {
             $object->setRates(null);
+            unset($data['rates']);
         }
         if (\array_key_exists('exemptions', $data) && null !== $data['exemptions']) {
             $values_2 = [];
@@ -81,6 +83,7 @@ class CategoryTaxSettingsNormalizer implements DenormalizerInterface, Normalizer
             unset($data['exemptions']);
         } elseif (\array_key_exists('exemptions', $data) && null === $data['exemptions']) {
             $object->setExemptions(null);
+            unset($data['exemptions']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -97,25 +100,25 @@ class CategoryTaxSettingsNormalizer implements DenormalizerInterface, Normalizer
         if ($data->isInitialized('subjects') && null !== $data->getSubjects()) {
             $values = [];
             foreach ($data->getSubjects() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['subjects'] = $values;
         }
         if ($data->isInitialized('rates') && null !== $data->getRates()) {
             $values_1 = [];
             foreach ($data->getRates() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['rates'] = $values_1;
         }
         if ($data->isInitialized('exemptions') && null !== $data->getExemptions()) {
             $values_2 = [];
             foreach ($data->getExemptions() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = null === $value_2 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
             }
             $dataArray['exemptions'] = $values_2;
         }
-        foreach ($data as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_3;
             }

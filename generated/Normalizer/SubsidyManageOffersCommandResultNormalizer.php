@@ -42,33 +42,48 @@ class SubsidyManageOffersCommandResultNormalizer implements DenormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SubsidyManageOffersCommandResult();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SubsidyManageOffersCommandResult();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('commandId', $data) && null !== $data['commandId']) {
             $object->setCommandId($data['commandId']);
             unset($data['commandId']);
         } elseif (\array_key_exists('commandId', $data) && null === $data['commandId']) {
             $object->setCommandId(null);
+            unset($data['commandId']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
-            $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']);
+            if (false === $date) {
+                if (\is_string($data['createdAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['createdAt'])) {
+                    try {
+                        $date = new \DateTime($data['createdAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setCreatedAt($date);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,7 +100,7 @@ class SubsidyManageOffersCommandResultNormalizer implements DenormalizerInterfac
         $dataArray['commandId'] = $data->getCommandId();
         $dataArray['status'] = $data->getStatus();
         $dataArray['createdAt'] = $data->getCreatedAt()->format('Y-m-d\TH:i:sP');
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ThreadParticipantVBeta1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ThreadParticipantVBeta1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -65,5 +69,10 @@ class ThreadParticipantVBeta1 extends \ArrayObject
         $this->login = $login;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['role' => ['role', 'getRole', 'setRole'], 'login' => ['login', 'getLogin', 'setLogin']];
     }
 }

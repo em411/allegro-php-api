@@ -42,27 +42,29 @@ class CommentVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CommentVBeta1();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CommentVBeta1();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('text', $data) && null !== $data['text']) {
             $object->setText($data['text']);
             unset($data['text']);
         } elseif (\array_key_exists('text', $data) && null === $data['text']) {
             $object->setText(null);
+            unset($data['text']);
         }
         if (\array_key_exists('language', $data) && null !== $data['language']) {
             $object->setLanguage($data['language']);
             unset($data['language']);
         } elseif (\array_key_exists('language', $data) && null === $data['language']) {
             $object->setLanguage(null);
+            unset($data['language']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +84,7 @@ class CommentVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
         if ($data->isInitialized('language') && null !== $data->getLanguage()) {
             $dataArray['language'] = $data->getLanguage();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

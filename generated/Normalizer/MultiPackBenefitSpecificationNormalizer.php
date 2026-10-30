@@ -42,33 +42,36 @@ class MultiPackBenefitSpecificationNormalizer implements DenormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\MultiPackBenefitSpecification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\MultiPackBenefitSpecification();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('configuration', $data) && null !== $data['configuration']) {
-            $object->setConfiguration($this->denormalizer->denormalize($data['configuration'], \Em411\Allegro\Api\Model\MultiPackBenefitSpecificationconfiguration::class, 'json', $context));
+            $object->setConfiguration($this->denormalizer->denormalize($data['configuration'], \Em411\Allegro\Api\Model\MultiPackBenefitSpecificationConfiguration::class, 'json', $context));
             unset($data['configuration']);
         } elseif (\array_key_exists('configuration', $data) && null === $data['configuration']) {
             $object->setConfiguration(null);
+            unset($data['configuration']);
         }
         if (\array_key_exists('trigger', $data) && null !== $data['trigger']) {
-            $object->setTrigger($this->denormalizer->denormalize($data['trigger'], \Em411\Allegro\Api\Model\MultiPackBenefitSpecificationtrigger::class, 'json', $context));
+            $object->setTrigger($this->denormalizer->denormalize($data['trigger'], \Em411\Allegro\Api\Model\MultiPackBenefitSpecificationTrigger::class, 'json', $context));
             unset($data['trigger']);
         } elseif (\array_key_exists('trigger', $data) && null === $data['trigger']) {
             $object->setTrigger(null);
+            unset($data['trigger']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,9 +88,9 @@ class MultiPackBenefitSpecificationNormalizer implements DenormalizerInterface, 
         if ($data->isInitialized('type') && null !== $data->getType()) {
             $dataArray['type'] = $data->getType();
         }
-        $dataArray['configuration'] = $this->normalizer->normalize($data->getConfiguration(), 'json', $context);
-        $dataArray['trigger'] = $this->normalizer->normalize($data->getTrigger(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['configuration'] = null === $data->getConfiguration() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getConfiguration(), 'json', $context));
+        $dataArray['trigger'] = null === $data->getTrigger() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTrigger(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

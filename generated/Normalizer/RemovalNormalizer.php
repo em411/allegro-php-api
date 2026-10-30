@@ -42,27 +42,29 @@ class RemovalNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Removal();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Removal();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('possibleTo', $data) && null !== $data['possibleTo']) {
             $object->setPossibleTo($data['possibleTo']);
             unset($data['possibleTo']);
         } elseif (\array_key_exists('possibleTo', $data) && null === $data['possibleTo']) {
             $object->setPossibleTo(null);
+            unset($data['possibleTo']);
         }
         if (\array_key_exists('request', $data) && null !== $data['request']) {
             $object->setRequest($this->denormalizer->denormalize($data['request'], \Em411\Allegro\Api\Model\RemovalRequest::class, 'json', $context));
             unset($data['request']);
         } elseif (\array_key_exists('request', $data) && null === $data['request']) {
             $object->setRequest(null);
+            unset($data['request']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,9 +80,9 @@ class RemovalNormalizer implements DenormalizerInterface, NormalizerInterface, D
         $dataArray = [];
         $dataArray['possibleTo'] = $data->getPossibleTo();
         if ($data->isInitialized('request') && null !== $data->getRequest()) {
-            $dataArray['request'] = $this->normalizer->normalize($data->getRequest(), 'json', $context);
+            $dataArray['request'] = null === $data->getRequest() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRequest(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

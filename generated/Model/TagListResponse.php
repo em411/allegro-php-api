@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class TagListResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class TagListResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class TagListResponse extends \ArrayObject
         $this->tags = $tags;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['tags' => ['tags', 'getTags', 'setTags']];
     }
 }

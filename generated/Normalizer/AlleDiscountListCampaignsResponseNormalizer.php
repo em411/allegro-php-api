@@ -42,15 +42,15 @@ class AlleDiscountListCampaignsResponseNormalizer implements DenormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AlleDiscountListCampaignsResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AlleDiscountListCampaignsResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('alleDiscountCampaigns', $data) && null !== $data['alleDiscountCampaigns']) {
             $values = [];
@@ -61,6 +61,7 @@ class AlleDiscountListCampaignsResponseNormalizer implements DenormalizerInterfa
             unset($data['alleDiscountCampaigns']);
         } elseif (\array_key_exists('alleDiscountCampaigns', $data) && null === $data['alleDiscountCampaigns']) {
             $object->setAlleDiscountCampaigns(null);
+            unset($data['alleDiscountCampaigns']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,11 +78,11 @@ class AlleDiscountListCampaignsResponseNormalizer implements DenormalizerInterfa
         if ($data->isInitialized('alleDiscountCampaigns') && null !== $data->getAlleDiscountCampaigns()) {
             $values = [];
             foreach ($data->getAlleDiscountCampaigns() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['alleDiscountCampaigns'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

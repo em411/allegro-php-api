@@ -42,15 +42,15 @@ class FlexibleBundleUpdateDTONormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FlexibleBundleUpdateDTO();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FlexibleBundleUpdateDTO();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('slots', $data) && null !== $data['slots']) {
             $values = [];
@@ -61,12 +61,14 @@ class FlexibleBundleUpdateDTONormalizer implements DenormalizerInterface, Normal
             unset($data['slots']);
         } elseif (\array_key_exists('slots', $data) && null === $data['slots']) {
             $object->setSlots(null);
+            unset($data['slots']);
         }
         if (\array_key_exists('discount', $data) && null !== $data['discount']) {
             $object->setDiscount($this->denormalizer->denormalize($data['discount'], \Em411\Allegro\Api\Model\FlexibleBundleDiscountDTO::class, 'json', $context));
             unset($data['discount']);
         } elseif (\array_key_exists('discount', $data) && null === $data['discount']) {
             $object->setDiscount(null);
+            unset($data['discount']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,13 +84,13 @@ class FlexibleBundleUpdateDTONormalizer implements DenormalizerInterface, Normal
         $dataArray = [];
         $values = [];
         foreach ($data->getSlots() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['slots'] = $values;
-        if ($data->isInitialized('discount')) {
-            $dataArray['discount'] = $this->normalizer->normalize($data->getDiscount(), 'json', $context);
+        if ($data->isInitialized('discount') && null !== $data->getDiscount()) {
+            $dataArray['discount'] = null === $data->getDiscount() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDiscount(), 'json', $context));
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

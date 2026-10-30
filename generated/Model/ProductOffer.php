@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductOffer extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductOffer implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -191,5 +195,10 @@ class ProductOffer extends \ArrayObject
         $this->images = $images;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['name', 'getName', 'setName'], 'category' => ['category', 'getCategory', 'setCategory'], 'id' => ['id', 'getId', 'setId'], 'idType' => ['idType', 'getIdType', 'setIdType'], 'parameters' => ['parameters', 'getParameters', 'setParameters'], 'images' => ['images', 'getImages', 'setImages']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PickupTimeDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PickupTimeDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class PickupTimeDto extends \ArrayObject
         $this->maxTime = $maxTime;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['date' => ['date', 'getDate', 'setDate'], 'minTime' => ['minTime', 'getMinTime', 'setMinTime'], 'maxTime' => ['maxTime', 'getMaxTime', 'setMaxTime']];
     }
 }

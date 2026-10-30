@@ -42,21 +42,22 @@ class PaymentsNormalizer implements DenormalizerInterface, NormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Payments();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Payments();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('invoice', $data) && null !== $data['invoice']) {
             $object->setInvoice($data['invoice']);
             unset($data['invoice']);
         } elseif (\array_key_exists('invoice', $data) && null === $data['invoice']) {
             $object->setInvoice(null);
+            unset($data['invoice']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +74,7 @@ class PaymentsNormalizer implements DenormalizerInterface, NormalizerInterface, 
         if ($data->isInitialized('invoice') && null !== $data->getInvoice()) {
             $dataArray['invoice'] = $data->getInvoice();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

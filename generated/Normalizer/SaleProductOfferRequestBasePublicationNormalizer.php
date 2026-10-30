@@ -1,0 +1,144 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of em411's Allegro PHP API project.
+ *
+ * (c) em411 <contact@em411.dev>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Em411\Allegro\Api\Normalizer;
+
+use Em411\Allegro\Api\Runtime\Normalizer\CheckArray;
+use Em411\Allegro\Api\Runtime\Normalizer\ValidatorTrait;
+use Jane\Component\JsonSchemaRuntime\Reference;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
+class SaleProductOfferRequestBasePublicationNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+{
+    use CheckArray;
+    use DenormalizerAwareTrait;
+    use NormalizerAwareTrait;
+    use ValidatorTrait;
+
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
+    {
+        return \Em411\Allegro\Api\Model\SaleProductOfferRequestBasePublication::class === $type;
+    }
+
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
+    {
+        return \is_object($data) && \Em411\Allegro\Api\Model\SaleProductOfferRequestBasePublication::class === \get_class($data);
+    }
+
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
+    {
+        $object = new \Em411\Allegro\Api\Model\SaleProductOfferRequestBasePublication();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
+        }
+        if (\array_key_exists('duration', $data) && null !== $data['duration']) {
+            $object->setDuration($data['duration']);
+            unset($data['duration']);
+        } elseif (\array_key_exists('duration', $data) && null === $data['duration']) {
+            $object->setDuration(null);
+            unset($data['duration']);
+        }
+        if (\array_key_exists('startingAt', $data) && null !== $data['startingAt']) {
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['startingAt']);
+            if (false === $date) {
+                if (\is_string($data['startingAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['startingAt'])) {
+                    try {
+                        $date = new \DateTime($data['startingAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['startingAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['startingAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setStartingAt($date);
+            unset($data['startingAt']);
+        } elseif (\array_key_exists('startingAt', $data) && null === $data['startingAt']) {
+            $object->setStartingAt(null);
+            unset($data['startingAt']);
+        }
+        if (\array_key_exists('endingAt', $data) && null !== $data['endingAt']) {
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['endingAt']);
+            if (false === $date_1) {
+                if (\is_string($data['endingAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['endingAt'])) {
+                    try {
+                        $date_1 = new \DateTime($data['endingAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['endingAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['endingAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setEndingAt($date_1);
+            unset($data['endingAt']);
+        } elseif (\array_key_exists('endingAt', $data) && null === $data['endingAt']) {
+            $object->setEndingAt(null);
+            unset($data['endingAt']);
+        }
+        if (\array_key_exists('status', $data) && null !== $data['status']) {
+            $object->setStatus($data['status']);
+            unset($data['status']);
+        } elseif (\array_key_exists('status', $data) && null === $data['status']) {
+            $object->setStatus(null);
+            unset($data['status']);
+        }
+        foreach ($data as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $object[$key] = $value;
+            }
+        }
+
+        return $object;
+    }
+
+    public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
+    {
+        $dataArray = [];
+        if ($data->isInitialized('duration') && null !== $data->getDuration()) {
+            $dataArray['duration'] = $data->getDuration();
+        }
+        if ($data->isInitialized('startingAt') && null !== $data->getStartingAt()) {
+            $dataArray['startingAt'] = $data->getStartingAt()->format('Y-m-d\TH:i:sP');
+        }
+        if ($data->isInitialized('endingAt') && null !== $data->getEndingAt()) {
+            $dataArray['endingAt'] = $data->getEndingAt()->format('Y-m-d\TH:i:sP');
+        }
+        if ($data->isInitialized('status') && null !== $data->getStatus()) {
+            $dataArray['status'] = $data->getStatus();
+        }
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
+            if (preg_match('/.*/', (string) $key)) {
+                $dataArray[$key] = $value;
+            }
+        }
+
+        return $dataArray;
+    }
+
+    public function getSupportedTypes(?string $format = null): array
+    {
+        return [\Em411\Allegro\Api\Model\SaleProductOfferRequestBasePublication::class => false];
+    }
+}

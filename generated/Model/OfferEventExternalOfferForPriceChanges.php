@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferEventExternalOfferForPriceChanges extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferEventExternalOfferForPriceChanges implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -96,5 +100,10 @@ class OfferEventExternalOfferForPriceChanges extends \ArrayObject
         $this->marketplaces = $marketplaces;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'external' => ['external', 'getExternal', 'setExternal'], 'marketplaces' => ['marketplaces', 'getMarketplaces', 'setMarketplaces']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleProductOfferRequestBase extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleProductOfferRequestBase implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -36,11 +40,11 @@ class SaleProductOfferRequestBase extends \ArrayObject
      */
     protected $parameters;
     /**
-     * @var SaleProductOfferRequestBasepublication|null
+     * @var SaleProductOfferRequestBasePublication|null
      */
     protected $publication;
     /**
-     * @var SaleProductOfferRequestBasedelivery|null
+     * @var SaleProductOfferRequestBaseDelivery|null
      */
     protected $delivery;
     /**
@@ -56,7 +60,7 @@ class SaleProductOfferRequestBase extends \ArrayObject
     /**
      * Identifier of contact data for sales format ADVERTISEMENT (classified ad). You can enter the contact identifier or name.
      *
-     * @var SaleProductOfferRequestBasecontact|null
+     * @var SaleProductOfferRequestBaseContact|null
      */
     protected $contact;
     /**
@@ -170,12 +174,12 @@ class SaleProductOfferRequestBase extends \ArrayObject
         return $this;
     }
 
-    public function getPublication(): ?SaleProductOfferRequestBasepublication
+    public function getPublication(): ?SaleProductOfferRequestBasePublication
     {
         return $this->publication;
     }
 
-    public function setPublication(?SaleProductOfferRequestBasepublication $publication): self
+    public function setPublication(?SaleProductOfferRequestBasePublication $publication): self
     {
         $this->initialized['publication'] = true;
         $this->publication = $publication;
@@ -183,12 +187,12 @@ class SaleProductOfferRequestBase extends \ArrayObject
         return $this;
     }
 
-    public function getDelivery(): ?SaleProductOfferRequestBasedelivery
+    public function getDelivery(): ?SaleProductOfferRequestBaseDelivery
     {
         return $this->delivery;
     }
 
-    public function setDelivery(?SaleProductOfferRequestBasedelivery $delivery): self
+    public function setDelivery(?SaleProductOfferRequestBaseDelivery $delivery): self
     {
         $this->initialized['delivery'] = true;
         $this->delivery = $delivery;
@@ -231,7 +235,7 @@ class SaleProductOfferRequestBase extends \ArrayObject
     /**
      * Identifier of contact data for sales format ADVERTISEMENT (classified ad). You can enter the contact identifier or name.
      */
-    public function getContact(): ?SaleProductOfferRequestBasecontact
+    public function getContact(): ?SaleProductOfferRequestBaseContact
     {
         return $this->contact;
     }
@@ -239,7 +243,7 @@ class SaleProductOfferRequestBase extends \ArrayObject
     /**
      * Identifier of contact data for sales format ADVERTISEMENT (classified ad). You can enter the contact identifier or name.
      */
-    public function setContact(?SaleProductOfferRequestBasecontact $contact): self
+    public function setContact(?SaleProductOfferRequestBaseContact $contact): self
     {
         $this->initialized['contact'] = true;
         $this->contact = $contact;
@@ -392,5 +396,10 @@ class SaleProductOfferRequestBase extends \ArrayObject
         $this->messageToSellerSettings = $messageToSellerSettings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['category' => ['category', 'getCategory', 'setCategory'], 'name' => ['name', 'getName', 'setName'], 'parameters' => ['parameters', 'getParameters', 'setParameters'], 'publication' => ['publication', 'getPublication', 'setPublication'], 'delivery' => ['delivery', 'getDelivery', 'setDelivery'], 'afterSalesServices' => ['afterSalesServices', 'getAfterSalesServices', 'setAfterSalesServices'], 'sizeTable' => ['sizeTable', 'getSizeTable', 'setSizeTable'], 'contact' => ['contact', 'getContact', 'setContact'], 'discounts' => ['discounts', 'getDiscounts', 'setDiscounts'], 'payments' => ['payments', 'getPayments', 'setPayments'], 'sellingMode' => ['sellingMode', 'getSellingMode', 'setSellingMode'], 'location' => ['location', 'getLocation', 'setLocation'], 'images' => ['images', 'getImages', 'setImages'], 'description' => ['description', 'getDescription', 'setDescription'], 'external' => ['external', 'getExternal', 'setExternal'], 'taxSettings' => ['taxSettings', 'getTaxSettings', 'setTaxSettings'], 'messageToSellerSettings' => ['messageToSellerSettings', 'getMessageToSellerSettings', 'setMessageToSellerSettings']];
     }
 }

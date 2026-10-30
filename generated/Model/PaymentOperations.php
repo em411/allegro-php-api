@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PaymentOperations extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PaymentOperations implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class PaymentOperations extends \ArrayObject
         $this->totalCount = $totalCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['paymentOperations' => ['paymentOperations', 'getPaymentOperations', 'setPaymentOperations'], 'count' => ['count', 'getCount', 'setCount'], 'totalCount' => ['totalCount', 'getTotalCount', 'setTotalCount']];
     }
 }

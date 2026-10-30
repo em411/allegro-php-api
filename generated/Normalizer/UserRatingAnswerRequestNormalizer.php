@@ -42,21 +42,22 @@ class UserRatingAnswerRequestNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UserRatingAnswerRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\UserRatingAnswerRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('message', $data) && null !== $data['message']) {
             $object->setMessage($data['message']);
             unset($data['message']);
         } elseif (\array_key_exists('message', $data) && null === $data['message']) {
             $object->setMessage(null);
+            unset($data['message']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,7 +72,7 @@ class UserRatingAnswerRequestNormalizer implements DenormalizerInterface, Normal
     {
         $dataArray = [];
         $dataArray['message'] = $data->getMessage();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

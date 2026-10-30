@@ -21,12 +21,11 @@ class ResponsibleProducerDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEn
     /**
      * Use this resource to delete a responsible producer created by you. The responsible producer can be deleted only if it is not assigned to any offer, otherwise the request is rejected and the responsible producer is not deleted. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#dane-teleadresowe-producenta" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-producers-contact-information" target="_blank">EN</a>.
      *
-     * @param string $id               responsible producer ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept acceptable representation of the response
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $id responsible producer ID
+     * @param array{
+     *    "Accept": string, //Acceptable representation of the response.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $id, array $headerParameters = [])
     {
@@ -41,7 +40,7 @@ class ResponsibleProducerDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEn
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/sale/responsible-producers/{id}');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/sale/responsible-producers/{id}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -85,19 +84,19 @@ class ResponsibleProducerDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEn
         if (204 === $status) {
             return null;
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\ResponsibleProducerDELETEUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (403 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\ResponsibleProducerDELETEForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\ResponsibleProducerDELETENotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (409 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (409 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\ResponsibleProducerDELETEConflictException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\ResponsibleProducerDELETEUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

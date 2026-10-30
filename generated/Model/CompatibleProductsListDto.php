@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CompatibleProductsListDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CompatibleProductsListDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class CompatibleProductsListDto extends \ArrayObject
         $this->totalCount = $totalCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['compatibleProducts' => ['compatibleProducts', 'getCompatibleProducts', 'setCompatibleProducts'], 'count' => ['count', 'getCount', 'setCount'], 'totalCount' => ['totalCount', 'getTotalCount', 'setTotalCount']];
     }
 }

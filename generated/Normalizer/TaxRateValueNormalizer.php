@@ -42,36 +42,39 @@ class TaxRateValueNormalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\TaxRateValue();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\TaxRateValue();
         if (\array_key_exists('exemptionRequired', $data) && \is_int($data['exemptionRequired'])) {
             $data['exemptionRequired'] = (bool) $data['exemptionRequired'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('label', $data) && null !== $data['label']) {
             $object->setLabel($data['label']);
             unset($data['label']);
         } elseif (\array_key_exists('label', $data) && null === $data['label']) {
             $object->setLabel(null);
+            unset($data['label']);
         }
         if (\array_key_exists('value', $data) && null !== $data['value']) {
             $object->setValue($data['value']);
             unset($data['value']);
         } elseif (\array_key_exists('value', $data) && null === $data['value']) {
             $object->setValue(null);
+            unset($data['value']);
         }
         if (\array_key_exists('exemptionRequired', $data) && null !== $data['exemptionRequired']) {
             $object->setExemptionRequired($data['exemptionRequired']);
             unset($data['exemptionRequired']);
         } elseif (\array_key_exists('exemptionRequired', $data) && null === $data['exemptionRequired']) {
             $object->setExemptionRequired(null);
+            unset($data['exemptionRequired']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -94,7 +97,7 @@ class TaxRateValueNormalizer implements DenormalizerInterface, NormalizerInterfa
         if ($data->isInitialized('exemptionRequired') && null !== $data->getExemptionRequired()) {
             $dataArray['exemptionRequired'] = $data->getExemptionRequired();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

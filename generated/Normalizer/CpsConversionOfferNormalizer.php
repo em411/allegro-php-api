@@ -42,45 +42,50 @@ class CpsConversionOfferNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CpsConversionOffer();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CpsConversionOffer();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('category', $data) && null !== $data['category']) {
             $object->setCategory($this->denormalizer->denormalize($data['category'], \Em411\Allegro\Api\Model\CpsConversionOfferCategory::class, 'json', $context));
             unset($data['category']);
         } elseif (\array_key_exists('category', $data) && null === $data['category']) {
             $object->setCategory(null);
+            unset($data['category']);
         }
         if (\array_key_exists('unitPrice', $data) && null !== $data['unitPrice']) {
             $object->setUnitPrice($this->denormalizer->denormalize($data['unitPrice'], \Em411\Allegro\Api\Model\CpsConversionOfferUnitPrice::class, 'json', $context));
             unset($data['unitPrice']);
         } elseif (\array_key_exists('unitPrice', $data) && null === $data['unitPrice']) {
             $object->setUnitPrice(null);
+            unset($data['unitPrice']);
         }
         if (\array_key_exists('seller', $data) && null !== $data['seller']) {
             $object->setSeller($this->denormalizer->denormalize($data['seller'], \Em411\Allegro\Api\Model\CpsConversionOfferSeller::class, 'json', $context));
             unset($data['seller']);
         } elseif (\array_key_exists('seller', $data) && null === $data['seller']) {
             $object->setSeller(null);
+            unset($data['seller']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -101,15 +106,15 @@ class CpsConversionOfferNormalizer implements DenormalizerInterface, NormalizerI
             $dataArray['name'] = $data->getName();
         }
         if ($data->isInitialized('category') && null !== $data->getCategory()) {
-            $dataArray['category'] = $this->normalizer->normalize($data->getCategory(), 'json', $context);
+            $dataArray['category'] = null === $data->getCategory() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCategory(), 'json', $context));
         }
         if ($data->isInitialized('unitPrice') && null !== $data->getUnitPrice()) {
-            $dataArray['unitPrice'] = $this->normalizer->normalize($data->getUnitPrice(), 'json', $context);
+            $dataArray['unitPrice'] = null === $data->getUnitPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getUnitPrice(), 'json', $context));
         }
         if ($data->isInitialized('seller') && null !== $data->getSeller()) {
-            $dataArray['seller'] = $this->normalizer->normalize($data->getSeller(), 'json', $context);
+            $dataArray['seller'] = null === $data->getSeller() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSeller(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

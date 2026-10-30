@@ -21,11 +21,10 @@ class DeleteAfterSalesServiceReturnPolicyUsingDELETE extends \Em411\Allegro\Api\
     /**
      * Use this resource to delete a return policy definition.
      *
-     * @param string $returnPolicyId   the ID of the return policy
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $returnPolicyId the ID of the return policy
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $returnPolicyId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class DeleteAfterSalesServiceReturnPolicyUsingDELETE extends \Em411\Allegro\Api\
 
     public function getUri(): string
     {
-        return str_replace(['{returnPolicyId}'], [$this->returnPolicyId], '/after-sales-service-conditions/return-policies/{returnPolicyId}');
+        return str_replace(['{returnPolicyId}'], [rawurlencode($this->returnPolicyId)], '/after-sales-service-conditions/return-policies/{returnPolicyId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -81,7 +80,7 @@ class DeleteAfterSalesServiceReturnPolicyUsingDELETE extends \Em411\Allegro\Api\
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1 +json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1 +json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV1', 'json');
         }
         if (204 === $status) {

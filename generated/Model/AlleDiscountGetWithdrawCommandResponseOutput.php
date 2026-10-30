@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AlleDiscountGetWithdrawCommandResponseOutput extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AlleDiscountGetWithdrawCommandResponseOutput implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -158,5 +162,10 @@ class AlleDiscountGetWithdrawCommandResponseOutput extends \ArrayObject
         $this->errors = $errors;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['status' => ['status', 'getStatus', 'setStatus'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'withdrawnOfferParticipation' => ['withdrawnOfferParticipation', 'getWithdrawnOfferParticipation', 'setWithdrawnOfferParticipation'], 'errors' => ['errors', 'getErrors', 'setErrors']];
     }
 }

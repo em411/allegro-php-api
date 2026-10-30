@@ -42,30 +42,32 @@ class TagRequestNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\TagRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\TagRequest();
         if (\array_key_exists('hidden', $data) && \is_int($data['hidden'])) {
             $data['hidden'] = (bool) $data['hidden'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('hidden', $data) && null !== $data['hidden']) {
             $object->setHidden($data['hidden']);
             unset($data['hidden']);
         } elseif (\array_key_exists('hidden', $data) && null === $data['hidden']) {
             $object->setHidden(null);
+            unset($data['hidden']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,7 +85,7 @@ class TagRequestNormalizer implements DenormalizerInterface, NormalizerInterface
         if ($data->isInitialized('hidden') && null !== $data->getHidden()) {
             $dataArray['hidden'] = $data->getHidden();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

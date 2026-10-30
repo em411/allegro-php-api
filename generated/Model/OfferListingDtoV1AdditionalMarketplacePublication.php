@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferListingDtoV1AdditionalMarketplacePublication extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferListingDtoV1AdditionalMarketplacePublication implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -66,5 +70,10 @@ class OfferListingDtoV1AdditionalMarketplacePublication extends \ArrayObject
         $this->state = $state;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['state' => ['state', 'getState', 'setState']];
     }
 }

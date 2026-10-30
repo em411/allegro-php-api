@@ -42,39 +42,43 @@ class CategoryDefinitionResponseNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CategoryDefinitionResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CategoryDefinitionResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($this->denormalizer->denormalize($data['description'], \Em411\Allegro\Api\Model\CategoryDefinitionDescriptionResponse::class, 'json', $context));
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('maxPrice', $data) && null !== $data['maxPrice']) {
             $object->setMaxPrice($this->denormalizer->denormalize($data['maxPrice'], \Em411\Allegro\Api\Model\Price::class, 'json', $context));
             unset($data['maxPrice']);
         } elseif (\array_key_exists('maxPrice', $data) && null === $data['maxPrice']) {
             $object->setMaxPrice(null);
+            unset($data['maxPrice']);
         }
         if (\array_key_exists('availableConstraints', $data) && null !== $data['availableConstraints']) {
             $values = [];
@@ -85,12 +89,26 @@ class CategoryDefinitionResponseNormalizer implements DenormalizerInterface, Nor
             unset($data['availableConstraints']);
         } elseif (\array_key_exists('availableConstraints', $data) && null === $data['availableConstraints']) {
             $object->setAvailableConstraints(null);
+            unset($data['availableConstraints']);
         }
         if (\array_key_exists('updatedAt', $data) && null !== $data['updatedAt']) {
-            $object->setUpdatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['updatedAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['updatedAt']);
+            if (false === $date) {
+                if (\is_string($data['updatedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['updatedAt'])) {
+                    try {
+                        $date = new \DateTime($data['updatedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['updatedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['updatedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setUpdatedAt($date);
             unset($data['updatedAt']);
         } elseif (\array_key_exists('updatedAt', $data) && null === $data['updatedAt']) {
             $object->setUpdatedAt(null);
+            unset($data['updatedAt']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -111,22 +129,22 @@ class CategoryDefinitionResponseNormalizer implements DenormalizerInterface, Nor
             $dataArray['name'] = $data->getName();
         }
         if ($data->isInitialized('description') && null !== $data->getDescription()) {
-            $dataArray['description'] = $this->normalizer->normalize($data->getDescription(), 'json', $context);
+            $dataArray['description'] = null === $data->getDescription() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDescription(), 'json', $context));
         }
         if ($data->isInitialized('maxPrice') && null !== $data->getMaxPrice()) {
-            $dataArray['maxPrice'] = $this->normalizer->normalize($data->getMaxPrice(), 'json', $context);
+            $dataArray['maxPrice'] = null === $data->getMaxPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMaxPrice(), 'json', $context));
         }
-        if ($data->isInitialized('availableConstraints')) {
+        if ($data->isInitialized('availableConstraints') && null !== $data->getAvailableConstraints()) {
             $values = [];
             foreach ($data->getAvailableConstraints() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['availableConstraints'] = $values;
         }
-        if ($data->isInitialized('updatedAt')) {
+        if ($data->isInitialized('updatedAt') && null !== $data->getUpdatedAt()) {
             $dataArray['updatedAt'] = $data->getUpdatedAt()?->format('Y-m-d\TH:i:sP');
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

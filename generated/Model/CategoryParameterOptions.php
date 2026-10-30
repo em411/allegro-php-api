@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CategoryParameterOptions extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CategoryParameterOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -129,5 +133,10 @@ class CategoryParameterOptions extends \ArrayObject
         $this->customValuesEnabled = $customValuesEnabled;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['ambiguousValueId' => ['ambiguousValueId', 'getAmbiguousValueId', 'setAmbiguousValueId'], 'dependsOnParameterId' => ['dependsOnParameterId', 'getDependsOnParameterId', 'setDependsOnParameterId'], 'describesProduct' => ['describesProduct', 'getDescribesProduct', 'setDescribesProduct'], 'customValuesEnabled' => ['customValuesEnabled', 'getCustomValuesEnabled', 'setCustomValuesEnabled']];
     }
 }

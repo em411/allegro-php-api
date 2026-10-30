@@ -16,23 +16,21 @@ namespace Em411\Allegro\Api\Endpoint;
 class SubmitCommand extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implements \Em411\Allegro\Api\Runtime\Client\Endpoint
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
-    protected $commandId;
+    protected $command_id;
     protected $accept;
 
     /**
      * Use this resource to submit the Advance Ship Notice. After this operation, updates of the Advance Ship Notice are limited to selected properties only. See <a href="../../documentation#operation/updateSubmittedAdvanceShipNotice">PUT /fulfillment/advance-ship-notices/{id}/submitted</a>. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#zakoncz-edycje-i-wyslij-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#finish-editing-and-submit-the-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param string $commandId        the identifier of the command
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId the identifier of the command
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      */
     public function __construct(string $commandId = '725432a9-ae9e-43de-b8c5-7430606a81a4', ?\Em411\Allegro\Api\Model\SubmitCommand $requestBody = null, array $headerParameters = [], array $accept = [])
     {
-        $this->commandId = $commandId;
+        $this->command_id = $commandId;
         $this->body = $requestBody;
         $this->headerParameters = $headerParameters;
         $this->accept = $accept;
@@ -45,13 +43,13 @@ class SubmitCommand extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imple
 
     public function getUri(): string
     {
-        return str_replace(['{commandId}'], [$this->commandId], '/fulfillment/submit-commands/{commandId}');
+        return str_replace(['{command-id}'], [rawurlencode($this->command_id)], '/fulfillment/submit-commands/{command-id}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Em411\Allegro\Api\Model\SubmitCommand) {
-            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], \Em411\Allegro\Api\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -92,13 +90,13 @@ class SubmitCommand extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imple
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (201 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (201 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\SubmitCommand', 'json');
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\SubmitCommandUnauthorizedException($response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\SubmitCommandUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

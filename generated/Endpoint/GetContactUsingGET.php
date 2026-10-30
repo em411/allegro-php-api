@@ -21,11 +21,10 @@ class GetContactUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint 
     /**
      * Use this resource to get contact details. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-szczegoly-danego-kontaktu" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-contact-details" target="_blank">EN</a>.
      *
-     * @param string $id               contact identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $id contact identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $id, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetContactUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint 
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/sale/offer-contacts/{id}');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/sale/offer-contacts/{id}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -81,7 +80,7 @@ class GetContactUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint 
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ContactResponse', 'json');
         }
         if (400 === $status) {

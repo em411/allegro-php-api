@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class RemovalRequestVBeta1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class RemovalRequestVBeta1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class RemovalRequestVBeta1 extends \ArrayObject
         $this->source = $source;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'message' => ['message', 'getMessage', 'setMessage'], 'language' => ['language', 'getLanguage', 'setLanguage'], 'source' => ['source', 'getSource', 'setSource']];
     }
 }

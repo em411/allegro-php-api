@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CategoryDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CategoryDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -148,5 +152,10 @@ class CategoryDto extends \ArrayObject
         $this->parent = $parent;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'leaf' => ['leaf', 'getLeaf', 'setLeaf'], 'name' => ['name', 'getName', 'setName'], 'options' => ['options', 'getOptions', 'setOptions'], 'parent' => ['parent', 'getParent', 'setParent']];
     }
 }

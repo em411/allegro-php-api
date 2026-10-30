@@ -42,33 +42,36 @@ class SinglePromotionCampaignResponseDtoNormalizer implements DenormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SinglePromotionCampaignResponseDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SinglePromotionCampaignResponseDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('campaign', $data) && null !== $data['campaign']) {
             $object->setCampaign($this->denormalizer->denormalize($data['campaign'], \Em411\Allegro\Api\Model\CampaignResponseDto::class, 'json', $context));
             unset($data['campaign']);
         } elseif (\array_key_exists('campaign', $data) && null === $data['campaign']) {
             $object->setCampaign(null);
+            unset($data['campaign']);
         }
         if (\array_key_exists('promotion', $data) && null !== $data['promotion']) {
             $object->setPromotion($this->denormalizer->denormalize($data['promotion'], \Em411\Allegro\Api\Model\PromotionResponseDto::class, 'json', $context));
             unset($data['promotion']);
         } elseif (\array_key_exists('promotion', $data) && null === $data['promotion']) {
             $object->setPromotion(null);
+            unset($data['promotion']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,10 +85,10 @@ class SinglePromotionCampaignResponseDtoNormalizer implements DenormalizerInterf
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['campaign'] = $this->normalizer->normalize($data->getCampaign(), 'json', $context);
-        $dataArray['promotion'] = $this->normalizer->normalize($data->getPromotion(), 'json', $context);
+        $dataArray['campaign'] = null === $data->getCampaign() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCampaign(), 'json', $context));
+        $dataArray['promotion'] = null === $data->getPromotion() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPromotion(), 'json', $context));
         $dataArray['status'] = $data->getStatus();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

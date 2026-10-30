@@ -18,14 +18,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create offer based on product. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-utworzyc-oferte-powiazana-z-produktem" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-list-product-offer" target="_blank">EN</a>. Note that requests may be limited.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleProductOfferResponseV1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleProductOfferResponseV1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateProductOffersBadRequestException
      * @throws Exception\CreateProductOffersUnauthorizedException
@@ -40,15 +38,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve all data of the particular product-offer. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#procesowanie-oferty" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#offer-processing" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleProductOfferResponseV1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleProductOfferResponseV1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetProductOfferBadRequestException
      * @throws Exception\GetProductOfferUnauthorizedException
@@ -63,15 +59,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to edit offer. This resource allows you to edit each field independently, so use it if you want to change only, for example, the price or the quantity in an offer. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#edycja-pojedynczej-oferty" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#editing-single-offer" target="_blank">EN</a>. Note that requests may be limited.
      *
-     * @param string $offerId          the offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId the offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleProductOfferResponseV1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleProductOfferResponseV1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\EditProductOffersBadRequestException
      * @throws Exception\EditProductOffersUnauthorizedException
@@ -88,20 +82,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve selected data of the particular product-offer. The model and functionality is a subset of the full product offer get endpoint (`GET /sale/product-offers/{offerId}`), but it is faster and more reliable. Read more: <a href="../../news/get-sale-product-offers-offerid-parts-pobierz-wybrane-elementy-oferty-aMoB3nZk3Iv" target="_blank">PL</a> / <a href="../../news/get-sale-product-offers-offerid-parts-retrieve-selected-parts-of-the-offer-Pg51yzeAPf3" target="_blank">EN</a>.
      *
-     * @param string $offerId         offer identifier
-     * @param array  $queryParameters {
-     *
-     * @var array $include Selection of parts intended to retrieve. Multiple parts can be specified at the same time.
-     *            }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "include": array, //Selection of parts intended to retrieve. Multiple parts can be specified at the same time.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SalePartialProductOfferResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SalePartialProductOfferResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPartialProductOfferBadRequestException
      * @throws Exception\GetPartialProductOfferUnauthorizedException
@@ -116,16 +106,14 @@ class Client extends Runtime\Client\Client
     /**
      * The URI for the resource given by Location header of POST /sale/product-offers and PATCH /sale/product-offers/{offerId}. Use this resource to check processing status of a POST or PATCH request. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#procesowanie-oferty" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#offer-processing" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param string $operationId      operation identifier provided in location header of POST or PATCH request
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId     offer identifier
+     * @param string $operationId operation identifier provided in location header of POST or PATCH request
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleProductOfferStatusResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleProductOfferStatusResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetProductOfferProcessingStatusBadRequestException
      * @throws Exception\GetProductOfferProcessingStatusUnauthorizedException
@@ -141,55 +129,51 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the list of the seller's offers. You can use different query parameters to filter the list. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-moje-oferty-w-rest-api" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#list-of-offers" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var array  $offer.id Offer ID.
-     * @var string $name the text to search in the offer title
-     * @var float  $sellingMode.price.amount.gte The lower threshold of price.
-     *
-     * If additionally a `publication.marketplace` is provided, searches using the price on the given marketplace.
-     * @var float $sellingMode.price.amount.lte The upper threshold of price.
+     * @param array{
+     *    "offer.id"?: array, //Offer ID.
+     *    "name"?: string, //The text to search in the offer title.
+     *    "sellingMode.price.amount.gte"?: int, //The lower threshold of price.
      *
      * If additionally a `publication.marketplace` is provided, searches using the price on the given marketplace.
-     * @var string $sellingMode.priceAutomation.rule.id The ID of price automation rule. Returns offers with given price automation rule ID.
+     *    "sellingMode.price.amount.lte"?: int, //The upper threshold of price.
+     *
+     * If additionally a `publication.marketplace` is provided, searches using the price on the given marketplace.
+     *    "sellingMode.priceAutomation.rule.id"?: string, //The ID of price automation rule. Returns offers with given price automation rule ID.
      *
      * If additionally a `publication.marketplace` is provided, searches using the price automation rule on the given marketplace.
-     * @var bool $sellingMode.priceAutomation.rule.id.empty Allows to filter offers by existence of price automation rule ID. Passing 'false' will return offers with any price automation rule, passing 'true' will return offers without any price automation rules.
+     *    "sellingMode.priceAutomation.rule.id.empty"?: bool, //Allows to filter offers by existence of price automation rule ID. Passing 'false' will return offers with any price automation rule, passing 'true' will return offers without any price automation rules.
      *
      * If additionally a `publication.marketplace` is provided, searches using the price automation rule on the given marketplace.
-     * @var array  $publication.status The publication status of the offer. Passing more than one value will search for offers with any of the given statuses. By default all statuses are included. Example: `publication.status=INACTIVE&publication.status=ACTIVE` - returns offers with status `INACTIVE` or `ACTIVE`.
-     * @var string $publication.marketplace Either the base marketplace or an additional marketplace of the offer.
+     *    "publication.status"?: array, //The publication status of the offer. Passing more than one value will search for offers with any of the given statuses. By default all statuses are included. Example: `publication.status=INACTIVE&publication.status=ACTIVE` - returns offers with status `INACTIVE` or `ACTIVE`.
+     *    "publication.marketplace"?: string, //Either the base marketplace or an additional marketplace of the offer.
      *
      * When passing the parameter `publication.marketplace`, searches for offers with the given marketplace as either its base marketplace or one of its additional marketplaces. When the parameter is omitted, searches for offers with all marketplaces.
      *
      * In addition to searching, passing the parameter also influences the functionality of other query parameter by searching and sorting by data (e.g. price) on the given marketplace.
-     * @var array  $sellingMode.format The offer's selling format. Passing more than one value will search for offers with any of the given formats. By default all formats are included. Example: `sellingMode.format=BUY_NOW&sellingMode.format=ADVERTISEMENT` - returns offers with with format `BUY_NOW` or `ADVERTISEMENT`.
-     * @var array  $external.id The ID from the client's external system. Passing more than one value will search for offers with any of the given IDs. By default no ID is included. Example: `external.id=1233&external.id=1234` - returns offers with ID `1233` or `1234`. Single ID length shouldn't exceed 100 characters.
-     * @var string $delivery.shippingRates.id The ID of shipping rates. Returns offers with given shipping rates ID.
-     * @var bool   $delivery.shippingRates.id.empty Allows to filter offers by existence of shipping rates ID.
-     * @var string $sort The results' sorting order. No prefix in the value means ascending order. `-` prefix means descending order. If you don't provide the sort parameter, the list is sorted by offer creation time, descending.
+     *    "sellingMode.format"?: array, //The offer's selling format. Passing more than one value will search for offers with any of the given formats. By default all formats are included. Example: `sellingMode.format=BUY_NOW&sellingMode.format=ADVERTISEMENT` - returns offers with with format `BUY_NOW` or `ADVERTISEMENT`.
+     *    "external.id"?: array, //The ID from the client's external system. Passing more than one value will search for offers with any of the given IDs. By default no ID is included. Example: `external.id=1233&external.id=1234` - returns offers with ID `1233` or `1234`. Single ID length shouldn't exceed 100 characters.
+     *    "delivery.shippingRates.id"?: string, //The ID of shipping rates. Returns offers with given shipping rates ID.
+     *    "delivery.shippingRates.id.empty"?: bool, //Allows to filter offers by existence of shipping rates ID.
+     *    "sort"?: string, //The results' sorting order. No prefix in the value means ascending order. `-` prefix means descending order. If you don't provide the sort parameter, the list is sorted by offer creation time, descending.
      *
      * If additionally a `publication.marketplace` is provided, sorts by price and `stock.sold` using the data on the given marketplace.
-     * @var int    $limit the maximum number of offers returned in the response
-     * @var int    $offset Index of the first returned offer from all search results. Maximum sum of offset and limit is 10 000 000.
-     * @var string $category.id The identifier of the category, where you want to search for offers.
-     * @var bool   $product.id.empty Allows to filter offers by existence of product ID.
-     * @var bool   $productizationRequired allows to search for offers from categories where productization is required
-     * @var bool   $b2b.buyableOnlyByBusiness Allows to search for offers buyable only by businesses.
-     * @var string $fundraisingCampaign.id ID of the charity fundraising campaign that benefits from this offer.
-     * @var bool   $fundraisingCampaign.id.empty Allows to search for charity or commercial offers.
-     * @var string $afterSalesServices.returnPolicy.id The ID of return policy. Returns offers with given return policy ID.
-     * @var bool   $isFulfillment Allows to search for offers handled by the Allegro Warehouse (One Fulfillment).
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     *    "limit"?: int, //The maximum number of offers returned in the response.
+     *    "offset"?: int, //Index of the first returned offer from all search results. Maximum sum of offset and limit is 10 000 000.
+     *    "category.id"?: string, //The identifier of the category, where you want to search for offers.
+     *    "product.id.empty"?: bool, //Allows to filter offers by existence of product ID.
+     *    "productizationRequired"?: bool, //Allows to search for offers from categories where productization is required.
+     *    "b2b.buyableOnlyByBusiness"?: bool, //Allows to search for offers buyable only by businesses.
+     *    "fundraisingCampaign.id"?: string, //ID of the charity fundraising campaign that benefits from this offer.
+     *    "fundraisingCampaign.id.empty"?: bool, //Allows to search for charity or commercial offers.
+     *    "afterSalesServices.returnPolicy.id"?: string, //The ID of return policy. Returns offers with given return policy ID.
+     *    "isFulfillment"?: bool, //Allows to search for offers handled by the Allegro Warehouse (One Fulfillment).
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OffersSearchResultDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OffersSearchResultDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\SearchOffersUsingGETBadRequestException
      * @throws Exception\SearchOffersUsingGETForbiddenException
@@ -202,15 +186,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete a draft offer. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#szkic-oferty" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#inactive-status" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteOfferUsingDELETEUnauthorizedException
      * @throws Exception\DeleteOfferUsingDELETEForbiddenException
@@ -224,16 +206,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to change the Buy Now price in a single offer. Read more: <a href="../../news/mozliwosc-zmiany-ceny-kup-teraz-2YzrKRrr3Sl" target="_blank">PL</a> / <a href="../../news/possibility-to-change-the-buy-it-now-price-q018mq8D2hW" target="_blank">EN</a>.
      *
-     * @param string $offerId          the offer identifier
-     * @param string $commandId        the unique command id generated by you
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId   the offer identifier
+     * @param string $commandId the unique command id generated by you
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ChangePrice|Model\ErrorsHolder|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ChangePrice|Model\ErrorsHolder|null : \Psr\Http\Message\ResponseInterface)
      */
     public function createChangePriceCommandUsingPUT(string $offerId, string $commandId, ?Model\ChangePriceWithoutOutput $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -243,20 +223,16 @@ class Client extends Runtime\Client\Client
     /**
      * Get offer translation for given language or all present. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#tlumaczenia-ofert" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#offer-translations" target="_blank">EN</a>.
      *
-     * @param string $offerId         offer identifier
-     * @param array  $queryParameters {
-     *
-     * @var string $language Language for translation to retrieve. If not provided, all translations as well as base content for offer will be returned.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "language"?: string, //Language for translation to retrieve. If not provided, all translations as well as base content for offer will be returned.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferTranslations|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferTranslations|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOfferTranslationUsingGETUnauthorizedException
      * @throws Exception\GetOfferTranslationUsingGETForbiddenException
@@ -270,22 +246,18 @@ class Client extends Runtime\Client\Client
     /**
      * Delete single element or entire manual translation. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#tlumaczenia-ofert" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#offer-translations" target="_blank">EN</a>.
      *
-     * @param string $language        language of the translation to delete
-     * @param string $offerId         offer identifier
-     * @param array  $queryParameters {
-     *
-     * @var string $element Offer element for which translation should be deleted. If not provided, translations for all elements will be deleted.
-     * @var string $products.id ProductId for which safety information translation should be deleted. If not provided, safety information translations for all products in offer will be deleted.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $language language of the translation to delete
+     * @param string $offerId  offer identifier
+     * @param array{
+     *    "element"?: string, //Offer element for which translation should be deleted. If not provided, translations for all elements will be deleted.
+     *    "products.id"?: string, //ProductId for which safety information translation should be deleted. If not provided, safety information translations for all products in offer will be deleted.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteManualTranslationUsingDELETEUnauthorizedException
      * @throws Exception\DeleteManualTranslationUsingDELETEForbiddenException
@@ -298,16 +270,14 @@ class Client extends Runtime\Client\Client
     /**
      * Update manual translation for offer. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#tlumaczenia-ofert" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#offer-translations" target="_blank">EN</a>.
      *
-     * @param string $language         language of the provided translation
-     * @param string $offerId          offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $language language of the provided translation
+     * @param string $offerId  offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateOfferTranslationUsingPATCHUnauthorizedException
      * @throws Exception\UpdateOfferTranslationUsingPATCHForbiddenException
@@ -321,20 +291,16 @@ class Client extends Runtime\Client\Client
     /**
      * This endpoint returns daily statistics collected for a list of advertisements in a given date range for logged user. Read more: <a href="../../tutorials/jak-wystawic-i-zarzadzac-ogloszeniem-K6r3Z47dKcy#statystyki-wszystkich-ogloszen-sprzedawcy" target="_blank">PL</a> / <a href="../../tutorials/listing-and-managing-classified-ads-5Ln0r6wkWs7#statistics-of-seller-s-classified-ads" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $date.gte The maximum date and time from which the events will be fetched in ISO 8601 format. The value should be less than the current date time. The difference between date.gte and date.lte should be less than 3 months.
-     * @var string $date.lte The minimum date and time from which the events will be fetched in ISO 8601 format. The value should be less than the current date time and greater than date.lte. The difference between date.gte and date.lte should be less than 3 months.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "date.gte"?: string, //The maximum date and time from which the events will be fetched in ISO 8601 format. The value should be less than the current date time. The difference between date.gte and date.lte should be less than 3 months.
+     *    "date.lte"?: string, //The minimum date and time from which the events will be fetched in ISO 8601 format. The value should be less than the current date time and greater than date.lte. The difference between date.gte and date.lte should be less than 3 months.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SellerOfferStatsResponseDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SellerOfferStatsResponseDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ClassifiedSellerOfferStatsGETBadRequestException
      * @throws Exception\ClassifiedSellerOfferStatsGETUnauthorizedException
@@ -350,21 +316,17 @@ class Client extends Runtime\Client\Client
     /**
      * This endpoint returns daily statistics collected for a list of advertisements in a given date range. Read more: <a href="../../tutorials/jak-wystawic-i-zarzadzac-ogloszeniem-K6r3Z47dKcy#statystyki-wybranych-ogloszen" target="_blank">PL</a> / <a href="../../tutorials/listing-and-managing-classified-ads-5Ln0r6wkWs7#statistics-of-selected-classified-ads" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var array  $offer.id List of offer Ids, maximum 50 values.
-     * @var string $date.gte The maximum date and time from which the events will be fetched in ISO 8601 format. The value should be less than the current date time. The difference between date.gte and date.lte should be less than 3 months.
-     * @var string $date.lte The minimum date and time from which the events will be fetched in ISO 8601 format. The value should be less than the current date time and greater than date.lte. The difference between date.gte and date.lte should be less than 3 months.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offer.id": array, //List of offer Ids, maximum 50 values.
+     *    "date.gte"?: string, //The maximum date and time from which the events will be fetched in ISO 8601 format. The value should be less than the current date time. The difference between date.gte and date.lte should be less than 3 months.
+     *    "date.lte"?: string, //The minimum date and time from which the events will be fetched in ISO 8601 format. The value should be less than the current date time and greater than date.lte. The difference between date.gte and date.lte should be less than 3 months.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferStatsResponseDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferStatsResponseDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ClassifiedOffersStatsGETBadRequestException
      * @throws Exception\ClassifiedOffersStatsGETUnauthorizedException
@@ -380,15 +342,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve information about the offer listing statuses. You will receive a summary with a number of correctly listed offers and errors. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#zestawienie-zadan" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#task-list" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPublicationReportUsingGETUnauthorizedException
      * @throws Exception\GetPublicationReportUsingGETForbiddenException
@@ -402,15 +362,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify multiple offers publication at once. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-zakonczyc-oferte" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#ending-offers" target="_blank">EN</a>. This resource is rate limited to 250 000 offer changes per hour or 9000 offer changes per minute.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ChangePublicationStatusUsingPUTBadRequestException
      * @throws Exception\ChangePublicationStatusUsingPUTUnauthorizedException
@@ -427,21 +385,17 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve information about the offer statuses on the site (Defaults: limit = 100, offset = 0). Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#asynchroniczne-procesowanie" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#asynchronous-processing" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId       command identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TaskReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TaskReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPublicationTasksUsingGETBadRequestException
      * @throws Exception\GetPublicationTasksUsingGETUnauthorizedException
@@ -457,15 +411,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve classified packages currently assigned to an offer. Read more: <a href="../../tutorials/jak-wystawic-i-zarzadzac-ogloszeniem-K6r3Z47dKcy#dodatkowe-opcje-promowania" target="_blank">PL</a> / <a href="../../tutorials/listing-and-managing-classified-ads-5Ln0r6wkWs7#additional-promo-options" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ClassifiedResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ClassifiedResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetClassifiedPackagesUsingGETBadRequestException
      * @throws Exception\GetClassifiedPackagesUsingGETUnauthorizedException
@@ -480,15 +432,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to assign classified packages to an offer. Read more: <a href="../../tutorials/jak-wystawic-i-zarzadzac-ogloszeniem-K6r3Z47dKcy#dodatkowe-opcje-promowania" target="_blank">PL</a> / <a href="../../tutorials/listing-and-managing-classified-ads-5Ln0r6wkWs7#additional-promo-options" target="_blank">EN</a>.
      *
-     * @param string $offerId          the offer ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId the offer ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\AssignClassifiedPackagesUsingPUTBadRequestException
      * @throws Exception\AssignClassifiedPackagesUsingPUTUnauthorizedException
@@ -504,19 +454,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve configurations of classifieds packages for a category. Read more: <a href="../../tutorials/jak-wystawic-i-zarzadzac-ogloszeniem-K6r3Z47dKcy#lista-pakietow-i-opcji-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/listing-and-managing-classified-ads-5Ln0r6wkWs7#list-of-promo-options" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $category.id The category ID.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "category.id": string, //The category ID.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ClassifiedPackageConfigs|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ClassifiedPackageConfigs|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetClassifiedPackageConfigurationsForCategoryUsingGETBadRequestException
      * @throws Exception\GetClassifiedPackageConfigurationsForCategoryUsingGETUnauthorizedException
@@ -529,15 +475,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve the configuration of a classifieds package. Read more: <a href="../../tutorials/jak-wystawic-i-zarzadzac-ogloszeniem-K6r3Z47dKcy#lista-pakietow-i-opcji-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/listing-and-managing-classified-ads-5Ln0r6wkWs7#list-of-promo-options" target="_blank">EN</a>.
      *
-     * @param string $packageId        the classifieds package ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $packageId the classifieds package ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ClassifiedPackageConfig|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ClassifiedPackageConfig|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetClassifiedPackageConfigurationUsingGETBadRequestException
      * @throws Exception\GetClassifiedPackageConfigurationUsingGETUnauthorizedException
@@ -551,16 +495,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to receive feedback statistics. Read more: <a href="../../news/nowe-zasoby-ktorymi-pobierzesz-informacje-o-ocenach-ZM9L1WPBbUb" target="_blank">PL</a> / <a href="../../news/new-resources-to-download-sales-feedback-d2VYERBMRiz" target="_blank">EN</a>.
      *
-     * @param string $userId           the ID of the user
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $userId the ID of the user
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\UserRatingSummaryResponseV2|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\UserRatingSummaryResponseV2|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetUserSummaryUsingGETUnauthorizedException
      * @throws Exception\GetUserSummaryUsingGETForbiddenException
@@ -574,24 +516,20 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to receive your sales ratings sorted by last change date, starting from the latest. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-informacje-o-ocenie-sprzedazy" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-user-s-ratings-data" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $recommended filter by recommended
-     * @var string $lastChangedAt.gte Last change (creation or latest edition) date time in ISO 8601 format. The lower bound of date time range from which ratings will be fetched.
-     * @var string $lastChangedAt.lte Last change (creation or latest edition) date time in ISO 8601 format. The upper bound of date time range from which ratings will be fetched.
-     * @var int    $offset the offset of elements in the response
-     * @var int    $limit The limit of elements in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
-     *             }
-     *
+     * @param array{
+     *    "recommended"?: string, //Filter by recommended.
+     *    "lastChangedAt.gte"?: string, //Last change (creation or latest edition) date time in ISO 8601 format. The lower bound of date time range from which ratings will be fetched.
+     *    "lastChangedAt.lte"?: string, //Last change (creation or latest edition) date time in ISO 8601 format. The upper bound of date time range from which ratings will be fetched.
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //The limit of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\UserRatingListResponse|Model\UserRatingListResponseVBeta1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\UserRatingListResponse|Model\UserRatingListResponseVBeta1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetUserRatingsUsingGETUnauthorizedException
      * @throws Exception\GetUserRatingsUsingGETForbiddenException
@@ -605,16 +543,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to receive your sales rating by given rating id. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-informacje-o-ocenie-sprzedazy" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-user-s-ratings-data" target="_blank">EN</a>.
      *
-     * @param string $ratingId         the ID of the rating
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
-     *             }
-     *
+     * @param string $ratingId the ID of the rating
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\UserRating|Model\UserRatingVBeta1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\UserRating|Model\UserRatingVBeta1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetUserRatingUsingGETUnauthorizedException
      * @throws Exception\GetUserRatingUsingGETForbiddenException
@@ -628,15 +564,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to answer for received rating. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-dodac-odpowiedz-na-ocene" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-answer-for-user-rating" target="_blank">EN</a>.
      *
-     * @param string $ratingId         ID of the rating
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $ratingId ID of the rating
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Answer|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\Answer|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\AnswerUserRatingUsingPUTBadRequestException
      * @throws Exception\AnswerUserRatingUsingPUTUnauthorizedException
@@ -651,15 +585,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to request removal of received rating. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-wyslac-prosbe-o-usuniecie-oceny" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-send-a-request-to-remove-user-rating" target="_blank">EN</a>.
      *
-     * @param string $ratingId         ID of the rating
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $ratingId ID of the rating
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Removal|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\Removal|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UserRatingRemovalUsingPUTBadRequestException
      * @throws Exception\UserRatingRemovalUsingPUTUnauthorizedException
@@ -674,14 +606,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get current sales quality with at most 30 days history. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jakosc-sprzedazy" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#sales-quality" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SalesQualityHistoryResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SalesQualityHistoryResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetSaleQualityUsingGETUnauthorizedException
      * @throws Exception\GetSaleQualityUsingGETForbiddenException
@@ -694,14 +624,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource when you need basic information about authenticated user. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#informacje-o-uzytkowniku" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#information-about-user" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\MeResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\MeResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\MeGETUnauthorizedException
      * @throws Exception\MeGETForbiddenException
@@ -714,20 +642,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve a list of groups with additional services available to a given user which you may assign to offers. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-liste-grup-uslug-dodatkowych-na-koncie" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-a-list-of-additional-services-groups-for-the-account" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $offset the offset of elements in the response
-     * @var int $limit The limit of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //The limit of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdditionalServicesGroups|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdditionalServicesGroups|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetListOfAdditionalServicesGroupsUsingGETUnauthorizedException
      * @throws Exception\GetListOfAdditionalServicesGroupsUsingGETForbiddenException
@@ -740,14 +664,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a group of additional services. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-nowa-grupe-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-a-new-additional-service-group" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdditionalServicesGroupResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdditionalServicesGroupResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateAdditionalServicesGroupUsingPOSTUnauthorizedException
      * @throws Exception\CreateAdditionalServicesGroupUsingPOSTUnprocessableEntityException
@@ -762,21 +684,17 @@ class Client extends Runtime\Client\Client
      * <br> Paging: <br> To move to next page, specify `page.id` parameter with value obtained in response from previous request. Number of offer bundles on single page can be specified using `limit` parameter.
      * <br> Filtering: <br> Offer bundles can be filtered to bundles which contain offer specified in `offer.id` parameter. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-liste-zestawow-ofert" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#retrieve-offer-bundles-list" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int    $limit limit of bundles per page
-     * @var string $offer.id Filter bundles which contains offer.
-     * @var string $page.id ID of page which will be retrieved.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "limit"?: int, //Limit of bundles per page.
+     *    "offer.id"?: string, //Filter bundles which contains offer.
+     *    "page.id"?: string, //ID of page which will be retrieved.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferBundlesDTO|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferBundlesDTO|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ListSellersOfferBundlesUsingGETBadRequestException
      * @throws Exception\ListSellersOfferBundlesUsingGETUnauthorizedException
@@ -791,15 +709,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete offer bundle by its unique identifier. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#usun-wybrany-zestaw" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#remove-the-selected-offer-bundle" target="_blank">EN</a>.
      *
-     * @param string $bundleId         bundle ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $bundleId bundle ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteOfferBundleUsingGETUnauthorizedException
      * @throws Exception\DeleteOfferBundleUsingGETNotFoundException
@@ -812,15 +728,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve offer bundle by its unique identifier. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-szczegoly-wybranego-zestawu" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#retrieve-details-of-the-selected-offer-bundle" target="_blank">EN</a>.
      *
-     * @param string $bundleId         bundle ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $bundleId bundle ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferBundleDTO|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferBundleDTO|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOfferBundleUsingGETUnauthorizedException
      * @throws Exception\GetOfferBundleUsingGETNotFoundException
@@ -833,15 +747,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to update discount per marketplaces associated with bundle specified by its unique identifier. This will override currently set discounts for all marketplaces, so the unchanged discounts also must be specified in request. In case discount for marketplace is not specified in request it will be deleted. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#zmien-rabat-przypisany-do-wybranego-zestawu" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#change-the-discount-for-the-selected-offer-bundle" target="_blank">EN</a>.
      *
-     * @param string $bundleId         bundle ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $bundleId bundle ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferBundleDTO|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferBundleDTO|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateOfferBundleDiscountUsingPUTBadRequestException
      * @throws Exception\UpdateOfferBundleDiscountUsingPUTUnauthorizedException
@@ -858,16 +770,14 @@ class Client extends Runtime\Client\Client
      * <br> Paging: <br> To move to next page, specify `page.id` parameter with value obtained in response from previous request. Number of offer bundles on single page can be specified using `limit` parameter.
      * <br> Filtering: <br> Offer bundles can be filtered to bundles which contain offer specified in `offer.id` parameter. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-liste-zestawow-elastycznych" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#list-seller-s-flexible-bundles" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int    $limit limit of bundles per page
-     * @var string $offer.id Filter bundles which contains offer.
-     * @var string $page.id ID of page which will be retrieved.
-     *             }
-     *
+     * @param array{
+     *    "limit"?: int, //Limit of bundles per page.
+     *    "offer.id"?: string, //Filter bundles which contains offer.
+     *    "page.id"?: string, //ID of page which will be retrieved.
+     * } $queryParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FlexibleBundlesListingDTO|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FlexibleBundlesListingDTO|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ListSellersFlexibleBundlesUsingGETBadRequestException
      * @throws Exception\ListSellersFlexibleBundlesUsingGETUnauthorizedException
@@ -884,7 +794,7 @@ class Client extends Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FlexibleBundleGetDTO|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FlexibleBundleGetDTO|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateFlexibleBundleUsingPOSTBadRequestException
      * @throws Exception\CreateFlexibleBundleUsingPOSTUnauthorizedException
@@ -902,7 +812,7 @@ class Client extends Runtime\Client\Client
      * @param string $bundleId bundle ID
      * @param string $fetch    Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteFlexibleBundleUsingDELETEUnauthorizedException
      * @throws Exception\DeleteFlexibleBundleUsingDELETENotFoundException
@@ -918,7 +828,7 @@ class Client extends Runtime\Client\Client
      * @param string $bundleId bundle ID
      * @param string $fetch    Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FlexibleBundleGetDTO|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FlexibleBundleGetDTO|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetFlexibleBundleUsingGETUnauthorizedException
      * @throws Exception\GetFlexibleBundleUsingGETNotFoundException
@@ -935,7 +845,7 @@ class Client extends Runtime\Client\Client
      * @param string $bundleId bundle ID
      * @param string $fetch    Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FlexibleBundleGetDTO|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FlexibleBundleGetDTO|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateFlexibleBundleUsingPUTBadRequestException
      * @throws Exception\UpdateFlexibleBundleUsingPUTUnauthorizedException
@@ -953,22 +863,18 @@ class Client extends Runtime\Client\Client
      * <p>Sum of limit and offset must be equal to or lower than 50000. Limit must be equal to or lower than 5000.</p> <p>Example:</p> <p>offset = 49950 and limit = 50 will return promotions</p> <p>offset = 49950 and limit = 51 will return 422 http error</p> <p>offset = 0 and limit = 5000 will return promotions</p> <p>offset = 0 and limit = 5001 will return 422 http error</p>
      * <p>Read more about: Large order discount <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-dostepne-rabaty" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#retrieve-large-order-discount" target="_blank">EN</a>, Wholesale price list <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-dostepne-cenniki" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#retrieve-wholesale-price-lists" target="_blank">EN</a>, Multipack <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-dostepne-rabaty-ilosciowe" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#retrieve-promotional-sets" target="_blank">EN</a>.</p>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int    $limit limit of promotions per page
-     * @var int    $offset distance between the beginning of the document and the point from which promotions are returned
-     * @var string $offer.id Filter by offer id. No promotions with `OFFERS_ASSIGNED_EXTERNALLY` or `ALL_OFFERS` criteria will be returned if this parameter is present.
-     * @var string $promotionType Filter by promotion type.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "limit"?: int, //Limit of promotions per page.
+     *    "offset"?: int, //Distance between the beginning of the document and the point from which promotions are returned.
+     *    "offer.id"?: string, //Filter by offer id. No promotions with `OFFERS_ASSIGNED_EXTERNALLY` or `ALL_OFFERS` criteria will be returned if this parameter is present.
+     *    "promotionType": string, //Filter by promotion type.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SellerRebatesDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SellerRebatesDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ListSellerPromotionsUsingGET1BadRequestException
      * @throws Exception\ListSellerPromotionsUsingGET1UnauthorizedException
@@ -986,14 +892,12 @@ class Client extends Runtime\Client\Client
      * 3. Multipack <br> In order to create a new multipack, you have to define a promotion with a single benefit of type **UNIT_PERCENTAGE_DISCOUNT** and a single criterion of type **CONTAINS_OFFERS**. The benefit specification should contain a configuration section with a percentage which indicates the specific discount for the discounted offer. This percentage should be an integer value greater than 15 for quantity 2, greater than 30 for quantity 3, greater than 40 for quantity 4, greater than 50 for quantity 5 and lower than or equal to 100. The specification should also contain a trigger section with a field forEachQuantity that defines the amount of items in the multipack which is necessary to trigger the benefit. Additionally, the discountedNumber field must be set to 1 by default as you can only discount one unit in a multipack. Finally, the offer criterion specifies the offer for which the multipack promotion will take effect. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#dodaj-rabat-ilosciowy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#add-quantitative-discount" target="_blank">EN</a>
      * 4. Cross-offer multipack <br> A cross-offer multipack is created in the same fashion as a standard multipack. The only difference is that you need to pass more than 1 offer in the offer criterion section. This group of offers is then considered as a pool from which users can pick and choose forEachQuantity offers and the cheapest of them gets a discount.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SellerRebateDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SellerRebateDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreatePromotionUsingPOST1BadRequestException
      * @throws Exception\CreatePromotionUsingPOST1UnauthorizedException
@@ -1010,16 +914,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to deactivate the requested promotion. You need to use its unique id. <br> Read more about: Large order discount <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#usun-rabat" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#remove-large-order-discount" target="_blank">EN</a>, Wholesale price list <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#usun-cennik" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#remove-wholesale-price-list" target="_blank">EN</a>, Multipack <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#usun-rabat-ilosciowy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#remove-an-quantitative-discount" target="_blank">EN</a>.
      *
-     * @param string $promotionId      promotion identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $promotionId promotion identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|*\/*
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeactivatePromotionUsingDELETEUnauthorizedException
      */
@@ -1031,15 +933,13 @@ class Client extends Runtime\Client\Client
     /**
      * <br> Use this resource to return the requested promotion. You need to use its unique id. <br> Read more about: Large order discount <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-informacje-o-rabacie" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#retrieve-information-about-large-order-discount" target="_blank">EN</a>, Wholesale price list <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-informacje-o-cenniku" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#retrieve-information-about-wholesale-price-list" target="_blank">EN</a>, Multipack <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-informacje-o-rabacie-ilosciowym" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#information-about-an-quantitative-discount" target="_blank">EN</a>.
      *
-     * @param string $promotionId      promotion identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $promotionId promotion identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SellerRebateDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SellerRebateDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPromotionUsingGETUnauthorizedException
      * @throws Exception\GetPromotionUsingGETNotFoundException
@@ -1052,15 +952,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to update a promotion by its unique id. <br> It supports editing bundle's discount, wholesale price lists and large order discounts. Read more about: Large order discount <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#edytuj-progi-rabatowe" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#edit-discount-thresholds" target="_blank">EN</a>, Wholesale price list <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#edytuj-cennik" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#edit-wholesale-price-list" target="_blank">EN</a>.
      *
-     * @param string $promotionId      promotion identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $promotionId promotion identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SellerRebateDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SellerRebateDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdatePromotionUsingPUTBadRequestException
      * @throws Exception\UpdatePromotionUsingPUTUnauthorizedException
@@ -1076,15 +974,13 @@ class Client extends Runtime\Client\Client
     /**
      * You cannot create or modify a turnover-based discount. Turnover-based discounts are about to be withdrawn from the platform. Any existing discounts will be removed automatically. This resource is deprecated and will be removed on November 2, 2026.
      *
-     * @param string $marketplaceId    marketplace identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $marketplaceId marketplace identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TurnoverDiscountDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TurnoverDiscountDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateOrModifyTurnoverDiscountUsingPUTBadRequestException
      * @throws Exception\CreateOrModifyTurnoverDiscountUsingPUTUnauthorizedException
@@ -1103,19 +999,15 @@ class Client extends Runtime\Client\Client
      * 2. `ACTIVE` - there is ongoing accumulation of the turnover and/or applying of the discount. The latest discount definition does not have fields `cumulatingToDate` and `spendingToDate` set to a specific date. There may be multiple (up to 3) definitions of the discount returned for each marketplace. Only one definition can be accumulated against, and only one definition can be applied at the same time - appropriate periods from different definitions will not overlap.
      * 3. `DEACTIVATING` - there is ongoing accumulation of the turnover and/or applying of the discount. Accumulation of the turnover will be continued until `cumulatingToDate` of the last definition. Applying of the discount will be continued until `spendingToDate` of the last definition.
      *
-     * @param array $queryParameters {
-     *
-     * @var array $marketplaceId List of marketplace identifiers. Only turnover discounts for specified marketplaces are returned. <br/> Currently, only `allegro-business-cz` is supported.
-     *            }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "marketplaceId"?: array, //List of marketplace identifiers. Only turnover discounts for specified marketplaces are returned. <br/> Currently, only `allegro-business-cz` is supported.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\NullableTurnoverDiscountDto[]|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\NullableTurnoverDiscountDto[]|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetTurnoverDiscountsUsingGETUnauthorizedException
      * @throws Exception\GetTurnoverDiscountsUsingGETForbiddenException
@@ -1128,15 +1020,13 @@ class Client extends Runtime\Client\Client
     /**
      * Deactivate turnover discount for a given marketplace. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#deaktywuj-rabat-obrotowy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#deactivate-turnover-discount" target="_blank">EN</a>. Currently, the only supported marketplace is `allegro-business-cz`. This resource is deprecated and will be removed on November 2, 2026. <br/> Turnover discount will stop being cumulated with the end of the current month. Discount based on cumulated turnover will stop being applied with the end of the next month. After that, the discount will be completely deactivated. <br/> When deactivating the discount that still has `ACTIVATING` status, turnover discount is deactivated immediately. In that case, no turnover discount will start being cumulated with the new month.
      *
-     * @param string $marketplaceId    marketplace identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $marketplaceId marketplace identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TurnoverDiscountDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TurnoverDiscountDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeactivateTurnoverDiscountsUsingPUTUnauthorizedException
      * @throws Exception\DeactivateTurnoverDiscountsUsingPUTForbiddenException
@@ -1150,14 +1040,12 @@ class Client extends Runtime\Client\Client
     /**
      * Provides information about fee and commission for an offer. This resource is limited to 25 requests per second for a single user. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#kalkulator-oplat" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#fee-calculator" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FeePreviewResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FeePreviewResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CalculateFeePreviewUsingPOSTBadRequestException
      * @throws Exception\CalculateFeePreviewUsingPOSTUnauthorizedException
@@ -1171,15 +1059,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to find out how many offers were edited within one {commandId}. You will receive a summary with a number of successfully edited offers. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#edycja-wielu-ofert-jednoczesnie" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#editing-many-offers" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetGeneralReportUsingGETUnauthorizedException
      * @throws Exception\GetGeneralReportUsingGETForbiddenException
@@ -1193,15 +1079,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify multiple offers at once. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#edycja-wielu-ofert-jednoczesnie" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#editing-many-offers" target="_blank">EN</a>. This resource is rate limited to 250 000 offer changes per hour or 9000 offer changes per minute - limit applies to a single user of the application.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ModificationCommandUsingPUTBadRequestException
      * @throws Exception\ModificationCommandUsingPUTUnauthorizedException
@@ -1218,21 +1102,17 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve a detailed summary of changes introduced within one {commandId} (defaults: limit = 100, offset = 0). Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#edycja-wielu-ofert-jednoczesnie" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#editing-many-offers" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId       command identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TaskReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TaskReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetTasksUsingGETBadRequestException
      * @throws Exception\GetTasksUsingGETUnauthorizedException
@@ -1248,15 +1128,13 @@ class Client extends Runtime\Client\Client
     /**
      * Returns status and summary of particular command execution. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPriceModificationCommandStatusUsingGETUnauthorizedException
      * @throws Exception\GetPriceModificationCommandStatusUsingGETNotFoundException
@@ -1269,15 +1147,13 @@ class Client extends Runtime\Client\Client
     /**
      * Change price of offers. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price" target="_blank">EN</a>. This resource is rate limited to 150 000 offer changes per hour or 9000 offer changes per minute - limit applies to a single user of the application.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\PriceModificationCommandUsingPUTBadRequestException
      * @throws Exception\PriceModificationCommandUsingPUTUnauthorizedException
@@ -1292,21 +1168,17 @@ class Client extends Runtime\Client\Client
     /**
      * Defaults: limit = 100, offset = 0. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId       command identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TaskReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TaskReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPriceModificationCommandTasksStatusesUsingGETBadRequestException
      * @throws Exception\GetPriceModificationCommandTasksStatusesUsingGETUnauthorizedException
@@ -1321,14 +1193,12 @@ class Client extends Runtime\Client\Client
     /**
      * Bulk price and stock modification. Contrary to standard batch price or stock modification, it lets you modify both price and stock modification across multiple offers, or within the same offer but in a separate modification unit. <br> Change price and stock of offers. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena-i-liczba-przedmiotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price-and-stock" target="_blank">EN</a>. <br> This resource is rate limited to 150 000 offer changes per hour or 9000 offer changes per minute - limit applies to a single user of the application.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\BatchOfferModificationUsingPOSTBadRequestException
      * @throws Exception\BatchOfferModificationUsingPOSTUnauthorizedException
@@ -1343,15 +1213,13 @@ class Client extends Runtime\Client\Client
     /**
      * Returns status and summary of particular command execution. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena-i-liczba-przedmiotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price-and-stock" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\BatchOfferModificationCommandStatusUsingGETUnauthorizedException
      * @throws Exception\BatchOfferModificationCommandStatusUsingGETNotFoundException
@@ -1364,21 +1232,17 @@ class Client extends Runtime\Client\Client
     /**
      * Defaults: limit = 100, offset = 0. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena-i-liczba-przedmiotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price-and-stock" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId       command identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TaskWithSubjectReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TaskWithSubjectReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\BatchOfferModificationCommandTaskStatusesUsingGETBadRequestException
      * @throws Exception\BatchOfferModificationCommandTaskStatusesUsingGETUnauthorizedException
@@ -1393,15 +1257,13 @@ class Client extends Runtime\Client\Client
     /**
      * Returns status and summary of the command. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#liczba-przedmiotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#quantity" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetQuantityModificationCommandStatusUsingGETUnauthorizedException
      * @throws Exception\GetQuantityModificationCommandStatusUsingGETNotFoundException
@@ -1414,15 +1276,13 @@ class Client extends Runtime\Client\Client
     /**
      * Change quantity of multiple offers. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#liczba-przedmiotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#quantity" target="_blank">EN</a>. This resource is rate limited to 250 000 offer changes per hour or 9000 offer changes per minute - limit applies to a single user of the application.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\QuantityModificationCommandUsingPUTBadRequestException
      * @throws Exception\QuantityModificationCommandUsingPUTUnauthorizedException
@@ -1437,21 +1297,17 @@ class Client extends Runtime\Client\Client
     /**
      * Defaults: limit = 100, offset = 0. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#liczba-przedmiotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#quantity" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId       command identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TaskReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TaskReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetQuantityModificationCommandTasksStatusesUsingGETBadRequestException
      * @throws Exception\GetQuantityModificationCommandTasksStatusesUsingGETUnauthorizedException
@@ -1466,14 +1322,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify the automatic pricing rules of multiple offers at the same time. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#reguly-cenowe" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#pricing-rules" target="_blank">EN</a>. This resource is rate limited to 150 000 offer changes per hour or 9000 offer changes per minute - limit applies to a single user of the application.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\OfferAutomaticPricingModificationCommandUsingPOSTBadRequestException
      * @throws Exception\OfferAutomaticPricingModificationCommandUsingPOSTUnauthorizedException
@@ -1489,15 +1343,13 @@ class Client extends Runtime\Client\Client
     /**
      * Returns status and summary of the offer-price-automation-command. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#reguly-cenowe" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#pricing-rules" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetofferAutomaticPricingModificationCommandStatusUsingGETUnauthorizedException
      * @throws Exception\GetofferAutomaticPricingModificationCommandStatusUsingGETForbiddenException
@@ -1511,21 +1363,17 @@ class Client extends Runtime\Client\Client
     /**
      * Defaults: limit = 100, offset = 0. Returns status and report of the offer-price-automation-command. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#reguly-cenowe" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#pricing-rules" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId       command identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TaskReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TaskReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetofferAutomaticPricingModificationCommandTasksStatusesUsingGETBadRequestException
      * @throws Exception\GetofferAutomaticPricingModificationCommandTasksStatusesUsingGETUnauthorizedException
@@ -1541,14 +1389,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get automatic pricing rules. Rules with property **default** set to **true** are default rules created by Allegro for each merchant. This resource is rate limited to 5 requests per second. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-dostepne-reguly-cenowe" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-pricing-rules" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AutomaticPricingRulesResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AutomaticPricingRulesResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAutomaticPricingRulesUsingGETUnauthorizedException
      * @throws Exception\GetAutomaticPricingRulesUsingGETForbiddenException
@@ -1561,14 +1407,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create automatic pricing rule. This resource is rate limited to 5 requests per second. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-utworzyc-wlasne-reguly-cenowe" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-create-own-pricing-rules" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AutomaticPricingRuleResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AutomaticPricingRuleResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateAutomaticPricingRulesUsingPostBadRequestException
      * @throws Exception\CreateAutomaticPricingRulesUsingPostUnauthorizedException
@@ -1584,15 +1428,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete automatic pricing rule. This resource is rate limited to 5 requests per second. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-usunac-regule-cenowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-delete-a-pricing-rule" target="_blank">EN</a>.
      *
-     * @param string $ruleId           the rule identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $ruleId the rule identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteAutomaticPricingRuleUsingDeleteUnauthorizedException
      * @throws Exception\DeleteAutomaticPricingRuleUsingDeleteForbiddenException
@@ -1606,15 +1448,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get automatic pricing rule by id. Rules with property **default** set to **true** are default rules created by Allegro for each merchant and cannot be modified. This resource is rate limited to 5 requests per second. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-dostepne-reguly-cenowe" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-pricing-rules" target="_blank">EN</a>.
      *
-     * @param string $ruleId           the rule identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $ruleId the rule identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AutomaticPricingRuleResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AutomaticPricingRuleResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAutomaticPricingRuleByIdUsingGETUnauthorizedException
      * @throws Exception\GetAutomaticPricingRuleByIdUsingGETNotFoundException
@@ -1627,15 +1467,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to update automatic pricing rule. This resource is rate limited to 5 requests per second. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-edytowac-regule-cenowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-modify-a-pricing-rule" target="_blank">EN</a>.
      *
-     * @param string $ruleId           the rule identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $ruleId the rule identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AutomaticPricingRuleResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AutomaticPricingRuleResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateAutomaticPricingRuleUsingPutBadRequestException
      * @throws Exception\UpdateAutomaticPricingRuleUsingPutUnauthorizedException
@@ -1651,15 +1489,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get automatic pricing rules for offer. This resource is rate limited to 5 requests per second. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-sprawdzic-aktualnie-przypisane-reguly-przelicznika-cen-w-ofercie" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-check-price-automation-rules-currently-assigned-to-offer" target="_blank">EN</a>.
      *
-     * @param string $offerId          the offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId the offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferRules|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferRules|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAutomaticPricingRulesForOfferUsingGETUnauthorizedException
      * @throws Exception\GetAutomaticPricingRulesForOfferUsingGETForbiddenException
@@ -1673,19 +1509,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to traverse the Allegro categories tree. It returns the list of the given category's children or a list of the main Allegro categories. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#kategorie-oraz-parametry" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#categories-and-parameters" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $parent.id The ID of the category which children should be returned. If omitted, the list of main Allegro categories will be returned.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "parent.id"?: string, //The ID of the category which children should be returned. If omitted, the list of main Allegro categories will be returned.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CategoriesDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CategoriesDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCategoriesUsingGETNotFoundException
      */
@@ -1697,15 +1529,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the details of a specific category. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-utworzyc-nowy-produkt" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-create-a-product" target="_blank">EN</a>.
      *
-     * @param string $categoryId       the category ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $categoryId the category ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CategoryDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CategoryDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCategoryUsingGET1NotFoundException
      */
@@ -1717,15 +1547,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the list of parameters that are supported by the given category. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#parametry-ofertowe" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#offer-parameters" target="_blank">EN</a>.
      *
-     * @param string $categoryId       the category ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $categoryId the category ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CategoryParameterList|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CategoryParameterList|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetFlatParametersUsingGET2NotFoundException
      */
@@ -1737,15 +1565,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the list of product parameters available in given category. You can use these parameters to create a new product. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-utworzyc-nowy-produkt" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-create-a-product" target="_blank">EN</a>.
      *
-     * @param string $categoryId       the category ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $categoryId the category ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CategoryProductParameterList|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CategoryProductParameterList|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetFlatProductParametersUsingGETNotFoundException
      */
@@ -1758,26 +1584,22 @@ class Client extends Runtime\Client\Client
      * Use this resource to get information about planned changes in category parameters. Please note that in some cases, the returned events may finally not happen in the future.
      * At present we support the following changes: - REQUIREMENT_CHANGE - the parameter will be required in the category. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-sprawdzic-przyszle-zmiany-w-parametrach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-check-future-changes-in-parameters" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $scheduledFor.gte The minimum date and time from which the change will be effective from in ISO 8601 format. Should be greater than the current date time and less than 3 months from the current date.
-     * @var string $scheduledFor.lte The maximum date and time from which the change will be effective from in ISO 8601 format. Should be greater than the current date time and less than 3 months from the current date.
-     * @var string $scheduledAt.gte The minimum date and time at which the change was scheduled in ISO 8601 format.
-     * @var string $scheduledAt.lte The maximum date and time at which the change was scheduled in ISO 8601 format.
-     * @var array  $type The types of changes that will be returned in the response. All types of changes are returned by default.
-     * @var int    $offset the offset of elements in the response
-     * @var int    $limit The limit of elements in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "scheduledFor.gte"?: string, //The minimum date and time from which the change will be effective from in ISO 8601 format. Should be greater than the current date time and less than 3 months from the current date.
+     *    "scheduledFor.lte"?: string, //The maximum date and time from which the change will be effective from in ISO 8601 format. Should be greater than the current date time and less than 3 months from the current date.
+     *    "scheduledAt.gte"?: string, //The minimum date and time at which the change was scheduled in ISO 8601 format.
+     *    "scheduledAt.lte"?: string, //The maximum date and time at which the change was scheduled in ISO 8601 format.
+     *    "type"?: array, //The types of changes that will be returned in the response. All types of changes are returned by default.
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //The limit of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CategoryParametersScheduledChangesResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CategoryParametersScheduledChangesResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCategoryParametersScheduledChangesUsingGET1BadRequestException
      * @throws Exception\GetCategoryParametersScheduledChangesUsingGET1UnauthorizedException
@@ -1797,22 +1619,18 @@ class Client extends Runtime\Client\Client
      *
      *   Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#dziennik-zmian-w-kategoriach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#event-journal-in-categories" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $from The ID of the last seen event. Changes that occurred after the given event will be returned.
-     * @var int    $limit the number of events that will be returned in the response
-     * @var array  $type The types of events that will be returned in the response. All types of events are returned by default.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "from"?: string, //The ID of the last seen event. Changes that occurred after the given event will be returned.
+     *    "limit"?: int, //The number of events that will be returned in the response.
+     *    "type"?: array, //The types of events that will be returned in the response. All types of events are returned by default.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CategoryEventsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CategoryEventsResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCategoryEventsUsingGET1BadRequestException
      * @throws Exception\GetCategoryEventsUsingGET1UnauthorizedException
@@ -1825,14 +1643,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get additional services definitions, grouped by additional services categories, available on given marketplace. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-liste-dostepnych-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-a-list-of-available-additional-services" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CategoriesResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CategoriesResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetListOfAdditionalServicesDefinitionsCategoriesUsingGETUnauthorizedException
      * @throws Exception\GetListOfAdditionalServicesDefinitionsCategoriesUsingGETForbiddenException
@@ -1845,19 +1661,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of seller's shipping rates. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-cennik-dostaw" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-shipping-rates" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $marketplace Allows to filter shipping rates by marketplace that they are qualified for.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "marketplace"?: string, //Allows to filter shipping rates by marketplace that they are qualified for.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleShippingRatesGetResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleShippingRatesGetResponse200|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetListOfShippingRatestUsingGETUnauthorizedException
      * @throws Exception\GetListOfShippingRatestUsingGETForbiddenException
@@ -1870,14 +1682,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a new seller's shipping rates set. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-dodac-cennik-dostaw" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-add-shipping-rates" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ShippingRatesSet|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ShippingRatesSet|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateShippingRatesSetUsingPOSTBadRequestException
      * @throws Exception\CreateShippingRatesSetUsingPOSTUnauthorizedException
@@ -1891,15 +1701,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get details of the given shipping rates set. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-cennik-dostaw" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-shipping-rates" target="_blank">EN</a>.
      *
-     * @param string $id               shipping rates set identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id shipping rates set identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleShippingRatesIdGetResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleShippingRatesIdGetResponse200|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetShippingRatesSetUsingGETUnauthorizedException
      * @throws Exception\GetShippingRatesSetUsingGETForbiddenException
@@ -1913,15 +1721,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to edit a new seller's shipping rates set. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-edytowac-cennik-dostaw" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-modify-shipping-rates" target="_blank">EN</a>.
      *
-     * @param string $id               shipping rates set identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id shipping rates set identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ShippingRatesSet|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ShippingRatesSet|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ModifyShippingRatesSetUsingPUTBadRequestException
      * @throws Exception\ModifyShippingRatesSetUsingPUTUnauthorizedException
@@ -1937,19 +1743,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the delivery settings declared by the seller. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-ustawienia-dostawy" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-get-delivery-settings" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $marketplace.id Marketplace for which delivery settings will be returned. By default (if the marketplace parameter is not set) the marketplace on which the seller has registered is used. However, we recommend that the marketplace.id query parameter should always be explicitly set.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "marketplace.id"?: string, //Marketplace for which delivery settings will be returned. By default (if the marketplace parameter is not set) the marketplace on which the seller has registered is used. However, we recommend that the marketplace.id query parameter should always be explicitly set.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\DeliverySettingsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\DeliverySettingsResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetSaleDeliverySettingsUnauthorizedException
      * @throws Exception\GetSaleDeliverySettingsForbiddenException
@@ -1963,14 +1765,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify the delivery settings declared by the seller. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-edytowac-ustawienia-dostawy" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-edit-delivery-settings" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\DeliverySettingsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\DeliverySettingsResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\PutSaleDeliverySettingsUnauthorizedException
      * @throws Exception\PutSaleDeliverySettingsForbiddenException
@@ -1984,20 +1784,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of points of service by seller ID. Read more: <a href="../../news/punkty-odbioru-osobistego-8dmlj8qk7ik" target="_blank">PL</a> / <a href="../../news/points-of-service-Rdoz09ZE7sW" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $seller.id User identifier.
-     * @var string $countryCode Country code identifier in ISO format. In case of incorrect or unsupported country code, empty list is returned. If missing, list of all defined points is returned. If present, correct and supported, list of all points with given country code for the user is returned.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "seller.id": string, //User identifier.
+     *    "countryCode"?: string, //Country code identifier in ISO format. In case of incorrect or unsupported country code, empty list is returned. If missing, list of all defined points is returned. If present, correct and supported, list of all points with given country code for the user is returned.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SearchResult|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SearchResult|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPOSListUsingGETUnauthorizedException
      * @throws Exception\GetPOSListUsingGETNotFoundException
@@ -2010,14 +1806,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a point of service. Read more: <a href="../../news/punkty-odbioru-osobistego-8dmlj8qk7ik" target="_blank">PL</a> / <a href="../../news/points-of-service-Rdoz09ZE7sW" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Pos|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\Pos|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreatePOSUsingPOSTBadRequestException
      * @throws Exception\CreatePOSUsingPOSTUnauthorizedException
@@ -2034,15 +1828,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete a point of service. Read more: <a href="../../news/punkty-odbioru-osobistego-8dmlj8qk7ik" target="_blank">PL</a> / <a href="../../news/points-of-service-Rdoz09ZE7sW" target="_blank">EN</a>.
      *
-     * @param string $id               point of service ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id point of service ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeletePOSUsingDELETEUnauthorizedException
      * @throws Exception\DeletePOSUsingDELETEForbiddenException
@@ -2056,15 +1848,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a details of a point of service for a given ID. Read more: <a href="../../news/punkty-odbioru-osobistego-8dmlj8qk7ik" target="_blank">PL</a> / <a href="../../news/points-of-service-Rdoz09ZE7sW" target="_blank">EN</a>.
      *
-     * @param string $id               point of service ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id point of service ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Pos|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\Pos|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPOSDataUsingGETUnauthorizedException
      * @throws Exception\GetPOSDataUsingGETForbiddenException
@@ -2078,15 +1868,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify a point of service. Read more: <a href="../../news/punkty-odbioru-osobistego-8dmlj8qk7ik" target="_blank">PL</a> / <a href="../../news/points-of-service-Rdoz09ZE7sW" target="_blank">EN</a>.
      *
-     * @param string $id               Point of service ID. Must match values with 'id' property from the body.
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id Point of service ID. Must match values with 'id' property from the body.
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Pos|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\Pos|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ModifyPOSUsingPUTBadRequestException
      * @throws Exception\ModifyPOSUsingPUTUnauthorizedException
@@ -2103,14 +1891,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get details of many contacts. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-liste-kontaktow" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-a-list-of-contacts" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ContactResponseList|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ContactResponseList|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetListOfContactsUsingGETBadRequestException
      * @throws Exception\GetListOfContactsUsingGETUnauthorizedException
@@ -2124,14 +1910,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a new contact. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-utworzyc-nowy-kontakt" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-create-new-contact" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ContactResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ContactResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateContactUsingPOSTBadRequestException
      * @throws Exception\CreateContactUsingPOSTUnauthorizedException
@@ -2146,15 +1930,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get contact details. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-szczegoly-danego-kontaktu" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-contact-details" target="_blank">EN</a>.
      *
-     * @param string $id               contact identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id contact identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ContactResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ContactResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetContactUsingGETBadRequestException
      * @throws Exception\GetContactUsingGETUnauthorizedException
@@ -2169,15 +1951,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify contact details. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-zmienic-dane-kontaktu" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-change-contact-data" target="_blank">EN</a>.
      *
-     * @param string $id               contact identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id contact identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ContactResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ContactResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ModifyContactUsingPUTBadRequestException
      * @throws Exception\ModifyContactUsingPUTUnauthorizedException
@@ -2193,22 +1973,18 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of responsible persons for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#osoba-odpowiedzialna-za-zgodnosc-produktu-z-przepisami-unijnymi" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-persons-for-the-compliance-of-the-product-with-eu-regulations" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $offset index of first returned responsible persons data from all search results
-     * @var int $limit Number of returned responsible persons data.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept acceptable representation of the response
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offset"?: int, //Index of first returned responsible persons data from all search results.
+     *    "limit"?: int, //Number of returned responsible persons data.
+     * } $queryParameters
+     * @param array{
+     *    "Accept": string, //Acceptable representation of the response.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleResponsiblePersonsGetResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleResponsiblePersonsGetResponse200|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ResponsiblePersonsGETBadRequestException
      * @throws Exception\ResponsiblePersonsGETUnauthorizedException
@@ -2223,17 +1999,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a new responsible person for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#osoba-odpowiedzialna-za-zgodnosc-produktu-z-przepisami-unijnymi" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-persons-for-the-compliance-of-the-product-with-eu-regulations" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept acceptable representation of the response
-     * @var string $Content-Type Content type of the request body
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept": string, //Acceptable representation of the response.
+     *    "Content-Type": string, //Content type of the request body.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ResponsiblePersonResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ResponsiblePersonResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ResponsiblePersonsPOSTBadRequestException
      * @throws Exception\ResponsiblePersonsPOSTUnauthorizedException
@@ -2248,17 +2022,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a responsible person for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#osoba-odpowiedzialna-za-zgodnosc-produktu-z-przepisami-unijnymi" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-persons-for-the-compliance-of-the-product-with-eu-regulations" target="_blank">EN</a>.
      *
-     * @param string $id               responsible person ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept acceptable representation of the response
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id responsible person ID
+     * @param array{
+     *    "Accept": string, //Acceptable representation of the response.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ResponsiblePersonResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ResponsiblePersonResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ResponsiblePersonGETUnauthorizedException
      * @throws Exception\ResponsiblePersonGETForbiddenException
@@ -2273,18 +2045,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to update the responsible person for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#osoba-odpowiedzialna-za-zgodnosc-produktu-z-przepisami-unijnymi" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-persons-for-the-compliance-of-the-product-with-eu-regulations" target="_blank">EN</a>.
      *
-     * @param string $id               responsible person ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept acceptable representation of the response
-     * @var string $Content-Type Content type of the request body
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id responsible person ID
+     * @param array{
+     *    "Accept": string, //Acceptable representation of the response.
+     *    "Content-Type": string, //Content type of the request body.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ResponsiblePersonResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ResponsiblePersonResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ResponsiblePersonsPUTBadRequestException
      * @throws Exception\ResponsiblePersonsPUTUnauthorizedException
@@ -2299,22 +2069,18 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of responsible producers for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#dane-teleadresowe-producenta" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-producers-contact-information" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $offset index of first returned responsible producers data from all search results
-     * @var int $limit Number of returned responsible producers data.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept acceptable representation of the response
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offset"?: int, //Index of first returned responsible producers data from all search results.
+     *    "limit"?: int, //Number of returned responsible producers data.
+     * } $queryParameters
+     * @param array{
+     *    "Accept": string, //Acceptable representation of the response.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleResponsibleProducersGetResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleResponsibleProducersGetResponse200|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ResponsibleProducersGETBadRequestException
      * @throws Exception\ResponsibleProducersGETUnauthorizedException
@@ -2329,17 +2095,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a new responsible producer for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#dane-teleadresowe-producenta" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-producers-contact-information" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept acceptable representation of the response
-     * @var string $Content-Type Content type of the request body
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept": string, //Acceptable representation of the response.
+     *    "Content-Type": string, //Content type of the request body.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ResponsibleProducerResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ResponsibleProducerResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ResponsibleProducersPOSTBadRequestException
      * @throws Exception\ResponsibleProducersPOSTUnauthorizedException
@@ -2354,16 +2118,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete a responsible producer created by you. The responsible producer can be deleted only if it is not assigned to any offer, otherwise the request is rejected and the responsible producer is not deleted. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#dane-teleadresowe-producenta" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-producers-contact-information" target="_blank">EN</a>.
      *
-     * @param string $id               responsible producer ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept acceptable representation of the response
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id responsible producer ID
+     * @param array{
+     *    "Accept": string, //Acceptable representation of the response.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ResponsibleProducerDELETEUnauthorizedException
      * @throws Exception\ResponsibleProducerDELETEForbiddenException
@@ -2379,17 +2141,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a responsible producer for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#dane-teleadresowe-producenta" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-producers-contact-information" target="_blank">EN</a>.
      *
-     * @param string $id               responsible producer ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept acceptable representation of the response
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id responsible producer ID
+     * @param array{
+     *    "Accept": string, //Acceptable representation of the response.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ResponsibleProducerResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ResponsibleProducerResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ResponsibleProducerGETUnauthorizedException
      * @throws Exception\ResponsibleProducerGETForbiddenException
@@ -2404,18 +2164,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to update the responsible producer for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#dane-teleadresowe-producenta" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-producers-contact-information" target="_blank">EN</a>.
      *
-     * @param string $id               responsible producer ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept acceptable representation of the response
-     * @var string $Content-Type Content type of the request body
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id responsible producer ID
+     * @param array{
+     *    "Accept": string, //Acceptable representation of the response.
+     *    "Content-Type": string, //Content type of the request body.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ResponsibleProducerResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ResponsibleProducerResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ResponsibleProducersPUTBadRequestException
      * @throws Exception\ResponsibleProducersPUTUnauthorizedException
@@ -2430,19 +2188,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of all delivery methods currently available on the platform, as well as those that have already been discontinued. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-dodac-cennik-dostaw" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-add-shipping-rates" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $marketplace Allows to filter delivery methods by marketplace id.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "marketplace"?: string, //Allows to filter delivery methods by marketplace id.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleDeliveryMethodsGetResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleDeliveryMethodsGetResponse200|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetListOfDeliveryMethodsUsingGETUnauthorizedException
      */
@@ -2454,15 +2208,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get additional services group for a given ID. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-wybrana-grupe-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-a-group-of-additional-services-for-a-given-id" target="_blank">EN</a>.
      *
-     * @param string $groupId          additional Service Group ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $groupId additional Service Group ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdditionalServicesGroupResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdditionalServicesGroupResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAdditionalServicesGroupUsingGETUnauthorizedException
      * @throws Exception\GetAdditionalServicesGroupUsingGETNotFoundException
@@ -2475,15 +2227,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify existing additional service group. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-zaktualizowac-grupe-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-update-additional-service-group" target="_blank">EN</a>.
      *
-     * @param string $groupId          additional service group ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $groupId additional service group ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdditionalServicesGroupResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdditionalServicesGroupResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ModifyAdditionalServicesGroupUsingPUTUnauthorizedException
      * @throws Exception\ModifyAdditionalServicesGroupUsingPUTNotFoundException
@@ -2496,20 +2246,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get translations for additional service group. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#tlumaczenia-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#additional-services-translations" target="_blank">EN</a>.
      *
-     * @param string $groupId         additional Service Group ID
-     * @param array  $queryParameters {
-     *
-     * @var string $language IETF language tag. When provided, the response will contain translations in only that language (if exists).
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $groupId additional Service Group ID
+     * @param array{
+     *    "language"?: string, //IETF language tag. When provided, the response will contain translations in only that language (if exists).
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdditionalServiceGroupTranslationResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdditionalServiceGroupTranslationResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAdditionalServiceGroupTranslationsUnauthorizedException
      * @throws Exception\GetAdditionalServiceGroupTranslationsNotFoundException
@@ -2522,16 +2268,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete the translation for specified additional service group and language. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#tlumaczenia-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#additional-services-translations" target="_blank">EN</a>.
      *
-     * @param string $groupId          additional service group ID
-     * @param string $language         IETF Language tag
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $groupId  additional service group ID
+     * @param string $language IETF Language tag
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteAdditionalServiceGroupTranslationUnauthorizedException
      * @throws Exception\DeleteAdditionalServiceGroupTranslationForbiddenException
@@ -2545,16 +2289,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create/update translation for additional service group and specified language. It is allowed to provide an incomplete list of services that belong to the group. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#tlumaczenia-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#additional-services-translations" target="_blank">EN</a>.
      *
-     * @param string $groupId          additional Service Group ID
-     * @param string $language         IETF Language tag
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $groupId  additional Service Group ID
+     * @param string $language IETF Language tag
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdditionalServiceGroupTranslationPatchResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdditionalServiceGroupTranslationPatchResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateAdditionalServiceGroupTranslationUnauthorizedException
      * @throws Exception\UpdateAdditionalServiceGroupTranslationNotFoundException
@@ -2567,15 +2309,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get selected size table. Read more: <a href="../../news/tabele-rozmiarow-w-rest-api-LRV05q2dGtV" target="_blank">PL</a> / <a href="../../news/size-tables-in-rest-api-D7KP4DE1BH3" target="_blank">EN</a>.
      *
-     * @param string $tableId          table identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $tableId table identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PublicTableDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PublicTableDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetTableUsingGETUnauthorizedException
      * @throws Exception\GetTableUsingGETForbiddenException
@@ -2589,15 +2329,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to update selected size table. Read more: <a href="../../news/tabele-rozmiarow-zmieniamy-istniejacy-zasob-i-dodajemy-nowe-zasoby-do-ich-obslugi-k1nyd21A4fP" target="_blank">PL</a> / <a href="../../news/size-tables-we-change-the-existing-resource-and-add-new-resources-to-handle-them-jn91bynlbC9" target="_blank">EN</a>.
      *
-     * @param string $tableId          table identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $tableId table identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PublicTableDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PublicTableDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ModifyTableUsingPUTUnauthorizedException
      * @throws Exception\ModifyTableUsingPUTForbiddenException
@@ -2611,14 +2349,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get all size tables assigned to a seller account. Read more: <a href="../../news/tabele-rozmiarow-w-rest-api-LRV05q2dGtV" target="_blank">PL</a> / <a href="../../news/size-tables-in-rest-api-D7KP4DE1BH3" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PublicTablesDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PublicTablesDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetTablesUsingGETUnauthorizedException
      * @throws Exception\GetTablesUsingGETForbiddenException
@@ -2632,14 +2368,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create size table. Read more: <a href="../../news/tabele-rozmiarow-zmieniamy-istniejacy-zasob-i-dodajemy-nowe-zasoby-do-ich-obslugi-k1nyd21A4fP" target="_blank">PL</a> / <a href="../../news/size-tables-we-change-the-existing-resource-and-add-new-resources-to-handle-them-jn91bynlbC9" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PublicTableDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PublicTableDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateTableUsingPOSTUnauthorizedException
      * @throws Exception\CreateTableUsingPOSTForbiddenException
@@ -2653,14 +2387,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get all size tables templates. Read more: <a href="../../news/tabele-rozmiarow-zmieniamy-istniejacy-zasob-i-dodajemy-nowe-zasoby-do-ich-obslugi-k1nyd21A4fP" target="_blank">PL</a> / <a href="../../news/size-tables-we-change-the-existing-resource-and-add-new-resources-to-handle-them-jn91bynlbC9" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SizeTableTemplatesResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SizeTableTemplatesResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetTablesTemplatesUsingGETUnauthorizedException
      * @throws Exception\GetTablesTemplatesUsingGETForbiddenException
@@ -2673,20 +2405,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the seller's return policies. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-zwrotow-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-return-policies-assigned-to-the-account" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ReturnPoliciesListReturnPolicyV1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ReturnPoliciesListReturnPolicyV1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPublicSellerListingUsingGET1UnauthorizedException
      * @throws Exception\GetPublicSellerListingUsingGET1ForbiddenException
@@ -2700,14 +2428,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a return policy definition. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-informacje-o-warunkach-zwrotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-return-policy-information" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ReturnPolicyResponseV1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ReturnPolicyResponseV1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateAfterSalesServiceReturnPolicyUsingPOSTBadRequestException
      * @throws Exception\CreateAfterSalesServiceReturnPolicyUsingPOSTUnauthorizedException
@@ -2722,15 +2448,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete a return policy definition.
      *
-     * @param string $returnPolicyId   the ID of the return policy
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $returnPolicyId the ID of the return policy
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ReturnPolicyResponseV1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ReturnPolicyResponseV1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteAfterSalesServiceReturnPolicyUsingDELETEBadRequestException
      * @throws Exception\DeleteAfterSalesServiceReturnPolicyUsingDELETEUnauthorizedException
@@ -2745,15 +2469,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a return policy details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-zwrotow-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-return-policies-assigned-to-the-account" target="_blank">EN</a>.
      *
-     * @param string $returnPolicyId   the ID of the return policy
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $returnPolicyId the ID of the return policy
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ReturnPolicyResponseV1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ReturnPolicyResponseV1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAfterSalesServiceReturnPolicyUsingGETUnauthorizedException
      * @throws Exception\GetAfterSalesServiceReturnPolicyUsingGETForbiddenException
@@ -2767,15 +2489,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify the return policy details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-edytowac-informacje-o-warunkach-zwrotu" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-update-return-policy-information" target="_blank">EN</a>.
      *
-     * @param string $returnPolicyId   the ID of the return policy
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $returnPolicyId the ID of the return policy
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ReturnPolicyResponseV1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ReturnPolicyResponseV1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateAfterSalesServiceReturnPolicyUsingPUTBadRequestException
      * @throws Exception\UpdateAfterSalesServiceReturnPolicyUsingPUTUnauthorizedException
@@ -2791,20 +2511,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the seller's implied warranties. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-reklamacji-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-implied-warranties-assigned-to-the-account" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ImpliedWarrantiesListImpliedWarrantyBasic|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ImpliedWarrantiesListImpliedWarrantyBasic|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPublicSellerListingUsingGETUnauthorizedException
      * @throws Exception\GetPublicSellerListingUsingGETForbiddenException
@@ -2818,14 +2534,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create an implied warranty definition. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-informacje-o-warunkach-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-implied-warranty-information" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ImpliedWarrantyResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ImpliedWarrantyResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateAfterSalesServiceImpliedWarrantyUsingPOSTBadRequestException
      * @throws Exception\CreateAfterSalesServiceImpliedWarrantyUsingPOSTUnauthorizedException
@@ -2841,14 +2555,12 @@ class Client extends Runtime\Client\Client
      * Use this resource to get an implied warranty details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-reklamacji-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-implied-warranties-assigned-to-the-account" target="_blank">EN</a>.
      *
      * @param string $impliedWarrantyId the ID of the implied warranty
-     * @param array  $headerParameters  {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ImpliedWarrantyResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ImpliedWarrantyResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAfterSalesServiceImpliedWarrantyUsingGETUnauthorizedException
      * @throws Exception\GetAfterSalesServiceImpliedWarrantyUsingGETForbiddenException
@@ -2863,14 +2575,12 @@ class Client extends Runtime\Client\Client
      * Use this resource to modify the implied warranty details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-edytowac-informacje-o-warunkach-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-update-implied-warranty-information" target="_blank">EN</a>.
      *
      * @param string $impliedWarrantyId the ID of the implied warranty
-     * @param array  $headerParameters  {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ImpliedWarrantyResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ImpliedWarrantyResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateAfterSalesServiceImpliedWarrantyUsingPUTBadRequestException
      * @throws Exception\UpdateAfterSalesServiceImpliedWarrantyUsingPUTUnauthorizedException
@@ -2886,20 +2596,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the seller's warranties. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-informacje-o-gwarancjach-przypisanych-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-warranties-assigned-to-the-account" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\WarrantiesListWarrantyBasic|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\WarrantiesListWarrantyBasic|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPublicSellerListingUsingGET2UnauthorizedException
      * @throws Exception\GetPublicSellerListingUsingGET2ForbiddenException
@@ -2913,14 +2619,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a warranty definition. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-informacje-o-gwarancjach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-warranty-information" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\WarrantyResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\WarrantyResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateAfterSalesServiceWarrantyUsingPOSTBadRequestException
      * @throws Exception\CreateAfterSalesServiceWarrantyUsingPOSTUnauthorizedException
@@ -2935,15 +2639,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a warranty details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-informacje-o-gwarancjach-przypisanych-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-warranties-assigned-to-the-account" target="_blank">EN</a>.
      *
-     * @param string $warrantyId       the ID of the warranty
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $warrantyId the ID of the warranty
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\WarrantyResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\WarrantyResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAfterSalesServiceWarrantyUsingGETUnauthorizedException
      * @throws Exception\GetAfterSalesServiceWarrantyUsingGETForbiddenException
@@ -2957,15 +2659,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify the warranty details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-edytowac-informacje-o-gwarancjach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-update-warranty-information" target="_blank">EN</a>.
      *
-     * @param string $warrantyId       the ID of the warranty
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $warrantyId the ID of the warranty
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\WarrantyResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\WarrantyResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateAfterSalesServiceWarrantyUsingPUTBadRequestException
      * @throws Exception\UpdateAfterSalesServiceWarrantyUsingPUTUnauthorizedException
@@ -2987,14 +2687,12 @@ class Client extends Runtime\Client\Client
      *
      *   Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-zalacznik-do-informacji-o-gwarancjach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-attachment-to-warranty-information" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AfterSalesServicesAttachment|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AfterSalesServicesAttachment|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateAfterSalesServiceConditionsAttachmentUsingPOSTBadRequestException
      * @throws Exception\CreateAfterSalesServiceConditionsAttachmentUsingPOSTUnauthorizedException
@@ -3012,16 +2710,14 @@ class Client extends Runtime\Client\Client
      * This operation should be used after creating an offer attachment with *POST /sale/offer-attachments*
      * **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /after-sales-service-conditions/attachments*. The URL is unique and one-time. As its format may change in time, you should always use the address from the header. Do not compose the address on your own. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-zalacznik-do-informacji-o-gwarancjach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-attachment-to-warranty-information" target="_blank">EN</a>.
      *
-     * @param string                                                 $attachmentId     the ID of the attachment
+     * @param string                                                 $attachmentId the ID of the attachment
      * @param string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AfterSalesServicesAttachment|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AfterSalesServicesAttachment|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UploadAfterSalesServiceConditionsAttachmentUsingPUTBadRequestException
      * @throws Exception\UploadAfterSalesServiceConditionsAttachmentUsingPUTUnauthorizedException
@@ -3038,19 +2734,15 @@ class Client extends Runtime\Client\Client
     /**
      * This endpoint returns current offer quotes (listing and promo fees) cycles for authenticated user and list of offers. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#data-naliczenia-kolejnej-oplaty" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#check-when-a-fee-is-charged" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var array $offer.id List of offer Ids, maximum 20 values.
-     *            }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offer.id": array, //List of offer Ids, maximum 20 values.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferQuotesDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferQuotesDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\OfferQuotesPublicUsingGETBadRequestException
      * @throws Exception\OfferQuotesPublicUsingGETUnauthorizedException
@@ -3073,19 +2765,15 @@ class Client extends Runtime\Client\Client
      * Read more about the rules for photos in an offer's gallery and description: <a href="https://help.allegro.com/pl/sell/a/zasady-dla-zdjec-w-galerii-i-w-opisie-8dvWz3eo4T5?marketplaceId=allegro-pl" target="_blank">PL</a> / <a href="https://help.allegro.com/en/sell/a/rules-for-images-in-the-gallery-and-in-descriptions-8dvWB8Y2PIq" target="_blank">EN</a>.
      *
      * @param Model\OfferImageLinkUploadRequest|string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                                                    $queryParameters {
-     *
-     * @var bool $isAiCoCreated Sets the uploaded image to be marked as "AI". For a JSON request body (`application/vnd.allegro.public.v1+json`), this flag can also be provided in the request body. If both the query parameter and the request body are provided, their values must not conflict, otherwise a `400` response is returned.
-     *           }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "isAiCoCreated"?: bool, //Sets the uploaded image to be marked as "AI". For a JSON request body (`application/vnd.allegro.public.v1+json`), this flag can also be provided in the request body. If both the query parameter and the request body are provided, their values must not conflict, otherwise a `400` response is returned.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferImageUploadResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferImageUploadResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UploadOfferImageUsingPOSTBadRequestException
      * @throws Exception\UploadOfferImageUsingPOSTUnauthorizedException
@@ -3123,14 +2811,12 @@ class Client extends Runtime\Client\Client
      *   3. Add attachments to the offer (*PATCH /sale/product-offers/{offerId}*).
      * Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#zalaczniki" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#attachments" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferAttachment|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferAttachment|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateOfferAttachmentUsingPOSTBadRequestException
      * @throws Exception\CreateOfferAttachmentUsingPOSTUnauthorizedException
@@ -3145,15 +2831,13 @@ class Client extends Runtime\Client\Client
     /**
      * Get details of an offer attachments, including download link, by attachment identifier ("attachmentId"). The attachment id can be retrieved by querying a particular offer, for example by using <a href="#operation/getProductOffer">`GET /sale/product-offers/{offerId}`</a>. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#zalaczniki" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#attachments" target="_blank">EN</a>.
      *
-     * @param string $attachmentId     the ID of the attachment
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $attachmentId the ID of the attachment
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferAttachment|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferAttachment|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOfferAttachmentForbiddenException
      * @throws Exception\GetOfferAttachmentNotFoundException
@@ -3168,16 +2852,14 @@ class Client extends Runtime\Client\Client
      * This operation should be used after creating an offer attachment with *POST /sale/offer-attachments*
      * **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /sale/offer-attachments*. The URL is unique and one-time. As its format may change in time, you should always use the address from the header. Do not compose the address on your own. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#zalaczniki" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#attachments" target="_blank">EN</a>.
      *
-     * @param string                                                 $attachmentId     the ID of the attachment
+     * @param string                                                 $attachmentId the ID of the attachment
      * @param string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferAttachment|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferAttachment|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UploadOfferAttachmentUsingPUTBadRequestException
      * @throws Exception\UploadOfferAttachmentUsingPUTUnauthorizedException
@@ -3191,27 +2873,23 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to return events that allow you to monitor actions which clients perform, i.e. making a purchase, filling in the checkout form (FOD), finishing payment process, making a surcharge. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#dziennik-zdarzen" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#event-log" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $from you can use the event ID to retrieve subsequent chunks of events
-     * @var array  $type Specify array of event types for filtering. Allowed values are:
-     *             `BOUGHT`: purchase without checkout form filled in
-     *             `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change
-     *             `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing
-     *             `BUYER_CANCELLED`: purchase was cancelled by buyer
-     *             `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed
-     *             `AUTO_CANCELLED`: purchase was cancelled automatically by Allegro.
-     * @var int    $limit The maximum number of events returned in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "from"?: string, //You can use the event ID to retrieve subsequent chunks of events.
+     *    "type"?: array, //Specify array of event types for filtering. Allowed values are:
+     * `BOUGHT`: purchase without checkout form filled in
+     * `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change
+     * `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing
+     * `BUYER_CANCELLED`: purchase was cancelled by buyer
+     * `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed
+     * `AUTO_CANCELLED`: purchase was cancelled automatically by Allegro.
+     *    "limit"?: int, //The maximum number of events returned in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OrderEventsList|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OrderEventsList|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOrderEventsUsingGETUnauthorizedException
      * @throws Exception\GetOrderEventsUsingGETForbiddenException
@@ -3225,14 +2903,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to returns object that contains event id and occurrence date of the latest event. It gives you current starting point for reading events. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-znalezc-najnowsze-zdarzenie" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-find-the-newest-event" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OrderEventStats|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OrderEventStats|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOrderEventsStatisticsUsingGETUnauthorizedException
      */
@@ -3244,52 +2920,48 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get an order list. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#lista-zamowien" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#order-list" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int    $offset index of first returned checkout-form from all search results
-     * @var int    $limit maximum number of checkout-forms in response
-     * @var string $status Specify status value that checkout-forms must have to be included in the output. Allowed values are:
-     *             `BOUGHT`: purchase without checkout form filled in.
-     *             `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change.
-     *             `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing.
-     *             `CANCELLED`: purchase cancelled by buyer.
-     * @var string $fulfillment.status Specify seller status value that checkout-forms must have to be included in the output. Allowed values are:
-     *             `NEW`
-     *             `PROCESSING`
-     *             `READY_FOR_SHIPMENT`
-     *             `READY_FOR_PICKUP`
-     *             `SENT`
-     *             `PICKED_UP`
-     *             `CANCELLED`
-     *             `SUSPENDED`
-     *             `RETURNED`.
-     * @var string $fulfillment.provider.id Specify filter for order management provider. Allowed values are:
-     *             `SELLER`: for orders managed directly by seller
-     *             `ALLEGRO`: for orders managed by Allegro warehouse (One Fulfillment).
-     * @var string $fulfillment.shipmentSummary.lineItemsSent Specify filter for line items sending status. Allowed values are:
-     *             `NONE`: none of line items have tracking number specified
-     *             `SOME`: some of line items have tracking number specified
-     *             `ALL`: all of line items have tracking number specified.
-     * @var string $lineItems.boughtAt.lte Latest line item bought date. The upper bound of date time range from which checkout forms will be taken.
-     * @var string $lineItems.boughtAt.gte Latest line item bought date. The lower bound of date time range from which checkout forms will be taken.
-     * @var string $payment.id Find checkout-forms having specified payment id.
-     * @var string $surcharges.id Find checkout-forms having specified surcharge id.
-     * @var string $delivery.method.id Find checkout-forms having specified delivery method id.
-     * @var string $buyer.login Find checkout-forms having specified buyer login.
-     * @var string $marketplace.id Find checkout-forms of orders purchased on specified marketplace.
-     * @var string $updatedAt.lte Checkout form last modification date. The upper bound of date time range from which checkout forms will be taken.
-     * @var string $updatedAt.gte Checkout form last modification date. The lower bound of date time range from which checkout forms will be taken.
-     * @var string $sort The results' sorting order. No prefix in the value means ascending order. `-` prefix means descending order. If you don't provide the sort parameter, the list is sorted by line item boughtAt date, descending.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offset"?: int, //Index of first returned checkout-form from all search results.
+     *    "limit"?: int, //Maximum number of checkout-forms in response.
+     *    "status"?: string, //Specify status value that checkout-forms must have to be included in the output. Allowed values are:
+     * `BOUGHT`: purchase without checkout form filled in.
+     * `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change.
+     * `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing.
+     * `CANCELLED`: purchase cancelled by buyer.
+     *    "fulfillment.status"?: string, //Specify seller status value that checkout-forms must have to be included in the output. Allowed values are:
+     * `NEW`
+     * `PROCESSING`
+     * `READY_FOR_SHIPMENT`
+     * `READY_FOR_PICKUP`
+     * `SENT`
+     * `PICKED_UP`
+     * `CANCELLED`
+     * `SUSPENDED`
+     * `RETURNED`.
+     *    "fulfillment.provider.id"?: string, //Specify filter for order management provider. Allowed values are:
+     * `SELLER`: for orders managed directly by seller
+     * `ALLEGRO`: for orders managed by Allegro warehouse (One Fulfillment).
+     *    "fulfillment.shipmentSummary.lineItemsSent"?: string, //Specify filter for line items sending status. Allowed values are:
+     * `NONE`: none of line items have tracking number specified
+     * `SOME`: some of line items have tracking number specified
+     * `ALL`: all of line items have tracking number specified.
+     *    "lineItems.boughtAt.lte"?: string, //Latest line item bought date. The upper bound of date time range from which checkout forms will be taken.
+     *    "lineItems.boughtAt.gte"?: string, //Latest line item bought date. The lower bound of date time range from which checkout forms will be taken.
+     *    "payment.id"?: string, //Find checkout-forms having specified payment id.
+     *    "surcharges.id"?: string, //Find checkout-forms having specified surcharge id.
+     *    "delivery.method.id"?: string, //Find checkout-forms having specified delivery method id.
+     *    "buyer.login"?: string, //Find checkout-forms having specified buyer login.
+     *    "marketplace.id"?: string, //Find checkout-forms of orders purchased on specified marketplace.
+     *    "updatedAt.lte"?: string, //Checkout form last modification date. The upper bound of date time range from which checkout forms will be taken.
+     *    "updatedAt.gte"?: string, //Checkout form last modification date. The lower bound of date time range from which checkout forms will be taken.
+     *    "sort"?: string, //The results' sorting order. No prefix in the value means ascending order. `-` prefix means descending order. If you don't provide the sort parameter, the list is sorted by line item boughtAt date, descending.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CheckoutForms|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CheckoutForms|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetListOfOrdersUsingGETBadRequestException
      * @throws Exception\GetListOfOrdersUsingGETUnauthorizedException
@@ -3304,15 +2976,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get an order details. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#szczegoly-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#order-details" target="_blank">EN</a>.
      *
-     * @param string $id               checkout form identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id checkout form identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CheckoutForm|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CheckoutForm|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOrdersDetailsUsingGETBadRequestException
      * @throws Exception\GetOrdersDetailsUsingGETUnauthorizedException
@@ -3330,14 +3000,12 @@ class Client extends Runtime\Client\Client
      *
      * The response of this resource can be stored in accordance with returned caching headers. Read more: <a href="../../news/nowy-zasob-do-pobrania-identyfikatorow-przewoznikow-8dmljjGRGUE" target="_blank">PL</a> / <a href="../../news/new-resource-to-retrieve-available-delivery-company-id-VL6zDDdr4hk" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OrdersShippingCarriersResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OrdersShippingCarriersResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOrdersCarriersUsingGETUnauthorizedException
      * @throws Exception\GetOrdersCarriersUsingGETNotFoundException
@@ -3350,15 +3018,13 @@ class Client extends Runtime\Client\Client
     /**
      * Get a list of parcel tracking numbers currently assigned to the order. Orders can be retrieved using REST API resource GET /order/checkout-forms. Please note that the shipment list may contain parcel tracking numbers added through other channels such as Moje Allegro or by the carrier that delivers the parcel. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-numery-przesylek-dodane-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#retrieving-tracking-numbers" target="_blank">EN</a>. This resource is rate limited to 50 requests per second.
      *
-     * @param string $id               order identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id order identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CheckoutFormOrderWaybillResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CheckoutFormOrderWaybillResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOrderShipmentsUsingGETUnauthorizedException
      * @throws Exception\GetOrderShipmentsUsingGETNotFoundException
@@ -3371,15 +3037,13 @@ class Client extends Runtime\Client\Client
     /**
      * Add a parcel tracking number (shipment) to given order line items. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-dodac-numer-przesylki-do-przedmiotu-w-zamowieniu" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#add-tracking-number-to-order" target="_blank">EN</a>. This resource is rate limited to 50 requests per second.
      *
-     * @param string $id               order identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id order identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CheckoutFormAddWaybillCreated|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CheckoutFormAddWaybillCreated|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateOrderShipmentsUsingPOSTBadRequestException
      * @throws Exception\CreateOrderShipmentsUsingPOSTUnauthorizedException
@@ -3395,20 +3059,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use to set seller order status. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#zmiana-statusu-realizacji-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#order-fulfillment-status-change" target="_blank">EN</a>.
      *
-     * @param string $id              order identifier
-     * @param array  $queryParameters {
-     *
-     * @var string $checkoutForm.revision Checkout form revision.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id order identifier
+     * @param array{
+     *    "checkoutForm.revision"?: string, //Checkout form revision.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\SetOrderFulfillmentUsingPUTUnauthorizedException
      * @throws Exception\SetOrderFulfillmentUsingPUTNotFoundException
@@ -3423,20 +3083,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use to set serial numbers in the given line items of seller order. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#zmiana-statusu-realizacji-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#order-fulfillment-status-change" target="_blank">EN</a>.
      *
-     * @param string $id              order identifier
-     * @param array  $queryParameters {
-     *
-     * @var string $checkoutForm.revision Checkout form revision.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id order identifier
+     * @param array{
+     *    "checkoutForm.revision"?: string, //Checkout form revision.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\SetOrderLineItemsSerialNumbersUsingPOSTUnauthorizedException
      * @throws Exception\SetOrderLineItemsSerialNumbersUsingPOSTNotFoundException
@@ -3451,15 +3107,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use to get invoices details including antivirus scan results and EPT invoice verification status. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-informacje-o-dokumentach-rozliczeniowych-dodanych-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-download-information-about-billing-documents-added-to-orders" target="_blank">EN</a>.
      *
-     * @param string $id               order identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id order identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CheckoutFormsOrderInvoices|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CheckoutFormsOrderInvoices|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOrderInvoicesDetailsForbiddenException
      * @throws Exception\GetOrderInvoicesDetailsNotFoundException
@@ -3472,15 +3126,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use to add new invoice metadata. Before you send an invoice file, you need to initialize the invoice instance with the required parameters. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-dodac-fakture-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-add-an-invoice-to-orders" target="_blank">EN</a>.
      *
-     * @param string $id               order identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id order identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CheckFormsNewOrderInvoiceId|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CheckFormsNewOrderInvoiceId|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\AddOrderInvoicesMetadataForbiddenException
      * @throws Exception\AddOrderInvoicesMetadataNotFoundException
@@ -3496,17 +3148,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use to upload invoice file to match created invoice metadata. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-dodac-fakture-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#add-an-invoice-to-the-order" target="_blank">EN</a>.
      *
-     * @param string                                                 $id               order identifier
-     * @param string                                                 $invoiceId        invoice identifier
+     * @param string                                                 $id          order identifier
+     * @param string                                                 $invoiceId   invoice identifier
      * @param string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UploadOrderInvoiceFileForbiddenException
      * @throws Exception\UploadOrderInvoiceFileNotFoundException
@@ -3522,15 +3172,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use to add an invoice to the order in a single request - the invoice file together with its metadata are sent together, instead of the two-step flow (add invoice metadata, then upload invoice file). Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-dodac-fakture-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-add-an-invoice-to-orders" target="_blank">EN</a>.
      *
-     * @param string $orderId          order identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $orderId order identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CheckFormsNewOrderInvoiceId|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CheckFormsNewOrderInvoiceId|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UploadOrderInvoiceFileWithMetadataBadRequestException
      * @throws Exception\UploadOrderInvoiceFileWithMetadataForbiddenException
@@ -3548,15 +3196,13 @@ class Client extends Runtime\Client\Client
     /**
      * Used to upload a URL to a billing document. You can add up to 10 links.
      *
-     * @param string $orderId          order identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $orderId order identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UploadOrderBillingDocumentLinkForbiddenException
      * @throws Exception\UploadOrderBillingDocumentLinkNotFoundException
@@ -3571,20 +3217,16 @@ class Client extends Runtime\Client\Client
     /**
      * Get a list of Allegro pickup drop off points. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-liste-punktow-allegro" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-list-of-allegro-pickup-drop-off-points" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var array $carriers List of carrier ids to filter the drop off/pick up points to only the ones where any of the listed carriers operate. In case of an empty list, all points are returned.
-     *            }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $If-Modified-Since Date of last data modification. If data has been modified after specified date, full set of data is returned. If header is not specified, full set of data is returned. Date has to be provided in HTTP-date format. Information about date (the same HTTP-date format) of last modified data is available in response - `Last-Modified`.
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "carriers"?: array, //List of carrier ids to filter the drop off/pick up points to only the ones where any of the listed carriers operate. In case of an empty list, all points are returned.
+     * } $queryParameters
+     * @param array{
+     *    "If-Modified-Since"?: string, //Date of last data modification. If data has been modified after specified date, full set of data is returned. If header is not specified, full set of data is returned. Date has to be provided in HTTP-date format. Information about date (the same HTTP-date format) of last modified data is available in response - `Last-Modified`.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AllegroPickupDropOffPointsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AllegroPickupDropOffPointsResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAllegroPickupDropOffPointsGETBadRequestException
      * @throws Exception\GetAllegroPickupDropOffPointsGETUnauthorizedException
@@ -3597,20 +3239,16 @@ class Client extends Runtime\Client\Client
     /**
      * Get tracking history for parcels. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-historie-statusow-przesylek" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-parcels-statuses-history" target="_blank">EN</a>.
      *
-     * @param string $carrierId       carrier identifier
-     * @param array  $queryParameters {
-     *
-     * @var array $waybill Waybill number (parcel tracking number). Example: `waybill=AAA0000E5D201&waybill=BBB00000E5D202` - returns parcel tracking history for `AAA0000E5D201` as well as for `BBB00000E5D202`.
-     *            }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $carrierId carrier identifier
+     * @param array{
+     *    "waybill": array, //Waybill number (parcel tracking number). Example: `waybill=AAA0000E5D201&waybill=BBB00000E5D202` - returns parcel tracking history for `AAA0000E5D201` as well as for `BBB00000E5D202`.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CarrierParcelTrackingResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CarrierParcelTrackingResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetParcelTrackingUsingGETBadRequestException
      * @throws Exception\GetParcelTrackingUsingGETUnauthorizedException
@@ -3623,22 +3261,18 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the list of your disputes and claims ordered by descending opened date. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#lista-dyskusji-i-reklamacji-na-koncie" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#all-disputes-and-claims" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $checkoutForm.id Checkout form identifier.
-     * @var int    $limit the maximum number of issues in a response
-     * @var int    $offset index of first returned issue
-     * @var array  $status Filter issues with given set of statuses.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of subject field.
-     *             }
-     *
+     * @param array{
+     *    "checkoutForm.id"?: string, //Checkout form identifier.
+     *    "limit"?: int, //The maximum number of issues in a response.
+     *    "offset"?: int, //Index of first returned issue.
+     *    "status"?: array, //Filter issues with given set of statuses.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of subject field.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PostPurchaseIssueListResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PostPurchaseIssueListResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetListOfIssuesUsingGETUnauthorizedException
      * @throws Exception\GetListOfIssuesUsingGETNotFoundException
@@ -3652,15 +3286,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a single dispute or claim. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#szczegolowe-informacje-o-dyskusji-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#detailed-information-about-the-dispute-claim" target="_blank">EN</a>.
      *
-     * @param string $issueId          dispute or claim identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of subject field.
-     *             }
-     *
+     * @param string $issueId dispute or claim identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of subject field.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PostPurchaseIssue|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PostPurchaseIssue|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetIssueUsingGETUnauthorizedException
      * @throws Exception\GetIssueUsingGETForbiddenException
@@ -3674,21 +3306,17 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the list of messages and state changes within a dispute or claim. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#wiadomosci-z-dyskusji-i-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#disputes-and-claims-messages" target="_blank">EN</a>.
      *
-     * @param string $issueId         dispute or claim identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the maximum number of messages within issue returned in a response
-     * @var int $offset Index of first returned message within issue.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $issueId dispute or claim identifier
+     * @param array{
+     *    "limit"?: int, //The maximum number of messages within issue returned in a response.
+     *    "offset"?: int, //Index of first returned message within issue.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PostPurchaseIssueChatResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PostPurchaseIssueChatResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetChatFromIssueUsingGETUnauthorizedException
      * @throws Exception\GetChatFromIssueUsingGETForbiddenException
@@ -3702,15 +3330,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to post a message in certain issue. At least one of fields: 'text', 'attachment' has to be present. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#nowa-wiadomosc-w-dyskusji-lub-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#new-message-in-dispute-or-claim" target="_blank">EN</a>.
      *
-     * @param string $issueId          dispute or claim identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $issueId dispute or claim identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PostPurchaseIssueMessage|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PostPurchaseIssueMessage|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\AddMessageToIssueUsingPOSTBadRequestException
      * @throws Exception\AddMessageToIssueUsingPOSTUnauthorizedException
@@ -3727,15 +3353,13 @@ class Client extends Runtime\Client\Client
     /**
      * Change the formal status of a claim, for example accept or reject it. Not a valid operation for disputes. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#zmien-status-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#change-claim-status" target="_blank">EN</a>.
      *
-     * @param string $issueId          claim identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $issueId claim identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ChangeStatusOfIssueUsingPOSTBadRequestException
      * @throws Exception\ChangeStatusOfIssueUsingPOSTUnauthorizedException
@@ -3750,14 +3374,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to post an attachment declaration. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#deklaracja-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#attachment-declaration" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PostPurchaseIssueAttachmentId|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PostPurchaseIssueAttachmentId|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateAnIssueAttachmentUsingPOSTUnauthorizedException
      * @throws Exception\CreateAnIssueAttachmentUsingPOSTForbiddenException
@@ -3771,15 +3393,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get an attachment. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#pobranie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#attachment-related-to-dispute-claim" target="_blank">EN</a>.
      *
-     * @param string $attachmentId     attachment identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $attachmentId attachment identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetIssueAttachmentUsingGETUnauthorizedException
      * @throws Exception\GetIssueAttachmentUsingGETForbiddenException
@@ -3795,16 +3415,14 @@ class Client extends Runtime\Client\Client
      * This operation should be used after creating an attachment declaration with *POST /sale/issues/attachments*
      * **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /sale/issues/attachments*. The URL is unique and one-time. As its format may change in time, you should always use the address from the header. Do not compose the address on your own. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#dodanie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#adding-an-attachment" target="_blank">EN</a>.
      *
-     * @param string                                                 $attachmentId     attachment identifier
+     * @param string                                                 $attachmentId attachment identifier
      * @param string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PostPurchaseIssueAttachmentId|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PostPurchaseIssueAttachmentId|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UploadIssueAttachmentUsingPUTBadRequestException
      * @throws Exception\UploadIssueAttachmentUsingPUTUnauthorizedException
@@ -3820,20 +3438,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of tags defined by the specified user (Defaults: limit = 1000, offset = 0). Read more: <a href="../../news/nowe-zasoby-zarzadzaj-tagami-i-zalacznikami-w-ofertach-1nzlmKLPyHl" target="_blank">PL</a> / <a href="../../news/new-resources-manage-tags-and-attachments-in-offers-WvGz12BXrHL" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TagListResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TagListResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ListSellerTagsGET1UnauthorizedException
      * @throws Exception\ListSellerTagsGET1ForbiddenException
@@ -3846,14 +3460,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a new tag. You can create up to 100 tags. Read more: <a href="../../news/nowe-zasoby-zarzadzaj-tagami-i-zalacznikami-w-ofertach-1nzlmKLPyHl" target="_blank">PL</a> / <a href="../../news/new-resources-manage-tags-and-attachments-in-offers-WvGz12BXrHL" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TagId|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TagId|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateTagPOST1BadRequestException
      * @throws Exception\CreateTagPOST1UnprocessableEntityException
@@ -3868,16 +3480,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete the tag. Read more: <a href="../../news/nowe-zasoby-zarzadzaj-tagami-i-zalacznikami-w-ofertach-1nzlmKLPyHl" target="_blank">PL</a> / <a href="../../news/new-resources-manage-tags-and-attachments-in-offers-WvGz12BXrHL" target="_blank">EN</a>.
      *
-     * @param string $tagId            tag identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $tagId tag identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header *\/*|application/vnd.allegro.public.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteTagUsingDELETEUnauthorizedException
      * @throws Exception\DeleteTagUsingDELETEForbiddenException
@@ -3890,15 +3500,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to update a tag. Read more: <a href="../../news/nowe-zasoby-zarzadzaj-tagami-i-zalacznikami-w-ofertach-1nzlmKLPyHl" target="_blank">PL</a> / <a href="../../news/new-resources-manage-tags-and-attachments-in-offers-WvGz12BXrHL" target="_blank">EN</a>. This resource is rate limited to 1 million changes per hour.
      *
-     * @param string $tagId            tag identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $tagId tag identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateTagPUTUnprocessableEntityException
      * @throws Exception\UpdateTagPUTUnauthorizedException
@@ -3913,15 +3521,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of tags assigned to offer. Read more: <a href="../../news/nowe-zasoby-zarzadzaj-tagami-i-zalacznikami-w-ofertach-1nzlmKLPyHl" target="_blank">PL</a> / <a href="../../news/new-resources-manage-tags-and-attachments-in-offers-WvGz12BXrHL" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TagListResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TagListResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ListAssignedOfferTagsGETUnauthorizedException
      * @throws Exception\ListAssignedOfferTagsGETForbiddenException
@@ -3935,15 +3541,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to assign a tag to offer. Read more: <a href="../../news/nowe-zasoby-zarzadzaj-tagami-i-zalacznikami-w-ofertach-1nzlmKLPyHl" target="_blank">PL</a> / <a href="../../news/new-resources-manage-tags-and-attachments-in-offers-WvGz12BXrHL" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\AssignTagToOfferPOSTBadRequestException
      * @throws Exception\AssignTagToOfferPOSTForbiddenException
@@ -3959,15 +3563,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get offer rating. Read more: <a href="../../news/nowy-zasob-do-pobrania-oceny-produktu-q018mmPe0H7" target="_blank">PL</a> / <a href="../../news/new-resource-to-retrieve-product-rating-q018mmPrWUX" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferRating|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferRating|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\OfferRatingGETForbiddenException
      * @throws Exception\OfferRatingGETNotFoundException
@@ -3981,14 +3583,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve all available offer promotion packages. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-dostepne-opcje-promowania" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-available-promo-options" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AvailablePromotionPackages|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AvailablePromotionPackages|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAvailableOfferPromotionPackagesUnauthorizedException
      */
@@ -4000,15 +3600,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify offer promotion packages. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-lub-zmienic-opcje-promowania-w-pojedynczej-ofercie" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-or-change-promo-options-in-a-single-offer" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferPromoOptions|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferPromoOptions|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ModifyOfferPromoOptionsUsingPOSTUnauthorizedException
      * @throws Exception\ModifyOfferPromoOptionsUsingPOSTForbiddenException
@@ -4022,15 +3620,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get promotion packages assigned to an offer. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-opcje-promowania-przypisane-do-oferty" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-promo-options-assigned-to-an-offer" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferPromoOptions|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferPromoOptions|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOfferPromoOptionsUsingGETUnauthorizedException
      * @throws Exception\GetOfferPromoOptionsUsingGETForbiddenException
@@ -4043,20 +3639,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve promo options for seller offers. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-opcje-promowania-dla-wielu-ofert" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-available-promo-options-for-multiple-offers" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $limit limit of promo options per page
-     * @var int $offset Distance between the beginning of the document and the point from which promo options are returned.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "limit"?: int, //Limit of promo options per page.
+     *    "offset"?: int, //Distance between the beginning of the document and the point from which promo options are returned.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferPromoOptionsForSeller|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferPromoOptionsForSeller|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPromoOptionsForSellerOffersUsingGETBadRequestException
      * @throws Exception\GetPromoOptionsForSellerOffersUsingGETUnauthorizedException
@@ -4069,15 +3661,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to find out how many offers were edited within one {commandId}. You will receive a summary with a number of successfully edited offers and errors. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-sprawdzic-szczegolowy-raport-zadania" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-check-a-detailed-report-of-your-task" target="_blank">EN</a>.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PromoGeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PromoGeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPromoModificationCommandResultUsingGETUnauthorizedException
      * @throws Exception\GetPromoModificationCommandResultUsingGETForbiddenException
@@ -4091,15 +3681,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to modify promotion packages on multiple offers at once. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-lub-edytowac-opcje-promowania-na-wielu-ofertach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-or-change-promo-options-in-multiple-offers" target="_blank">EN</a>.
      *
-     * @param string $commandId        Command identifier. Must be a UUID.
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId Command identifier. Must be a UUID.
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PromoGeneralReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PromoGeneralReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\PromoModificationCommandUsingPUTUnauthorizedException
      * @throws Exception\PromoModificationCommandUsingPUTConflictException
@@ -4113,21 +3701,17 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve the result of an offer modification command. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-sprawdzic-szczegolowy-raport-zadania" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-check-a-detailed-report-of-your-task" target="_blank">EN</a>.
      *
-     * @param string $commandId       command identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the limit of returned items
-     * @var int $offset The offset of returned items.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command identifier
+     * @param array{
+     *    "limit"?: int, //The limit of returned items.
+     *    "offset"?: int, //The offset of returned items.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PromoModificationReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PromoModificationReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPromoModificationCommandDetailedResultUsingGETUnauthorizedException
      * @throws Exception\GetPromoModificationCommandDetailedResultUsingGETForbiddenException
@@ -4141,20 +3725,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a full Smart! offer classification report of one of your offers. Please keep in mind you have to meet Smart! seller conditions first - for more details, use *GET /sale/smart*. To learn more about Smart! offer requirements, see our knowledge base article: [PL](https://help.allegro.com/pl/sell/a/allegro-smart-na-allegro-pl-informacje-dla-sprzedajacych-9g0rWRXKxHG#jakie-warunki-musisz-spelnic-aby-zyskac-oznaczenie-smart) / [EN](https://help.allegro.com/en/sell/a/allegro-smart-on-allegro-pl-information-for-sellers-LR8j8Y26GTR#what-requirements-you-need-to-meet-to-get-the-smart-badge). Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#kwalifikacja-oferty" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#offer-qualification" target="_blank">EN</a>.
      *
-     * @param string $offerId         offer identifier
-     * @param array  $queryParameters {
-     *
-     * @var string $marketplaceId Marketplace for which offer classification report will be returned. If not specified, the result of the offer's base marketplace will be returned.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId offer identifier
+     * @param array{
+     *    "marketplaceId"?: string, //Marketplace for which offer classification report will be returned. If not specified, the result of the offer's base marketplace will be returned.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SmartOfferClassificationReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SmartOfferClassificationReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOfferSmartClassificationGETBadRequestException
      * @throws Exception\GetOfferSmartClassificationGETUnauthorizedException
@@ -4170,47 +3750,43 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of products according to provided parameters. At least ean or phrase parameter is required. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-znalezc-produkt" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-find-a-product" target="_blank">EN</a>. This resource is limited with Leaky Bucket mechanism, read more <a href="../../tutorials/informacje-podstawowe-b21569boAI1#ograniczenie-liczby-zapytan-limity" target="_blank">PL</a> / <a href="../../tutorials/basic-information-VL6YelvVKTn#limiting-the-number-of-queries-limits" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $phrase search phrase
-     * @var string $mode Search mode. If not specified, we are searching by GTIN, MPN, product's name, parameters, etc.
-     *             - `GTIN` - restricts the search filtering to GTINs (Global Trade Item Number), e.g. EAN, ISBN, UPC.
-     *             - `MPN` - restricts the search filtering to MPNs (Manufacturer Part Number).
-     * @var string $language Language indicates the language for searching products. Allows to specify the language of the given phrase.
-     * @var string $category.id The category identifier to filter results. This can only be used when searching by phrase.
-     * @var string $Dynamic filters You can filter and customize your search results to find exactly what you need by applying filters ids and their dictionary values to query according to the flowing pattern: id=value. When the filter definition looks like:
-     *             ````
-     *             {
-     *             "id": "127448",
-     *             "name": "Kolor",
-     *             "type": "SINGLE",
-     *             "values": [
-     *             {
-     *             "name": "biały",
-     *             "value": "127448_2"
-     *             },
-     *             {
-     *             "name": "czarny",
-     *             "value": "127448_1"
-     *             }
-     *             ]
-     *             }
-     *             ````
-     *             You can use 'Kolor' filter to query results, i.e.:
-     *             `127448=127448_2` for "biały"
-     *             `127448=127448_1` for "czarny".
-     * @var string $page.id A "cursor" to the next set of results.
-     * @var string $searchFeatures Enables additional search options: - *SIMILAR_CATEGORIES* - searching in the indicated category (category.id) and in 'similar categories' (works only if category.id is a leaf category).
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "phrase"?: string, //Search phrase.
+     *    "mode"?: string, //Search mode. If not specified, we are searching by GTIN, MPN, product's name, parameters, etc.
+     * - `GTIN` - restricts the search filtering to GTINs (Global Trade Item Number), e.g. EAN, ISBN, UPC.
+     * - `MPN` - restricts the search filtering to MPNs (Manufacturer Part Number).
+     *    "language"?: string, //Language indicates the language for searching products. Allows to specify the language of the given phrase.
+     *    "category.id"?: string, //The category identifier to filter results. This can only be used when searching by phrase.
+     *    "Dynamic filters"?: array, //You can filter and customize your search results to find exactly what you need by applying filters ids and their dictionary values to query according to the flowing pattern: id=value. When the filter definition looks like:
+     * ````
+     * {
+     * "id": "127448",
+     * "name": "Kolor",
+     * "type": "SINGLE",
+     * "values": [
+     * {
+     * "name": "biały",
+     * "value": "127448_2"
+     * },
+     * {
+     * "name": "czarny",
+     * "value": "127448_1"
+     * }
+     * ]
+     * }
+     * ````
+     * You can use 'Kolor' filter to query results, i.e.:
+     * `127448=127448_2` for "biały"
+     * `127448=127448_1` for "czarny".
+     *    "page.id"?: string, //A "cursor" to the next set of results.
+     *    "searchFeatures"?: string, //Enables additional search options: - *SIMILAR_CATEGORIES* - searching in the indicated category (category.id) and in 'similar categories' (works only if category.id is a leaf category).
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GetSaleProductsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GetSaleProductsResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetSaleProductsBadRequestException
      * @throws Exception\GetSaleProductsUnauthorizedException
@@ -4224,21 +3800,17 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve all data of the particular product. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-pobrac-pelne-dane-o-produkcie" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-retrieve-product-data" target="_blank">EN</a>. This resource is limited with <a href="../../tutorials/basic-information-VL6YelvVKTn#limiting-the-number-of-queries-limits" target="_blank">Leaky Bucket</a> mechanism.
      *
-     * @param string $productId       the product identifier
-     * @param array  $queryParameters {
-     *
-     * @var string $category.id The similar category identifier. You can choose a category from 'similar categories' to filter the list of parameters available in the category context.
-     * @var string $language The language version of product. You can indicate the language for the returned product data.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $productId the product identifier
+     * @param array{
+     *    "category.id"?: string, //The similar category identifier. You can choose a category from 'similar categories' to filter the list of parameters available in the category context.
+     *    "language"?: string, //The language version of product. You can indicate the language for the returned product data.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleProductDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleProductDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetSaleProductUnauthorizedException
      * @throws Exception\GetSaleProductNotFoundException
@@ -4252,14 +3824,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to propose a product. You can add up to 20,000 new products to the Catalog each month. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-utworzyc-nowy-produkt" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-create-a-product" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ProductProposalsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ProductProposalsResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ProposeSaleProductBadRequestException
      * @throws Exception\ProposeSaleProductUnauthorizedException
@@ -4275,15 +3845,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to propose changes in product. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-zglosic-blad-w-produkcie" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-report-incorrect-data-in-a-product" target="_blank">EN</a>. This resource is limited to 100 suggestions per day for a single user.
      *
-     * @param string $productId        the product identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $productId the product identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ProductChangeProposalDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ProductChangeProposalDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ProductChangeProposalBadRequestException
      * @throws Exception\ProductChangeProposalUnauthorizedException
@@ -4299,14 +3867,12 @@ class Client extends Runtime\Client\Client
      * Use this resource to retrieve all data of the particular product changes proposal. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-zglosic-blad-w-produkcie" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-report-incorrect-data-in-a-product" target="_blank">EN</a>.
      *
      * @param string $changeProposalId the product changes proposal identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ProductChangeProposalDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ProductChangeProposalDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetProductChangeProposalUnauthorizedException
      * @throws Exception\GetProductChangeProposalForbiddenException
@@ -4320,22 +3886,18 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get information about required parameters or parameters scheduled to become required that are not filled in offers. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-sprawdzic-nieuzupelnione-parametry-w-ofertach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-check-unfilled-parameters-in-offers" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var array  $offer.id List of offer ids. If empty all offers with unfilled parameters will be returned.
-     * @var string $parameterType filter by parameter type
-     * @var int    $offset the offset of elements in the response
-     * @var int    $limit The limit of elements in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offer.id"?: array, //List of offer ids. If empty all offers with unfilled parameters will be returned.
+     *    "parameterType"?: string, //Filter by parameter type.
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //The limit of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\UnfilledParametersResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\UnfilledParametersResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOffersUnfilledParametersUsingGET1BadRequestException
      * @throws Exception\GetOffersUnfilledParametersUsingGET1UnauthorizedException
@@ -4349,14 +3911,12 @@ class Client extends Runtime\Client\Client
     /**
      * Compatibility list is available in particular categories, this resource allows to get the list of these categories with additional details. Read more: <a href="../../tutorials/jak-zarzadzac-sekcja-pasuje-do-E7Zj6gAEGil#jak-sprawdzic-czy-w-danej-kategorii-moge-dodac-sekcje-pasuje-do-do-oferty" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-compatibility-section-v8WbL1wV0Hz#which-categories-support-compatibility-section" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CompatibilityListSupportedCategoriesDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CompatibilityListSupportedCategoriesDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCategoriesThatSupportCompatibilityListUnauthorizedException
      */
@@ -4368,22 +3928,18 @@ class Client extends Runtime\Client\Client
     /**
      * Resource allows to fetch compatibility list suggestion for given offer or product. Read more: <a href="../../tutorials/jak-zarzadzac-sekcja-pasuje-do-E7Zj6gAEGil#jak-wyszukac-sugerowana-sekcje-compatibilitylist" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-compatibility-section-v8WbL1wV0Hz#how-to-search-for-the-suggested-compatibility-section" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $offer.id Offer id on the basis of which we will return the suggested compatibility list.
-     * @var string $product.id Product id on the basis of which we will return the suggested compatibility list.
-     * @var string $language Locale on the basis of which we will return the suggested compatibility list. For product-based suggestions if missing pl-PL will be used. For offer-based suggestions if missing offer language will be used.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offer.id"?: string, //Offer id on the basis of which we will return the suggested compatibility list.
+     *    "product.id"?: string, //Product id on the basis of which we will return the suggested compatibility list.
+     *    "language"?: string, //Locale on the basis of which we will return the suggested compatibility list. For product-based suggestions if missing pl-PL will be used. For offer-based suggestions if missing offer language will be used.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CompatibilityList|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CompatibilityList|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCompatibilityListSuggestionBadRequestException
      * @throws Exception\GetCompatibilityListSuggestionUnauthorizedException
@@ -4397,23 +3953,19 @@ class Client extends Runtime\Client\Client
     /**
      * Compatible products are organized in groups, this resource allows to browse these groups. Read more: <a href="../../tutorials/jak-zarzadzac-sekcja-pasuje-do-E7Zj6gAEGil#jak-zarzadzac-sekcja-pasuje-do-zintegrowana-z-baza-pojazdow" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-compatibility-section-v8WbL1wV0Hz#managing-the-compatibility-section-compatibilitylist-integrated-vehicle-database" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $type Type of compatible products. You can find available types in the response for the GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">supported-categories</a> resource. You can use value provided in `itemsType`, for categories where `inputType=ID`.
-     * @var int    $limit the limit of returned items
-     * @var int    $offset The offset of returned items.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $If-Modified-Since Date of last data modification. If data has been modified after specified date, full set of data is returned. If header is not specified, full set of data is returned. Date has to be provided in HTTP-date format.
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "type": string, //Type of compatible products. You can find available types in the response for the GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">supported-categories</a> resource. You can use value provided in `itemsType`, for categories where `inputType=ID`.
+     *    "limit"?: int, //The limit of returned items.
+     *    "offset"?: int, //The offset of returned items.
+     * } $queryParameters
+     * @param array{
+     *    "If-Modified-Since"?: string, //Date of last data modification. If data has been modified after specified date, full set of data is returned. If header is not specified, full set of data is returned. Date has to be provided in HTTP-date format.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CompatibleProductsGroupsDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CompatibleProductsGroupsDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCompatibleProductsGroupsBadRequestException
      * @throws Exception\GetCompatibleProductsGroupsUnauthorizedException
@@ -4427,27 +3979,23 @@ class Client extends Runtime\Client\Client
     /**
      * Resource allows to fetch compatible products of given type. Read more: <a href="../../tutorials/jak-zarzadzac-sekcja-pasuje-do-E7Zj6gAEGil#jak-zarzadzac-sekcja-pasuje-do-zintegrowana-z-baza-pojazdow" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-compatibility-section-v8WbL1wV0Hz#managing-the-compatibility-section-compatibilitylist-integrated-vehicle-database" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $type Type of compatible products. You can find available types in the response for the GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">supported-categories</a> resource. You can use value provided in `itemsType`, for categories where `inputType=ID`.
-     * @var string $group.id Group identifier from `/sale/compatible-products/groups` resource. Parameter is required when parameter `tecdoc.kTypNr` or `tecdoc.nTypNr` or `phrase` is not specified.
-     * @var string $tecdoc.kTypNr Identifier of passenger vehicle (kTypNr) from TecDoc database. When used, `group.id` parameter is ignored.
-     * @var string $tecdoc.nTypNr Identifier of commercial vehicle (nTypNr) from TecDoc database. When used, `group.id` parameter is ignored.
-     * @var string $phrase Query for compatible products. When used, parameters: `group.id`, `limit`, `offset` and header `If-Modified-Since` are ignored.
-     * @var int    $limit The limit of returned items. If `phrase` parameter is present, parameter is ignored and maximum value is set to `200`.
-     * @var int    $offset The offset of returned items. If `phrase` parameter is present, parameter is ignored.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages
-     * @var string $If-Modified-Since Date of last data modification. If data has been modified after specified date, full set of data is returned. If header is not specified, full set of data is returned. Date has to be provided in HTTP-date format. Header is ignored if `phrase` parameter is used.
-     *             }
-     *
+     * @param array{
+     *    "type": string, //Type of compatible products. You can find available types in the response for the GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get">supported-categories</a> resource. You can use value provided in `itemsType`, for categories where `inputType=ID`.
+     *    "group.id"?: string, //Group identifier from `/sale/compatible-products/groups` resource. Parameter is required when parameter `tecdoc.kTypNr` or `tecdoc.nTypNr` or `phrase` is not specified.
+     *    "tecdoc.kTypNr"?: string, //Identifier of passenger vehicle (kTypNr) from TecDoc database. When used, `group.id` parameter is ignored.
+     *    "tecdoc.nTypNr"?: string, //Identifier of commercial vehicle (nTypNr) from TecDoc database. When used, `group.id` parameter is ignored.
+     *    "phrase"?: string, //Query for compatible products. When used, parameters: `group.id`, `limit`, `offset` and header `If-Modified-Since` are ignored.
+     *    "limit"?: int, //The limit of returned items. If `phrase` parameter is present, parameter is ignored and maximum value is set to `200`.
+     *    "offset"?: int, //The offset of returned items. If `phrase` parameter is present, parameter is ignored.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     *    "If-Modified-Since"?: string, //Date of last data modification. If data has been modified after specified date, full set of data is returned. If header is not specified, full set of data is returned. Date has to be provided in HTTP-date format. Header is ignored if `phrase` parameter is used.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CompatibleProductsListDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CompatibleProductsListDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCompatibleProductsBadRequestException
      * @throws Exception\GetCompatibleProductsUnauthorizedException
@@ -4461,15 +4009,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of all additional email addresses assigned to account. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-adresy-e-mail" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-email-addresses" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|*\/*
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdditionalEmailsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdditionalEmailsResponse|null : \Psr\Http\Message\ResponseInterface)
      */
     public function getListOfAdditionalEmailsUsingGET(array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
@@ -4479,15 +4025,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to add a new additional email address to account. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-dodac-adres-e-mail" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-add-an-additional-email" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|*\/*
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdditionalEmail|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdditionalEmail|null : \Psr\Http\Message\ResponseInterface)
      */
     public function addAdditionalEmailUsingPOST(?Model\AdditionalEmailRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
@@ -4497,16 +4041,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete one of additional emails. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-usunac-adres-e-mail" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-remove-e-mail" target="_blank">EN</a>.
      *
-     * @param string $emailId          id of the additional email to be deleted
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $emailId id of the additional email to be deleted
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|*\/*
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteAdditionalEmailUsingDELETEUnauthorizedException
      */
@@ -4518,16 +4060,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve a single additional email. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-szczegolowe-informacje-o-adresie-e-mail" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-e-mail-details" target="_blank">EN</a>.
      *
-     * @param string $emailId          id of the additional email
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $emailId id of the additional email
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|*\/*
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdditionalEmail|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdditionalEmail|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAdditionalEmailUsingGETUnauthorizedException
      */
@@ -4539,29 +4079,25 @@ class Client extends Runtime\Client\Client
     /**
      * Use this endpoint to get the list of the seller payment operations. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#historia-operacji-platniczych" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#payment-operations" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $wallet.type Type of the wallet: * AVAILABLE - operations available for payout. * WAITING - operations temporarily suspended for payout.
-     * @var string $wallet.paymentOperator Payment operator: * PAYU - operations processed by PAYU operator. * P24 - operations processed by PRZELEWY24 operator. * AF - operations processed by Allegro Finance operator. * AF_P24 - operations processed by Allegro Finance with PRZELEWY24. * AF_PAYU - operations processed by Allegro Finance with PAYU.
-     * @var string $payment.id The payment ID.
-     * @var string $participant.login Login of the participant. In case of REFUND_INCREASE operation this is the login of the seller, in other cases, of the buyer.
-     * @var string $occurredAt.gte The minimum date and time of operation occurrence in ISO 8601 format.
-     * @var string $occurredAt.lte The maximum date and time of operation occurrence in ISO 8601 format.
-     * @var array  $group Group of operation types: * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION, DEDUCTION_INCREASE, LOAN_DEDUCTION_INCREASE, COMPENSATION, COMPENSATION_COD_INCREASE, TOP_UP, PAYOUT_SWEEP_INCREASE, PAYOUT_SWEEP_CANCEL_INCREASE. * OUTCOME - PAYOUT, PAYOUT_CANCEL, DEDUCTION_CHARGE, LOAN_DEDUCTION_CHARGE, COMPENSATION_COD_CHARGE, PAYOUT_SWEEP_CHARGE, PAYOUT_SWEEP_CANCEL_CHARGE. * REFUND - REFUND_CHARGE, REFUND_CANCEL, REFUND_INCREASE, CORRECTION, PROVIDER_REFUND_TRANSFER_CHARGE, PROVIDER_REFUND_TRANSFER_INCREASE. * BLOCKADES - BLOCKADE, BLOCKADE_RELEASE.
-     * @var string $marketplaceId The marketplace ID where operation was made. When the parameter is omitted, searches for operations with all marketplaces. Note, that there are operations not assigned to any marketplace.
-     * @var string $currency currency of the operations
-     * @var int    $limit number of returned operations
-     * @var int    $offset Index of the first returned payment operation from all search results.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "wallet.type"?: string, //Type of the wallet: * AVAILABLE - operations available for payout. * WAITING - operations temporarily suspended for payout.
+     *    "wallet.paymentOperator"?: string, //Payment operator: * PAYU - operations processed by PAYU operator. * P24 - operations processed by PRZELEWY24 operator. * AF - operations processed by Allegro Finance operator. * AF_P24 - operations processed by Allegro Finance with PRZELEWY24. * AF_PAYU - operations processed by Allegro Finance with PAYU.
+     *    "payment.id"?: string, //The payment ID.
+     *    "participant.login"?: string, //Login of the participant. In case of REFUND_INCREASE operation this is the login of the seller, in other cases, of the buyer.
+     *    "occurredAt.gte"?: string, //The minimum date and time of operation occurrence in ISO 8601 format.
+     *    "occurredAt.lte"?: string, //The maximum date and time of operation occurrence in ISO 8601 format.
+     *    "group"?: array, //Group of operation types: * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION, DEDUCTION_INCREASE, LOAN_DEDUCTION_INCREASE, COMPENSATION, COMPENSATION_COD_INCREASE, TOP_UP, PAYOUT_SWEEP_INCREASE, PAYOUT_SWEEP_CANCEL_INCREASE. * OUTCOME - PAYOUT, PAYOUT_CANCEL, DEDUCTION_CHARGE, LOAN_DEDUCTION_CHARGE, COMPENSATION_COD_CHARGE, PAYOUT_SWEEP_CHARGE, PAYOUT_SWEEP_CANCEL_CHARGE. * REFUND - REFUND_CHARGE, REFUND_CANCEL, REFUND_INCREASE, CORRECTION, PROVIDER_REFUND_TRANSFER_CHARGE, PROVIDER_REFUND_TRANSFER_INCREASE. * BLOCKADES - BLOCKADE, BLOCKADE_RELEASE.
+     *    "marketplaceId"?: string, //The marketplace ID where operation was made. When the parameter is omitted, searches for operations with all marketplaces. Note, that there are operations not assigned to any marketplace.
+     *    "currency"?: string, //Currency of the operations.
+     *    "limit"?: int, //Number of returned operations.
+     *    "offset"?: int, //Index of the first returned payment operation from all search results.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PaymentOperations|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PaymentOperations|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPaymentsOperationHistoryUnauthorizedException
      * @throws Exception\GetPaymentsOperationHistoryUnprocessableEntityException
@@ -4574,15 +4110,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve current user's bid information. Read more: <a href="../../news/nowe-zasoby-zloz-oferte-kupna-w-licytacji-q018m02vDT1" target="_blank">PL</a> / <a href="../../news/new-resources-place-a-bid-in-an-auction-rjWwEj1e7sG" target="_blank">EN</a>.
      *
-     * @param string $offerId          the offer ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId the offer ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\MyBidResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\MyBidResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetBidNotFoundException
      */
@@ -4594,15 +4128,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to place a bid in an auction. Read more: <a href="../../news/nowe-zasoby-zloz-oferte-kupna-w-licytacji-q018m02vDT1" target="_blank">PL</a> / <a href="../../news/new-resources-place-a-bid-in-an-auction-rjWwEj1e7sG" target="_blank">EN</a>.
      *
-     * @param string $offerId          the offer ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $offerId the offer ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\MyBidResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\MyBidResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\PlaceBidBadRequestException
      * @throws Exception\PlaceBidUnauthorizedException
@@ -4630,22 +4162,18 @@ class Client extends Runtime\Client\Client
      *   - OFFER_DELIVERY_COUNTRIES_BLOCKED - the offer has been blocked in selected countries.
      * Returned events may occur by actions made via browser or API. The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status (the exception is OFFER_ARCHIVED event). External id is returned for all event types except OFFER_BID_PLACED and OFFER_BID_CANCELED. Please note that one change may result in more than one event. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#dziennik-zdarzen-w-ofertach-sprzedawcy" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#event-journal-concerning-changes-in-seller-s-offers" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $from The ID of the last seen event. Events that occured after the given event will be returned.
-     * @var int    $limit the number of events that will be returned in the response
-     * @var array  $type The types of events that will be returned in the response. All types of events are returned by default.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "from"?: string, //The ID of the last seen event. Events that occured after the given event will be returned.
+     *    "limit"?: int, //The number of events that will be returned in the response.
+     *    "type"?: array, //The types of events that will be returned in the response. All types of events are returned by default.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SellerOfferEventsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SellerOfferEventsResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOfferEventsBadRequestException
      * @throws Exception\GetOfferEventsUnauthorizedException
@@ -4659,19 +4187,15 @@ class Client extends Runtime\Client\Client
      * Badge campaigns are another way to promote your offers. You can apply for a badge, which - depending on a type - will be displayed on your offer page of on the list of offers.
      * First - use this resource to get a list of all available badge campaigns at the moment, then use *POST /sale/badges* to apply for badge. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#lista-dostepnych-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#list-of-available-campaigns" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $marketplace.id The marketplace of campaigns.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "marketplace.id"?: string, //The marketplace of campaigns.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\GetBadgeCampaignsList|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\GetBadgeCampaignsList|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\BadgeCampaignsGetAllBadRequestException
      * @throws Exception\BadgeCampaignsGetAllUnauthorizedException
@@ -4685,22 +4209,18 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of badges in authorized seller's offers. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#kampanie-przypisane-do-ofert" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#check-badges-assigned-to-offers" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $offer.id Offer ID.
-     * @var string $marketplace.id The marketplace of badges.
-     * @var int    $offset offset
-     * @var int    $limit The maximum number of badges returned in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offer.id"?: string, //Offer ID.
+     *    "marketplace.id": string, //The marketplace of badges.
+     *    "offset"?: int, //Offset.
+     *    "limit"?: int, //The maximum number of badges returned in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\BadgesList|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\BadgesList|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetBadgesBadRequestException
      * @throws Exception\GetBadgesUnauthorizedException
@@ -4716,14 +4236,12 @@ class Client extends Runtime\Client\Client
      * Your badge application will be verified and you will be notified about the verification status via e-mail. You can use *Location* provided in header of the response to track your application status. Application will be removed after 30 days when status of the application was changed form PROCESSED or DECLINED.
      * Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#zglos-oferte-do-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#submit-offer-to-a-campaign" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\BadgeApplication|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\BadgeApplication|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\PostBadgesBadRequestException
      * @throws Exception\PostBadgesUnauthorizedException
@@ -4738,15 +4256,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a badge application details. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#pobierz-dane-zgloszenie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#retrieve-campaign-application" target="_blank">EN</a>.
      *
-     * @param string $applicationId    badge application ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $applicationId badge application ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\BadgeApplication|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\BadgeApplication|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\BadgeApplicationsGetOneUnauthorizedException
      * @throws Exception\BadgeApplicationsGetOneForbiddenException
@@ -4760,22 +4276,18 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of badge applications. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#pobierz-swoje-zgloszenia" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#retrieve-all-campaign-applications" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $campaign.id Campaign ID.
-     * @var string $offer.id Offer ID.
-     * @var int    $offset offset
-     * @var int    $limit The maximum number of applications returned in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "campaign.id"?: string, //Campaign ID.
+     *    "offer.id"?: string, //Offer ID.
+     *    "offset"?: int, //Offset.
+     *    "limit"?: int, //The maximum number of applications returned in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\BadgeApplications|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\BadgeApplications|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\BadgeApplicationsGetAllBadRequestException
      * @throws Exception\BadgeApplicationsGetAllUnauthorizedException
@@ -4789,15 +4301,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get badge operation details. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#zmiana-ceny-i-zakonczenie-oznaczenia" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#change-price-and-finish-badge" target="_blank">EN</a>.
      *
-     * @param string $operationId      badge operation ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $operationId badge operation ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\BadgeOperation|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\BadgeOperation|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\BadgeOperationsGetOneUnauthorizedException
      * @throws Exception\BadgeOperationsGetOneForbiddenException
@@ -4812,17 +4322,15 @@ class Client extends Runtime\Client\Client
      * This resource allows you to update a campaign badge for the given offer. You can use *Location* provided in header of the response to track your update status. Update offer price in a campaign or finish marking an offer in a campaign.
      * Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#zmiana-ceny-i-zakonczenie-oznaczenia" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#change-price-and-finish-badge" target="_blank">EN</a>.
      *
-     * @param string     $offerId          offer ID
-     * @param string     $campaignId       campaign ID
+     * @param string     $offerId     offer ID
+     * @param string     $campaignId  campaign ID
      * @param mixed|null $requestBody
-     * @param array      $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleBadgesOffersOfferIdCampaignsCampaignIdPatchResponse202|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SaleBadgesOffersOfferIdCampaignsCampaignIdPatchResponse202|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\PatchBadgeBadRequestException
      * @throws Exception\PatchBadgeUnauthorizedException
@@ -4839,26 +4347,22 @@ class Client extends Runtime\Client\Client
     /**
      * Get a list of refunded payments. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-liste-zwrotow-platnosci" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-retrieve-a-list-of-refunded-payment" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int    $limit number of returned operations
-     * @var int    $offset index of the first returned payment operation from all search results
-     * @var string $id ID of the refund
-     * @var string $payment.id ID of the payment.
-     * @var string $order.id ID of the order.
-     * @var string $occurredAt.gte Minimum date and time when the refund occurred provided in ISO 8601 format.
-     * @var string $occurredAt.lte Maximum date and time when the refund occurred provided in ISO 8601 format.
-     * @var array  $status Current status of payment refund.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "limit"?: int, //Number of returned operations.
+     *    "offset"?: int, //Index of the first returned payment operation from all search results.
+     *    "id"?: string, //ID of the refund.
+     *    "payment.id"?: string, //ID of the payment.
+     *    "order.id"?: string, //ID of the order.
+     *    "occurredAt.gte"?: string, //Minimum date and time when the refund occurred provided in ISO 8601 format.
+     *    "occurredAt.lte"?: string, //Maximum date and time when the refund occurred provided in ISO 8601 format.
+     *    "status"?: array, //Current status of payment refund.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PaymentsRefundsGetResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PaymentsRefundsGetResponse200|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetRefundedPaymentsUnauthorizedException
      * @throws Exception\GetRefundedPaymentsForbiddenException
@@ -4872,14 +4376,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this endpoint to initiate a refund of a payment. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-wykonac-zwrot-platnosci" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-refund-a-payment" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\RefundDetails|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\RefundDetails|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\InitiateRefundBadRequestException
      * @throws Exception\InitiateRefundUnauthorizedException
@@ -4895,26 +4397,22 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of billing entries. The billing entries are sorted in descending order (newest first) by the date on which they occurred. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#historia-operacji-billingowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#billing-operations" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $marketplaceId The marketplace ID where the operation took place. By default, this is the marketplace ID where the user is registered. **Note:** The Business marketplace is not separate - it defaults to the main marketplace for the given country.
-     * @var string $occurredAt.gte Date from which billing entries are filtered. If occurredAt.lte is also set, occurredAt.gte cannot be later.
-     * @var string $occurredAt.lte Date to which billing entries are filtered. If occurredAt.gte is also set, occurredAt.lte cannot be earlier.
-     * @var array  $type.id List of billing types by which billing entries are filtered.
-     * @var string $offer.id Offer ID by which billing entries are filtered. Can be either a numeric ID or a UUID.
-     * @var string $order.id Order UUID by which billing entries are filtered.
-     * @var int    $limit number of returned operations
-     * @var int    $offset Index of the first returned payment operation from all search results.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "marketplaceId"?: string, //The marketplace ID where the operation took place. By default, this is the marketplace ID where the user is registered. **Note:** The Business marketplace is not separate - it defaults to the main marketplace for the given country.
+     *    "occurredAt.gte"?: string, //Date from which billing entries are filtered. If occurredAt.lte is also set, occurredAt.gte cannot be later.
+     *    "occurredAt.lte"?: string, //Date to which billing entries are filtered. If occurredAt.gte is also set, occurredAt.lte cannot be earlier.
+     *    "type.id"?: array, //List of billing types by which billing entries are filtered.
+     *    "offer.id"?: string, //Offer ID by which billing entries are filtered. Can be either a numeric ID or a UUID.
+     *    "order.id"?: string, //Order UUID by which billing entries are filtered.
+     *    "limit"?: int, //Number of returned operations.
+     *    "offset"?: int, //Index of the first returned payment operation from all search results.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\BillingEntries|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\BillingEntries|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetBillingEntriesUnauthorizedException
      * @throws Exception\GetBillingEntriesNotAcceptableException
@@ -4928,14 +4426,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of all billing types. Type names are localized according to the "Accept-Language" header. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#historia-operacji-billingowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#billing-operations" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\BillingType[]|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\BillingType[]|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetBillingTypesUnauthorizedException
      */
@@ -4947,15 +4443,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to cancel a refund application. This cannot be undone. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-anulowac-wniosek-o-rabat-transakcyjny" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-cancel-sale-commission-refund" target="_blank">EN</a>.
      *
-     * @param string $claimId          refund application ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $claimId refund application ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CancelRefundApplicationBadRequestException
      * @throws Exception\CancelRefundApplicationUnauthorizedException
@@ -4972,15 +4466,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get refund application details. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-pojedynczy-wniosek-o-rabat-transakcyjny" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-retrieve-single-sale-commission-refund" target="_blank">EN</a>.
      *
-     * @param string $claimId          refund application ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $claimId refund application ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\RefundClaim|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\RefundClaim|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetRefundApplicationBadRequestException
      * @throws Exception\GetRefundApplicationUnauthorizedException
@@ -4997,23 +4489,19 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of refund applications based on the provided query parameters. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-liste-utworzonych-wnioskow-o-rabat-transakcyjny" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-retrieve-list-of-sale-commission-refunds" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $lineItem.offer.id ID of the offer associated with the refund application.
-     * @var string $buyer.id Id of the buyer that made the purchase associated with the refund application.
-     * @var string $status status of the refund application
-     * @var int    $limit maximum number of returned refund applications in response
-     * @var int    $offset Index of the first returned refund application from all search results.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "lineItem.offer.id"?: string, //ID of the offer associated with the refund application.
+     *    "buyer.id"?: string, //Id of the buyer that made the purchase associated with the refund application.
+     *    "status"?: string, //Status of the refund application.
+     *    "limit"?: int, //Maximum number of returned refund applications in response.
+     *    "offset"?: int, //Index of the first returned refund application from all search results.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OrderRefundClaimsGetResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OrderRefundClaimsGetResponse200|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetRefundApplicationsBadRequestException
      * @throws Exception\GetRefundApplicationsUnauthorizedException
@@ -5029,14 +4517,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a refund application. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-utworzyc-wniosek-o-rabat-transakcyjny" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-create-a-sale-commission-refund-application" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\RefundClaimResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\RefundClaimResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateRefundApplicationBadRequestException
      * @throws Exception\CreateRefundApplicationUnauthorizedException
@@ -5052,20 +4538,16 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to search fundraising campaigns. Read more: <a href="../../news/wystaw-oferte-charytatywna-na-allegro-MR87PBxZySY" target="_blank">PL</a> / <a href="../../news/list-a-charity-offer-on-allegro-LRV0572GOhr" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int    $limit maximum number of returned results
-     * @var string $phrase Fundraising campaign name or it's Organization name prefix to search for.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "limit": int, //Maximum number of returned results.
+     *    "phrase": string, //Fundraising campaign name or it's Organization name prefix to search for.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FundraisingCampaigns|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FundraisingCampaigns|null : \Psr\Http\Message\ResponseInterface)
      */
     public function searchFundraisingCampaigns(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -5078,7 +4560,7 @@ class Client extends Runtime\Client\Client
      * @param string $orderId order ID
      * @param string $fetch   Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\DeliveryProposalDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\DeliveryProposalDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetDeliveryProposalsUnauthorizedException
      * @throws Exception\GetDeliveryProposalsForbiddenException
@@ -5092,14 +4574,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get delivery services available for user. It returns services provided by Allegro and contracts with carriers owned by user and configured by GUI. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-liste-uslug-dostawy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-a-list-of-delivery-services" target="_blank">EN</a>.<br/> This resource is deprecated and will be removed in Q1 2027. Consider using the new resource '/shipment-management/delivery-proposals/{orderId}' resource instead.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\DeliveryServicesDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\DeliveryServicesDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetDeliveryServicesUnauthorizedException
      * @throws Exception\GetDeliveryServicesForbiddenException
@@ -5113,14 +4593,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create shipment for delivery. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-utworzyc-nowa-paczke" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-create-a-new-shipment" target="_blank">EN</a>. Please check also new resource '/shipment-management/delivery-proposals/{orderId}' to get prefilled request body for this resource.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ShipmentCreateCommandDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ShipmentCreateCommandDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateNewShipmentBadRequestException
      * @throws Exception\CreateNewShipmentUnauthorizedException
@@ -5135,15 +4613,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get shipment creation status. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-sprawdzic-status-utworzenia-paczki" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-check-the-creation-status-of-a-shipment" target="_blank">EN</a>.
      *
-     * @param string $commandId        command UUID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command UUID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CreateShipmentCommandStatusDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CreateShipmentCommandStatusDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetShipmentCreationStatusBadRequestException
      * @throws Exception\GetShipmentCreationStatusUnauthorizedException
@@ -5159,14 +4635,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to cancel parcel. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-anulowac-paczke" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-cancel-a-shipment" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ShipmentCancelCommandDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ShipmentCancelCommandDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CancelShipmentBadRequestException
      * @throws Exception\CancelShipmentUnauthorizedException
@@ -5180,15 +4654,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get parcel cancellation status. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-sprawdzic-status-anulowania-paczki" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-check-shipment-cancellation-status" target="_blank">EN</a>.
      *
-     * @param string $commandId        command UUID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command UUID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CancelShipmentCommandStatusDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CancelShipmentCommandStatusDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetShipmentCancellationStatusBadRequestException
      * @throws Exception\GetShipmentCancellationStatusUnauthorizedException
@@ -5204,15 +4676,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get parcel details. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-szczegolowe-informacje-o-paczce" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-shipment-details" target="_blank">EN</a>.
      *
-     * @param string $shipmentId       shipment id
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $shipmentId shipment id
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ShipmentDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ShipmentDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetShipmentDetailsBadRequestException
      * @throws Exception\GetShipmentDetailsUnauthorizedException
@@ -5228,15 +4698,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get label for created shipment. <br/>Returned content type depends on created shipment. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-utworzyc-etykiete-na-paczke" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-create-a-label-for-shipment" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/octet-stream|application/vnd.allegro.public.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetShipmentLabelsBadRequestException
      * @throws Exception\GetShipmentLabelsUnauthorizedException
@@ -5252,15 +4720,13 @@ class Client extends Runtime\Client\Client
     /**
      * Protocol availability depends on Carrier. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-protokol-nadania-przesylek" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-shipment-protocol" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/octet-stream|application/vnd.allegro.public.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetShipmentProtocolUnauthorizedException
      * @throws Exception\GetShipmentProtocolBadRequestException
@@ -5276,14 +4742,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get parcels pickup date proposals. Pickup takes place, when courier arrives to take parcels for shipment. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-sprawdzic-proponowana-date-odbioru-paczek-przez-kuriera" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-check-pickup-date-proposals" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PickupProposalsResponseDto[]|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PickupProposalsResponseDto[]|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPickupProposalsBadRequestException
      * @throws Exception\GetPickupProposalsUnauthorizedException
@@ -5298,14 +4762,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to request a pickup of shipments. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-zamowic-odbior-paczek-przez-kuriera" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-request-shipment-pickup-by-a-courier" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PickupCreateCommandDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PickupCreateCommandDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreatePickupBadRequestException
      * @throws Exception\CreatePickupUnauthorizedException
@@ -5319,15 +4781,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get pickup request status. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-sprawdzic-status-zamowienia-odbioru-paczek" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-check-shipment-pickup-request-status" target="_blank">EN</a>.
      *
-     * @param string $commandId        command UUID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command UUID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CreatePickupCommandStatusDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CreatePickupCommandStatusDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreatePickupStatusBadRequestException
      * @throws Exception\CreatePickupStatusUnauthorizedException
@@ -5343,15 +4803,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get pickup details. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-sprawdzic-status-zamowienia-odbioru-paczek" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-check-shipment-pickup-request-status" target="_blank">EN</a>.
      *
-     * @param string $pickupId         pickup ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $pickupId pickup ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\PickupDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\PickupDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetPickupDetailsBadRequestException
      * @throws Exception\GetPickupDetailsUnauthorizedException
@@ -5367,19 +4825,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to receive suggested categories for given phrase. This resource is rate limited to 5 requests per second. Read more: <a href="../../news/udostepnilismy-nowy-zasob-dzieki-ktoremu-sprawdzisz-sugerowane-kategorie-dla-podanej-frazy-4RAl9jwX1FW" target="_blank">PL</a> / <a href="../../news/we-have-introduced-a-new-resource-that-allows-you-to-retrieve-the-suggested-categories-for-the-given-phrase-v8Wdy1EOyF0" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $name Product name for which you want to get suggested categories.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "name": string, //Product name for which you want to get suggested categories.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CategorySuggestionResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CategorySuggestionResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CategorySuggestionUsingGETUnauthorizedException
      * @throws Exception\CategorySuggestionUsingGETForbiddenException
@@ -5394,21 +4848,17 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to receive tax settings for a given leaf category. Based on received settings you may set VAT tax settings for your offers. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#opcje-faktury-i-stawki-vat" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#invoice-and-vat-settings" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $category.id An identifier of a leaf category for which all available tax settings will be returned.
-     * @var array  $countryCode Country code for which tax settings will be returned. If not provided settings for all countries will be returned.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "category.id": string, //An identifier of a leaf category for which all available tax settings will be returned.
+     *    "countryCode"?: array, //Country code for which tax settings will be returned. If not provided settings for all countries will be returned.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CategoryTaxSettings|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CategoryTaxSettings|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetTaxSettingsForCategoryBadRequestException
      * @throws Exception\GetTaxSettingsForCategoryUnauthorizedException
@@ -5424,14 +4874,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve the account participation status for all supported marketplaces in the Allegro Prices program. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-pobrac-aktualny-status-uczestnictwa-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-retrieve-the-current-program-participation-status" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AllegroPricesAccountParticipationResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AllegroPricesAccountParticipationResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAccountParticipationUnauthorizedException
      */
@@ -5443,14 +4891,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to update the account participation status for one or more marketplaces in the Allegro Prices program. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zmienic-status-uczestnictwa-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-change-the-program-participation-status" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AllegroPricesAccountParticipationResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AllegroPricesAccountParticipationResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateAccountParticipationBadRequestException
      * @throws Exception\UpdateAccountParticipationUnauthorizedException
@@ -5464,14 +4910,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to submit a command to add offers to the Allegro Prices program. Returns a command ID that can be used to track the processing status. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-dodanie-ofert-do-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-add-offers-to-the-program" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SubsidyManageOffersCommandResult|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SubsidyManageOffersCommandResult|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\SubmitOfferCommandsBadRequestException
      * @throws Exception\SubmitOfferCommandsUnauthorizedException
@@ -5486,15 +4930,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve the status and details of a previously submitted offer command. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-dodanie-ofert-do-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-add-offers-to-the-program" target="_blank">EN</a>.
      *
-     * @param string $commandId        the unique identifier of the command
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId the unique identifier of the command
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SubsidySubmitOffersCommandPreview|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SubsidySubmitOffersCommandPreview|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetSubmitOfferCommandStatusBadRequestException
      * @throws Exception\GetSubmitOfferCommandStatusUnauthorizedException
@@ -5508,14 +4950,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to submit a command to exclude offers from the Allegro Prices program. Returns a command ID that can be used to track the processing status. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-wykluczenie-ofert-z-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-exclude-offers-from-the-program" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SubsidyManageOffersCommandResult|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SubsidyManageOffersCommandResult|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ExcludeOfferCommandsBadRequestException
      * @throws Exception\ExcludeOfferCommandsUnauthorizedException
@@ -5530,15 +4970,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve the status and details of a previously submitted exclusion command. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zlecic-wykluczenie-ofert-z-programu" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-a-command-to-exclude-offers-from-the-program" target="_blank">EN</a>.
      *
-     * @param string $commandId        the unique identifier of the command
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId the unique identifier of the command
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SubsidyExcludeOffersCommandPreview|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SubsidyExcludeOffersCommandPreview|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetExcludeOfferCommandStatusBadRequestException
      * @throws Exception\GetExcludeOfferCommandStatusUnauthorizedException
@@ -5552,14 +4990,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to retrieve a list of offers and their status in the Allegro Prices program with optional filtering and pagination. Allows filtering by offer IDs, marketplace, and scope (WITH_DECLARATION, DISCOUNTED, or EXCLUDED). Only offers in ACTIVATING, ACTIVE, or ENDED statuses are considered. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-pobrac-liste-ofert-i-ich-obecny-status-w-programie" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-retrieve-a-list-of-offers-and-their-status-in-the-program" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\OfferStatusQueryResponseDto|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\OfferStatusQueryResponseDto|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAllegroPricesOffersBadRequestException
      * @throws Exception\GetAllegroPricesOffersUnauthorizedException
@@ -5573,14 +5009,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a command for submitting an offer. Offer will be submitted to the AlleDiscount campaign only if command is processed successfully. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-zglosic-oferte-do-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-submit-an-offer-to-a-campaign" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AlleDiscountSubmitCommandResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AlleDiscountSubmitCommandResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\SubmitOfferToAlleDiscountCommandsBadRequestException
      * @throws Exception\SubmitOfferToAlleDiscountCommandsUnauthorizedException
@@ -5594,15 +5028,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get information about the submit offer command execution status. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-sprawdzic-status-zgloszenia-oferty-do-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-check-the-status-of-an-offer-submission-to-a-campaign" target="_blank">EN</a>.
      *
-     * @param string $commandId        command id in UUID format, must be unique
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command id in UUID format, must be unique
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AlleDiscountGetSubmitCommandResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AlleDiscountGetSubmitCommandResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetSubmitOfferToAlleDiscountCommandsStatusUnauthorizedException
      * @throws Exception\GetSubmitOfferToAlleDiscountCommandsStatusNotFoundException
@@ -5615,14 +5047,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create a command for withdrawing an offer from specific campaign. Offer will be withdrawn from the AlleDiscount campaign only if command is processed successfully. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-wycofac-oferte-z-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-withdraw-an-offer-from-a-campaign" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AlleDiscountWithdrawCommandResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AlleDiscountWithdrawCommandResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\WithdrawOfferFromAlleDiscountCommandsBadRequestException
      * @throws Exception\WithdrawOfferFromAlleDiscountCommandsUnauthorizedException
@@ -5636,15 +5066,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get information about the withdrawal command execution status. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-sprawdzic-status-wycofania-oferty-z-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-check-the-withdrawal-status-of-an-offer-from-a-campaign" target="_blank">EN</a>.
      *
-     * @param string $commandId        command id in UUID format, must be unique
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId command id in UUID format, must be unique
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AlleDiscountGetWithdrawCommandResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AlleDiscountGetWithdrawCommandResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetWithdrawOfferFromAlleDiscountCommandsStatusUnauthorizedException
      * @throws Exception\GetWithdrawOfferFromAlleDiscountCommandsStatusNotFoundException
@@ -5657,23 +5085,19 @@ class Client extends Runtime\Client\Client
     /**
      * Endpoint returning info about offers that can be submitted to a given AlleDiscount campaign. Only offer linked to the product in published list of goods (products) can be submitted to a given AlleDiscount campaign. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#lista-ofert-kwalifikujacych-sie-do-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#list-of-offers-eligible-for-the-selected-campaign" target="_blank">EN</a>.
      *
-     * @param string $campaignId      campaign id to list offers from
-     * @param array  $queryParameters {
-     *
-     * @var int    $limit maximum number of offers returned in the eligibleOffers list; max value is 200
-     * @var int    $offset the number of offers to skip while listing the results
-     * @var bool   $meetsConditions if true, filters offers that only meet conditions of the campaign
-     * @var string $offerId ID of an offer; if the offer with the given ID exists, returns at most one element in the eligibleOffers list.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $campaignId campaign id to list offers from
+     * @param array{
+     *    "limit"?: int, //Maximum number of offers returned in the eligibleOffers list; max value is 200.
+     *    "offset"?: int, //The number of offers to skip while listing the results.
+     *    "meetsConditions"?: bool, //If true, filters offers that only meet conditions of the campaign.
+     *    "offerId"?: string, //ID of an offer; if the offer with the given ID exists, returns at most one element in the eligibleOffers list.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AlleDiscountListEligibleResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AlleDiscountListEligibleResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOffersEligibleForAlleDiscountBadRequestException
      * @throws Exception\GetOffersEligibleForAlleDiscountUnauthorizedException
@@ -5688,23 +5112,19 @@ class Client extends Runtime\Client\Client
     /**
      * Endpoint returning info about offer participations for a given AlleDiscount campaign. With this endpoint you are able to validate if the offer participates in AlleDiscount and if it has lowered price on the platform. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#lista-ofert-zgloszonych-do-wybranej-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#list-of-offers-submitted-for-the-selected-campaign" target="_blank">EN</a>.
      *
-     * @param string $campaignId      campaign id to list offers from
-     * @param array  $queryParameters {
-     *
-     * @var int    $limit maximum number of offers returned in the eligibleOffers list; max value is 200
-     * @var int    $offset the number of offers to skip while listing the results
-     * @var string $offerId ID of an offer; if the offer with the given ID exists, returns at most one element in the submittedOffers list
-     * @var string $participationId Id of the participation, returns at most one element in the submittedOffers list.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $campaignId campaign id to list offers from
+     * @param array{
+     *    "limit"?: int, //Maximum number of offers returned in the eligibleOffers list; max value is 200.
+     *    "offset"?: int, //The number of offers to skip while listing the results.
+     *    "offerId"?: string, //ID of an offer; if the offer with the given ID exists, returns at most one element in the submittedOffers list.
+     *    "participationId"?: string, //Id of the participation, returns at most one element in the submittedOffers list.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AlleDiscountListSubmittedResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AlleDiscountListSubmittedResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetOffersSubmittedToAlleDiscountBadRequestException
      * @throws Exception\GetOffersSubmittedToAlleDiscountUnauthorizedException
@@ -5719,19 +5139,15 @@ class Client extends Runtime\Client\Client
     /**
      * List current AlleDiscount campaigns. Each campaign has its own list of goods (products) that indicate which offers can be submitted to it. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#lista-dostepnych-kampanii-alleobnizka" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#list-of-available-allediscount-campaigns" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $campaignId Id of the searched campaign. If present, returns at most one entry.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "campaignId"?: string, //Id of the searched campaign. If present, returns at most one entry.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AlleDiscountListCampaignsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AlleDiscountListCampaignsResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAlleDiscountCampaignsNotFoundException
      * @throws Exception\GetAlleDiscountCampaignsBadRequestException
@@ -5745,19 +5161,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a full Smart! seller classification report. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#kwalifikacja-sprzedawcy" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#seller-qualification" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $marketplaceId Marketplace for which seller classification report will be returned. If not specified, the classification result for the seller's registration marketplace will be returned.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "marketplaceId"?: string, //Marketplace for which seller classification report will be returned. If not specified, the classification result for the seller's registration marketplace will be returned.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SmartSellerClassificationReport|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SmartSellerClassificationReport|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetSellerSmartClassificationGETUnauthorizedException
      * @throws Exception\GetSellerSmartClassificationGETNotFoundException
@@ -5771,14 +5183,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get information about all the marketplaces on the platform. Read more: <a href="../../tutorials/wystawianie-i-zarzadzanie-oferta-w-serwisach-zagranicznych-wwzjP4M8gTZ#serwis-bazowy-uzytkownika-oraz-lista-dostepnych-serwisow" target="_blank">PL</a> / <a href="../../tutorials/listing-and-managing-offers-on-foreign-marketplaces-7GndGjeAATn#user-s-base-marketplace-and-list-of-available-marketplaces" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AllegroMarketplaces|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AllegroMarketplaces|null : \Psr\Http\Message\ResponseInterface)
      */
     public function marketplacesGET(array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -5788,26 +5198,22 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the list of user threads sorted by last message date, starting from newest. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#lista-watkow-na-koncie" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#list-of-threads" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int    $limit the maximum number of threads returned in the response
-     * @var int    $offset Index of the first returned thread from all results. Available only for content version 'application/vnd.allegro.public.v1+json'.
-     * @var string $page.id ID of the page of threads to retrieve. Available only for content version 'application/vnd.allegro.beta.v1+json'.
-     * @var bool   $read Filters threads by read status. Available only for content version 'application/vnd.allegro.beta.v1+json'.
-     * @var string $status Filters threads by status. Available only for content version 'application/vnd.allegro.beta.v1+json'.
-     * @var array  $type Filters threads by their type. Available only for content version 'application/vnd.allegro.beta.v1+json'. If omitted, threads of all types are returned. If you pass multiple values, the response includes threads whose type matches any of them.
-     * @var string $orderId Filters POST_PURCHASE_ISSUE threads by order identifier. Available only for content version 'application/vnd.allegro.beta.v1+json'.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "limit"?: int, //The maximum number of threads returned in the response.
+     *    "offset"?: int, //Index of the first returned thread from all results. Available only for content version 'application/vnd.allegro.public.v1+json'.
+     *    "page.id"?: string, //ID of the page of threads to retrieve. Available only for content version 'application/vnd.allegro.beta.v1+json'.
+     *    "read"?: bool, //Filters threads by read status. Available only for content version 'application/vnd.allegro.beta.v1+json'.
+     *    "status"?: string, //Filters threads by status. Available only for content version 'application/vnd.allegro.beta.v1+json'.
+     *    "type"?: array, //Filters threads by their type. Available only for content version 'application/vnd.allegro.beta.v1+json'. If omitted, threads of all types are returned. If you pass multiple values, the response includes threads whose type matches any of them.
+     *    "orderId"?: string, //Filters POST_PURCHASE_ISSUE threads by order identifier. Available only for content version 'application/vnd.allegro.beta.v1+json'.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ThreadsList|Model\ThreadsListVBeta1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ThreadsList|Model\ThreadsListVBeta1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ListThreadsGETUnauthorizedException
      * @throws Exception\ListThreadsGETUnprocessableEntityException
@@ -5820,16 +5226,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get thread with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#szczegolowe-informacje-o-danym-watku" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#information-about-a-particular-thread" target="_blank">EN</a>.
      *
-     * @param string $threadId         identifier of thread to get
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $threadId identifier of thread to get
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Thread|Model\ThreadVBeta1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\Thread|Model\ThreadVBeta1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetThreadGETUnauthorizedException
      * @throws Exception\GetThreadGETNotFoundException
@@ -5842,17 +5246,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to mark thread with provided identifier as read. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#szczegolowe-informacje-o-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#information-about-a-particular-message" target="_blank">EN</a>.
      *
-     * @param string                                               $threadId         identifier of thread to be marked
+     * @param string                                               $threadId    identifier of thread to be marked
      * @param Model\ThreadReadFlag|Model\ThreadReadFlagVBeta1|null $requestBody
-     * @param array                                                $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Thread|Model\ThreadReadFlagVBeta1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\Thread|Model\ThreadReadFlagVBeta1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ChangeReadFlagOnThreadPUTUnauthorizedException
      * @throws Exception\ChangeReadFlagOnThreadPUTForbiddenException
@@ -5868,15 +5270,13 @@ class Client extends Runtime\Client\Client
      * Use this resource to write new message to recipient. This resource is rate limited to 1 request per second for a user. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#nowa-wiadomosc" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#add-a-new-message" target="_blank">EN</a>.
      *
      * @param Model\NewMessage|Model\NewMessageVBeta1|null $requestBody
-     * @param array                                        $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Message|Model\MessageVBeta1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\Message|Model\MessageVBeta1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\NewMessagePOSTUnauthorizedException
      * @throws Exception\NewMessagePOSTUnprocessableEntityException
@@ -5889,25 +5289,21 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to list messages in thread with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#lista-wiadomosci-dla-wybranego-watku" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#list-of-the-messages-for-the-particular-thread" target="_blank">EN</a>.
      *
-     * @param string $threadId        identifier of thread to get messages from
-     * @param array  $queryParameters {
-     *
-     * @var int    $limit the maximum number of messages returned in the response
-     * @var int    $offset Index of the first returned message from all results. Available only for content version 'application/vnd.allegro.public.v1+json'.
-     * @var string $before Message creation date before filter parameter (exclusive) - cannot be used with offset. Available only for content version 'application/vnd.allegro.public.v1+json'.
-     * @var string $after Message creation date after filter parameter (exclusive). Available only for content version 'application/vnd.allegro.public.v1+json'.
-     * @var string $page.id ID of the page of messages to retrieve. Available only for content version 'application/vnd.allegro.beta.v1+json'.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $threadId identifier of thread to get messages from
+     * @param array{
+     *    "limit"?: int, //The maximum number of messages returned in the response.
+     *    "offset"?: int, //Index of the first returned message from all results. Available only for content version 'application/vnd.allegro.public.v1+json'.
+     *    "before"?: string, //Message creation date before filter parameter (exclusive) - cannot be used with offset. Available only for content version 'application/vnd.allegro.public.v1+json'.
+     *    "after"?: string, //Message creation date after filter parameter (exclusive). Available only for content version 'application/vnd.allegro.public.v1+json'.
+     *    "page.id"?: string, //ID of the page of messages to retrieve. Available only for content version 'application/vnd.allegro.beta.v1+json'.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\MessagesList|Model\MessagesListVBeta1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\MessagesList|Model\MessagesListVBeta1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ListMessagesGETUnauthorizedException
      * @throws Exception\ListMessagesGETForbiddenException
@@ -5922,16 +5318,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to write new message in existing thread. This resource is rate limited to 1 request per second for a user. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#nowa-wiadomosc" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#add-a-new-message" target="_blank">EN</a>.
      *
-     * @param string $threadId         identifier of thread to write message to
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $threadId identifier of thread to write message to
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Message|Model\MessageVBeta1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\Message|Model\MessageVBeta1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\NewMessageInThreadPOSTUnauthorizedException
      * @throws Exception\NewMessageInThreadPOSTForbiddenException
@@ -5946,15 +5340,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete message with provided identifier. This resource is deprecated and will be removed in the future. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#usuniecie-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#delete-a-message" target="_blank">EN</a>.
      *
-     * @param string $messageId        identifier of the message to delete
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $messageId identifier of the message to delete
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteMessageDELETEUnauthorizedException
      * @throws Exception\DeleteMessageDELETEForbiddenException
@@ -5968,16 +5360,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get message with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#szczegolowe-informacje-o-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#information-about-a-particular-message" target="_blank">EN</a>.
      *
-     * @param string $messageId        identifier of message to be returned
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $messageId identifier of message to be returned
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Message|Model\MessageVBeta1|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\Message|Model\MessageVBeta1|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetMessageGETUnauthorizedException
      * @throws Exception\GetMessageGETNotFoundException
@@ -5990,15 +5380,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to add attachment declaration before uploading. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#deklaracja-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#attachment-declaration" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\MessageAttachmentId|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\MessageAttachmentId|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\NewAttachmentDeclarationPOSTUnauthorizedException
      * @throws Exception\NewAttachmentDeclarationPOSTUnsupportedMediaTypeException
@@ -6012,15 +5400,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to download attachment with provided identifier. You can retrieve attachments uploaded within the last 6 months. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#pobranie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#attachment-related-to-the-message" target="_blank">EN</a>.
      *
-     * @param string $attachmentId     identifier of the attachment that will be downloaded
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $attachmentId identifier of the attachment that will be downloaded
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DownloadAttachmentGETUnauthorizedException
      * @throws Exception\DownloadAttachmentGETNotFoundException
@@ -6033,17 +5419,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to upload attachment using identifier that was declared. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#dodanie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#add-an-attachment" target="_blank">EN</a>.
      *
-     * @param string                                                 $attachmentId     the identifier of attachment that will be uploaded
+     * @param string                                                 $attachmentId the identifier of attachment that will be uploaded
      * @param string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\MessageAttachmentId|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\MessageAttachmentId|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UploadAttachmentPUTUnauthorizedException
      * @throws Exception\UploadAttachmentPUTForbiddenException
@@ -6059,48 +5443,44 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get all customer returns filtered by query parameters. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-liste-zwrotow" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-retrieve-customer-returns-list" target="_blank">EN</a>. This resource is limited to 25 requests per second for a single user and 50 requests per second for clientId.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $customerReturnId one or more customer return id's
-     * @var string $orderId one or more order id's
-     * @var string $buyer.email One or more buyer emails.
-     * @var string $buyer.login One or more buyer logins.
-     * @var string $items.offerId One or more returned item offer id's.
-     * @var string $items.name One or more item names.
-     * @var string $parcels.waybill One or more waybill id's.
-     * @var string $parcels.transportingWaybill Waybill ids as generated by carriers physically transporting the parcel. Will be null if there's only one carrier involved in a parcel shipment.
-     * @var string $parcels.carrierId One or more carrier id's.
-     * @var string $parcels.transportingCarrierId Carrier id of a carrier physically transporting the parcel. Will be null if there's only one carrier involved in a parcel shipment.
-     * @var string $parcels.sender.phoneNumber One or more phone numbers.
-     * @var string $referenceNumber one or more reference numbers
-     * @var string $from The ID of the last seen customer return. Customer returns created after the given customer return will be returned.
-     * @var string $createdAt.gte Date of the return in ISO 8601 format to search by greater or equal.
-     * @var string $createdAt.lte Date of the return in ISO 8601 format to search by lower or equal.
-     * @var string $marketplaceId The marketplace ID where operation was made. When the parameter is omitted, searches for operations with all marketplaces.
-     * @var string $status Current return timeline statuses. The allowed values are:
-     *             CREATED
-     *             DISPATCHED
-     *             IN_TRANSIT
-     *             DELIVERED
-     *             FINISHED
-     *             FINISHED_APT
-     *             REJECTED
-     *             COMMISSION_REFUND_CLAIMED
-     *             COMMISSION_REFUNDED
-     *             WAREHOUSE_DELIVERED
-     *             WAREHOUSE_VERIFICATION.
-     * @var int    $limit limit of customer returns per page
-     * @var int    $offset The offset of elements in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "customerReturnId"?: string, //One or more customer return id's.
+     *    "orderId"?: string, //One or more order id's.
+     *    "buyer.email"?: string, //One or more buyer emails.
+     *    "buyer.login"?: string, //One or more buyer logins.
+     *    "items.offerId"?: string, //One or more returned item offer id's.
+     *    "items.name"?: string, //One or more item names.
+     *    "parcels.waybill"?: string, //One or more waybill id's.
+     *    "parcels.transportingWaybill"?: string, //Waybill ids as generated by carriers physically transporting the parcel. Will be null if there's only one carrier involved in a parcel shipment.
+     *    "parcels.carrierId"?: string, //One or more carrier id's.
+     *    "parcels.transportingCarrierId"?: string, //Carrier id of a carrier physically transporting the parcel. Will be null if there's only one carrier involved in a parcel shipment.
+     *    "parcels.sender.phoneNumber"?: string, //One or more phone numbers.
+     *    "referenceNumber"?: string, //One or more reference numbers.
+     *    "from"?: string, //The ID of the last seen customer return. Customer returns created after the given customer return will be returned.
+     *    "createdAt.gte"?: string, //Date of the return in ISO 8601 format to search by greater or equal.
+     *    "createdAt.lte"?: string, //Date of the return in ISO 8601 format to search by lower or equal.
+     *    "marketplaceId"?: string, //The marketplace ID where operation was made. When the parameter is omitted, searches for operations with all marketplaces.
+     *    "status"?: string, //Current return timeline statuses. The allowed values are:
+     * CREATED
+     * DISPATCHED
+     * IN_TRANSIT
+     * DELIVERED
+     * FINISHED
+     * FINISHED_APT
+     * REJECTED
+     * COMMISSION_REFUND_CLAIMED
+     * COMMISSION_REFUNDED
+     * WAREHOUSE_DELIVERED
+     * WAREHOUSE_VERIFICATION.
+     *    "limit"?: int, //Limit of customer returns per page.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CustomerReturnResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CustomerReturnResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCustomerReturnsBadRequestException
      * @throws Exception\GetCustomerReturnsUnauthorizedException
@@ -6116,14 +5496,12 @@ class Client extends Runtime\Client\Client
      * Use this resource to get customer returns by its identifier. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-szczegolowe-informacje-o-zwrocie" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-retrieve-detailed-information-about-customer-return" target="_blank">EN</a>.
      *
      * @param string $customerReturnId id of the customer return
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CustomerReturn|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CustomerReturn|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCustomerReturnByIdBadRequestException
      * @throws Exception\GetCustomerReturnByIdUnauthorizedException
@@ -6140,14 +5518,12 @@ class Client extends Runtime\Client\Client
      * Use this resource to reject customer return refund with provided reason. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-odmowic-zwrotu-wplaty" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-reject-customer-return-refund" target="_blank">EN</a>.
      *
      * @param string $customerReturnId id of the customer return
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CustomerReturn|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CustomerReturn|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\RejectCustomerReturnRefundBadRequestException
      * @throws Exception\RejectCustomerReturnRefundUnauthorizedException
@@ -6163,22 +5539,18 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of Advance Ship Notices. The list is ordered by **createdAt** property. Default **offset** is 0, default **limit** is 50. A list can be filtered by statuses. Multiple status query parameters are allowed. In such cases, filters are joined with **OR** logical operator. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-przegladac-utworzone-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-get-created-advance-ship-notices" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int   $offset the offset of elements in the response
-     * @var int   $limit maximum number of elements in response
-     * @var array $status A status of the Advance Ship Notices in the response.
-     *            }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //Maximum number of elements in response.
+     *    "status"?: array, //A status of the Advance Ship Notices in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdvanceShipNoticeList|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdvanceShipNoticeList|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAdvanceShipNoticesUnauthorizedException
      * @throws Exception\GetAdvanceShipNoticesForbiddenException
@@ -6192,15 +5564,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create an Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#utworz-draft-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#create-a-draft-of-the-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CreateAdvanceShipNoticeResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CreateAdvanceShipNoticeResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateAdvanceShipNoticeBadRequestException
      * @throws Exception\CreateAdvanceShipNoticeUnauthorizedException
@@ -6215,22 +5585,18 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get refund dispositions for returns handled in One Fulfillment. The response contains data from the last 90 days only. The response contains both buyer returns and operational returns. When there is no matching disposition, the `report` array is empty. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-pobrac-raport-dyspozycji-zwrotu-srodkow" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-retrieve-the-refund-disposition-report" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $createdAt.gte Date of the return in ISO 8601 format to search by greater or equal.
-     * @var string $createdAt.lte Date of the return in ISO 8601 format to search by lower or equal.
-     * @var int    $limit maximum number of elements in response
-     * @var int    $offset The offset of elements in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "createdAt.gte"?: string, //Date of the return in ISO 8601 format to search by greater or equal.
+     *    "createdAt.lte"?: string, //Date of the return in ISO 8601 format to search by lower or equal.
+     *    "limit"?: int, //Maximum number of elements in response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FulfillmentRefundDispositionsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FulfillmentRefundDispositionsResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetRefundDispositionsReportUnauthorizedException
      * @throws Exception\GetRefundDispositionsReportForbiddenException
@@ -6245,15 +5611,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to delete an Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-usunac-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-delete-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param string $id               an identifier of the Advance Ship Notice to delete
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id an identifier of the Advance Ship Notice to delete
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\DeleteAdvanceShipNoticeUnauthorizedException
      * @throws Exception\DeleteAdvanceShipNoticeForbiddenException
@@ -6268,15 +5632,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get an Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-przegladac-utworzone-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-get-created-advance-ship-notices" target="_blank">EN</a>.
      *
-     * @param string $id               the identifier of returned Advance Ship Notice
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id the identifier of returned Advance Ship Notice
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdvanceShipNoticeResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdvanceShipNoticeResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAdvanceShipNoticeUnauthorizedException
      * @throws Exception\GetAdvanceShipNoticeForbiddenException
@@ -6291,17 +5653,15 @@ class Client extends Runtime\Client\Client
      * Use this resource to update an Advance Ship Notice.
      * If a client wants to update read-only property, an error is returned (only in cases when sent value will be different than actual on the server). Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#uzupelnij-dane-o-awizo" target="_blank">PL</a> / <a href="../../one-fulfillment-by-allegro-4R9dXyMPlc9#complete-the-data-of-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param string $id               an identifier of Advance Ship Notice
-     * @param array  $headerParameters {
-     *
-     * @var string $if-match A current version of Advance Ship Notice (e.g. from etag header obtained via get).
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id an identifier of Advance Ship Notice
+     * @param array{
+     *    "if-match": string, //A current version of Advance Ship Notice (e.g. from etag header obtained via get).
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdvanceShipNoticeResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdvanceShipNoticeResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateAdvanceShipNoticeBadRequestException
      * @throws Exception\UpdateAdvanceShipNoticeUnauthorizedException
@@ -6317,15 +5677,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to cancel an Advance Ship Notice in IN_TRANSIT status. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#anuluj-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#cancel-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param string $id               an identifier of the Advance Ship Notice to cancel
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id an identifier of the Advance Ship Notice to cancel
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CancelAdvanceShipNoticeUnauthorizedException
      * @throws Exception\CancelAdvanceShipNoticeForbiddenException
@@ -6340,17 +5698,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get labels for Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#pobierz-oznaczenia-na-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#download-labels-for-asn" target="_blank">EN</a>.
      *
-     * @param string $id               an identifier of the Advance Ship Notice
-     * @param array  $headerParameters {
-     *
-     * @var string $accept content-type of generated labels
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id an identifier of the Advance Ship Notice
+     * @param array{
+     *    "accept": string, //Content-type of generated labels.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/pdf|x-application/zpl
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAdvanceShipNoticeLabelsUnauthorizedException
      * @throws Exception\GetAdvanceShipNoticeLabelsForbiddenException
@@ -6364,16 +5720,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get submit status of the Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#zakoncz-edycje-i-wyslij-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#finish-editing-and-submit-the-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param string $commandId        an identifier of the command
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId an identifier of the command
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SubmitCommand|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SubmitCommand|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetSubmitCommandUnauthorizedException
      * @throws Exception\GetSubmitCommandForbiddenException
@@ -6387,16 +5741,14 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to submit the Advance Ship Notice. After this operation, updates of the Advance Ship Notice are limited to selected properties only. See <a href="../../documentation#operation/updateSubmittedAdvanceShipNotice">PUT /fulfillment/advance-ship-notices/{id}/submitted</a>. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#zakoncz-edycje-i-wyslij-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#finish-editing-and-submit-the-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param string $commandId        the identifier of the command
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $commandId the identifier of the command
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SubmitCommand|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\SubmitCommand|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\SubmitCommandUnauthorizedException
      * @throws Exception\SubmitCommandUnprocessableEntityException
@@ -6409,17 +5761,15 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to update already submitted Advance Ship Notice. Update is allowed only when Advance Ship Notice is in "IN_TRANSIT" status. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#edytuj-zakonczone-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#edit-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param string $id               an identifier of Advance Ship Notice
-     * @param array  $headerParameters {
-     *
-     * @var string $if-match A current version of Advance Ship Notice (e.g. from etag header obtained via get).
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id an identifier of Advance Ship Notice
+     * @param array{
+     *    "if-match": string, //A current version of Advance Ship Notice (e.g. from etag header obtained via get).
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AdvanceShipNoticeResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AdvanceShipNoticeResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateSubmittedAdvanceShipNoticeBadRequestException
      * @throws Exception\UpdateSubmittedAdvanceShipNoticeUnauthorizedException
@@ -6435,44 +5785,40 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of the products belonging to the seller, which are in Allegro Warehouse. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-pobrac-aktualne-stany-magazynowe" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#get-available-stock" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int    $offset The offset of elements in the response. Ignored for text/csv content type.
-     * @var int    $limit Maximum number of elements in response. Ignored for text/csv content type.
-     * @var string $phrase filtering search results by product name
-     * @var string $sort Defines how elements are sorted in response. Minus sign can be added to imply descending sort order. Ignored for text/csv content type.
-     *             Possible values for the "sort" parameter:
-     *             -available - sorting by quantity of available products (descending)
-     *             available - sorting by quantity of available products (ascending)
-     *             -unfulfillable - sorting by quantity of unfulfillable products (descending)
-     *             unfulfillable - sorting by quantity of unfulfillable products (ascending)
-     *             -name - sorting by product’s name (descending)
-     *             name - sorting by product’s name (ascending)
-     *             lastFourteenDaysSalesAverage - sorting by product last fourteen days average sales (ascending)
-     *             -lastFourteenDaysSalesAverage - sorting by product last fourteen days average sales (descending)
-     *             reserve - sorting by reserve.outOfStockIn field (ascending)
-     *             -reserve - sorting by reserve.outOfStockIn field (descending)
-     *             lastThirtyDaysSalesSum - sorting by product last month sum sales (ascending)
-     *             -lastThirtyDaysSalesSum - sorting by product last month sum sales (descending)
-     *             storageFee - sorting by storage fee (ascending). The order by fee status is: NOT_APPLICABLE, then CHARGED ordered by amountGross ascending.
-     *             -storageFee - sorting by storage fee (descending). The order by fee status is: CHARGED ordered by amountGross descending, then NOT_APPLICABLE.
-     * @var string $productId Filtering search results by fulfillment product identifier. Ignored for text/csv content type.
-     * @var array  $productAvailability filtering search results by availability
-     * @var string $productStatus filtering search results by status
-     * @var string $asnStatus Filtering search results by ASN status. Following values are allowed: SUBMITTED - Advanced Ship Notice document has been submitted and it contains a particular product. Only the products that have ASN with products on it are returned. NOT_FOUND - Advanced Ship Notice that contains a particular product was not found. It has not been submitted, may be expired, or products have already been delivered to the warehouse. Only the products that don't have related ASN with products on it are returned.
-     * @var int    $outOfStockInFrom filter by products with outOfStockIn greater than or equal
-     * @var int    $outOfStockInTo Filter by products with outOfStockIn less than or equal.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offset"?: int, //The offset of elements in the response. Ignored for text/csv content type.
+     *    "limit"?: int, //Maximum number of elements in response. Ignored for text/csv content type.
+     *    "phrase"?: string, //Filtering search results by product name.
+     *    "sort"?: string, //Defines how elements are sorted in response. Minus sign can be added to imply descending sort order. Ignored for text/csv content type.
+     * Possible values for the "sort" parameter:
+     * -available - sorting by quantity of available products (descending)
+     * available - sorting by quantity of available products (ascending)
+     * -unfulfillable - sorting by quantity of unfulfillable products (descending)
+     * unfulfillable - sorting by quantity of unfulfillable products (ascending)
+     * -name - sorting by product’s name (descending)
+     * name - sorting by product’s name (ascending)
+     * lastFourteenDaysSalesAverage - sorting by product last fourteen days average sales (ascending)
+     * -lastFourteenDaysSalesAverage - sorting by product last fourteen days average sales (descending)
+     * reserve - sorting by reserve.outOfStockIn field (ascending)
+     * -reserve - sorting by reserve.outOfStockIn field (descending)
+     * lastThirtyDaysSalesSum - sorting by product last month sum sales (ascending)
+     * -lastThirtyDaysSalesSum - sorting by product last month sum sales (descending)
+     * storageFee - sorting by storage fee (ascending). The order by fee status is: NOT_APPLICABLE, then CHARGED ordered by amountGross ascending.
+     * -storageFee - sorting by storage fee (descending). The order by fee status is: CHARGED ordered by amountGross descending, then NOT_APPLICABLE.
+     *    "productId"?: string, //Filtering search results by fulfillment product identifier. Ignored for text/csv content type.
+     *    "productAvailability"?: array, //Filtering search results by availability.
+     *    "productStatus"?: string, //Filtering search results by status.
+     *    "asnStatus"?: string, //Filtering search results by ASN status. Following values are allowed: SUBMITTED - Advanced Ship Notice document has been submitted and it contains a particular product. Only the products that have ASN with products on it are returned. NOT_FOUND - Advanced Ship Notice that contains a particular product was not found. It has not been submitted, may be expired, or products have already been delivered to the warehouse. Only the products that don't have related ASN with products on it are returned.
+     *    "outOfStockInFrom"?: int, //Filter by products with outOfStockIn greater than or equal.
+     *    "outOfStockInTo"?: int, //Filter by products with outOfStockIn less than or equal.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|text/csv|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\StockProductList|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\StockProductList|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetFulfillmentStockUnauthorizedException
      * @throws Exception\GetFulfillmentStockForbiddenException
@@ -6486,15 +5832,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get list of parcels and included items for a given order. Items include detailed information such as expiration dates and serial numbers. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-obslugiwac-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-handle-orders" target="_blank">EN</a>.
      *
-     * @param string $orderId          the Allegro's platform order identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $orderId the Allegro's platform order identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FulfillmentOrder|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FulfillmentOrder|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetFulfillmentOrderParcelsNotFoundException
      * @throws Exception\GetFulfillmentOrderParcelsUnauthorizedException
@@ -6507,21 +5851,17 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get a list of products that can be added to Advance Ship Notice. The list contains products for which the seller has created offers and is ordered by product's name. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#sprawdz-dostepne-produkty-do-awizacji" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#check-available-products-for-asn" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $offset the offset of elements in the response
-     * @var int $limit Maximum number of elements in response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //Maximum number of elements in response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\AvailableProductsList|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\AvailableProductsList|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAvailableProductsUnauthorizedException
      * @throws Exception\GetAvailableProductsForbiddenException
@@ -6535,15 +5875,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to check the state of Advance Ship Notice receiving in Fulfillment Center in real time. The response contains a receiving progress and information about particular items - their quantities and conditions. While the Advance Ship Notice is in UNPACKING state, report is updated dynamically, which might result in different responses even at short time intervals. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#sprawdz-postep-odbioru-awizo-przez-magazyn" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#check-current-state-and-details-of-advance-ship-notice-receiving" target="_blank">EN</a>.
      *
-     * @param string $id               an identifier of advance ship notice
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id an identifier of advance ship notice
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ReceivingState|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ReceivingState|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetAdvanceShipNoticeReceivingStateUnauthorizedException
      * @throws Exception\GetAdvanceShipNoticeReceivingStateForbiddenException
@@ -6557,14 +5895,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get the warehouse assigned to the seller.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FulfillmentWarehouse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FulfillmentWarehouse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetFulfillmentWarehouseUnauthorizedException
      * @throws Exception\GetFulfillmentWarehouseForbiddenException
@@ -6578,14 +5914,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get tax identification number with verification status. After adding or updating the tax identification number the status will be NOT_VERIFIED and you will have to wait for acceptance status to start selling. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\TaxIdResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\TaxIdResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetTaxIdUnauthorizedException
      * @throws Exception\GetTaxIdForbiddenException
@@ -6599,14 +5933,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to add tax identification number. For international sellers only. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\AddTaxIdUnauthorizedException
      * @throws Exception\AddTaxIdForbiddenException
@@ -6621,14 +5953,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to update tax identification number. For international sellers only. Read more: <a href="../../news/one-fulfillment-umozliwiamy-zarzadzanie-numerem-identyfikacji-podatkowej-vat-6M2xgdAmGFM" target="_blank">PL</a> / <a href="../../news/one-fulfillment-we-allow-you-to-manage-your-vat-identification-number-Pgj9WXjWwcm" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\UpdateTaxIdUnauthorizedException
      * @throws Exception\UpdateTaxIdForbiddenException
@@ -6643,29 +5973,25 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to find your CPS (Cost Per Sale) conversions for specific filters. The response contains a list of CPS conversions that correspond with the specified parameters. Read more: <a href="../../tutorials/afiliacja-0A1bPnwVwUq#jak-pobrac-informacje-o-konwersji-cps" target="_blank">PL</a> / <a href="../../tutorials/affiliation-8do60yLKPIq#how-to-retrieve-cps-conversion-information" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $orderCreatedAt.gte The minimum date and time of order creation in ISO 8601 format.
-     * @var string $orderCreatedAt.lte The maximum date and time of order creation in ISO 8601 format.
-     * @var string $lastModifiedAt.gte The minimum date and time of the latest conversion modification in ISO 8601 format.
-     * @var string $lastModifiedAt.lte The maximum date and time of the latest conversion modification in ISO 8601 format.
-     * @var string $status Conversion status. The allowed values are:
-     *             CREATED
-     *             REJECTED
-     *             CONFIRMED.
-     * @var int    $offset the offset of elements in the response
-     * @var int    $limit maximum number of elements in response
-     * @var string $includePublisherUrlParameters Comma-separated keys of the ‘publisherUrlParameters’ map which will be included in the response. By default the map is empty.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "orderCreatedAt.gte"?: string, //The minimum date and time of order creation in ISO 8601 format.
+     *    "orderCreatedAt.lte"?: string, //The maximum date and time of order creation in ISO 8601 format.
+     *    "lastModifiedAt.gte"?: string, //The minimum date and time of the latest conversion modification in ISO 8601 format.
+     *    "lastModifiedAt.lte"?: string, //The maximum date and time of the latest conversion modification in ISO 8601 format.
+     *    "status"?: string, //Conversion status. The allowed values are:
+     * CREATED
+     * REJECTED
+     * CONFIRMED.
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //Maximum number of elements in response.
+     *    "includePublisherUrlParameters"?: array, //Comma-separated keys of the ‘publisherUrlParameters’ map which will be included in the response. By default the map is empty.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\CpsConversionResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\CpsConversionResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetCpsConversionsBadRequestException
      * @throws Exception\GetCpsConversionsUnauthorizedException
@@ -6680,14 +6006,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to read your current removal preference. Removal preference is associated with system removal order at the moment of removal order is created. It means there can be not yet fulfilled removal orders associated with previously set removal preference. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#pobierz-aktualne-ustawienia-sposobu-usuniecia-towaru-z-magazynu" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#retrieve-current-settings-for-how-to-remove-goods-from-the-warehouse" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FulfillmentRemovalPreference|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FulfillmentRemovalPreference|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetFulfillmentRemovalPreferencesUnauthorizedException
      * @throws Exception\GetFulfillmentRemovalPreferencesForbiddenException
@@ -6701,15 +6025,13 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to create new active removal preference. From the moment the preference is set, it becomes the active one, and all new system removal orders will be associated with this preference. Removal preference is associated with system removal order at the moment of removal order is created. It means there can be not yet fulfilled removal orders associated with previously set removal preference. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#utworz-lub-edytuj-ustawienia-sposobu-usuniecia-towaru-z-magazynu" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#create-or-edit-settings-for-how-to-remove-goods-from-the-warehouse" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\FulfillmentRemovalPreference|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\FulfillmentRemovalPreference|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\CreateFulfillmentRemovalPreferencesUnauthorizedException
      * @throws Exception\CreateFulfillmentRemovalPreferencesForbiddenException
@@ -6723,14 +6045,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to get enabled deposit types available when creating an offer. The pricing mode determines whether the deposit has a fixed catalog price (`FIXED`) or requires a seller-provided price in the configured currency (`CUSTOM`). Read more: <a href="../../news/1-pazdziernika-2025-dostosujemy-allegro-api-do-rozporzadzenia-o-systemie-kaucyjnym-m0mLB4XM9Ib" target="_blank">PL</a> / <a href="../../news/on-october-1-2025-we-will-adapt-Allegro-API-to-the-deposit-system-regulation-m0mLB4XM9Ib" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\DepositTypeResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\DepositTypeResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetDepositTypesUnauthorizedException
      * @throws Exception\GetDepositTypesForbiddenException
@@ -6744,14 +6064,12 @@ class Client extends Runtime\Client\Client
     /**
      * Use this resource to parse raw, free-text ingredients declarations into structured ingredient lists for one or more products. Every submitted product text is parsed independently. The response contains parsed items together with errors and warnings detected for each product.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ParseIngredientsResponse|\Psr\Http\Message\ResponseInterface|null
+     * @return ($fetch is 'object' ? Model\ParseIngredientsResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\ParseIngredientsBadRequestException
      * @throws Exception\ParseIngredientsUnauthorizedException
@@ -6762,25 +6080,27 @@ class Client extends Runtime\Client\Client
         return $this->executeEndpoint(new Endpoint\ParseIngredients($requestBody, $headerParameters), $fetch);
     }
 
-    public static function create($httpClient = null, array $additionalPlugins = [], array $additionalNormalizers = [])
+    public static function create($httpClient = null, array $additionalPlugins = [], array $additionalNormalizers = [], bool $applyServerPlugins = true)
     {
+        $plugins = [];
         if (null === $httpClient) {
             $httpClient = \Http\Discovery\Psr18ClientDiscovery::find();
-            $plugins = [];
+        }
+        if ($applyServerPlugins) {
             $uri = \Http\Discovery\Psr17FactoryDiscovery::findUriFactory()->createUri('https://api.{environment}');
             $plugins[] = new \Http\Client\Common\Plugin\AddHostPlugin($uri);
-            if (\count($additionalPlugins) > 0) {
-                $plugins = array_merge($plugins, $additionalPlugins);
-            }
-            $httpClient = new \Http\Client\Common\PluginClient($httpClient, $plugins);
         }
+        if (\count($additionalPlugins) > 0) {
+            $plugins = array_merge($plugins, $additionalPlugins);
+        }
+        $httpClient = new \Http\Client\Common\PluginClient($httpClient, $plugins);
         $requestFactory = \Http\Discovery\Psr17FactoryDiscovery::findRequestFactory();
         $streamFactory = \Http\Discovery\Psr17FactoryDiscovery::findStreamFactory();
         $normalizers = [new \Symfony\Component\Serializer\Normalizer\ArrayDenormalizer(), new Normalizer\JaneObjectNormalizer()];
         if (\count($additionalNormalizers) > 0) {
             $normalizers = array_merge($normalizers, $additionalNormalizers);
         }
-        $serializer = new \Symfony\Component\Serializer\Serializer($normalizers, [new \Symfony\Component\Serializer\Encoder\JsonEncoder(new \Symfony\Component\Serializer\Encoder\JsonEncode(), new \Symfony\Component\Serializer\Encoder\JsonDecode(['json_decode_associative' => true]))]);
+        $serializer = new \Symfony\Component\Serializer\Serializer($normalizers, [new \Symfony\Component\Serializer\Encoder\JsonEncoder(new \Symfony\Component\Serializer\Encoder\JsonEncode(), new \Symfony\Component\Serializer\Encoder\JsonDecode(['json_decode_associative' => true])), new Runtime\Client\FormEncoder()]);
 
         return new static($httpClient, $requestFactory, $serializer, $streamFactory);
     }

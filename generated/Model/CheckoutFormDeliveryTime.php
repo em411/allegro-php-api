@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormDeliveryTime extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormDeliveryTime implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -129,5 +133,10 @@ class CheckoutFormDeliveryTime extends \ArrayObject
         $this->dispatch = $dispatch;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['from' => ['from', 'getFrom', 'setFrom'], 'to' => ['to', 'getTo', 'setTo'], 'guaranteed' => ['guaranteed', 'getGuaranteed', 'setGuaranteed'], 'dispatch' => ['dispatch', 'getDispatch', 'setDispatch']];
     }
 }

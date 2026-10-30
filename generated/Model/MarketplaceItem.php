@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class MarketplaceItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class MarketplaceItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -127,5 +131,10 @@ class MarketplaceItem extends \ArrayObject
         $this->shippingCountries = $shippingCountries;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'languages' => ['languages', 'getLanguages', 'setLanguages'], 'currencies' => ['currencies', 'getCurrencies', 'setCurrencies'], 'shippingCountries' => ['shippingCountries', 'getShippingCountries', 'setShippingCountries']];
     }
 }

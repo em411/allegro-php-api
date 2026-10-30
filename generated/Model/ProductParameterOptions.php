@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductParameterOptions extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductParameterOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -40,5 +44,10 @@ class ProductParameterOptions extends \ArrayObject
         $this->identifiesProduct = $identifiesProduct;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['identifiesProduct' => ['identifiesProduct', 'getIdentifiesProduct', 'setIdentifiesProduct']];
     }
 }

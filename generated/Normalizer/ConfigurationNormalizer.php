@@ -42,27 +42,29 @@ class ConfigurationNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Configuration();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Configuration();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('constraintCriteria', $data) && null !== $data['constraintCriteria']) {
             $object->setConstraintCriteria($this->denormalizer->denormalize($data['constraintCriteria'], \Em411\Allegro\Api\Model\ConstraintCriteria::class, 'json', $context));
             unset($data['constraintCriteria']);
         } elseif (\array_key_exists('constraintCriteria', $data) && null === $data['constraintCriteria']) {
             $object->setConstraintCriteria(null);
+            unset($data['constraintCriteria']);
         }
         if (\array_key_exists('price', $data) && null !== $data['price']) {
             $object->setPrice($this->denormalizer->denormalize($data['price'], \Em411\Allegro\Api\Model\Price::class, 'json', $context));
             unset($data['price']);
         } elseif (\array_key_exists('price', $data) && null === $data['price']) {
             $object->setPrice(null);
+            unset($data['price']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,12 +79,12 @@ class ConfigurationNormalizer implements DenormalizerInterface, NormalizerInterf
     {
         $dataArray = [];
         if ($data->isInitialized('constraintCriteria') && null !== $data->getConstraintCriteria()) {
-            $dataArray['constraintCriteria'] = $this->normalizer->normalize($data->getConstraintCriteria(), 'json', $context);
+            $dataArray['constraintCriteria'] = null === $data->getConstraintCriteria() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getConstraintCriteria(), 'json', $context));
         }
         if ($data->isInitialized('price') && null !== $data->getPrice()) {
-            $dataArray['price'] = $this->normalizer->normalize($data->getPrice(), 'json', $context);
+            $dataArray['price'] = null === $data->getPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPrice(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

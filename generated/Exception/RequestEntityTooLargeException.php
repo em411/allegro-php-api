@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Exception;
 
-class RequestEntityTooLargeException extends \RuntimeException implements ClientException
+abstract class RequestEntityTooLargeException extends \RuntimeException implements ClientException, WithResponseInterface
 {
     public function __construct(string $message)
     {

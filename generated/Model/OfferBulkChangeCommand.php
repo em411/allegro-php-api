@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferBulkChangeCommand extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferBulkChangeCommand implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class OfferBulkChangeCommand extends \ArrayObject
         $this->modifications = $modifications;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['commandId' => ['commandId', 'getCommandId', 'setCommandId'], 'modifications' => ['modifications', 'getModifications', 'setModifications']];
     }
 }

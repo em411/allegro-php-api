@@ -42,39 +42,42 @@ class ListingResponseFiltersNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ListingResponseFilters();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ListingResponseFilters();
         if (\array_key_exists('minValue', $data) && \is_int($data['minValue'])) {
             $data['minValue'] = (float) $data['minValue'];
         }
         if (\array_key_exists('maxValue', $data) && \is_int($data['maxValue'])) {
             $data['maxValue'] = (float) $data['maxValue'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('values', $data) && null !== $data['values']) {
             $values = [];
@@ -85,24 +88,28 @@ class ListingResponseFiltersNormalizer implements DenormalizerInterface, Normali
             unset($data['values']);
         } elseif (\array_key_exists('values', $data) && null === $data['values']) {
             $object->setValues(null);
+            unset($data['values']);
         }
         if (\array_key_exists('minValue', $data) && null !== $data['minValue']) {
             $object->setMinValue($data['minValue']);
             unset($data['minValue']);
         } elseif (\array_key_exists('minValue', $data) && null === $data['minValue']) {
             $object->setMinValue(null);
+            unset($data['minValue']);
         }
         if (\array_key_exists('maxValue', $data) && null !== $data['maxValue']) {
             $object->setMaxValue($data['maxValue']);
             unset($data['maxValue']);
         } elseif (\array_key_exists('maxValue', $data) && null === $data['maxValue']) {
             $object->setMaxValue(null);
+            unset($data['maxValue']);
         }
         if (\array_key_exists('unit', $data) && null !== $data['unit']) {
             $object->setUnit($data['unit']);
             unset($data['unit']);
         } elseif (\array_key_exists('unit', $data) && null === $data['unit']) {
             $object->setUnit(null);
+            unset($data['unit']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -128,7 +135,7 @@ class ListingResponseFiltersNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('values') && null !== $data->getValues()) {
             $values = [];
             foreach ($data->getValues() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['values'] = $values;
         }
@@ -141,7 +148,7 @@ class ListingResponseFiltersNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('unit') && null !== $data->getUnit()) {
             $dataArray['unit'] = $data->getUnit();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

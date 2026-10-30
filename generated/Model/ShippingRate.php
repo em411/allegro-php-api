@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ShippingRate extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ShippingRate implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -140,5 +144,10 @@ class ShippingRate extends \ArrayObject
         $this->shippingTime = $shippingTime;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['deliveryMethod' => ['deliveryMethod', 'getDeliveryMethod', 'setDeliveryMethod'], 'maxQuantityPerPackage' => ['maxQuantityPerPackage', 'getMaxQuantityPerPackage', 'setMaxQuantityPerPackage'], 'maxPackageWeight' => ['maxPackageWeight', 'getMaxPackageWeight', 'setMaxPackageWeight'], 'firstItemRate' => ['firstItemRate', 'getFirstItemRate', 'setFirstItemRate'], 'shippingTime' => ['shippingTime', 'getShippingTime', 'setShippingTime']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BlockedDelivery extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BlockedDelivery implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -104,5 +108,10 @@ class BlockedDelivery extends \ArrayObject
         $this->blockades = $blockades;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['marketplaceId' => ['marketplaceId', 'getMarketplaceId', 'setMarketplaceId'], 'shippingTo' => ['shippingTo', 'getShippingTo', 'setShippingTo'], 'blockades' => ['blockades', 'getBlockades', 'setBlockades']];
     }
 }

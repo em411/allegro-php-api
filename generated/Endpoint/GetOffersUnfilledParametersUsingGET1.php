@@ -20,18 +20,15 @@ class GetOffersUnfilledParametersUsingGET1 extends \Em411\Allegro\Api\Runtime\Cl
     /**
      * Use this resource to get information about required parameters or parameters scheduled to become required that are not filled in offers. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-sprawdzic-nieuzupelnione-parametry-w-ofertach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-check-unfilled-parameters-in-offers" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var array  $offer.id List of offer ids. If empty all offers with unfilled parameters will be returned.
-     * @var string $parameterType filter by parameter type
-     * @var int    $offset the offset of elements in the response
-     * @var int    $limit The limit of elements in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "offer.id"?: array, //List of offer ids. If empty all offers with unfilled parameters will be returned.
+     *    "parameterType"?: string, //Filter by parameter type.
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //The limit of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -89,6 +86,11 @@ class GetOffersUnfilledParametersUsingGET1 extends \Em411\Allegro\Api\Runtime\Cl
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['offer.id' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\UnfilledParametersResponse|null
      *
@@ -100,7 +102,7 @@ class GetOffersUnfilledParametersUsingGET1 extends \Em411\Allegro\Api\Runtime\Cl
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\UnfilledParametersResponse', 'json');
         }
         if (400 === $status) {

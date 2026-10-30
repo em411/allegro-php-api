@@ -42,13 +42,16 @@ class SmartSellerClassificationReportConditionsItemNormalizer implements Denorma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SmartSellerClassificationReportConditionsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SmartSellerClassificationReportConditionsItem();
         if (\array_key_exists('value', $data) && \is_int($data['value'])) {
             $data['value'] = (float) $data['value'];
         }
@@ -61,50 +64,54 @@ class SmartSellerClassificationReportConditionsItemNormalizer implements Denorma
         if (\array_key_exists('required', $data) && \is_int($data['required'])) {
             $data['required'] = (bool) $data['required'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('code', $data) && null !== $data['code']) {
             $object->setCode($data['code']);
             unset($data['code']);
         } elseif (\array_key_exists('code', $data) && null === $data['code']) {
             $object->setCode(null);
+            unset($data['code']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($data['description']);
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('value', $data) && null !== $data['value']) {
             $object->setValue($data['value']);
             unset($data['value']);
         } elseif (\array_key_exists('value', $data) && null === $data['value']) {
             $object->setValue(null);
+            unset($data['value']);
         }
         if (\array_key_exists('threshold', $data) && null !== $data['threshold']) {
             $object->setThreshold($data['threshold']);
             unset($data['threshold']);
         } elseif (\array_key_exists('threshold', $data) && null === $data['threshold']) {
             $object->setThreshold(null);
+            unset($data['threshold']);
         }
         if (\array_key_exists('fulfilled', $data) && null !== $data['fulfilled']) {
             $object->setFulfilled($data['fulfilled']);
             unset($data['fulfilled']);
         } elseif (\array_key_exists('fulfilled', $data) && null === $data['fulfilled']) {
             $object->setFulfilled(null);
+            unset($data['fulfilled']);
         }
         if (\array_key_exists('required', $data) && null !== $data['required']) {
             $object->setRequired($data['required']);
             unset($data['required']);
         } elseif (\array_key_exists('required', $data) && null === $data['required']) {
             $object->setRequired(null);
+            unset($data['required']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -139,7 +146,7 @@ class SmartSellerClassificationReportConditionsItemNormalizer implements Denorma
         if ($data->isInitialized('required') && null !== $data->getRequired()) {
             $dataArray['required'] = $data->getRequired();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

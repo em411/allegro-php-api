@@ -42,45 +42,50 @@ class ShippingRateNormalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ShippingRate();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ShippingRate();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('deliveryMethod', $data) && null !== $data['deliveryMethod']) {
             $object->setDeliveryMethod($this->denormalizer->denormalize($data['deliveryMethod'], \Em411\Allegro\Api\Model\ShippingRateDeliveryMethod::class, 'json', $context));
             unset($data['deliveryMethod']);
         } elseif (\array_key_exists('deliveryMethod', $data) && null === $data['deliveryMethod']) {
             $object->setDeliveryMethod(null);
+            unset($data['deliveryMethod']);
         }
         if (\array_key_exists('maxQuantityPerPackage', $data) && null !== $data['maxQuantityPerPackage']) {
             $object->setMaxQuantityPerPackage($data['maxQuantityPerPackage']);
             unset($data['maxQuantityPerPackage']);
         } elseif (\array_key_exists('maxQuantityPerPackage', $data) && null === $data['maxQuantityPerPackage']) {
             $object->setMaxQuantityPerPackage(null);
+            unset($data['maxQuantityPerPackage']);
         }
         if (\array_key_exists('maxPackageWeight', $data) && null !== $data['maxPackageWeight']) {
             $object->setMaxPackageWeight($this->denormalizer->denormalize($data['maxPackageWeight'], \Em411\Allegro\Api\Model\ShippingRateMaxPackageWeight::class, 'json', $context));
             unset($data['maxPackageWeight']);
         } elseif (\array_key_exists('maxPackageWeight', $data) && null === $data['maxPackageWeight']) {
             $object->setMaxPackageWeight(null);
+            unset($data['maxPackageWeight']);
         }
         if (\array_key_exists('firstItemRate', $data) && null !== $data['firstItemRate']) {
             $object->setFirstItemRate($this->denormalizer->denormalize($data['firstItemRate'], \Em411\Allegro\Api\Model\ShippingRateFirstItemRate::class, 'json', $context));
             unset($data['firstItemRate']);
         } elseif (\array_key_exists('firstItemRate', $data) && null === $data['firstItemRate']) {
             $object->setFirstItemRate(null);
+            unset($data['firstItemRate']);
         }
         if (\array_key_exists('shippingTime', $data) && null !== $data['shippingTime']) {
             $object->setShippingTime($this->denormalizer->denormalize($data['shippingTime'], \Em411\Allegro\Api\Model\ShippingRateShippingTime::class, 'json', $context));
             unset($data['shippingTime']);
         } elseif (\array_key_exists('shippingTime', $data) && null === $data['shippingTime']) {
             $object->setShippingTime(null);
+            unset($data['shippingTime']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -94,16 +99,16 @@ class ShippingRateNormalizer implements DenormalizerInterface, NormalizerInterfa
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['deliveryMethod'] = $this->normalizer->normalize($data->getDeliveryMethod(), 'json', $context);
+        $dataArray['deliveryMethod'] = null === $data->getDeliveryMethod() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDeliveryMethod(), 'json', $context));
         $dataArray['maxQuantityPerPackage'] = $data->getMaxQuantityPerPackage();
         if ($data->isInitialized('maxPackageWeight') && null !== $data->getMaxPackageWeight()) {
-            $dataArray['maxPackageWeight'] = $this->normalizer->normalize($data->getMaxPackageWeight(), 'json', $context);
+            $dataArray['maxPackageWeight'] = null === $data->getMaxPackageWeight() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMaxPackageWeight(), 'json', $context));
         }
-        $dataArray['firstItemRate'] = $this->normalizer->normalize($data->getFirstItemRate(), 'json', $context);
+        $dataArray['firstItemRate'] = null === $data->getFirstItemRate() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getFirstItemRate(), 'json', $context));
         if ($data->isInitialized('shippingTime') && null !== $data->getShippingTime()) {
-            $dataArray['shippingTime'] = $this->normalizer->normalize($data->getShippingTime(), 'json', $context);
+            $dataArray['shippingTime'] = null === $data->getShippingTime() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getShippingTime(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

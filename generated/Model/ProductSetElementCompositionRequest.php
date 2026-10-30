@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductSetElementCompositionRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductSetElementCompositionRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class ProductSetElementCompositionRequest extends \ArrayObject
         $this->composition = $composition;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['composition' => ['composition', 'getComposition', 'setComposition']];
     }
 }

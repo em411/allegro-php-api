@@ -42,33 +42,36 @@ class WalletNormalizer implements DenormalizerInterface, NormalizerInterface, De
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Wallet();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Wallet();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('paymentOperator', $data) && null !== $data['paymentOperator']) {
             $object->setPaymentOperator($data['paymentOperator']);
             unset($data['paymentOperator']);
         } elseif (\array_key_exists('paymentOperator', $data) && null === $data['paymentOperator']) {
             $object->setPaymentOperator(null);
+            unset($data['paymentOperator']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('balance', $data) && null !== $data['balance']) {
             $object->setBalance($this->denormalizer->denormalize($data['balance'], \Em411\Allegro\Api\Model\WalletBalance::class, 'json', $context));
             unset($data['balance']);
         } elseif (\array_key_exists('balance', $data) && null === $data['balance']) {
             $object->setBalance(null);
+            unset($data['balance']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -84,8 +87,8 @@ class WalletNormalizer implements DenormalizerInterface, NormalizerInterface, De
         $dataArray = [];
         $dataArray['paymentOperator'] = $data->getPaymentOperator();
         $dataArray['type'] = $data->getType();
-        $dataArray['balance'] = $this->normalizer->normalize($data->getBalance(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['balance'] = null === $data->getBalance() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBalance(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

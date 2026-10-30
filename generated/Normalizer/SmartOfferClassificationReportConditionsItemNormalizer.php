@@ -42,42 +42,46 @@ class SmartOfferClassificationReportConditionsItemNormalizer implements Denormal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SmartOfferClassificationReportConditionsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SmartOfferClassificationReportConditionsItem();
         if (\array_key_exists('fulfilled', $data) && \is_int($data['fulfilled'])) {
             $data['fulfilled'] = (bool) $data['fulfilled'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('code', $data) && null !== $data['code']) {
             $object->setCode($data['code']);
             unset($data['code']);
         } elseif (\array_key_exists('code', $data) && null === $data['code']) {
             $object->setCode(null);
+            unset($data['code']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($data['description']);
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('fulfilled', $data) && null !== $data['fulfilled']) {
             $object->setFulfilled($data['fulfilled']);
             unset($data['fulfilled']);
         } elseif (\array_key_exists('fulfilled', $data) && null === $data['fulfilled']) {
             $object->setFulfilled(null);
+            unset($data['fulfilled']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -103,7 +107,7 @@ class SmartOfferClassificationReportConditionsItemNormalizer implements Denormal
         if ($data->isInitialized('fulfilled') && null !== $data->getFulfilled()) {
             $dataArray['fulfilled'] = $data->getFulfilled();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

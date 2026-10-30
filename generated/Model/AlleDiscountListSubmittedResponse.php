@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AlleDiscountListSubmittedResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AlleDiscountListSubmittedResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class AlleDiscountListSubmittedResponse extends \ArrayObject
         $this->totalCount = $totalCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['submittedOffers' => ['submittedOffers', 'getSubmittedOffers', 'setSubmittedOffers'], 'count' => ['count', 'getCount', 'setCount'], 'totalCount' => ['totalCount', 'getTotalCount', 'setTotalCount']];
     }
 }

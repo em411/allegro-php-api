@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleDeliveryMethodsGetResponse200 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleDeliveryMethodsGetResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class SaleDeliveryMethodsGetResponse200 extends \ArrayObject
         $this->deliveryMethods = $deliveryMethods;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['deliveryMethods' => ['deliveryMethods', 'getDeliveryMethods', 'setDeliveryMethods']];
     }
 }

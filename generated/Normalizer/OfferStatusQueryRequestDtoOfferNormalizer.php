@@ -42,15 +42,15 @@ class OfferStatusQueryRequestDtoOfferNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoOffer();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoOffer();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('ids', $data) && null !== $data['ids']) {
             $values = [];
@@ -61,18 +61,21 @@ class OfferStatusQueryRequestDtoOfferNormalizer implements DenormalizerInterface
             unset($data['ids']);
         } elseif (\array_key_exists('ids', $data) && null === $data['ids']) {
             $object->setIds(null);
+            unset($data['ids']);
         }
         if (\array_key_exists('scope', $data) && null !== $data['scope']) {
             $object->setScope($data['scope']);
             unset($data['scope']);
         } elseif (\array_key_exists('scope', $data) && null === $data['scope']) {
             $object->setScope(null);
+            unset($data['scope']);
         }
         if (\array_key_exists('substatus', $data) && null !== $data['substatus']) {
             $object->setSubstatus($data['substatus']);
             unset($data['substatus']);
         } elseif (\array_key_exists('substatus', $data) && null === $data['substatus']) {
             $object->setSubstatus(null);
+            unset($data['substatus']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -99,7 +102,7 @@ class OfferStatusQueryRequestDtoOfferNormalizer implements DenormalizerInterface
         if ($data->isInitialized('substatus') && null !== $data->getSubstatus()) {
             $dataArray['substatus'] = $data->getSubstatus();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

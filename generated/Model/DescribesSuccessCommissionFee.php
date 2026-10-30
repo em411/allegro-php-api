@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DescribesSuccessCommissionFee extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DescribesSuccessCommissionFee implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -74,5 +78,10 @@ class DescribesSuccessCommissionFee extends \ArrayObject
         $this->type = $type;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['fee' => ['fee', 'getFee', 'setFee'], 'name' => ['name', 'getName', 'setName'], 'type' => ['type', 'getType', 'setType']];
     }
 }

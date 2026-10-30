@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CreatePickupCommandStatusDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CreatePickupCommandStatusDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -144,5 +148,10 @@ class CreatePickupCommandStatusDto extends \ArrayObject
         $this->carrierPickupId = $carrierPickupId;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['commandId' => ['commandId', 'getCommandId', 'setCommandId'], 'status' => ['status', 'getStatus', 'setStatus'], 'errors' => ['errors', 'getErrors', 'setErrors'], 'pickupId' => ['pickupId', 'getPickupId', 'setPickupId'], 'carrierPickupId' => ['carrierPickupId', 'getCarrierPickupId', 'setCarrierPickupId']];
     }
 }

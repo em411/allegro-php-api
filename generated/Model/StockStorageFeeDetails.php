@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class StockStorageFeeDetails extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class StockStorageFeeDetails implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class StockStorageFeeDetails extends \ArrayObject
         $this->currency = $currency;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['chargedItemsQuantity' => ['chargedItemsQuantity', 'getChargedItemsQuantity', 'setChargedItemsQuantity'], 'amountNet' => ['amountNet', 'getAmountNet', 'setAmountNet'], 'amountGross' => ['amountGross', 'getAmountGross', 'setAmountGross'], 'currency' => ['currency', 'getCurrency', 'setCurrency']];
     }
 }

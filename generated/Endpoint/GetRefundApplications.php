@@ -20,19 +20,16 @@ class GetRefundApplications extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
     /**
      * Use this resource to get a list of refund applications based on the provided query parameters. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-liste-utworzonych-wnioskow-o-rabat-transakcyjny" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-retrieve-list-of-sale-commission-refunds" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $lineItem.offer.id ID of the offer associated with the refund application.
-     * @var string $buyer.id Id of the buyer that made the purchase associated with the refund application.
-     * @var string $status status of the refund application
-     * @var int    $limit maximum number of returned refund applications in response
-     * @var int    $offset Index of the first returned refund application from all search results.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "lineItem.offer.id"?: string, //ID of the offer associated with the refund application.
+     *    "buyer.id"?: string, //Id of the buyer that made the purchase associated with the refund application.
+     *    "status"?: string, //Status of the refund application.
+     *    "limit"?: int, //Maximum number of returned refund applications in response.
+     *    "offset"?: int, //Index of the first returned refund application from all search results.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -104,7 +101,7 @@ class GetRefundApplications extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\OrderRefundClaimsGetResponse200', 'json');
         }
         if (400 === $status) {

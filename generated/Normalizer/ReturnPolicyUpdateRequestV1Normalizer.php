@@ -42,57 +42,64 @@ class ReturnPolicyUpdateRequestV1Normalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ReturnPolicyUpdateRequestV1();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ReturnPolicyUpdateRequestV1();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('availability', $data) && null !== $data['availability']) {
             $object->setAvailability($this->denormalizer->denormalize($data['availability'], \Em411\Allegro\Api\Model\ReturnPolicyAvailability::class, 'json', $context));
             unset($data['availability']);
         } elseif (\array_key_exists('availability', $data) && null === $data['availability']) {
             $object->setAvailability(null);
+            unset($data['availability']);
         }
         if (\array_key_exists('withdrawalPeriod', $data) && null !== $data['withdrawalPeriod']) {
             $object->setWithdrawalPeriod($data['withdrawalPeriod']);
             unset($data['withdrawalPeriod']);
         } elseif (\array_key_exists('withdrawalPeriod', $data) && null === $data['withdrawalPeriod']) {
             $object->setWithdrawalPeriod(null);
+            unset($data['withdrawalPeriod']);
         }
         if (\array_key_exists('returnCost', $data) && null !== $data['returnCost']) {
             $object->setReturnCost($this->denormalizer->denormalize($data['returnCost'], \Em411\Allegro\Api\Model\ReturnPolicyReturnCost::class, 'json', $context));
             unset($data['returnCost']);
         } elseif (\array_key_exists('returnCost', $data) && null === $data['returnCost']) {
             $object->setReturnCost(null);
+            unset($data['returnCost']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\ReturnPolicyAddress::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         if (\array_key_exists('contact', $data) && null !== $data['contact']) {
             $object->setContact($this->denormalizer->denormalize($data['contact'], \Em411\Allegro\Api\Model\ReturnPolicyContactV1::class, 'json', $context));
             unset($data['contact']);
         } elseif (\array_key_exists('contact', $data) && null === $data['contact']) {
             $object->setContact(null);
+            unset($data['contact']);
         }
         if (\array_key_exists('options', $data) && null !== $data['options']) {
             $object->setOptions($this->denormalizer->denormalize($data['options'], \Em411\Allegro\Api\Model\ReturnPolicyOptions::class, 'json', $context));
             unset($data['options']);
         } elseif (\array_key_exists('options', $data) && null === $data['options']) {
             $object->setOptions(null);
+            unset($data['options']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -107,23 +114,23 @@ class ReturnPolicyUpdateRequestV1Normalizer implements DenormalizerInterface, No
     {
         $dataArray = [];
         $dataArray['name'] = $data->getName();
-        $dataArray['availability'] = $this->normalizer->normalize($data->getAvailability(), 'json', $context);
+        $dataArray['availability'] = null === $data->getAvailability() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAvailability(), 'json', $context));
         if ($data->isInitialized('withdrawalPeriod') && null !== $data->getWithdrawalPeriod()) {
             $dataArray['withdrawalPeriod'] = $data->getWithdrawalPeriod();
         }
-        if ($data->isInitialized('returnCost')) {
-            $dataArray['returnCost'] = $this->normalizer->normalize($data->getReturnCost(), 'json', $context);
+        if ($data->isInitialized('returnCost') && null !== $data->getReturnCost()) {
+            $dataArray['returnCost'] = null === $data->getReturnCost() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getReturnCost(), 'json', $context));
         }
-        if ($data->isInitialized('address')) {
-            $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+        if ($data->isInitialized('address') && null !== $data->getAddress()) {
+            $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         }
-        if ($data->isInitialized('contact')) {
-            $dataArray['contact'] = $this->normalizer->normalize($data->getContact(), 'json', $context);
+        if ($data->isInitialized('contact') && null !== $data->getContact()) {
+            $dataArray['contact'] = null === $data->getContact() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getContact(), 'json', $context));
         }
-        if ($data->isInitialized('options')) {
-            $dataArray['options'] = $this->normalizer->normalize($data->getOptions(), 'json', $context);
+        if ($data->isInitialized('options') && null !== $data->getOptions()) {
+            $dataArray['options'] = null === $data->getOptions() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOptions(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

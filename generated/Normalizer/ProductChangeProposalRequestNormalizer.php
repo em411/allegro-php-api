@@ -42,33 +42,35 @@ class ProductChangeProposalRequestNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductChangeProposalRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ProductChangeProposalRequest();
         if (\array_key_exists('notifyViaEmailAfterVerification', $data) && \is_int($data['notifyViaEmailAfterVerification'])) {
             $data['notifyViaEmailAfterVerification'] = (bool) $data['notifyViaEmailAfterVerification'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('note', $data) && null !== $data['note']) {
             $object->setNote($data['note']);
             unset($data['note']);
         } elseif (\array_key_exists('note', $data) && null === $data['note']) {
             $object->setNote(null);
+            unset($data['note']);
         }
         if (\array_key_exists('category', $data) && null !== $data['category']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['category'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -76,6 +78,7 @@ class ProductChangeProposalRequestNormalizer implements DenormalizerInterface, N
             unset($data['category']);
         } elseif (\array_key_exists('category', $data) && null === $data['category']) {
             $object->setCategory(null);
+            unset($data['category']);
         }
         if (\array_key_exists('images', $data) && null !== $data['images']) {
             $values_1 = [];
@@ -86,6 +89,7 @@ class ProductChangeProposalRequestNormalizer implements DenormalizerInterface, N
             unset($data['images']);
         } elseif (\array_key_exists('images', $data) && null === $data['images']) {
             $object->setImages(null);
+            unset($data['images']);
         }
         if (\array_key_exists('parameters', $data) && null !== $data['parameters']) {
             $values_2 = [];
@@ -96,18 +100,21 @@ class ProductChangeProposalRequestNormalizer implements DenormalizerInterface, N
             unset($data['parameters']);
         } elseif (\array_key_exists('parameters', $data) && null === $data['parameters']) {
             $object->setParameters(null);
+            unset($data['parameters']);
         }
         if (\array_key_exists('notifyViaEmailAfterVerification', $data) && null !== $data['notifyViaEmailAfterVerification']) {
             $object->setNotifyViaEmailAfterVerification($data['notifyViaEmailAfterVerification']);
             unset($data['notifyViaEmailAfterVerification']);
         } elseif (\array_key_exists('notifyViaEmailAfterVerification', $data) && null === $data['notifyViaEmailAfterVerification']) {
             $object->setNotifyViaEmailAfterVerification(null);
+            unset($data['notifyViaEmailAfterVerification']);
         }
         if (\array_key_exists('language', $data) && null !== $data['language']) {
             $object->setLanguage($data['language']);
             unset($data['language']);
         } elseif (\array_key_exists('language', $data) && null === $data['language']) {
             $object->setLanguage(null);
+            unset($data['language']);
         }
         foreach ($data as $key_1 => $value_3) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -125,26 +132,26 @@ class ProductChangeProposalRequestNormalizer implements DenormalizerInterface, N
         if ($data->isInitialized('note') && null !== $data->getNote()) {
             $dataArray['note'] = $data->getNote();
         }
-        $values = [];
+        $values = new \Em411\Allegro\Api\Runtime\JsonObject();
         foreach ($data->getCategory() as $key => $value) {
             $values[$key] = $value;
         }
         $dataArray['category'] = $values;
         $values_1 = [];
         foreach ($data->getImages() as $value_1) {
-            $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
         }
         $dataArray['images'] = $values_1;
         $values_2 = [];
         foreach ($data->getParameters() as $value_2) {
-            $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+            $values_2[] = null === $value_2 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
         }
         $dataArray['parameters'] = $values_2;
         if ($data->isInitialized('notifyViaEmailAfterVerification') && null !== $data->getNotifyViaEmailAfterVerification()) {
             $dataArray['notifyViaEmailAfterVerification'] = $data->getNotifyViaEmailAfterVerification();
         }
         $dataArray['language'] = $data->getLanguage();
-        foreach ($data as $key_1 => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_3) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_3;
             }

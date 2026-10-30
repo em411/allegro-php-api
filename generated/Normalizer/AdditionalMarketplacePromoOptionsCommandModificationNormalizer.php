@@ -42,27 +42,29 @@ class AdditionalMarketplacePromoOptionsCommandModificationNormalizer implements 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AdditionalMarketplacePromoOptionsCommandModification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AdditionalMarketplacePromoOptionsCommandModification();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
             $object->setMarketplaceId($data['marketplaceId']);
             unset($data['marketplaceId']);
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
+            unset($data['marketplaceId']);
         }
         if (\array_key_exists('modification', $data) && null !== $data['modification']) {
             $object->setModification($this->denormalizer->denormalize($data['modification'], \Em411\Allegro\Api\Model\PromoOptionsCommandModification::class, 'json', $context));
             unset($data['modification']);
         } elseif (\array_key_exists('modification', $data) && null === $data['modification']) {
             $object->setModification(null);
+            unset($data['modification']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,9 +82,9 @@ class AdditionalMarketplacePromoOptionsCommandModificationNormalizer implements 
             $dataArray['marketplaceId'] = $data->getMarketplaceId();
         }
         if ($data->isInitialized('modification') && null !== $data->getModification()) {
-            $dataArray['modification'] = $this->normalizer->normalize($data->getModification(), 'json', $context);
+            $dataArray['modification'] = null === $data->getModification() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getModification(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

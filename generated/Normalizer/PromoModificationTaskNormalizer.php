@@ -42,45 +42,74 @@ class PromoModificationTaskNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PromoModificationTask();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PromoModificationTask();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('offer', $data) && null !== $data['offer']) {
             $object->setOffer($this->denormalizer->denormalize($data['offer'], \Em411\Allegro\Api\Model\OfferId::class, 'json', $context));
             unset($data['offer']);
         } elseif (\array_key_exists('offer', $data) && null === $data['offer']) {
             $object->setOffer(null);
+            unset($data['offer']);
         }
         if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
             $object->setMarketplaceId($data['marketplaceId']);
             unset($data['marketplaceId']);
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
+            unset($data['marketplaceId']);
         }
         if (\array_key_exists('scheduledAt', $data) && null !== $data['scheduledAt']) {
-            $object->setScheduledAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledAt']);
+            if (false === $date) {
+                if (\is_string($data['scheduledAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['scheduledAt'])) {
+                    try {
+                        $date = new \DateTime($data['scheduledAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setScheduledAt($date);
             unset($data['scheduledAt']);
         } elseif (\array_key_exists('scheduledAt', $data) && null === $data['scheduledAt']) {
             $object->setScheduledAt(null);
+            unset($data['scheduledAt']);
         }
         if (\array_key_exists('finishedAt', $data) && null !== $data['finishedAt']) {
-            $object->setFinishedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['finishedAt']));
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['finishedAt']);
+            if (false === $date_1) {
+                if (\is_string($data['finishedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['finishedAt'])) {
+                    try {
+                        $date_1 = new \DateTime($data['finishedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['finishedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['finishedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setFinishedAt($date_1);
             unset($data['finishedAt']);
         } elseif (\array_key_exists('finishedAt', $data) && null === $data['finishedAt']) {
             $object->setFinishedAt(null);
+            unset($data['finishedAt']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('errors', $data) && null !== $data['errors']) {
             $values = [];
@@ -91,6 +120,7 @@ class PromoModificationTaskNormalizer implements DenormalizerInterface, Normaliz
             unset($data['errors']);
         } elseif (\array_key_exists('errors', $data) && null === $data['errors']) {
             $object->setErrors(null);
+            unset($data['errors']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -105,7 +135,7 @@ class PromoModificationTaskNormalizer implements DenormalizerInterface, Normaliz
     {
         $dataArray = [];
         if ($data->isInitialized('offer') && null !== $data->getOffer()) {
-            $dataArray['offer'] = $this->normalizer->normalize($data->getOffer(), 'json', $context);
+            $dataArray['offer'] = null === $data->getOffer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOffer(), 'json', $context));
         }
         if ($data->isInitialized('marketplaceId') && null !== $data->getMarketplaceId()) {
             $dataArray['marketplaceId'] = $data->getMarketplaceId();
@@ -122,11 +152,11 @@ class PromoModificationTaskNormalizer implements DenormalizerInterface, Normaliz
         if ($data->isInitialized('errors') && null !== $data->getErrors()) {
             $values = [];
             foreach ($data->getErrors() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['errors'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

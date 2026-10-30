@@ -42,15 +42,15 @@ class CreateOfferBundleDTONormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CreateOfferBundleDTO();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CreateOfferBundleDTO();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('offers', $data) && null !== $data['offers']) {
             $values = [];
@@ -61,6 +61,7 @@ class CreateOfferBundleDTONormalizer implements DenormalizerInterface, Normalize
             unset($data['offers']);
         } elseif (\array_key_exists('offers', $data) && null === $data['offers']) {
             $object->setOffers(null);
+            unset($data['offers']);
         }
         if (\array_key_exists('discounts', $data) && null !== $data['discounts']) {
             $values_1 = [];
@@ -71,6 +72,7 @@ class CreateOfferBundleDTONormalizer implements DenormalizerInterface, Normalize
             unset($data['discounts']);
         } elseif (\array_key_exists('discounts', $data) && null === $data['discounts']) {
             $object->setDiscounts(null);
+            unset($data['discounts']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,17 +88,17 @@ class CreateOfferBundleDTONormalizer implements DenormalizerInterface, Normalize
         $dataArray = [];
         $values = [];
         foreach ($data->getOffers() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['offers'] = $values;
-        if ($data->isInitialized('discounts')) {
+        if ($data->isInitialized('discounts') && null !== $data->getDiscounts()) {
             $values_1 = [];
             foreach ($data->getDiscounts() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['discounts'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

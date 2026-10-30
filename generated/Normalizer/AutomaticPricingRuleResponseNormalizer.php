@@ -42,51 +42,68 @@ class AutomaticPricingRuleResponseNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AutomaticPricingRuleResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\AutomaticPricingRuleResponse();
         if (\array_key_exists('default', $data) && \is_int($data['default'])) {
             $data['default'] = (bool) $data['default'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('default', $data) && null !== $data['default']) {
             $object->setDefault($data['default']);
             unset($data['default']);
         } elseif (\array_key_exists('default', $data) && null === $data['default']) {
             $object->setDefault(null);
+            unset($data['default']);
         }
         if (\array_key_exists('updatedAt', $data) && null !== $data['updatedAt']) {
-            $object->setUpdatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['updatedAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['updatedAt']);
+            if (false === $date) {
+                if (\is_string($data['updatedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['updatedAt'])) {
+                    try {
+                        $date = new \DateTime($data['updatedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['updatedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['updatedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setUpdatedAt($date);
             unset($data['updatedAt']);
         } elseif (\array_key_exists('updatedAt', $data) && null === $data['updatedAt']) {
             $object->setUpdatedAt(null);
+            unset($data['updatedAt']);
         }
         if (\array_key_exists('configuration', $data) && null !== $data['configuration']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['configuration'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -94,6 +111,7 @@ class AutomaticPricingRuleResponseNormalizer implements DenormalizerInterface, N
             unset($data['configuration']);
         } elseif (\array_key_exists('configuration', $data) && null === $data['configuration']) {
             $object->setConfiguration(null);
+            unset($data['configuration']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -112,14 +130,14 @@ class AutomaticPricingRuleResponseNormalizer implements DenormalizerInterface, N
         $dataArray['name'] = $data->getName();
         $dataArray['default'] = $data->getDefault();
         $dataArray['updatedAt'] = $data->getUpdatedAt()->format('Y-m-d\TH:i:sP');
-        if ($data->isInitialized('configuration')) {
-            $values = [];
+        if ($data->isInitialized('configuration') && null !== $data->getConfiguration()) {
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data->getConfiguration() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['configuration'] = $values;
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

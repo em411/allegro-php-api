@@ -42,36 +42,39 @@ class CategoryDefinitionDescriptionResponseNormalizer implements DenormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CategoryDefinitionDescriptionResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CategoryDefinitionDescriptionResponse();
         if (\array_key_exists('editable', $data) && \is_int($data['editable'])) {
             $data['editable'] = (bool) $data['editable'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('hint', $data) && null !== $data['hint']) {
             $object->setHint($data['hint']);
             unset($data['hint']);
         } elseif (\array_key_exists('hint', $data) && null === $data['hint']) {
             $object->setHint(null);
+            unset($data['hint']);
         }
         if (\array_key_exists('editable', $data) && null !== $data['editable']) {
             $object->setEditable($data['editable']);
             unset($data['editable']);
         } elseif (\array_key_exists('editable', $data) && null === $data['editable']) {
             $object->setEditable(null);
+            unset($data['editable']);
         }
         if (\array_key_exists('default', $data) && null !== $data['default']) {
             $object->setDefault($data['default']);
             unset($data['default']);
         } elseif (\array_key_exists('default', $data) && null === $data['default']) {
             $object->setDefault(null);
+            unset($data['default']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,16 +88,16 @@ class CategoryDefinitionDescriptionResponseNormalizer implements DenormalizerInt
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('hint')) {
+        if ($data->isInitialized('hint') && null !== $data->getHint()) {
             $dataArray['hint'] = $data->getHint();
         }
         if ($data->isInitialized('editable') && null !== $data->getEditable()) {
             $dataArray['editable'] = $data->getEditable();
         }
-        if ($data->isInitialized('default')) {
+        if ($data->isInitialized('default') && null !== $data->getDefault()) {
             $dataArray['default'] = $data->getDefault();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,15 +42,15 @@ class PublicationChangeCommandDtoNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PublicationChangeCommandDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PublicationChangeCommandDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('offerCriteria', $data) && null !== $data['offerCriteria']) {
             $values = [];
@@ -61,12 +61,14 @@ class PublicationChangeCommandDtoNormalizer implements DenormalizerInterface, No
             unset($data['offerCriteria']);
         } elseif (\array_key_exists('offerCriteria', $data) && null === $data['offerCriteria']) {
             $object->setOfferCriteria(null);
+            unset($data['offerCriteria']);
         }
         if (\array_key_exists('publication', $data) && null !== $data['publication']) {
             $object->setPublication($this->denormalizer->denormalize($data['publication'], \Em411\Allegro\Api\Model\PublicationModification::class, 'json', $context));
             unset($data['publication']);
         } elseif (\array_key_exists('publication', $data) && null === $data['publication']) {
             $object->setPublication(null);
+            unset($data['publication']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,14 +85,14 @@ class PublicationChangeCommandDtoNormalizer implements DenormalizerInterface, No
         if ($data->isInitialized('offerCriteria') && null !== $data->getOfferCriteria()) {
             $values = [];
             foreach ($data->getOfferCriteria() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['offerCriteria'] = $values;
         }
         if ($data->isInitialized('publication') && null !== $data->getPublication()) {
-            $dataArray['publication'] = $this->normalizer->normalize($data->getPublication(), 'json', $context);
+            $dataArray['publication'] = null === $data->getPublication() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPublication(), 'json', $context));
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

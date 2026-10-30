@@ -42,27 +42,29 @@ class DeliveryProposalDtoNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\DeliveryProposalDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\DeliveryProposalDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('orderId', $data) && null !== $data['orderId']) {
             $object->setOrderId($data['orderId']);
             unset($data['orderId']);
         } elseif (\array_key_exists('orderId', $data) && null === $data['orderId']) {
             $object->setOrderId(null);
+            unset($data['orderId']);
         }
         if (\array_key_exists('suggestedInput', $data) && null !== $data['suggestedInput']) {
             $object->setSuggestedInput($this->denormalizer->denormalize($data['suggestedInput'], \Em411\Allegro\Api\Model\ShipmentCreateRequestDto::class, 'json', $context));
             unset($data['suggestedInput']);
         } elseif (\array_key_exists('suggestedInput', $data) && null === $data['suggestedInput']) {
             $object->setSuggestedInput(null);
+            unset($data['suggestedInput']);
         }
         if (\array_key_exists('deliveryOptions', $data) && null !== $data['deliveryOptions']) {
             $values = [];
@@ -73,6 +75,7 @@ class DeliveryProposalDtoNormalizer implements DenormalizerInterface, Normalizer
             unset($data['deliveryOptions']);
         } elseif (\array_key_exists('deliveryOptions', $data) && null === $data['deliveryOptions']) {
             $object->setDeliveryOptions(null);
+            unset($data['deliveryOptions']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -90,16 +93,16 @@ class DeliveryProposalDtoNormalizer implements DenormalizerInterface, Normalizer
             $dataArray['orderId'] = $data->getOrderId();
         }
         if ($data->isInitialized('suggestedInput') && null !== $data->getSuggestedInput()) {
-            $dataArray['suggestedInput'] = $this->normalizer->normalize($data->getSuggestedInput(), 'json', $context);
+            $dataArray['suggestedInput'] = null === $data->getSuggestedInput() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSuggestedInput(), 'json', $context));
         }
         if ($data->isInitialized('deliveryOptions') && null !== $data->getDeliveryOptions()) {
             $values = [];
             foreach ($data->getDeliveryOptions() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['deliveryOptions'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

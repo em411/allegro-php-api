@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CompatibleProductDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CompatibleProductDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -127,5 +131,10 @@ class CompatibleProductDto extends \ArrayObject
         $this->attributes = $attributes;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'text' => ['text', 'getText', 'setText'], 'group' => ['group', 'getGroup', 'setGroup'], 'attributes' => ['attributes', 'getAttributes', 'setAttributes']];
     }
 }

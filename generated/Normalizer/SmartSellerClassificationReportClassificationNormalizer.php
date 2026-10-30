@@ -42,30 +42,44 @@ class SmartSellerClassificationReportClassificationNormalizer implements Denorma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SmartSellerClassificationReportClassification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SmartSellerClassificationReportClassification();
         if (\array_key_exists('fulfilled', $data) && \is_int($data['fulfilled'])) {
             $data['fulfilled'] = (bool) $data['fulfilled'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('fulfilled', $data) && null !== $data['fulfilled']) {
             $object->setFulfilled($data['fulfilled']);
             unset($data['fulfilled']);
         } elseif (\array_key_exists('fulfilled', $data) && null === $data['fulfilled']) {
             $object->setFulfilled(null);
+            unset($data['fulfilled']);
         }
         if (\array_key_exists('lastChanged', $data) && null !== $data['lastChanged']) {
-            $object->setLastChanged(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['lastChanged']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['lastChanged']);
+            if (false === $date) {
+                if (\is_string($data['lastChanged']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['lastChanged'])) {
+                    try {
+                        $date = new \DateTime($data['lastChanged']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['lastChanged'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['lastChanged'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setLastChanged($date);
             unset($data['lastChanged']);
         } elseif (\array_key_exists('lastChanged', $data) && null === $data['lastChanged']) {
             $object->setLastChanged(null);
+            unset($data['lastChanged']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,7 +99,7 @@ class SmartSellerClassificationReportClassificationNormalizer implements Denorma
         if ($data->isInitialized('lastChanged') && null !== $data->getLastChanged()) {
             $dataArray['lastChanged'] = $data->getLastChanged()->format('Y-m-d\TH:i:sP');
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PostPurchaseIssueChatResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PostPurchaseIssueChatResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class PostPurchaseIssueChatResponse extends \ArrayObject
         $this->chat = $chat;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['chat' => ['chat', 'getChat', 'setChat']];
     }
 }

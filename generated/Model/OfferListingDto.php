@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferListingDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferListingDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -448,5 +452,10 @@ class OfferListingDto extends \ArrayObject
         $this->additionalMarketplaces = $additionalMarketplaces;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'category' => ['category', 'getCategory', 'setCategory'], 'primaryImage' => ['primaryImage', 'getPrimaryImage', 'setPrimaryImage'], 'sellingMode' => ['sellingMode', 'getSellingMode', 'setSellingMode'], 'saleInfo' => ['saleInfo', 'getSaleInfo', 'setSaleInfo'], 'stock' => ['stock', 'getStock', 'setStock'], 'stats' => ['stats', 'getStats', 'setStats'], 'publication' => ['publication', 'getPublication', 'setPublication'], 'afterSalesServices' => ['afterSalesServices', 'getAfterSalesServices', 'setAfterSalesServices'], 'additionalServices' => ['additionalServices', 'getAdditionalServices', 'setAdditionalServices'], 'external' => ['external', 'getExternal', 'setExternal'], 'delivery' => ['delivery', 'getDelivery', 'setDelivery'], 'b2b' => ['b2b', 'getB2b', 'setB2b'], 'fundraisingCampaign' => ['fundraisingCampaign', 'getFundraisingCampaign', 'setFundraisingCampaign'], 'isFulfillment' => ['isFulfillment', 'getIsFulfillment', 'setIsFulfillment'], 'additionalMarketplaces' => ['additionalMarketplaces', 'getAdditionalMarketplaces', 'setAdditionalMarketplaces']];
     }
 }

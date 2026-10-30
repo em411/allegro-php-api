@@ -42,27 +42,29 @@ class NewAttachmentDeclarationNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\NewAttachmentDeclaration();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\NewAttachmentDeclaration();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('filename', $data) && null !== $data['filename']) {
             $object->setFilename($data['filename']);
             unset($data['filename']);
         } elseif (\array_key_exists('filename', $data) && null === $data['filename']) {
             $object->setFilename(null);
+            unset($data['filename']);
         }
         if (\array_key_exists('size', $data) && null !== $data['size']) {
             $object->setSize($data['size']);
             unset($data['size']);
         } elseif (\array_key_exists('size', $data) && null === $data['size']) {
             $object->setSize(null);
+            unset($data['size']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,7 +80,7 @@ class NewAttachmentDeclarationNormalizer implements DenormalizerInterface, Norma
         $dataArray = [];
         $dataArray['filename'] = $data->getFilename();
         $dataArray['size'] = $data->getSize();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

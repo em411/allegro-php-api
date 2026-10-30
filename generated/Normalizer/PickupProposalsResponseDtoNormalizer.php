@@ -42,15 +42,15 @@ class PickupProposalsResponseDtoNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PickupProposalsResponseDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PickupProposalsResponseDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('proposals', $data) && null !== $data['proposals']) {
             $values = [];
@@ -61,12 +61,14 @@ class PickupProposalsResponseDtoNormalizer implements DenormalizerInterface, Nor
             unset($data['proposals']);
         } elseif (\array_key_exists('proposals', $data) && null === $data['proposals']) {
             $object->setProposals(null);
+            unset($data['proposals']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\PickupAddressDto::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,14 +85,14 @@ class PickupProposalsResponseDtoNormalizer implements DenormalizerInterface, Nor
         if ($data->isInitialized('proposals') && null !== $data->getProposals()) {
             $values = [];
             foreach ($data->getProposals() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['proposals'] = $values;
         }
         if ($data->isInitialized('address') && null !== $data->getAddress()) {
-            $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+            $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

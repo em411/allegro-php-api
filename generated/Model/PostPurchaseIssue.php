@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PostPurchaseIssue extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PostPurchaseIssue implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -426,5 +430,10 @@ class PostPurchaseIssue extends \ArrayObject
         $this->attachments = $attachments;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'type' => ['type', 'getType', 'setType'], 'referenceNumber' => ['referenceNumber', 'getReferenceNumber', 'setReferenceNumber'], 'decisionDueDate' => ['decisionDueDate', 'getDecisionDueDate', 'setDecisionDueDate'], 'openedDate' => ['openedDate', 'getOpenedDate', 'setOpenedDate'], 'subject' => ['subject', 'getSubject', 'setSubject'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'checkoutForm' => ['checkoutForm', 'getCheckoutForm', 'setCheckoutForm'], 'currentState' => ['currentState', 'getCurrentState', 'setCurrentState'], 'chat' => ['chat', 'getChat', 'setChat'], 'expectations' => ['expectations', 'getExpectations', 'setExpectations'], 'description' => ['description', 'getDescription', 'setDescription'], 'offer' => ['offer', 'getOffer', 'setOffer'], 'product' => ['product', 'getProduct', 'setProduct'], 'reason' => ['reason', 'getReason', 'setReason'], 'right' => ['right', 'getRight', 'setRight'], 'attachments' => ['attachments', 'getAttachments', 'setAttachments']];
     }
 }

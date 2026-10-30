@@ -42,39 +42,43 @@ class AdditionalMarketplacesResponseItemSellingModeNormalizer implements Denorma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AdditionalMarketplacesResponseItemSellingMode();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AdditionalMarketplacesResponseItemSellingMode();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('format', $data) && null !== $data['format']) {
             $object->setFormat($data['format']);
             unset($data['format']);
         } elseif (\array_key_exists('format', $data) && null === $data['format']) {
             $object->setFormat(null);
+            unset($data['format']);
         }
         if (\array_key_exists('price', $data) && null !== $data['price']) {
             $object->setPrice($this->denormalizer->denormalize($data['price'], \Em411\Allegro\Api\Model\BuyNowPrice::class, 'json', $context));
             unset($data['price']);
         } elseif (\array_key_exists('price', $data) && null === $data['price']) {
             $object->setPrice(null);
+            unset($data['price']);
         }
         if (\array_key_exists('minimalPrice', $data) && null !== $data['minimalPrice']) {
             $object->setMinimalPrice($data['minimalPrice']);
             unset($data['minimalPrice']);
         } elseif (\array_key_exists('minimalPrice', $data) && null === $data['minimalPrice']) {
             $object->setMinimalPrice(null);
+            unset($data['minimalPrice']);
         }
         if (\array_key_exists('startingPrice', $data) && null !== $data['startingPrice']) {
             $object->setStartingPrice($data['startingPrice']);
             unset($data['startingPrice']);
         } elseif (\array_key_exists('startingPrice', $data) && null === $data['startingPrice']) {
             $object->setStartingPrice(null);
+            unset($data['startingPrice']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -92,15 +96,15 @@ class AdditionalMarketplacesResponseItemSellingModeNormalizer implements Denorma
             $dataArray['format'] = $data->getFormat();
         }
         if ($data->isInitialized('price') && null !== $data->getPrice()) {
-            $dataArray['price'] = $this->normalizer->normalize($data->getPrice(), 'json', $context);
+            $dataArray['price'] = null === $data->getPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPrice(), 'json', $context));
         }
-        if ($data->isInitialized('minimalPrice')) {
+        if ($data->isInitialized('minimalPrice') && null !== $data->getMinimalPrice()) {
             $dataArray['minimalPrice'] = $data->getMinimalPrice();
         }
-        if ($data->isInitialized('startingPrice')) {
+        if ($data->isInitialized('startingPrice') && null !== $data->getStartingPrice()) {
             $dataArray['startingPrice'] = $data->getStartingPrice();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

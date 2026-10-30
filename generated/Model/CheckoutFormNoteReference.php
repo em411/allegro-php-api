@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormNoteReference extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormNoteReference implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class CheckoutFormNoteReference extends \ArrayObject
         $this->text = $text;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['text' => ['text', 'getText', 'setText']];
     }
 }

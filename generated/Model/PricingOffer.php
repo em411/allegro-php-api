@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PricingOffer extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PricingOffer implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -164,5 +168,10 @@ class PricingOffer extends \ArrayObject
         $this->sellingMode = $sellingMode;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['fundraisingCampaign' => ['fundraisingCampaign', 'getFundraisingCampaign', 'setFundraisingCampaign'], 'id' => ['id', 'getId', 'setId'], 'category' => ['category', 'getCategory', 'setCategory'], 'parameters' => ['parameters', 'getParameters', 'setParameters'], 'promotion' => ['promotion', 'getPromotion', 'setPromotion'], 'publication' => ['publication', 'getPublication', 'setPublication'], 'sellingMode' => ['sellingMode', 'getSellingMode', 'setSellingMode']];
     }
 }

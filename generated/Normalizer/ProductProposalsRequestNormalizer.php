@@ -42,24 +42,25 @@ class ProductProposalsRequestNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductProposalsRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductProposalsRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('category', $data) && null !== $data['category']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['category'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -67,6 +68,7 @@ class ProductProposalsRequestNormalizer implements DenormalizerInterface, Normal
             unset($data['category']);
         } elseif (\array_key_exists('category', $data) && null === $data['category']) {
             $object->setCategory(null);
+            unset($data['category']);
         }
         if (\array_key_exists('images', $data) && null !== $data['images']) {
             $values_1 = [];
@@ -77,6 +79,7 @@ class ProductProposalsRequestNormalizer implements DenormalizerInterface, Normal
             unset($data['images']);
         } elseif (\array_key_exists('images', $data) && null === $data['images']) {
             $object->setImages(null);
+            unset($data['images']);
         }
         if (\array_key_exists('parameters', $data) && null !== $data['parameters']) {
             $values_2 = [];
@@ -87,18 +90,21 @@ class ProductProposalsRequestNormalizer implements DenormalizerInterface, Normal
             unset($data['parameters']);
         } elseif (\array_key_exists('parameters', $data) && null === $data['parameters']) {
             $object->setParameters(null);
+            unset($data['parameters']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($this->denormalizer->denormalize($data['description'], \Em411\Allegro\Api\Model\StandardizedDescription::class, 'json', $context));
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('language', $data) && null !== $data['language']) {
             $object->setLanguage($data['language']);
             unset($data['language']);
         } elseif (\array_key_exists('language', $data) && null === $data['language']) {
             $object->setLanguage(null);
+            unset($data['language']);
         }
         foreach ($data as $key_1 => $value_3) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -113,26 +119,26 @@ class ProductProposalsRequestNormalizer implements DenormalizerInterface, Normal
     {
         $dataArray = [];
         $dataArray['name'] = $data->getName();
-        $values = [];
+        $values = new \Em411\Allegro\Api\Runtime\JsonObject();
         foreach ($data->getCategory() as $key => $value) {
             $values[$key] = $value;
         }
         $dataArray['category'] = $values;
         $values_1 = [];
         foreach ($data->getImages() as $value_1) {
-            $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
         }
         $dataArray['images'] = $values_1;
         $values_2 = [];
         foreach ($data->getParameters() as $value_2) {
-            $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+            $values_2[] = null === $value_2 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
         }
         $dataArray['parameters'] = $values_2;
         if ($data->isInitialized('description') && null !== $data->getDescription()) {
-            $dataArray['description'] = $this->normalizer->normalize($data->getDescription(), 'json', $context);
+            $dataArray['description'] = null === $data->getDescription() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDescription(), 'json', $context));
         }
         $dataArray['language'] = $data->getLanguage();
-        foreach ($data as $key_1 => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_3) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_3;
             }

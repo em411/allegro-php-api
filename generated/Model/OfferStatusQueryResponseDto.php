@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferStatusQueryResponseDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferStatusQueryResponseDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class OfferStatusQueryResponseDto extends \ArrayObject
         $this->count = $count;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['offers' => ['offers', 'getOffers', 'setOffers'], 'totalCount' => ['totalCount', 'getTotalCount', 'setTotalCount'], 'count' => ['count', 'getCount', 'setCount']];
     }
 }

@@ -42,6 +42,16 @@ class ShippingNormalizer implements DenormalizerInterface, NormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
+        $object = new \Em411\Allegro\Api\Model\Shipping();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
+        }
         if (\array_key_exists('method', $data) && 'OWN_TRANSPORT' === $data['method']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\OwnTransportShipping', $format, $context);
         }
@@ -51,21 +61,12 @@ class ShippingNormalizer implements DenormalizerInterface, NormalizerInterface, 
         if (\array_key_exists('method', $data) && 'THIRD_PARTY_DELIVERY' === $data['method']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\ThirdPartyDeliveryShipping', $format, $context);
         }
-        if (isset($data['$ref'])) {
-            return new Reference($data['$ref'], $context['document-origin']);
-        }
-        if (isset($data['$recursiveRef'])) {
-            return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Shipping();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('method', $data) && null !== $data['method']) {
             $object->setMethod($data['method']);
             unset($data['method']);
         } elseif (\array_key_exists('method', $data) && null === $data['method']) {
             $object->setMethod(null);
+            unset($data['method']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,7 +90,7 @@ class ShippingNormalizer implements DenormalizerInterface, NormalizerInterface, 
             return $this->normalizer->normalize($data, $format, $context);
         }
         $dataArray['method'] = $data->getMethod();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,39 +42,43 @@ class ShippingRatesSetNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ShippingRatesSet();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ShippingRatesSet();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('dispatchCountry', $data) && null !== $data['dispatchCountry']) {
             $object->setDispatchCountry($data['dispatchCountry']);
             unset($data['dispatchCountry']);
         } elseif (\array_key_exists('dispatchCountry', $data) && null === $data['dispatchCountry']) {
             $object->setDispatchCountry(null);
+            unset($data['dispatchCountry']);
         }
         if (\array_key_exists('rates', $data) && null !== $data['rates']) {
             $values = [];
@@ -85,12 +89,14 @@ class ShippingRatesSetNormalizer implements DenormalizerInterface, NormalizerInt
             unset($data['rates']);
         } elseif (\array_key_exists('rates', $data) && null === $data['rates']) {
             $object->setRates(null);
+            unset($data['rates']);
         }
         if (\array_key_exists('lastModified', $data) && null !== $data['lastModified']) {
             $object->setLastModified($data['lastModified']);
             unset($data['lastModified']);
         } elseif (\array_key_exists('lastModified', $data) && null === $data['lastModified']) {
             $object->setLastModified(null);
+            unset($data['lastModified']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -109,18 +115,18 @@ class ShippingRatesSetNormalizer implements DenormalizerInterface, NormalizerInt
         }
         $dataArray['name'] = $data->getName();
         $dataArray['type'] = $data->getType();
-        if ($data->isInitialized('dispatchCountry')) {
+        if ($data->isInitialized('dispatchCountry') && null !== $data->getDispatchCountry()) {
             $dataArray['dispatchCountry'] = $data->getDispatchCountry();
         }
         $values = [];
         foreach ($data->getRates() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['rates'] = $values;
         if ($data->isInitialized('lastModified') && null !== $data->getLastModified()) {
             $dataArray['lastModified'] = $data->getLastModified();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

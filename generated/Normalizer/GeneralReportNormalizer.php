@@ -42,39 +42,67 @@ class GeneralReportNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\GeneralReport();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\GeneralReport();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
-            $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']);
+            if (false === $date) {
+                if (\is_string($data['createdAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['createdAt'])) {
+                    try {
+                        $date = new \DateTime($data['createdAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setCreatedAt($date);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('completedAt', $data) && null !== $data['completedAt']) {
-            $object->setCompletedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['completedAt']));
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['completedAt']);
+            if (false === $date_1) {
+                if (\is_string($data['completedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['completedAt'])) {
+                    try {
+                        $date_1 = new \DateTime($data['completedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['completedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['completedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setCompletedAt($date_1);
             unset($data['completedAt']);
         } elseif (\array_key_exists('completedAt', $data) && null === $data['completedAt']) {
             $object->setCompletedAt(null);
+            unset($data['completedAt']);
         }
         if (\array_key_exists('taskCount', $data) && null !== $data['taskCount']) {
             $object->setTaskCount($this->denormalizer->denormalize($data['taskCount'], \Em411\Allegro\Api\Model\TaskCount::class, 'json', $context));
             unset($data['taskCount']);
         } elseif (\array_key_exists('taskCount', $data) && null === $data['taskCount']) {
             $object->setTaskCount(null);
+            unset($data['taskCount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -94,13 +122,13 @@ class GeneralReportNormalizer implements DenormalizerInterface, NormalizerInterf
         if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
             $dataArray['createdAt'] = $data->getCreatedAt()->format('Y-m-d\TH:i:sP');
         }
-        if ($data->isInitialized('completedAt')) {
+        if ($data->isInitialized('completedAt') && null !== $data->getCompletedAt()) {
             $dataArray['completedAt'] = $data->getCompletedAt()?->format('Y-m-d\TH:i:sP');
         }
         if ($data->isInitialized('taskCount') && null !== $data->getTaskCount()) {
-            $dataArray['taskCount'] = $this->normalizer->normalize($data->getTaskCount(), 'json', $context);
+            $dataArray['taskCount'] = null === $data->getTaskCount() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTaskCount(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

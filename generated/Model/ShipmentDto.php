@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ShipmentDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ShipmentDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -440,5 +444,10 @@ class ShipmentDto extends \ArrayObject
         $this->pickupAvailable = $pickupAvailable;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'deliveryMethodId' => ['deliveryMethodId', 'getDeliveryMethodId', 'setDeliveryMethodId'], 'credentialsId' => ['credentialsId', 'getCredentialsId', 'setCredentialsId'], 'sender' => ['sender', 'getSender', 'setSender'], 'receiver' => ['receiver', 'getReceiver', 'setReceiver'], 'referenceNumber' => ['referenceNumber', 'getReferenceNumber', 'setReferenceNumber'], 'packages' => ['packages', 'getPackages', 'setPackages'], 'insurance' => ['insurance', 'getInsurance', 'setInsurance'], 'cashOnDelivery' => ['cashOnDelivery', 'getCashOnDelivery', 'setCashOnDelivery'], 'createdDate' => ['createdDate', 'getCreatedDate', 'setCreatedDate'], 'canceledDate' => ['canceledDate', 'getCanceledDate', 'setCanceledDate'], 'carrier' => ['carrier', 'getCarrier', 'setCarrier'], 'labelFormat' => ['labelFormat', 'getLabelFormat', 'setLabelFormat'], 'additionalServices' => ['additionalServices', 'getAdditionalServices', 'setAdditionalServices'], 'additionalProperties' => ['additionalProperties', 'getAdditionalProperties', 'setAdditionalProperties'], 'transport' => ['transport', 'getTransport', 'setTransport'], 'pickupAvailable' => ['pickupAvailable', 'getPickupAvailable', 'setPickupAvailable']];
     }
 }

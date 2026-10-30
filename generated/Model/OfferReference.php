@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferReference extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferReference implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -140,5 +144,10 @@ class OfferReference extends \ArrayObject
         $this->hsNumber = $hsNumber;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'external' => ['external', 'getExternal', 'setExternal'], 'productSet' => ['productSet', 'getProductSet', 'setProductSet'], 'hsNumber' => ['hsNumber', 'getHsNumber', 'setHsNumber']];
     }
 }

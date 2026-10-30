@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormsOrderInvoiceFile extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormsOrderInvoiceFile implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -99,5 +103,10 @@ class CheckoutFormsOrderInvoiceFile extends \ArrayObject
         $this->verification = $verification;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['name', 'getName', 'setName'], 'uploadedAt' => ['uploadedAt', 'getUploadedAt', 'setUploadedAt'], 'securityVerification' => ['securityVerification', 'getSecurityVerification', 'setSecurityVerification'], 'verification' => ['verification', 'getVerification', 'setVerification']];
     }
 }

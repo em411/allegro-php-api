@@ -22,21 +22,17 @@ class ListMessagesGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
     /**
      * Use this resource to list messages in thread with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#lista-wiadomosci-dla-wybranego-watku" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#list-of-the-messages-for-the-particular-thread" target="_blank">EN</a>.
      *
-     * @param string $threadId        identifier of thread to get messages from
-     * @param array  $queryParameters {
-     *
-     * @var int    $limit the maximum number of messages returned in the response
-     * @var int    $offset Index of the first returned message from all results. Available only for content version 'application/vnd.allegro.public.v1+json'.
-     * @var string $before Message creation date before filter parameter (exclusive) - cannot be used with offset. Available only for content version 'application/vnd.allegro.public.v1+json'.
-     * @var string $after Message creation date after filter parameter (exclusive). Available only for content version 'application/vnd.allegro.public.v1+json'.
-     * @var string $page.id ID of the page of messages to retrieve. Available only for content version 'application/vnd.allegro.beta.v1+json'.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $threadId identifier of thread to get messages from
+     * @param array{
+     *    "limit"?: int, //The maximum number of messages returned in the response.
+     *    "offset"?: int, //Index of the first returned message from all results. Available only for content version 'application/vnd.allegro.public.v1+json'.
+     *    "before"?: string, //Message creation date before filter parameter (exclusive) - cannot be used with offset. Available only for content version 'application/vnd.allegro.public.v1+json'.
+     *    "after"?: string, //Message creation date after filter parameter (exclusive). Available only for content version 'application/vnd.allegro.public.v1+json'.
+     *    "page.id"?: string, //ID of the page of messages to retrieve. Available only for content version 'application/vnd.allegro.beta.v1+json'.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
     public function __construct(string $threadId, array $queryParameters = [], array $headerParameters = [], array $accept = [])
@@ -54,7 +50,7 @@ class ListMessagesGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
 
     public function getUri(): string
     {
-        return str_replace(['{threadId}'], [$this->threadId], '/messaging/threads/{threadId}/messages');
+        return str_replace(['{threadId}'], [rawurlencode($this->threadId)], '/messaging/threads/{threadId}/messages');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -115,10 +111,10 @@ class ListMessagesGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
                 return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessagesList', 'json');
             }
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
                 return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessagesListVBeta1', 'json');
             }
         }

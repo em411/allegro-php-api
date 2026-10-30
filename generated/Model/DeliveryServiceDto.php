@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
 /**
  * @deprecated
  */
-class DeliveryServiceDto extends \ArrayObject
+class DeliveryServiceDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -285,5 +289,10 @@ class DeliveryServiceDto extends \ArrayObject
         $this->features = $features;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'carrierId' => ['carrierId', 'getCarrierId', 'setCarrierId'], 'additionalServices' => ['additionalServices', 'getAdditionalServices', 'setAdditionalServices'], 'additionalProperties' => ['additionalProperties', 'getAdditionalProperties', 'setAdditionalProperties'], 'owner' => ['owner', 'getOwner', 'setOwner'], 'marketplaces' => ['marketplaces', 'getMarketplaces', 'setMarketplaces'], 'packageTypes' => ['packageTypes', 'getPackageTypes', 'setPackageTypes'], 'cashOnDelivery' => ['cashOnDelivery', 'getCashOnDelivery', 'setCashOnDelivery'], 'insurance' => ['insurance', 'getInsurance', 'setInsurance'], 'features' => ['features', 'getFeatures', 'setFeatures']];
     }
 }

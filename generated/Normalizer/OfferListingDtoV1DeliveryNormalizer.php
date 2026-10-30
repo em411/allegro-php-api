@@ -42,21 +42,22 @@ class OfferListingDtoV1DeliveryNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1Delivery();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1Delivery();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('shippingRates', $data) && null !== $data['shippingRates']) {
             $object->setShippingRates($this->denormalizer->denormalize($data['shippingRates'], \Em411\Allegro\Api\Model\ShippingRates::class, 'json', $context));
             unset($data['shippingRates']);
         } elseif (\array_key_exists('shippingRates', $data) && null === $data['shippingRates']) {
             $object->setShippingRates(null);
+            unset($data['shippingRates']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,9 +72,9 @@ class OfferListingDtoV1DeliveryNormalizer implements DenormalizerInterface, Norm
     {
         $dataArray = [];
         if ($data->isInitialized('shippingRates') && null !== $data->getShippingRates()) {
-            $dataArray['shippingRates'] = $this->normalizer->normalize($data->getShippingRates(), 'json', $context);
+            $dataArray['shippingRates'] = null === $data->getShippingRates() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getShippingRates(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

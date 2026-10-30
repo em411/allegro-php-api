@@ -78,4 +78,9 @@ class CompatibilityListProductBased extends CompatibilityList
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['id' => ['id', 'getId', 'setId'], 'items' => ['items', 'getItems', 'setItems']]);
+    }
 }

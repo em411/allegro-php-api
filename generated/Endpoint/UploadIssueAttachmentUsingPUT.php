@@ -23,12 +23,11 @@ class UploadIssueAttachmentUsingPUT extends \Em411\Allegro\Api\Runtime\Client\Ba
      * This operation should be used after creating an attachment declaration with *POST /sale/issues/attachments*
      * **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /sale/issues/attachments*. The URL is unique and one-time. As its format may change in time, you should always use the address from the header. Do not compose the address on your own. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#dodanie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#adding-an-attachment" target="_blank">EN</a>.
      *
-     * @param string                                                 $attachmentId     attachment identifier
+     * @param string                                                 $attachmentId attachment identifier
      * @param string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $attachmentId, $requestBody = null, array $headerParameters = [])
     {
@@ -44,7 +43,7 @@ class UploadIssueAttachmentUsingPUT extends \Em411\Allegro\Api\Runtime\Client\Ba
 
     public function getUri(): string
     {
-        return str_replace(['{attachmentId}'], [$this->attachmentId], '/sale/issues/attachments/{attachmentId}');
+        return str_replace(['{attachmentId}'], [rawurlencode($this->attachmentId)], '/sale/issues/attachments/{attachmentId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -105,7 +104,7 @@ class UploadIssueAttachmentUsingPUT extends \Em411\Allegro\Api\Runtime\Client\Ba
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId', 'json');
         }
         if (400 === $status) {

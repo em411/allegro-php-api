@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductSafetyInformationDescription extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductSafetyInformationDescription implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -90,5 +94,10 @@ class ProductSafetyInformationDescription extends \ArrayObject
         $this->type = $type;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'translation' => ['translation', 'getTranslation', 'setTranslation'], 'type' => ['type', 'getType', 'setType']];
     }
 }

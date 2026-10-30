@@ -22,12 +22,10 @@ class DeleteTagUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     /**
      * Use this resource to delete the tag. Read more: <a href="../../news/nowe-zasoby-zarzadzaj-tagami-i-zalacznikami-w-ofertach-1nzlmKLPyHl" target="_blank">PL</a> / <a href="../../news/new-resources-manage-tags-and-attachments-in-offers-WvGz12BXrHL" target="_blank">EN</a>.
      *
-     * @param string $tagId            tag identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $tagId tag identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header *\/*|application/vnd.allegro.public.v1+json
      */
     public function __construct(string $tagId, array $headerParameters = [], array $accept = [])
@@ -44,7 +42,7 @@ class DeleteTagUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
 
     public function getUri(): string
     {
-        return str_replace(['{tagId}'], [$this->tagId], '/sale/offer-tags/{tagId}');
+        return str_replace(['{tagId}'], [rawurlencode($this->tagId)], '/sale/offer-tags/{tagId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -90,10 +88,10 @@ class DeleteTagUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
         }
         if (404 === $status) {
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeleteTagUsingDELETEUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (403 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeleteTagUsingDELETEForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

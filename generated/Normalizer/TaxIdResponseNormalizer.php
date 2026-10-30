@@ -42,27 +42,29 @@ class TaxIdResponseNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\TaxIdResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\TaxIdResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('taxId', $data) && null !== $data['taxId']) {
             $object->setTaxId($data['taxId']);
             unset($data['taxId']);
         } elseif (\array_key_exists('taxId', $data) && null === $data['taxId']) {
             $object->setTaxId(null);
+            unset($data['taxId']);
         }
         if (\array_key_exists('verificationStatus', $data) && null !== $data['verificationStatus']) {
             $object->setVerificationStatus($data['verificationStatus']);
             unset($data['verificationStatus']);
         } elseif (\array_key_exists('verificationStatus', $data) && null === $data['verificationStatus']) {
             $object->setVerificationStatus(null);
+            unset($data['verificationStatus']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +84,7 @@ class TaxIdResponseNormalizer implements DenormalizerInterface, NormalizerInterf
         if ($data->isInitialized('verificationStatus') && null !== $data->getVerificationStatus()) {
             $dataArray['verificationStatus'] = $data->getVerificationStatus();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

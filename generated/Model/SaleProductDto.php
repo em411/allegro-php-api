@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleProductDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleProductDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -357,5 +361,10 @@ class SaleProductDto extends \ArrayObject
         $this->productSafety = $productSafety;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'category' => ['category', 'getCategory', 'setCategory'], 'images' => ['images', 'getImages', 'setImages'], 'parameters' => ['parameters', 'getParameters', 'setParameters'], 'offerRequirements' => ['offerRequirements', 'getOfferRequirements', 'setOfferRequirements'], 'compatibilityList' => ['compatibilityList', 'getCompatibilityList', 'setCompatibilityList'], 'tecdocSpecification' => ['tecdocSpecification', 'getTecdocSpecification', 'setTecdocSpecification'], 'description' => ['description', 'getDescription', 'setDescription'], 'aiCoCreatedContent' => ['aiCoCreatedContent', 'getAiCoCreatedContent', 'setAiCoCreatedContent'], 'trustedContent' => ['trustedContent', 'getTrustedContent', 'setTrustedContent'], 'hasProtectedBrand' => ['hasProtectedBrand', 'getHasProtectedBrand', 'setHasProtectedBrand'], 'publication' => ['publication', 'getPublication', 'setPublication'], 'productSafety' => ['productSafety', 'getProductSafety', 'setProductSafety']];
     }
 }

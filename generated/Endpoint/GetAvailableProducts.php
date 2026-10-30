@@ -21,17 +21,13 @@ class GetAvailableProducts extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     /**
      * Use this resource to get a list of products that can be added to Advance Ship Notice. The list contains products for which the seller has created offers and is ordered by product's name. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#sprawdz-dostepne-produkty-do-awizacji" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#check-available-products-for-asn" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $offset the offset of elements in the response
-     * @var int $limit Maximum number of elements in response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //Maximum number of elements in response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [], array $accept = [])
@@ -104,7 +100,7 @@ class GetAvailableProducts extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AvailableProductsList', 'json');
         }
         if (401 === $status) {
@@ -113,7 +109,7 @@ class GetAvailableProducts extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
         if (403 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetAvailableProductsForbiddenException($response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\GetAvailableProductsUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

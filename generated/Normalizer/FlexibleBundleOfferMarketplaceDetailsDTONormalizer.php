@@ -42,27 +42,29 @@ class FlexibleBundleOfferMarketplaceDetailsDTONormalizer implements Denormalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FlexibleBundleOfferMarketplaceDetailsDTO();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FlexibleBundleOfferMarketplaceDetailsDTO();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('availability', $data) && null !== $data['availability']) {
             $object->setAvailability($this->denormalizer->denormalize($data['availability'], \Em411\Allegro\Api\Model\FlexibleBundleOfferMarketplaceDetailsDTOAvailability::class, 'json', $context));
             unset($data['availability']);
         } elseif (\array_key_exists('availability', $data) && null === $data['availability']) {
             $object->setAvailability(null);
+            unset($data['availability']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,8 +79,8 @@ class FlexibleBundleOfferMarketplaceDetailsDTONormalizer implements Denormalizer
     {
         $dataArray = [];
         $dataArray['id'] = $data->getId();
-        $dataArray['availability'] = $this->normalizer->normalize($data->getAvailability(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['availability'] = null === $data->getAvailability() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAvailability(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

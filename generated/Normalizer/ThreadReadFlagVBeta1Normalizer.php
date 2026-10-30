@@ -42,24 +42,25 @@ class ThreadReadFlagVBeta1Normalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ThreadReadFlagVBeta1();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ThreadReadFlagVBeta1();
         if (\array_key_exists('read', $data) && \is_int($data['read'])) {
             $data['read'] = (bool) $data['read'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('read', $data) && null !== $data['read']) {
             $object->setRead($data['read']);
             unset($data['read']);
         } elseif (\array_key_exists('read', $data) && null === $data['read']) {
             $object->setRead(null);
+            unset($data['read']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -74,7 +75,7 @@ class ThreadReadFlagVBeta1Normalizer implements DenormalizerInterface, Normalize
     {
         $dataArray = [];
         $dataArray['read'] = $data->getRead();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

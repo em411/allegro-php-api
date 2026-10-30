@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FormerCategoryParameterData extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FormerCategoryParameterData implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -81,5 +85,10 @@ class FormerCategoryParameterData extends \ArrayObject
         $this->names = $names;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['ids' => ['ids', 'getIds', 'setIds'], 'names' => ['names', 'getNames', 'setNames']];
     }
 }

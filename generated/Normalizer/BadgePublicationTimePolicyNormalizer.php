@@ -42,33 +42,36 @@ class BadgePublicationTimePolicyNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BadgePublicationTimePolicy();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BadgePublicationTimePolicy();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('from', $data) && null !== $data['from']) {
             $object->setFrom($data['from']);
             unset($data['from']);
         } elseif (\array_key_exists('from', $data) && null === $data['from']) {
             $object->setFrom(null);
+            unset($data['from']);
         }
         if (\array_key_exists('to', $data) && null !== $data['to']) {
             $object->setTo($data['to']);
             unset($data['to']);
         } elseif (\array_key_exists('to', $data) && null === $data['to']) {
             $object->setTo(null);
+            unset($data['to']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,10 +89,10 @@ class BadgePublicationTimePolicyNormalizer implements DenormalizerInterface, Nor
         if ($data->isInitialized('from') && null !== $data->getFrom()) {
             $dataArray['from'] = $data->getFrom();
         }
-        if ($data->isInitialized('to')) {
+        if ($data->isInitialized('to') && null !== $data->getTo()) {
             $dataArray['to'] = $data->getTo();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

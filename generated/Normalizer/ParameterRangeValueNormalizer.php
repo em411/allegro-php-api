@@ -42,27 +42,29 @@ class ParameterRangeValueNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ParameterRangeValue();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ParameterRangeValue();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('from', $data) && null !== $data['from']) {
             $object->setFrom($data['from']);
             unset($data['from']);
         } elseif (\array_key_exists('from', $data) && null === $data['from']) {
             $object->setFrom(null);
+            unset($data['from']);
         }
         if (\array_key_exists('to', $data) && null !== $data['to']) {
             $object->setTo($data['to']);
             unset($data['to']);
         } elseif (\array_key_exists('to', $data) && null === $data['to']) {
             $object->setTo(null);
+            unset($data['to']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,7 +80,7 @@ class ParameterRangeValueNormalizer implements DenormalizerInterface, Normalizer
         $dataArray = [];
         $dataArray['from'] = $data->getFrom();
         $dataArray['to'] = $data->getTo();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

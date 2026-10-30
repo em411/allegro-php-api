@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DeliveryProposalDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DeliveryProposalDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -80,5 +84,10 @@ class DeliveryProposalDto extends \ArrayObject
         $this->deliveryOptions = $deliveryOptions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['orderId' => ['orderId', 'getOrderId', 'setOrderId'], 'suggestedInput' => ['suggestedInput', 'getSuggestedInput', 'setSuggestedInput'], 'deliveryOptions' => ['deliveryOptions', 'getDeliveryOptions', 'setDeliveryOptions']];
     }
 }

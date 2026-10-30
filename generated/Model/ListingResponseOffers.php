@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ListingResponseOffers extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ListingResponseOffers implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -81,5 +85,10 @@ class ListingResponseOffers extends \ArrayObject
         $this->regular = $regular;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['promoted' => ['promoted', 'getPromoted', 'setPromoted'], 'regular' => ['regular', 'getRegular', 'setRegular']];
     }
 }

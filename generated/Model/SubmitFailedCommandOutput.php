@@ -53,4 +53,9 @@ class SubmitFailedCommandOutput extends SubmitCommandOutput
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['errors' => ['errors', 'getErrors', 'setErrors']]);
+    }
 }

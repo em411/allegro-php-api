@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FulfillmentRefundDisposition extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FulfillmentRefundDisposition implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -249,5 +253,10 @@ class FulfillmentRefundDisposition extends \ArrayObject
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['type', 'getType', 'setType'], 'refund' => ['refund', 'getRefund', 'setRefund'], 'stockStatus' => ['stockStatus', 'getStockStatus', 'setStockStatus'], 'verificationStatus' => ['verificationStatus', 'getVerificationStatus', 'setVerificationStatus'], 'accountableForNonSellability' => ['accountableForNonSellability', 'getAccountableForNonSellability', 'setAccountableForNonSellability'], 'orderId' => ['orderId', 'getOrderId', 'setOrderId'], 'offerId' => ['offerId', 'getOfferId', 'setOfferId'], 'product' => ['product', 'getProduct', 'setProduct'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt']];
     }
 }

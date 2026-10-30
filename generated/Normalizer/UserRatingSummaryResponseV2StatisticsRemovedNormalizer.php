@@ -42,39 +42,43 @@ class UserRatingSummaryResponseV2StatisticsRemovedNormalizer implements Denormal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UserRatingSummaryResponseV2StatisticsRemoved();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\UserRatingSummaryResponseV2StatisticsRemoved();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('total', $data) && null !== $data['total']) {
             $object->setTotal($data['total']);
             unset($data['total']);
         } elseif (\array_key_exists('total', $data) && null === $data['total']) {
             $object->setTotal(null);
+            unset($data['total']);
         }
         if (\array_key_exists('byAdmin', $data) && null !== $data['byAdmin']) {
             $object->setByAdmin($data['byAdmin']);
             unset($data['byAdmin']);
         } elseif (\array_key_exists('byAdmin', $data) && null === $data['byAdmin']) {
             $object->setByAdmin(null);
+            unset($data['byAdmin']);
         }
         if (\array_key_exists('byBuyer', $data) && null !== $data['byBuyer']) {
             $object->setByBuyer($data['byBuyer']);
             unset($data['byBuyer']);
         } elseif (\array_key_exists('byBuyer', $data) && null === $data['byBuyer']) {
             $object->setByBuyer(null);
+            unset($data['byBuyer']);
         }
         if (\array_key_exists('byBuyerDueToCompensation', $data) && null !== $data['byBuyerDueToCompensation']) {
             $object->setByBuyerDueToCompensation($data['byBuyerDueToCompensation']);
             unset($data['byBuyerDueToCompensation']);
         } elseif (\array_key_exists('byBuyerDueToCompensation', $data) && null === $data['byBuyerDueToCompensation']) {
             $object->setByBuyerDueToCompensation(null);
+            unset($data['byBuyerDueToCompensation']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -92,7 +96,7 @@ class UserRatingSummaryResponseV2StatisticsRemovedNormalizer implements Denormal
         $dataArray['byAdmin'] = $data->getByAdmin();
         $dataArray['byBuyer'] = $data->getByBuyer();
         $dataArray['byBuyerDueToCompensation'] = $data->getByBuyerDueToCompensation();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

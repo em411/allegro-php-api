@@ -42,27 +42,29 @@ class ProductOfferBaseNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductOfferBase();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductOfferBase();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('idType', $data) && null !== $data['idType']) {
             $object->setIdType($data['idType']);
             unset($data['idType']);
         } elseif (\array_key_exists('idType', $data) && null === $data['idType']) {
             $object->setIdType(null);
+            unset($data['idType']);
         }
         if (\array_key_exists('parameters', $data) && null !== $data['parameters']) {
             $values = [];
@@ -73,6 +75,7 @@ class ProductOfferBaseNormalizer implements DenormalizerInterface, NormalizerInt
             unset($data['parameters']);
         } elseif (\array_key_exists('parameters', $data) && null === $data['parameters']) {
             $object->setParameters(null);
+            unset($data['parameters']);
         }
         if (\array_key_exists('images', $data) && null !== $data['images']) {
             $values_1 = [];
@@ -83,6 +86,7 @@ class ProductOfferBaseNormalizer implements DenormalizerInterface, NormalizerInt
             unset($data['images']);
         } elseif (\array_key_exists('images', $data) && null === $data['images']) {
             $object->setImages(null);
+            unset($data['images']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -105,7 +109,7 @@ class ProductOfferBaseNormalizer implements DenormalizerInterface, NormalizerInt
         if ($data->isInitialized('parameters') && null !== $data->getParameters()) {
             $values = [];
             foreach ($data->getParameters() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['parameters'] = $values;
         }
@@ -116,7 +120,7 @@ class ProductOfferBaseNormalizer implements DenormalizerInterface, NormalizerInt
             }
             $dataArray['images'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

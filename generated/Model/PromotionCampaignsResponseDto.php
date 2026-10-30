@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PromotionCampaignsResponseDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PromotionCampaignsResponseDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -63,5 +67,10 @@ class PromotionCampaignsResponseDto extends \ArrayObject
         $this->totalCount = $totalCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['promotionCampaigns' => ['promotionCampaigns', 'getPromotionCampaigns', 'setPromotionCampaigns'], 'totalCount' => ['totalCount', 'getTotalCount', 'setTotalCount']];
     }
 }

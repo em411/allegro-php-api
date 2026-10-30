@@ -42,27 +42,29 @@ class SubsidyOfferToExcludeNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SubsidyOfferToExclude();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SubsidyOfferToExclude();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('marketplace', $data) && null !== $data['marketplace']) {
             $object->setMarketplace($this->denormalizer->denormalize($data['marketplace'], \Em411\Allegro\Api\Model\SubsidyOfferToExcludeMarketplace::class, 'json', $context));
             unset($data['marketplace']);
         } elseif (\array_key_exists('marketplace', $data) && null === $data['marketplace']) {
             $object->setMarketplace(null);
+            unset($data['marketplace']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,8 +79,8 @@ class SubsidyOfferToExcludeNormalizer implements DenormalizerInterface, Normaliz
     {
         $dataArray = [];
         $dataArray['id'] = $data->getId();
-        $dataArray['marketplace'] = $this->normalizer->normalize($data->getMarketplace(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['marketplace'] = null === $data->getMarketplace() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMarketplace(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

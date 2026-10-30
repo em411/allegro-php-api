@@ -22,12 +22,10 @@ class GetAdditionalEmailUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseE
     /**
      * Use this resource to retrieve a single additional email. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-szczegolowe-informacje-o-adresie-e-mail" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-e-mail-details" target="_blank">EN</a>.
      *
-     * @param string $emailId          id of the additional email
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $emailId id of the additional email
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|*\/*
      */
     public function __construct(string $emailId, array $headerParameters = [], array $accept = [])
@@ -44,7 +42,7 @@ class GetAdditionalEmailUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseE
 
     public function getUri(): string
     {
-        return str_replace(['{emailId}'], [$this->emailId], '/account/additional-emails/{emailId}');
+        return str_replace(['{emailId}'], [rawurlencode($this->emailId)], '/account/additional-emails/{emailId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -86,10 +84,10 @@ class GetAdditionalEmailUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseE
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AdditionalEmail', 'json');
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetAdditionalEmailUsingGETUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
         if (404 === $status) {

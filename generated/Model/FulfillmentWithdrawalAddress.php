@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FulfillmentWithdrawalAddress extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FulfillmentWithdrawalAddress implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -198,5 +202,10 @@ class FulfillmentWithdrawalAddress extends \ArrayObject
         $this->additionalInfo = $additionalInfo;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['company' => ['company', 'getCompany', 'setCompany'], 'street' => ['street', 'getStreet', 'setStreet'], 'postalCode' => ['postalCode', 'getPostalCode', 'setPostalCode'], 'city' => ['city', 'getCity', 'setCity'], 'countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode'], 'phone' => ['phone', 'getPhone', 'setPhone'], 'additionalInfo' => ['additionalInfo', 'getAdditionalInfo', 'setAdditionalInfo']];
     }
 }

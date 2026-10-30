@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CashOnDeliveryLimitDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CashOnDeliveryLimitDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class CashOnDeliveryLimitDto extends \ArrayObject
         $this->forceRequireIban = $forceRequireIban;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['limit' => ['limit', 'getLimit', 'setLimit'], 'currency' => ['currency', 'getCurrency', 'setCurrency'], 'paymentType' => ['paymentType', 'getPaymentType', 'setPaymentType'], 'forceRequireIban' => ['forceRequireIban', 'getForceRequireIban', 'setForceRequireIban']];
     }
 }

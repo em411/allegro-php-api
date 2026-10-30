@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FlexibleBundleDiscountDTOBundle extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FlexibleBundleDiscountDTOBundle implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class FlexibleBundleDiscountDTOBundle extends \ArrayObject
         $this->discounts = $discounts;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['minimumBoughtOffers' => ['minimumBoughtOffers', 'getMinimumBoughtOffers', 'setMinimumBoughtOffers'], 'discounts' => ['discounts', 'getDiscounts', 'setDiscounts']];
     }
 }

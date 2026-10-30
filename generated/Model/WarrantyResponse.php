@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class WarrantyResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class WarrantyResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -191,5 +195,10 @@ class WarrantyResponse extends \ArrayObject
         $this->description = $description;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'seller' => ['seller', 'getSeller', 'setSeller'], 'name' => ['name', 'getName', 'setName'], 'type' => ['type', 'getType', 'setType'], 'individual' => ['individual', 'getIndividual', 'setIndividual'], 'corporate' => ['corporate', 'getCorporate', 'setCorporate'], 'attachment' => ['attachment', 'getAttachment', 'setAttachment'], 'description' => ['description', 'getDescription', 'setDescription']];
     }
 }

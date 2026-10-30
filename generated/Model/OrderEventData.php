@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OrderEventData extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OrderEventData implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -130,5 +134,10 @@ class OrderEventData extends \ArrayObject
         $this->marketplace = $marketplace;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['seller' => ['seller', 'getSeller', 'setSeller'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'lineItems' => ['lineItems', 'getLineItems', 'setLineItems'], 'checkoutForm' => ['checkoutForm', 'getCheckoutForm', 'setCheckoutForm'], 'marketplace' => ['marketplace', 'getMarketplace', 'setMarketplace']];
     }
 }

@@ -21,11 +21,10 @@ class GetAutomaticPricingRulesForOfferUsingGET extends \Em411\Allegro\Api\Runtim
     /**
      * Use this resource to get automatic pricing rules for offer. This resource is rate limited to 5 requests per second. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-sprawdzic-aktualnie-przypisane-reguly-przelicznika-cen-w-ofercie" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-check-price-automation-rules-currently-assigned-to-offer" target="_blank">EN</a>.
      *
-     * @param string $offerId          the offer identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $offerId the offer identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $offerId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetAutomaticPricingRulesForOfferUsingGET extends \Em411\Allegro\Api\Runtim
 
     public function getUri(): string
     {
-        return str_replace(['{offerId}'], [$this->offerId], '/sale/price-automation/offers/{offerId}/rules');
+        return str_replace(['{offerId}'], [rawurlencode($this->offerId)], '/sale/price-automation/offers/{offerId}/rules');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -80,7 +79,7 @@ class GetAutomaticPricingRulesForOfferUsingGET extends \Em411\Allegro\Api\Runtim
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\OfferRules', 'json');
         }
         if (401 === $status) {

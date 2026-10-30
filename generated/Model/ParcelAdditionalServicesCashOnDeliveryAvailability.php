@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ParcelAdditionalServicesCashOnDeliveryAvailability extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ParcelAdditionalServicesCashOnDeliveryAvailability implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class ParcelAdditionalServicesCashOnDeliveryAvailability extends \ArrayObject
         $this->expressAvailable = $expressAvailable;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['available' => ['available', 'getAvailable', 'setAvailable'], 'expressAvailable' => ['expressAvailable', 'getExpressAvailable', 'setExpressAvailable']];
     }
 }

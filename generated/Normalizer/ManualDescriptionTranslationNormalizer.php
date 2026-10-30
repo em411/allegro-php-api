@@ -42,21 +42,22 @@ class ManualDescriptionTranslationNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ManualDescriptionTranslation();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ManualDescriptionTranslation();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('translation', $data) && null !== $data['translation']) {
             $object->setTranslation($this->denormalizer->denormalize($data['translation'], \Em411\Allegro\Api\Model\StandardizedDescription::class, 'json', $context));
             unset($data['translation']);
         } elseif (\array_key_exists('translation', $data) && null === $data['translation']) {
             $object->setTranslation(null);
+            unset($data['translation']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,9 +72,9 @@ class ManualDescriptionTranslationNormalizer implements DenormalizerInterface, N
     {
         $dataArray = [];
         if ($data->isInitialized('translation') && null !== $data->getTranslation()) {
-            $dataArray['translation'] = $this->normalizer->normalize($data->getTranslation(), 'json', $context);
+            $dataArray['translation'] = null === $data->getTranslation() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTranslation(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

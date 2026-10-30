@@ -42,27 +42,29 @@ class SaleProductOfferStatusResponseNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SaleProductOfferStatusResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SaleProductOfferStatusResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('offer', $data) && null !== $data['offer']) {
             $object->setOffer($this->denormalizer->denormalize($data['offer'], \Em411\Allegro\Api\Model\OfferId::class, 'json', $context));
             unset($data['offer']);
         } elseif (\array_key_exists('offer', $data) && null === $data['offer']) {
             $object->setOffer(null);
+            unset($data['offer']);
         }
         if (\array_key_exists('operation', $data) && null !== $data['operation']) {
             $object->setOperation($this->denormalizer->denormalize($data['operation'], \Em411\Allegro\Api\Model\SaleProductOfferStatusResponseOperation::class, 'json', $context));
             unset($data['operation']);
         } elseif (\array_key_exists('operation', $data) && null === $data['operation']) {
             $object->setOperation(null);
+            unset($data['operation']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,12 +79,12 @@ class SaleProductOfferStatusResponseNormalizer implements DenormalizerInterface,
     {
         $dataArray = [];
         if ($data->isInitialized('offer') && null !== $data->getOffer()) {
-            $dataArray['offer'] = $this->normalizer->normalize($data->getOffer(), 'json', $context);
+            $dataArray['offer'] = null === $data->getOffer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOffer(), 'json', $context));
         }
         if ($data->isInitialized('operation') && null !== $data->getOperation()) {
-            $dataArray['operation'] = $this->normalizer->normalize($data->getOperation(), 'json', $context);
+            $dataArray['operation'] = null === $data->getOperation() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOperation(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

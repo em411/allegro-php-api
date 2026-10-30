@@ -42,33 +42,36 @@ class BundleDiscountDTONormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BundleDiscountDTO();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BundleDiscountDTO();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('marketplace', $data) && null !== $data['marketplace']) {
             $object->setMarketplace($this->denormalizer->denormalize($data['marketplace'], \Em411\Allegro\Api\Model\BundleMarketplaceDTO::class, 'json', $context));
             unset($data['marketplace']);
         } elseif (\array_key_exists('marketplace', $data) && null === $data['marketplace']) {
             $object->setMarketplace(null);
+            unset($data['marketplace']);
         }
         if (\array_key_exists('amount', $data) && null !== $data['amount']) {
             $object->setAmount($data['amount']);
             unset($data['amount']);
         } elseif (\array_key_exists('amount', $data) && null === $data['amount']) {
             $object->setAmount(null);
+            unset($data['amount']);
         }
         if (\array_key_exists('currency', $data) && null !== $data['currency']) {
             $object->setCurrency($data['currency']);
             unset($data['currency']);
         } elseif (\array_key_exists('currency', $data) && null === $data['currency']) {
             $object->setCurrency(null);
+            unset($data['currency']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,10 +85,10 @@ class BundleDiscountDTONormalizer implements DenormalizerInterface, NormalizerIn
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['marketplace'] = $this->normalizer->normalize($data->getMarketplace(), 'json', $context);
+        $dataArray['marketplace'] = null === $data->getMarketplace() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMarketplace(), 'json', $context));
         $dataArray['amount'] = $data->getAmount();
         $dataArray['currency'] = $data->getCurrency();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

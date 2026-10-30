@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class NewOrderBillingDocumentLink extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class NewOrderBillingDocumentLink implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -40,5 +44,10 @@ class NewOrderBillingDocumentLink extends \ArrayObject
         $this->url = $url;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['url' => ['url', 'getUrl', 'setUrl']];
     }
 }

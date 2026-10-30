@@ -42,33 +42,36 @@ class OrderOffersItemNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OrderOffersItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OrderOffersItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('title', $data) && null !== $data['title']) {
             $object->setTitle($data['title']);
             unset($data['title']);
         } elseif (\array_key_exists('title', $data) && null === $data['title']) {
             $object->setTitle(null);
+            unset($data['title']);
         }
         if (\array_key_exists('snapshot', $data) && null !== $data['snapshot']) {
             $object->setSnapshot($data['snapshot']);
             unset($data['snapshot']);
         } elseif (\array_key_exists('snapshot', $data) && null === $data['snapshot']) {
             $object->setSnapshot(null);
+            unset($data['snapshot']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -87,7 +90,7 @@ class OrderOffersItemNormalizer implements DenormalizerInterface, NormalizerInte
         if ($data->isInitialized('snapshot') && null !== $data->getSnapshot()) {
             $dataArray['snapshot'] = $data->getSnapshot();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

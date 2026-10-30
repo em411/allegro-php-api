@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CustomerReturnRejection extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CustomerReturnRejection implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -90,5 +94,10 @@ class CustomerReturnRejection extends \ArrayObject
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['code' => ['code', 'getCode', 'setCode'], 'reason' => ['reason', 'getReason', 'setReason'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt']];
     }
 }

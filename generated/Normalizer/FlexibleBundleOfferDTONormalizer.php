@@ -42,30 +42,32 @@ class FlexibleBundleOfferDTONormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FlexibleBundleOfferDTO();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\FlexibleBundleOfferDTO();
         if (\array_key_exists('excludedFromDiscount', $data) && \is_int($data['excludedFromDiscount'])) {
             $data['excludedFromDiscount'] = (bool) $data['excludedFromDiscount'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('excludedFromDiscount', $data) && null !== $data['excludedFromDiscount']) {
             $object->setExcludedFromDiscount($data['excludedFromDiscount']);
             unset($data['excludedFromDiscount']);
         } elseif (\array_key_exists('excludedFromDiscount', $data) && null === $data['excludedFromDiscount']) {
             $object->setExcludedFromDiscount(null);
+            unset($data['excludedFromDiscount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -81,7 +83,7 @@ class FlexibleBundleOfferDTONormalizer implements DenormalizerInterface, Normali
         $dataArray = [];
         $dataArray['id'] = $data->getId();
         $dataArray['excludedFromDiscount'] = $data->getExcludedFromDiscount();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

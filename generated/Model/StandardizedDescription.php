@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class StandardizedDescription extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class StandardizedDescription implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class StandardizedDescription extends \ArrayObject
         $this->sections = $sections;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['sections' => ['sections', 'getSections', 'setSections']];
     }
 }

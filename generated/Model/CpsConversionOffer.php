@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CpsConversionOffer extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CpsConversionOffer implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -140,5 +144,10 @@ class CpsConversionOffer extends \ArrayObject
         $this->seller = $seller;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'category' => ['category', 'getCategory', 'setCategory'], 'unitPrice' => ['unitPrice', 'getUnitPrice', 'setUnitPrice'], 'seller' => ['seller', 'getSeller', 'setSeller']];
     }
 }

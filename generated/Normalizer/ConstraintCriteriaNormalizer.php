@@ -42,27 +42,29 @@ class ConstraintCriteriaNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ConstraintCriteria();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ConstraintCriteria();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('country', $data) && null !== $data['country']) {
             $object->setCountry($data['country']);
             unset($data['country']);
         } elseif (\array_key_exists('country', $data) && null === $data['country']) {
             $object->setCountry(null);
+            unset($data['country']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('deliveryMethods', $data) && null !== $data['deliveryMethods']) {
             $values = [];
@@ -73,6 +75,7 @@ class ConstraintCriteriaNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['deliveryMethods']);
         } elseif (\array_key_exists('deliveryMethods', $data) && null === $data['deliveryMethods']) {
             $object->setDeliveryMethods(null);
+            unset($data['deliveryMethods']);
         }
         if (\array_key_exists('categories', $data) && null !== $data['categories']) {
             $values_1 = [];
@@ -83,6 +86,7 @@ class ConstraintCriteriaNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['categories']);
         } elseif (\array_key_exists('categories', $data) && null === $data['categories']) {
             $object->setCategories(null);
+            unset($data['categories']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -105,18 +109,18 @@ class ConstraintCriteriaNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('deliveryMethods') && null !== $data->getDeliveryMethods()) {
             $values = [];
             foreach ($data->getDeliveryMethods() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['deliveryMethods'] = $values;
         }
         if ($data->isInitialized('categories') && null !== $data->getCategories()) {
             $values_1 = [];
             foreach ($data->getCategories() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['categories'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

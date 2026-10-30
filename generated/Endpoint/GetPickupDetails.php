@@ -21,11 +21,10 @@ class GetPickupDetails extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
     /**
      * Use this resource to get pickup details. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-sprawdzic-status-zamowienia-odbioru-paczek" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-check-shipment-pickup-request-status" target="_blank">EN</a>.
      *
-     * @param string $pickupId         pickup ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $pickupId pickup ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $pickupId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetPickupDetails extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
 
     public function getUri(): string
     {
-        return str_replace(['{pickupId}'], [$this->pickupId], '/shipment-management/pickups/{pickupId}');
+        return str_replace(['{pickupId}'], [rawurlencode($this->pickupId)], '/shipment-management/pickups/{pickupId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -82,22 +81,22 @@ class GetPickupDetails extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PickupDto', 'json');
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetPickupDetailsBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementPickupsPickupIdGetResponse400', 'json'), $response);
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetPickupDetailsUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (403 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetPickupDetailsForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementPickupsPickupIdGetResponse403', 'json'), $response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetPickupDetailsNotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementPickupsPickupIdGetResponse404', 'json'), $response);
         }
-        if ((null === $contentType) === false && (504 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (504 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetPickupDetailsGatewayTimeoutException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementPickupsPickupIdGetResponse504', 'json'), $response);
         }
     }

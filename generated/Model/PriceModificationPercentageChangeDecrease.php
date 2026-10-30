@@ -49,4 +49,9 @@ class PriceModificationPercentageChangeDecrease extends PriceModification
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['percentage' => ['percentage', 'getPercentage', 'setPercentage']]);
+    }
 }

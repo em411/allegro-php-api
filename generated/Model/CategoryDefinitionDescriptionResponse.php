@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CategoryDefinitionDescriptionResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CategoryDefinitionDescriptionResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class CategoryDefinitionDescriptionResponse extends \ArrayObject
         $this->default = $default;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['hint' => ['hint', 'getHint', 'setHint'], 'editable' => ['editable', 'getEditable', 'setEditable'], 'default' => ['default', 'getDefault', 'setDefault']];
     }
 }

@@ -42,33 +42,36 @@ class CommissionResponseNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CommissionResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CommissionResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('fee', $data) && null !== $data['fee']) {
             $object->setFee($this->denormalizer->denormalize($data['fee'], \Em411\Allegro\Api\Model\Price::class, 'json', $context));
             unset($data['fee']);
         } elseif (\array_key_exists('fee', $data) && null === $data['fee']) {
             $object->setFee(null);
+            unset($data['fee']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,9 +92,9 @@ class CommissionResponseNormalizer implements DenormalizerInterface, NormalizerI
             $dataArray['type'] = $data->getType();
         }
         if ($data->isInitialized('fee') && null !== $data->getFee()) {
-            $dataArray['fee'] = $this->normalizer->normalize($data->getFee(), 'json', $context);
+            $dataArray['fee'] = null === $data->getFee() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getFee(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

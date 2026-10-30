@@ -42,33 +42,36 @@ class AlleDiscountSubmittedOfferDtoPricesNormalizer implements DenormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AlleDiscountSubmittedOfferDtoPrices();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AlleDiscountSubmittedOfferDtoPrices();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('proposedPrice', $data) && null !== $data['proposedPrice']) {
             $object->setProposedPrice($this->denormalizer->denormalize($data['proposedPrice'], \Em411\Allegro\Api\Model\AlleDiscountSubmittedOfferDtoPricesProposedPrice::class, 'json', $context));
             unset($data['proposedPrice']);
         } elseif (\array_key_exists('proposedPrice', $data) && null === $data['proposedPrice']) {
             $object->setProposedPrice(null);
+            unset($data['proposedPrice']);
         }
         if (\array_key_exists('minimalPriceReduction', $data) && null !== $data['minimalPriceReduction']) {
             $object->setMinimalPriceReduction($this->denormalizer->denormalize($data['minimalPriceReduction'], \Em411\Allegro\Api\Model\AlleDiscountSubmittedOfferDtoPricesMinimalPriceReduction::class, 'json', $context));
             unset($data['minimalPriceReduction']);
         } elseif (\array_key_exists('minimalPriceReduction', $data) && null === $data['minimalPriceReduction']) {
             $object->setMinimalPriceReduction(null);
+            unset($data['minimalPriceReduction']);
         }
         if (\array_key_exists('maximumSellingPrice', $data) && null !== $data['maximumSellingPrice']) {
             $object->setMaximumSellingPrice($this->denormalizer->denormalize($data['maximumSellingPrice'], \Em411\Allegro\Api\Model\AlleDiscountSubmittedOfferDtoPricesMaximumSellingPrice::class, 'json', $context));
             unset($data['maximumSellingPrice']);
         } elseif (\array_key_exists('maximumSellingPrice', $data) && null === $data['maximumSellingPrice']) {
             $object->setMaximumSellingPrice(null);
+            unset($data['maximumSellingPrice']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,15 +86,15 @@ class AlleDiscountSubmittedOfferDtoPricesNormalizer implements DenormalizerInter
     {
         $dataArray = [];
         if ($data->isInitialized('proposedPrice') && null !== $data->getProposedPrice()) {
-            $dataArray['proposedPrice'] = $this->normalizer->normalize($data->getProposedPrice(), 'json', $context);
+            $dataArray['proposedPrice'] = null === $data->getProposedPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getProposedPrice(), 'json', $context));
         }
         if ($data->isInitialized('minimalPriceReduction') && null !== $data->getMinimalPriceReduction()) {
-            $dataArray['minimalPriceReduction'] = $this->normalizer->normalize($data->getMinimalPriceReduction(), 'json', $context);
+            $dataArray['minimalPriceReduction'] = null === $data->getMinimalPriceReduction() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMinimalPriceReduction(), 'json', $context));
         }
         if ($data->isInitialized('maximumSellingPrice') && null !== $data->getMaximumSellingPrice()) {
-            $dataArray['maximumSellingPrice'] = $this->normalizer->normalize($data->getMaximumSellingPrice(), 'json', $context);
+            $dataArray['maximumSellingPrice'] = null === $data->getMaximumSellingPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMaximumSellingPrice(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

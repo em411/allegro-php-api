@@ -42,27 +42,29 @@ class OfferListingDtoV1SaleInfoNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1SaleInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1SaleInfo();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('currentPrice', $data) && null !== $data['currentPrice']) {
             $object->setCurrentPrice($this->denormalizer->denormalize($data['currentPrice'], \Em411\Allegro\Api\Model\CurrentPrice::class, 'json', $context));
             unset($data['currentPrice']);
         } elseif (\array_key_exists('currentPrice', $data) && null === $data['currentPrice']) {
             $object->setCurrentPrice(null);
+            unset($data['currentPrice']);
         }
         if (\array_key_exists('biddersCount', $data) && null !== $data['biddersCount']) {
             $object->setBiddersCount($data['biddersCount']);
             unset($data['biddersCount']);
         } elseif (\array_key_exists('biddersCount', $data) && null === $data['biddersCount']) {
             $object->setBiddersCount(null);
+            unset($data['biddersCount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,12 +79,12 @@ class OfferListingDtoV1SaleInfoNormalizer implements DenormalizerInterface, Norm
     {
         $dataArray = [];
         if ($data->isInitialized('currentPrice') && null !== $data->getCurrentPrice()) {
-            $dataArray['currentPrice'] = $this->normalizer->normalize($data->getCurrentPrice(), 'json', $context);
+            $dataArray['currentPrice'] = null === $data->getCurrentPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCurrentPrice(), 'json', $context));
         }
         if ($data->isInitialized('biddersCount') && null !== $data->getBiddersCount()) {
             $dataArray['biddersCount'] = $data->getBiddersCount();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

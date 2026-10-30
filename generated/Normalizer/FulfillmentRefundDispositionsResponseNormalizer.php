@@ -42,15 +42,15 @@ class FulfillmentRefundDispositionsResponseNormalizer implements DenormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FulfillmentRefundDispositionsResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FulfillmentRefundDispositionsResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('report', $data) && null !== $data['report']) {
             $values = [];
@@ -61,6 +61,7 @@ class FulfillmentRefundDispositionsResponseNormalizer implements DenormalizerInt
             unset($data['report']);
         } elseif (\array_key_exists('report', $data) && null === $data['report']) {
             $object->setReport(null);
+            unset($data['report']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,11 +78,11 @@ class FulfillmentRefundDispositionsResponseNormalizer implements DenormalizerInt
         if ($data->isInitialized('report') && null !== $data->getReport()) {
             $values = [];
             foreach ($data->getReport() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['report'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

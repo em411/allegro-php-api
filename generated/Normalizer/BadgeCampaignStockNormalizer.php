@@ -42,24 +42,25 @@ class BadgeCampaignStockNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BadgeCampaignStock();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\BadgeCampaignStock();
         if (\array_key_exists('quantity', $data) && \is_int($data['quantity'])) {
             $data['quantity'] = (float) $data['quantity'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('quantity', $data) && null !== $data['quantity']) {
             $object->setQuantity($data['quantity']);
             unset($data['quantity']);
         } elseif (\array_key_exists('quantity', $data) && null === $data['quantity']) {
             $object->setQuantity(null);
+            unset($data['quantity']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,7 +77,7 @@ class BadgeCampaignStockNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('quantity') && null !== $data->getQuantity()) {
             $dataArray['quantity'] = $data->getQuantity();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

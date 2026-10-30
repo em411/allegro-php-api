@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class MessageAttachmentInfo extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class MessageAttachmentInfo implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -91,5 +95,10 @@ class MessageAttachmentInfo extends \ArrayObject
         $this->status = $status;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['fileName' => ['fileName', 'getFileName', 'setFileName'], 'mimeType' => ['mimeType', 'getMimeType', 'setMimeType'], 'url' => ['url', 'getUrl', 'setUrl'], 'status' => ['status', 'getStatus', 'setStatus']];
     }
 }

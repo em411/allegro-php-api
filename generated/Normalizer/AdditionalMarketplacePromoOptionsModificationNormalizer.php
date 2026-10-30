@@ -42,21 +42,22 @@ class AdditionalMarketplacePromoOptionsModificationNormalizer implements Denorma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AdditionalMarketplacePromoOptionsModification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AdditionalMarketplacePromoOptionsModification();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
             $object->setMarketplaceId($data['marketplaceId']);
             unset($data['marketplaceId']);
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
+            unset($data['marketplaceId']);
         }
         if (\array_key_exists('modifications', $data) && null !== $data['modifications']) {
             $values = [];
@@ -67,6 +68,7 @@ class AdditionalMarketplacePromoOptionsModificationNormalizer implements Denorma
             unset($data['modifications']);
         } elseif (\array_key_exists('modifications', $data) && null === $data['modifications']) {
             $object->setModifications(null);
+            unset($data['modifications']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,11 +88,11 @@ class AdditionalMarketplacePromoOptionsModificationNormalizer implements Denorma
         if ($data->isInitialized('modifications') && null !== $data->getModifications()) {
             $values = [];
             foreach ($data->getModifications() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['modifications'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

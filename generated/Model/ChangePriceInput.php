@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ChangePriceInput extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ChangePriceInput implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class ChangePriceInput extends \ArrayObject
         $this->buyNowPrice = $buyNowPrice;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['buyNowPrice' => ['buyNowPrice', 'getBuyNowPrice', 'setBuyNowPrice']];
     }
 }

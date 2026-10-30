@@ -42,30 +42,32 @@ class ClassifiedExtraPackageNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ClassifiedExtraPackage();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ClassifiedExtraPackage();
         if (\array_key_exists('republish', $data) && \is_int($data['republish'])) {
             $data['republish'] = (bool) $data['republish'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('republish', $data) && null !== $data['republish']) {
             $object->setRepublish($data['republish']);
             unset($data['republish']);
         } elseif (\array_key_exists('republish', $data) && null === $data['republish']) {
             $object->setRepublish(null);
+            unset($data['republish']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,7 +87,7 @@ class ClassifiedExtraPackageNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('republish') && null !== $data->getRepublish()) {
             $dataArray['republish'] = $data->getRepublish();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

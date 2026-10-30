@@ -42,33 +42,36 @@ class AfterSalesServicesNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AfterSalesServices();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AfterSalesServices();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('impliedWarranty', $data) && null !== $data['impliedWarranty']) {
             $object->setImpliedWarranty($this->denormalizer->denormalize($data['impliedWarranty'], \Em411\Allegro\Api\Model\ImpliedWarranty::class, 'json', $context));
             unset($data['impliedWarranty']);
         } elseif (\array_key_exists('impliedWarranty', $data) && null === $data['impliedWarranty']) {
             $object->setImpliedWarranty(null);
+            unset($data['impliedWarranty']);
         }
         if (\array_key_exists('returnPolicy', $data) && null !== $data['returnPolicy']) {
             $object->setReturnPolicy($this->denormalizer->denormalize($data['returnPolicy'], \Em411\Allegro\Api\Model\ReturnPolicy::class, 'json', $context));
             unset($data['returnPolicy']);
         } elseif (\array_key_exists('returnPolicy', $data) && null === $data['returnPolicy']) {
             $object->setReturnPolicy(null);
+            unset($data['returnPolicy']);
         }
         if (\array_key_exists('warranty', $data) && null !== $data['warranty']) {
             $object->setWarranty($this->denormalizer->denormalize($data['warranty'], \Em411\Allegro\Api\Model\Warranty::class, 'json', $context));
             unset($data['warranty']);
         } elseif (\array_key_exists('warranty', $data) && null === $data['warranty']) {
             $object->setWarranty(null);
+            unset($data['warranty']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,15 +86,15 @@ class AfterSalesServicesNormalizer implements DenormalizerInterface, NormalizerI
     {
         $dataArray = [];
         if ($data->isInitialized('impliedWarranty') && null !== $data->getImpliedWarranty()) {
-            $dataArray['impliedWarranty'] = $this->normalizer->normalize($data->getImpliedWarranty(), 'json', $context);
+            $dataArray['impliedWarranty'] = null === $data->getImpliedWarranty() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getImpliedWarranty(), 'json', $context));
         }
         if ($data->isInitialized('returnPolicy') && null !== $data->getReturnPolicy()) {
-            $dataArray['returnPolicy'] = $this->normalizer->normalize($data->getReturnPolicy(), 'json', $context);
+            $dataArray['returnPolicy'] = null === $data->getReturnPolicy() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getReturnPolicy(), 'json', $context));
         }
         if ($data->isInitialized('warranty') && null !== $data->getWarranty()) {
-            $dataArray['warranty'] = $this->normalizer->normalize($data->getWarranty(), 'json', $context);
+            $dataArray['warranty'] = null === $data->getWarranty() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getWarranty(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,45 +42,50 @@ class OfferListingDtoV1SellingModeNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1SellingMode();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1SellingMode();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('format', $data) && null !== $data['format']) {
             $object->setFormat($data['format']);
             unset($data['format']);
         } elseif (\array_key_exists('format', $data) && null === $data['format']) {
             $object->setFormat(null);
+            unset($data['format']);
         }
         if (\array_key_exists('price', $data) && null !== $data['price']) {
             $object->setPrice($this->denormalizer->denormalize($data['price'], \Em411\Allegro\Api\Model\BuyNowPrice::class, 'json', $context));
             unset($data['price']);
         } elseif (\array_key_exists('price', $data) && null === $data['price']) {
             $object->setPrice(null);
+            unset($data['price']);
         }
         if (\array_key_exists('priceAutomation', $data) && null !== $data['priceAutomation']) {
             $object->setPriceAutomation($this->denormalizer->denormalize($data['priceAutomation'], \Em411\Allegro\Api\Model\PriceAutomation::class, 'json', $context));
             unset($data['priceAutomation']);
         } elseif (\array_key_exists('priceAutomation', $data) && null === $data['priceAutomation']) {
             $object->setPriceAutomation(null);
+            unset($data['priceAutomation']);
         }
         if (\array_key_exists('minimalPrice', $data) && null !== $data['minimalPrice']) {
             $object->setMinimalPrice($this->denormalizer->denormalize($data['minimalPrice'], \Em411\Allegro\Api\Model\MinimalPrice::class, 'json', $context));
             unset($data['minimalPrice']);
         } elseif (\array_key_exists('minimalPrice', $data) && null === $data['minimalPrice']) {
             $object->setMinimalPrice(null);
+            unset($data['minimalPrice']);
         }
         if (\array_key_exists('startingPrice', $data) && null !== $data['startingPrice']) {
             $object->setStartingPrice($this->denormalizer->denormalize($data['startingPrice'], \Em411\Allegro\Api\Model\StartingPrice::class, 'json', $context));
             unset($data['startingPrice']);
         } elseif (\array_key_exists('startingPrice', $data) && null === $data['startingPrice']) {
             $object->setStartingPrice(null);
+            unset($data['startingPrice']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -98,18 +103,18 @@ class OfferListingDtoV1SellingModeNormalizer implements DenormalizerInterface, N
             $dataArray['format'] = $data->getFormat();
         }
         if ($data->isInitialized('price') && null !== $data->getPrice()) {
-            $dataArray['price'] = $this->normalizer->normalize($data->getPrice(), 'json', $context);
+            $dataArray['price'] = null === $data->getPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPrice(), 'json', $context));
         }
         if ($data->isInitialized('priceAutomation') && null !== $data->getPriceAutomation()) {
-            $dataArray['priceAutomation'] = $this->normalizer->normalize($data->getPriceAutomation(), 'json', $context);
+            $dataArray['priceAutomation'] = null === $data->getPriceAutomation() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPriceAutomation(), 'json', $context));
         }
         if ($data->isInitialized('minimalPrice') && null !== $data->getMinimalPrice()) {
-            $dataArray['minimalPrice'] = $this->normalizer->normalize($data->getMinimalPrice(), 'json', $context);
+            $dataArray['minimalPrice'] = null === $data->getMinimalPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMinimalPrice(), 'json', $context));
         }
         if ($data->isInitialized('startingPrice') && null !== $data->getStartingPrice()) {
-            $dataArray['startingPrice'] = $this->normalizer->normalize($data->getStartingPrice(), 'json', $context);
+            $dataArray['startingPrice'] = null === $data->getStartingPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getStartingPrice(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

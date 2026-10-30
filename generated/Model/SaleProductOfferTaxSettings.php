@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleProductOfferTaxSettings extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleProductOfferTaxSettings implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class SaleProductOfferTaxSettings extends \ArrayObject
         $this->exemption = $exemption;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['rates' => ['rates', 'getRates', 'setRates'], 'subject' => ['subject', 'getSubject', 'setSubject'], 'exemption' => ['exemption', 'getExemption', 'setExemption']];
     }
 }

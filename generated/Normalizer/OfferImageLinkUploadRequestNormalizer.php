@@ -42,30 +42,32 @@ class OfferImageLinkUploadRequestNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferImageLinkUploadRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\OfferImageLinkUploadRequest();
         if (\array_key_exists('isAiCoCreated', $data) && \is_int($data['isAiCoCreated'])) {
             $data['isAiCoCreated'] = (bool) $data['isAiCoCreated'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('url', $data) && null !== $data['url']) {
             $object->setUrl($data['url']);
             unset($data['url']);
         } elseif (\array_key_exists('url', $data) && null === $data['url']) {
             $object->setUrl(null);
+            unset($data['url']);
         }
         if (\array_key_exists('isAiCoCreated', $data) && null !== $data['isAiCoCreated']) {
             $object->setIsAiCoCreated($data['isAiCoCreated']);
             unset($data['isAiCoCreated']);
         } elseif (\array_key_exists('isAiCoCreated', $data) && null === $data['isAiCoCreated']) {
             $object->setIsAiCoCreated(null);
+            unset($data['isAiCoCreated']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,10 +82,10 @@ class OfferImageLinkUploadRequestNormalizer implements DenormalizerInterface, No
     {
         $dataArray = [];
         $dataArray['url'] = $data->getUrl();
-        if ($data->isInitialized('isAiCoCreated')) {
+        if ($data->isInitialized('isAiCoCreated') && null !== $data->getIsAiCoCreated()) {
             $dataArray['isAiCoCreated'] = $data->getIsAiCoCreated();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

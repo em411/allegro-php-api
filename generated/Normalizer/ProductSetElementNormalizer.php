@@ -42,21 +42,22 @@ class ProductSetElementNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductSetElement();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductSetElement();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('product', $data) && null !== $data['product']) {
             $object->setProduct($data['product']);
             unset($data['product']);
         } elseif (\array_key_exists('product', $data) && null === $data['product']) {
             $object->setProduct(null);
+            unset($data['product']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +74,7 @@ class ProductSetElementNormalizer implements DenormalizerInterface, NormalizerIn
         if ($data->isInitialized('product') && null !== $data->getProduct()) {
             $dataArray['product'] = $data->getProduct();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutForm extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutForm implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -361,5 +365,10 @@ class CheckoutForm extends \ArrayObject
         $this->revision = $revision;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'messageToSeller' => ['messageToSeller', 'getMessageToSeller', 'setMessageToSeller'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'payment' => ['payment', 'getPayment', 'setPayment'], 'status' => ['status', 'getStatus', 'setStatus'], 'fulfillment' => ['fulfillment', 'getFulfillment', 'setFulfillment'], 'delivery' => ['delivery', 'getDelivery', 'setDelivery'], 'invoice' => ['invoice', 'getInvoice', 'setInvoice'], 'lineItems' => ['lineItems', 'getLineItems', 'setLineItems'], 'surcharges' => ['surcharges', 'getSurcharges', 'setSurcharges'], 'codBookedPayments' => ['codBookedPayments', 'getCodBookedPayments', 'setCodBookedPayments'], 'note' => ['note', 'getNote', 'setNote'], 'marketplace' => ['marketplace', 'getMarketplace', 'setMarketplace'], 'summary' => ['summary', 'getSummary', 'setSummary'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'revision' => ['revision', 'getRevision', 'setRevision']];
     }
 }

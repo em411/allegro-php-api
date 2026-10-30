@@ -20,25 +20,22 @@ class GetPaymentsOperationHistory extends \Em411\Allegro\Api\Runtime\Client\Base
     /**
      * Use this endpoint to get the list of the seller payment operations. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#historia-operacji-platniczych" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#payment-operations" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $wallet.type Type of the wallet: * AVAILABLE - operations available for payout. * WAITING - operations temporarily suspended for payout.
-     * @var string $wallet.paymentOperator Payment operator: * PAYU - operations processed by PAYU operator. * P24 - operations processed by PRZELEWY24 operator. * AF - operations processed by Allegro Finance operator. * AF_P24 - operations processed by Allegro Finance with PRZELEWY24. * AF_PAYU - operations processed by Allegro Finance with PAYU.
-     * @var string $payment.id The payment ID.
-     * @var string $participant.login Login of the participant. In case of REFUND_INCREASE operation this is the login of the seller, in other cases, of the buyer.
-     * @var string $occurredAt.gte The minimum date and time of operation occurrence in ISO 8601 format.
-     * @var string $occurredAt.lte The maximum date and time of operation occurrence in ISO 8601 format.
-     * @var array  $group Group of operation types: * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION, DEDUCTION_INCREASE, LOAN_DEDUCTION_INCREASE, COMPENSATION, COMPENSATION_COD_INCREASE, TOP_UP, PAYOUT_SWEEP_INCREASE, PAYOUT_SWEEP_CANCEL_INCREASE. * OUTCOME - PAYOUT, PAYOUT_CANCEL, DEDUCTION_CHARGE, LOAN_DEDUCTION_CHARGE, COMPENSATION_COD_CHARGE, PAYOUT_SWEEP_CHARGE, PAYOUT_SWEEP_CANCEL_CHARGE. * REFUND - REFUND_CHARGE, REFUND_CANCEL, REFUND_INCREASE, CORRECTION, PROVIDER_REFUND_TRANSFER_CHARGE, PROVIDER_REFUND_TRANSFER_INCREASE. * BLOCKADES - BLOCKADE, BLOCKADE_RELEASE.
-     * @var string $marketplaceId The marketplace ID where operation was made. When the parameter is omitted, searches for operations with all marketplaces. Note, that there are operations not assigned to any marketplace.
-     * @var string $currency currency of the operations
-     * @var int    $limit number of returned operations
-     * @var int    $offset Index of the first returned payment operation from all search results.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "wallet.type"?: string, //Type of the wallet: * AVAILABLE - operations available for payout. * WAITING - operations temporarily suspended for payout.
+     *    "wallet.paymentOperator"?: string, //Payment operator: * PAYU - operations processed by PAYU operator. * P24 - operations processed by PRZELEWY24 operator. * AF - operations processed by Allegro Finance operator. * AF_P24 - operations processed by Allegro Finance with PRZELEWY24. * AF_PAYU - operations processed by Allegro Finance with PAYU.
+     *    "payment.id"?: string, //The payment ID.
+     *    "participant.login"?: string, //Login of the participant. In case of REFUND_INCREASE operation this is the login of the seller, in other cases, of the buyer.
+     *    "occurredAt.gte"?: string, //The minimum date and time of operation occurrence in ISO 8601 format.
+     *    "occurredAt.lte"?: string, //The maximum date and time of operation occurrence in ISO 8601 format.
+     *    "group"?: array, //Group of operation types: * INCOME - CONTRIBUTION, SURCHARGE, CORRECTION, DEDUCTION_INCREASE, LOAN_DEDUCTION_INCREASE, COMPENSATION, COMPENSATION_COD_INCREASE, TOP_UP, PAYOUT_SWEEP_INCREASE, PAYOUT_SWEEP_CANCEL_INCREASE. * OUTCOME - PAYOUT, PAYOUT_CANCEL, DEDUCTION_CHARGE, LOAN_DEDUCTION_CHARGE, COMPENSATION_COD_CHARGE, PAYOUT_SWEEP_CHARGE, PAYOUT_SWEEP_CANCEL_CHARGE. * REFUND - REFUND_CHARGE, REFUND_CANCEL, REFUND_INCREASE, CORRECTION, PROVIDER_REFUND_TRANSFER_CHARGE, PROVIDER_REFUND_TRANSFER_INCREASE. * BLOCKADES - BLOCKADE, BLOCKADE_RELEASE.
+     *    "marketplaceId"?: string, //The marketplace ID where operation was made. When the parameter is omitted, searches for operations with all marketplaces. Note, that there are operations not assigned to any marketplace.
+     *    "currency"?: string, //Currency of the operations.
+     *    "limit"?: int, //Number of returned operations.
+     *    "offset"?: int, //Index of the first returned payment operation from all search results.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -103,6 +100,11 @@ class GetPaymentsOperationHistory extends \Em411\Allegro\Api\Runtime\Client\Base
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['group' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\PaymentOperations|null
      *
@@ -116,10 +118,10 @@ class GetPaymentsOperationHistory extends \Em411\Allegro\Api\Runtime\Client\Base
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetPaymentsOperationHistoryUnauthorizedException($response);
         }
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PaymentOperations', 'json');
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetPaymentsOperationHistoryUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

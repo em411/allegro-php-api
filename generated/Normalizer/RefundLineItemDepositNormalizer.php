@@ -42,27 +42,29 @@ class RefundLineItemDepositNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\RefundLineItemDeposit();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\RefundLineItemDeposit();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('lineItemId', $data) && null !== $data['lineItemId']) {
             $object->setLineItemId($data['lineItemId']);
             unset($data['lineItemId']);
         } elseif (\array_key_exists('lineItemId', $data) && null === $data['lineItemId']) {
             $object->setLineItemId(null);
+            unset($data['lineItemId']);
         }
         if (\array_key_exists('totalValue', $data) && null !== $data['totalValue']) {
             $object->setTotalValue($this->denormalizer->denormalize($data['totalValue'], \Em411\Allegro\Api\Model\RefundLineItemDepositTotalValue::class, 'json', $context));
             unset($data['totalValue']);
         } elseif (\array_key_exists('totalValue', $data) && null === $data['totalValue']) {
             $object->setTotalValue(null);
+            unset($data['totalValue']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,8 +79,8 @@ class RefundLineItemDepositNormalizer implements DenormalizerInterface, Normaliz
     {
         $dataArray = [];
         $dataArray['lineItemId'] = $data->getLineItemId();
-        $dataArray['totalValue'] = $this->normalizer->normalize($data->getTotalValue(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['totalValue'] = null === $data->getTotalValue() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTotalValue(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

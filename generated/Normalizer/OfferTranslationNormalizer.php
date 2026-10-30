@@ -42,39 +42,43 @@ class OfferTranslationNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferTranslation();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferTranslation();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($this->denormalizer->denormalize($data['description'], \Em411\Allegro\Api\Model\OfferDescriptionTranslation::class, 'json', $context));
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('language', $data) && null !== $data['language']) {
             $object->setLanguage($data['language']);
             unset($data['language']);
         } elseif (\array_key_exists('language', $data) && null === $data['language']) {
             $object->setLanguage(null);
+            unset($data['language']);
         }
         if (\array_key_exists('title', $data) && null !== $data['title']) {
             $object->setTitle($this->denormalizer->denormalize($data['title'], \Em411\Allegro\Api\Model\OfferTitleTranslation::class, 'json', $context));
             unset($data['title']);
         } elseif (\array_key_exists('title', $data) && null === $data['title']) {
             $object->setTitle(null);
+            unset($data['title']);
         }
         if (\array_key_exists('safetyInformation', $data) && null !== $data['safetyInformation']) {
             $object->setSafetyInformation($this->denormalizer->denormalize($data['safetyInformation'], \Em411\Allegro\Api\Model\OfferSafetyInformationTranslation::class, 'json', $context));
             unset($data['safetyInformation']);
         } elseif (\array_key_exists('safetyInformation', $data) && null === $data['safetyInformation']) {
             $object->setSafetyInformation(null);
+            unset($data['safetyInformation']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,16 +93,16 @@ class OfferTranslationNormalizer implements DenormalizerInterface, NormalizerInt
     {
         $dataArray = [];
         if ($data->isInitialized('description') && null !== $data->getDescription()) {
-            $dataArray['description'] = $this->normalizer->normalize($data->getDescription(), 'json', $context);
+            $dataArray['description'] = null === $data->getDescription() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDescription(), 'json', $context));
         }
         $dataArray['language'] = $data->getLanguage();
         if ($data->isInitialized('title') && null !== $data->getTitle()) {
-            $dataArray['title'] = $this->normalizer->normalize($data->getTitle(), 'json', $context);
+            $dataArray['title'] = null === $data->getTitle() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTitle(), 'json', $context));
         }
         if ($data->isInitialized('safetyInformation') && null !== $data->getSafetyInformation()) {
-            $dataArray['safetyInformation'] = $this->normalizer->normalize($data->getSafetyInformation(), 'json', $context);
+            $dataArray['safetyInformation'] = null === $data->getSafetyInformation() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSafetyInformation(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

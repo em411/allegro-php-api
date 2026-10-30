@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PhoneNumberWithCountryCode extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PhoneNumberWithCountryCode implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class PhoneNumberWithCountryCode extends \ArrayObject
         $this->number = $number;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode'], 'number' => ['number', 'getNumber', 'setNumber']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PriceModification extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PriceModification implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -69,5 +73,10 @@ class PriceModification extends \ArrayObject
     {
         $this->initialized['marketplaceId'] = true;
         $this->marketplaceId = $marketplaceId;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['type', 'getType', 'setType'], 'marketplaceId' => ['marketplaceId', 'getMarketplaceId', 'setMarketplaceId']];
     }
 }

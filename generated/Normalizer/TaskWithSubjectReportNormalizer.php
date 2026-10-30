@@ -42,29 +42,36 @@ class TaskWithSubjectReportNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\TaskWithSubjectReport();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\TaskWithSubjectReport();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('tasks', $data) && null !== $data['tasks']) {
             $values = [];
             foreach ($data['tasks'] as $value) {
-                $values[] = $value;
+                $value_1 = $value;
+                if (\is_array($value)) {
+                    $value_1 = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\CommandTaskWithPriceSubject::class, 'json', $context);
+                } elseif (\is_array($value)) {
+                    $value_1 = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\CommandTaskWithStockSubject::class, 'json', $context);
+                }
+                $values[] = $value_1;
             }
             $object->setTasks($values);
             unset($data['tasks']);
         } elseif (\array_key_exists('tasks', $data) && null === $data['tasks']) {
             $object->setTasks(null);
+            unset($data['tasks']);
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+                $object[$key] = $value_2;
             }
         }
 
@@ -77,13 +84,19 @@ class TaskWithSubjectReportNormalizer implements DenormalizerInterface, Normaliz
         if ($data->isInitialized('tasks') && null !== $data->getTasks()) {
             $values = [];
             foreach ($data->getTasks() as $value) {
-                $values[] = $value;
+                $value_1 = $value;
+                if (\is_object($value)) {
+                    $value_1 = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
+                } elseif (\is_object($value)) {
+                    $value_1 = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
+                }
+                $values[] = $value_1;
             }
             $dataArray['tasks'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+                $dataArray[$key] = $value_2;
             }
         }
 

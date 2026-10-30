@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class TaskCount extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class TaskCount implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class TaskCount extends \ArrayObject
         $this->total = $total;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['failed' => ['failed', 'getFailed', 'setFailed'], 'success' => ['success', 'getSuccess', 'setSuccess'], 'total' => ['total', 'getTotal', 'setTotal']];
     }
 }

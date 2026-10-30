@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CategoryEventsResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CategoryEventsResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class CategoryEventsResponse extends \ArrayObject
         $this->events = $events;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['events' => ['events', 'getEvents', 'setEvents']];
     }
 }

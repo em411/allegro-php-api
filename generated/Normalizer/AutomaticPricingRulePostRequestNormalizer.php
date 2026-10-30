@@ -42,30 +42,32 @@ class AutomaticPricingRulePostRequestNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AutomaticPricingRulePostRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AutomaticPricingRulePostRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('configuration', $data) && null !== $data['configuration']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['configuration'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -73,6 +75,7 @@ class AutomaticPricingRulePostRequestNormalizer implements DenormalizerInterface
             unset($data['configuration']);
         } elseif (\array_key_exists('configuration', $data) && null === $data['configuration']) {
             $object->setConfiguration(null);
+            unset($data['configuration']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -88,14 +91,14 @@ class AutomaticPricingRulePostRequestNormalizer implements DenormalizerInterface
         $dataArray = [];
         $dataArray['name'] = $data->getName();
         $dataArray['type'] = $data->getType();
-        if ($data->isInitialized('configuration')) {
-            $values = [];
+        if ($data->isInitialized('configuration') && null !== $data->getConfiguration()) {
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data->getConfiguration() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['configuration'] = $values;
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

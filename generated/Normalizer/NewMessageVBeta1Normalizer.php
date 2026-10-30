@@ -42,27 +42,29 @@ class NewMessageVBeta1Normalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\NewMessageVBeta1();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\NewMessageVBeta1();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('recipient', $data) && null !== $data['recipient']) {
             $object->setRecipient($this->denormalizer->denormalize($data['recipient'], \Em411\Allegro\Api\Model\Recipient::class, 'json', $context));
             unset($data['recipient']);
         } elseif (\array_key_exists('recipient', $data) && null === $data['recipient']) {
             $object->setRecipient(null);
+            unset($data['recipient']);
         }
         if (\array_key_exists('text', $data) && null !== $data['text']) {
             $object->setText($data['text']);
             unset($data['text']);
         } elseif (\array_key_exists('text', $data) && null === $data['text']) {
             $object->setText(null);
+            unset($data['text']);
         }
         if (\array_key_exists('attachments', $data) && null !== $data['attachments']) {
             $values = [];
@@ -73,12 +75,14 @@ class NewMessageVBeta1Normalizer implements DenormalizerInterface, NormalizerInt
             unset($data['attachments']);
         } elseif (\array_key_exists('attachments', $data) && null === $data['attachments']) {
             $object->setAttachments(null);
+            unset($data['attachments']);
         }
         if (\array_key_exists('order', $data) && null !== $data['order']) {
             $object->setOrder($this->denormalizer->denormalize($data['order'], \Em411\Allegro\Api\Model\MessageOrderVBeta1::class, 'json', $context));
             unset($data['order']);
         } elseif (\array_key_exists('order', $data) && null === $data['order']) {
             $object->setOrder(null);
+            unset($data['order']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -92,17 +96,17 @@ class NewMessageVBeta1Normalizer implements DenormalizerInterface, NormalizerInt
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['recipient'] = $this->normalizer->normalize($data->getRecipient(), 'json', $context);
+        $dataArray['recipient'] = null === $data->getRecipient() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRecipient(), 'json', $context));
         $dataArray['text'] = $data->getText();
-        if ($data->isInitialized('attachments')) {
+        if ($data->isInitialized('attachments') && null !== $data->getAttachments()) {
             $values = [];
             foreach ($data->getAttachments() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['attachments'] = $values;
         }
-        $dataArray['order'] = $this->normalizer->normalize($data->getOrder(), 'json', $context);
-        foreach ($data as $key => $value_1) {
+        $dataArray['order'] = null === $data->getOrder() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOrder(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

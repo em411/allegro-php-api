@@ -35,7 +35,7 @@ class GetDeliveryProposals extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
 
     public function getUri(): string
     {
-        return str_replace(['{orderId}'], [$this->orderId], '/shipment-management/delivery-proposals/{orderId}');
+        return str_replace(['{orderId}'], [rawurlencode($this->orderId)], '/shipment-management/delivery-proposals/{orderId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -64,16 +64,16 @@ class GetDeliveryProposals extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\DeliveryProposalDto', 'json');
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetDeliveryProposalsUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (403 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetDeliveryProposalsForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementDeliveryProposalsOrderIdGetResponse403', 'json'), $response);
         }
-        if ((null === $contentType) === false && (504 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (504 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetDeliveryProposalsGatewayTimeoutException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementDeliveryProposalsOrderIdGetResponse504', 'json'), $response);
         }
     }

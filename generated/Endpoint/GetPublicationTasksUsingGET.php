@@ -21,17 +21,14 @@ class GetPublicationTasksUsingGET extends \Em411\Allegro\Api\Runtime\Client\Base
     /**
      * Use this resource to retrieve information about the offer statuses on the site (Defaults: limit = 100, offset = 0). Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#asynchroniczne-procesowanie" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#asynchronous-processing" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId       command identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $commandId command identifier
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $commandId, array $queryParameters = [], array $headerParameters = [])
     {
@@ -47,7 +44,7 @@ class GetPublicationTasksUsingGET extends \Em411\Allegro\Api\Runtime\Client\Base
 
     public function getUri(): string
     {
-        return str_replace(['{commandId}'], [$this->commandId], '/sale/offer-publication-commands/{commandId}/tasks');
+        return str_replace(['{commandId}'], [rawurlencode($this->commandId)], '/sale/offer-publication-commands/{commandId}/tasks');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -101,10 +98,10 @@ class GetPublicationTasksUsingGET extends \Em411\Allegro\Api\Runtime\Client\Base
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\TaskReport', 'json');
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetPublicationTasksUsingGETBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
         if (401 === $status) {

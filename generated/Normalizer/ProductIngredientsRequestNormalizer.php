@@ -42,27 +42,29 @@ class ProductIngredientsRequestNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductIngredientsRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductIngredientsRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('productId', $data) && null !== $data['productId']) {
             $object->setProductId($data['productId']);
             unset($data['productId']);
         } elseif (\array_key_exists('productId', $data) && null === $data['productId']) {
             $object->setProductId(null);
+            unset($data['productId']);
         }
         if (\array_key_exists('ingredients', $data) && null !== $data['ingredients']) {
             $object->setIngredients($data['ingredients']);
             unset($data['ingredients']);
         } elseif (\array_key_exists('ingredients', $data) && null === $data['ingredients']) {
             $object->setIngredients(null);
+            unset($data['ingredients']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,11 +78,11 @@ class ProductIngredientsRequestNormalizer implements DenormalizerInterface, Norm
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('productId')) {
+        if ($data->isInitialized('productId') && null !== $data->getProductId()) {
             $dataArray['productId'] = $data->getProductId();
         }
         $dataArray['ingredients'] = $data->getIngredients();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,30 +42,32 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsShippingTime();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsShippingTime();
         if (\array_key_exists('customizable', $data) && \is_int($data['customizable'])) {
             $data['customizable'] = (bool) $data['customizable'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('default', $data) && null !== $data['default']) {
             $object->setDefault($this->denormalizer->denormalize($data['default'], \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsShippingTimeDefault::class, 'json', $context));
             unset($data['default']);
         } elseif (\array_key_exists('default', $data) && null === $data['default']) {
             $object->setDefault(null);
+            unset($data['default']);
         }
         if (\array_key_exists('customizable', $data) && null !== $data['customizable']) {
             $object->setCustomizable($data['customizable']);
             unset($data['customizable']);
         } elseif (\array_key_exists('customizable', $data) && null === $data['customizable']) {
             $object->setCustomizable(null);
+            unset($data['customizable']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,12 +82,12 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
     {
         $dataArray = [];
         if ($data->isInitialized('default') && null !== $data->getDefault()) {
-            $dataArray['default'] = $this->normalizer->normalize($data->getDefault(), 'json', $context);
+            $dataArray['default'] = null === $data->getDefault() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDefault(), 'json', $context));
         }
         if ($data->isInitialized('customizable') && null !== $data->getCustomizable()) {
             $dataArray['customizable'] = $data->getCustomizable();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

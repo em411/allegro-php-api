@@ -22,12 +22,10 @@ class DeleteAdditionalEmailUsingDELETE extends \Em411\Allegro\Api\Runtime\Client
     /**
      * Use this resource to delete one of additional emails. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-usunac-adres-e-mail" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-remove-e-mail" target="_blank">EN</a>.
      *
-     * @param string $emailId          id of the additional email to be deleted
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $emailId id of the additional email to be deleted
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|*\/*
      */
     public function __construct(string $emailId, array $headerParameters = [], array $accept = [])
@@ -44,7 +42,7 @@ class DeleteAdditionalEmailUsingDELETE extends \Em411\Allegro\Api\Runtime\Client
 
     public function getUri(): string
     {
-        return str_replace(['{emailId}'], [$this->emailId], '/account/additional-emails/{emailId}');
+        return str_replace(['{emailId}'], [rawurlencode($this->emailId)], '/account/additional-emails/{emailId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -87,7 +85,7 @@ class DeleteAdditionalEmailUsingDELETE extends \Em411\Allegro\Api\Runtime\Client
         if (204 === $status) {
             return null;
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeleteAdditionalEmailUsingDELETEUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
         if (404 === $status) {

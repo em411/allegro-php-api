@@ -42,42 +42,46 @@ class FlexibleBundleSlotDTONormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FlexibleBundleSlotDTO();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\FlexibleBundleSlotDTO();
         if (\array_key_exists('entryPoint', $data) && \is_int($data['entryPoint'])) {
             $data['entryPoint'] = (bool) $data['entryPoint'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('order', $data) && null !== $data['order']) {
             $object->setOrder($data['order']);
             unset($data['order']);
         } elseif (\array_key_exists('order', $data) && null === $data['order']) {
             $object->setOrder(null);
+            unset($data['order']);
         }
         if (\array_key_exists('entryPoint', $data) && null !== $data['entryPoint']) {
             $object->setEntryPoint($data['entryPoint']);
             unset($data['entryPoint']);
         } elseif (\array_key_exists('entryPoint', $data) && null === $data['entryPoint']) {
             $object->setEntryPoint(null);
+            unset($data['entryPoint']);
         }
         if (\array_key_exists('requiredQuantity', $data) && null !== $data['requiredQuantity']) {
             $object->setRequiredQuantity($data['requiredQuantity']);
             unset($data['requiredQuantity']);
         } elseif (\array_key_exists('requiredQuantity', $data) && null === $data['requiredQuantity']) {
             $object->setRequiredQuantity(null);
+            unset($data['requiredQuantity']);
         }
         if (\array_key_exists('offers', $data) && null !== $data['offers']) {
             $values = [];
@@ -88,6 +92,7 @@ class FlexibleBundleSlotDTONormalizer implements DenormalizerInterface, Normaliz
             unset($data['offers']);
         } elseif (\array_key_exists('offers', $data) && null === $data['offers']) {
             $object->setOffers(null);
+            unset($data['offers']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -101,7 +106,7 @@ class FlexibleBundleSlotDTONormalizer implements DenormalizerInterface, Normaliz
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('id')) {
+        if ($data->isInitialized('id') && null !== $data->getId()) {
             $dataArray['id'] = $data->getId();
         }
         $dataArray['order'] = $data->getOrder();
@@ -109,10 +114,10 @@ class FlexibleBundleSlotDTONormalizer implements DenormalizerInterface, Normaliz
         $dataArray['requiredQuantity'] = $data->getRequiredQuantity();
         $values = [];
         foreach ($data->getOffers() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['offers'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -42,15 +42,15 @@ class OrdersShippingCarriersResponseNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OrdersShippingCarriersResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OrdersShippingCarriersResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('carriers', $data) && null !== $data['carriers']) {
             $values = [];
@@ -61,6 +61,7 @@ class OrdersShippingCarriersResponseNormalizer implements DenormalizerInterface,
             unset($data['carriers']);
         } elseif (\array_key_exists('carriers', $data) && null === $data['carriers']) {
             $object->setCarriers(null);
+            unset($data['carriers']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,11 +78,11 @@ class OrdersShippingCarriersResponseNormalizer implements DenormalizerInterface,
         if ($data->isInitialized('carriers') && null !== $data->getCarriers()) {
             $values = [];
             foreach ($data->getCarriers() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['carriers'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

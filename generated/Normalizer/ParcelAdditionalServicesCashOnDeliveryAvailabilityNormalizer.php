@@ -42,33 +42,35 @@ class ParcelAdditionalServicesCashOnDeliveryAvailabilityNormalizer implements De
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ParcelAdditionalServicesCashOnDeliveryAvailability();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ParcelAdditionalServicesCashOnDeliveryAvailability();
         if (\array_key_exists('available', $data) && \is_int($data['available'])) {
             $data['available'] = (bool) $data['available'];
         }
         if (\array_key_exists('expressAvailable', $data) && \is_int($data['expressAvailable'])) {
             $data['expressAvailable'] = (bool) $data['expressAvailable'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('available', $data) && null !== $data['available']) {
             $object->setAvailable($data['available']);
             unset($data['available']);
         } elseif (\array_key_exists('available', $data) && null === $data['available']) {
             $object->setAvailable(null);
+            unset($data['available']);
         }
         if (\array_key_exists('expressAvailable', $data) && null !== $data['expressAvailable']) {
             $object->setExpressAvailable($data['expressAvailable']);
             unset($data['expressAvailable']);
         } elseif (\array_key_exists('expressAvailable', $data) && null === $data['expressAvailable']) {
             $object->setExpressAvailable(null);
+            unset($data['expressAvailable']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -88,7 +90,7 @@ class ParcelAdditionalServicesCashOnDeliveryAvailabilityNormalizer implements De
         if ($data->isInitialized('expressAvailable') && null !== $data->getExpressAvailable()) {
             $dataArray['expressAvailable'] = $data->getExpressAvailable();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

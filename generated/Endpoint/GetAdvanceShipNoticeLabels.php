@@ -22,13 +22,11 @@ class GetAdvanceShipNoticeLabels extends \Em411\Allegro\Api\Runtime\Client\BaseE
     /**
      * Use this resource to get labels for Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#pobierz-oznaczenia-na-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#download-labels-for-asn" target="_blank">EN</a>.
      *
-     * @param string $id               an identifier of the Advance Ship Notice
-     * @param array  $headerParameters {
-     *
-     * @var string $accept content-type of generated labels
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id an identifier of the Advance Ship Notice
+     * @param array{
+     *    "accept": string, //Content-type of generated labels.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/pdf|x-application/zpl
      */
     public function __construct(string $id, array $headerParameters = [], array $accept = [])
@@ -45,7 +43,7 @@ class GetAdvanceShipNoticeLabels extends \Em411\Allegro\Api\Runtime\Client\BaseE
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/fulfillment/advance-ship-notices/{id}/labels');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/fulfillment/advance-ship-notices/{id}/labels');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

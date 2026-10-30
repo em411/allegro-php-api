@@ -42,45 +42,50 @@ class PickupDtoNormalizer implements DenormalizerInterface, NormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PickupDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PickupDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('carrierPickupId', $data) && null !== $data['carrierPickupId']) {
             $object->setCarrierPickupId($data['carrierPickupId']);
             unset($data['carrierPickupId']);
         } elseif (\array_key_exists('carrierPickupId', $data) && null === $data['carrierPickupId']) {
             $object->setCarrierPickupId(null);
+            unset($data['carrierPickupId']);
         }
         if (\array_key_exists('carrier', $data) && null !== $data['carrier']) {
             $object->setCarrier($data['carrier']);
             unset($data['carrier']);
         } elseif (\array_key_exists('carrier', $data) && null === $data['carrier']) {
             $object->setCarrier(null);
+            unset($data['carrier']);
         }
         if (\array_key_exists('pickupCarrier', $data) && null !== $data['pickupCarrier']) {
             $object->setPickupCarrier($data['pickupCarrier']);
             unset($data['pickupCarrier']);
         } elseif (\array_key_exists('pickupCarrier', $data) && null === $data['pickupCarrier']) {
             $object->setPickupCarrier(null);
+            unset($data['pickupCarrier']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\SenderAddressDto::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         if (\array_key_exists('shipmentIds', $data) && null !== $data['shipmentIds']) {
             $values = [];
@@ -91,6 +96,7 @@ class PickupDtoNormalizer implements DenormalizerInterface, NormalizerInterface,
             unset($data['shipmentIds']);
         } elseif (\array_key_exists('shipmentIds', $data) && null === $data['shipmentIds']) {
             $object->setShipmentIds(null);
+            unset($data['shipmentIds']);
         }
         if (\array_key_exists('waybills', $data) && null !== $data['waybills']) {
             $values_1 = [];
@@ -101,6 +107,7 @@ class PickupDtoNormalizer implements DenormalizerInterface, NormalizerInterface,
             unset($data['waybills']);
         } elseif (\array_key_exists('waybills', $data) && null === $data['waybills']) {
             $object->setWaybills(null);
+            unset($data['waybills']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -127,7 +134,7 @@ class PickupDtoNormalizer implements DenormalizerInterface, NormalizerInterface,
             $dataArray['pickupCarrier'] = $data->getPickupCarrier();
         }
         if ($data->isInitialized('address') && null !== $data->getAddress()) {
-            $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+            $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         }
         if ($data->isInitialized('shipmentIds') && null !== $data->getShipmentIds()) {
             $values = [];
@@ -143,7 +150,7 @@ class PickupDtoNormalizer implements DenormalizerInterface, NormalizerInterface,
             }
             $dataArray['waybills'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

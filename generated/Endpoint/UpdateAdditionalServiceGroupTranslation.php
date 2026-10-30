@@ -22,12 +22,11 @@ class UpdateAdditionalServiceGroupTranslation extends \Em411\Allegro\Api\Runtime
     /**
      * Use this resource to create/update translation for additional service group and specified language. It is allowed to provide an incomplete list of services that belong to the group. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#tlumaczenia-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#additional-services-translations" target="_blank">EN</a>.
      *
-     * @param string $groupId          additional Service Group ID
-     * @param string $language         IETF Language tag
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $groupId  additional Service Group ID
+     * @param string $language IETF Language tag
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $groupId, string $language, ?\Em411\Allegro\Api\Model\AdditionalServicesGroupTranslationRequest $requestBody = null, array $headerParameters = [])
     {
@@ -44,13 +43,13 @@ class UpdateAdditionalServiceGroupTranslation extends \Em411\Allegro\Api\Runtime
 
     public function getUri(): string
     {
-        return str_replace(['{groupId}', '{language}'], [$this->groupId, $this->language], '/sale/offer-additional-services/groups/{groupId}/translations/{language}');
+        return str_replace(['{groupId}', '{language}'], [rawurlencode($this->groupId), rawurlencode($this->language)], '/sale/offer-additional-services/groups/{groupId}/translations/{language}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Em411\Allegro\Api\Model\AdditionalServicesGroupTranslationRequest) {
-            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], \Em411\Allegro\Api\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -87,7 +86,7 @@ class UpdateAdditionalServiceGroupTranslation extends \Em411\Allegro\Api\Runtime
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AdditionalServiceGroupTranslationPatchResponse', 'json');
         }
         if (401 === $status) {

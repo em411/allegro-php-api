@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductProposalsResponseCategory extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductProposalsResponseCategory implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -28,7 +32,7 @@ class ProductProposalsResponseCategory extends \ArrayObject
     /**
      * A list of similar categories in which you can sell this product.
      *
-     * @var list<ProductProposalsResponseCategorysimilarItem>|null
+     * @var list<ProductProposalsResponseCategorySimilarItem>|null
      */
     protected $similar;
 
@@ -59,7 +63,7 @@ class ProductProposalsResponseCategory extends \ArrayObject
     /**
      * A list of similar categories in which you can sell this product.
      *
-     * @return list<ProductProposalsResponseCategorysimilarItem>|null
+     * @return list<ProductProposalsResponseCategorySimilarItem>|null
      */
     public function getSimilar(): ?array
     {
@@ -69,7 +73,7 @@ class ProductProposalsResponseCategory extends \ArrayObject
     /**
      * A list of similar categories in which you can sell this product.
      *
-     * @param list<ProductProposalsResponseCategorysimilarItem>|null $similar
+     * @param list<ProductProposalsResponseCategorySimilarItem>|null $similar
      */
     public function setSimilar(?array $similar): self
     {
@@ -77,5 +81,10 @@ class ProductProposalsResponseCategory extends \ArrayObject
         $this->similar = $similar;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'similar' => ['similar', 'getSimilar', 'setSimilar']];
     }
 }

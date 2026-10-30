@@ -21,16 +21,13 @@ class GetAdditionalServiceGroupTranslations extends \Em411\Allegro\Api\Runtime\C
     /**
      * Use this resource to get translations for additional service group. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#tlumaczenia-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#additional-services-translations" target="_blank">EN</a>.
      *
-     * @param string $groupId         additional Service Group ID
-     * @param array  $queryParameters {
-     *
-     * @var string $language IETF language tag. When provided, the response will contain translations in only that language (if exists).
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $groupId additional Service Group ID
+     * @param array{
+     *    "language"?: string, //IETF language tag. When provided, the response will contain translations in only that language (if exists).
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $groupId, array $queryParameters = [], array $headerParameters = [])
     {
@@ -46,7 +43,7 @@ class GetAdditionalServiceGroupTranslations extends \Em411\Allegro\Api\Runtime\C
 
     public function getUri(): string
     {
-        return str_replace(['{groupId}'], [$this->groupId], '/sale/offer-additional-services/groups/{groupId}/translations');
+        return str_replace(['{groupId}'], [rawurlencode($this->groupId)], '/sale/offer-additional-services/groups/{groupId}/translations');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -96,7 +93,7 @@ class GetAdditionalServiceGroupTranslations extends \Em411\Allegro\Api\Runtime\C
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AdditionalServiceGroupTranslationResponse', 'json');
         }
         if (401 === $status) {

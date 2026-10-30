@@ -42,51 +42,57 @@ class PackageRequestDtoNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PackageRequestDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PackageRequestDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('length', $data) && null !== $data['length']) {
             $object->setLength($this->denormalizer->denormalize($data['length'], \Em411\Allegro\Api\Model\DimensionValue::class, 'json', $context));
             unset($data['length']);
         } elseif (\array_key_exists('length', $data) && null === $data['length']) {
             $object->setLength(null);
+            unset($data['length']);
         }
         if (\array_key_exists('width', $data) && null !== $data['width']) {
             $object->setWidth($this->denormalizer->denormalize($data['width'], \Em411\Allegro\Api\Model\DimensionValue::class, 'json', $context));
             unset($data['width']);
         } elseif (\array_key_exists('width', $data) && null === $data['width']) {
             $object->setWidth(null);
+            unset($data['width']);
         }
         if (\array_key_exists('height', $data) && null !== $data['height']) {
             $object->setHeight($this->denormalizer->denormalize($data['height'], \Em411\Allegro\Api\Model\DimensionValue::class, 'json', $context));
             unset($data['height']);
         } elseif (\array_key_exists('height', $data) && null === $data['height']) {
             $object->setHeight(null);
+            unset($data['height']);
         }
         if (\array_key_exists('weight', $data) && null !== $data['weight']) {
             $object->setWeight($this->denormalizer->denormalize($data['weight'], \Em411\Allegro\Api\Model\WeightValue::class, 'json', $context));
             unset($data['weight']);
         } elseif (\array_key_exists('weight', $data) && null === $data['weight']) {
             $object->setWeight(null);
+            unset($data['weight']);
         }
         if (\array_key_exists('textOnLabel', $data) && null !== $data['textOnLabel']) {
             $object->setTextOnLabel($data['textOnLabel']);
             unset($data['textOnLabel']);
         } elseif (\array_key_exists('textOnLabel', $data) && null === $data['textOnLabel']) {
             $object->setTextOnLabel(null);
+            unset($data['textOnLabel']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -101,14 +107,14 @@ class PackageRequestDtoNormalizer implements DenormalizerInterface, NormalizerIn
     {
         $dataArray = [];
         $dataArray['type'] = $data->getType();
-        $dataArray['length'] = $this->normalizer->normalize($data->getLength(), 'json', $context);
-        $dataArray['width'] = $this->normalizer->normalize($data->getWidth(), 'json', $context);
-        $dataArray['height'] = $this->normalizer->normalize($data->getHeight(), 'json', $context);
-        $dataArray['weight'] = $this->normalizer->normalize($data->getWeight(), 'json', $context);
+        $dataArray['length'] = null === $data->getLength() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getLength(), 'json', $context));
+        $dataArray['width'] = null === $data->getWidth() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getWidth(), 'json', $context));
+        $dataArray['height'] = null === $data->getHeight() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getHeight(), 'json', $context));
+        $dataArray['weight'] = null === $data->getWeight() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getWeight(), 'json', $context));
         if ($data->isInitialized('textOnLabel') && null !== $data->getTextOnLabel()) {
             $dataArray['textOnLabel'] = $data->getTextOnLabel();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

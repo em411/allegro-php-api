@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ShippingRatesSet extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ShippingRatesSet implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -171,5 +175,10 @@ class ShippingRatesSet extends \ArrayObject
         $this->lastModified = $lastModified;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'type' => ['type', 'getType', 'setType'], 'dispatchCountry' => ['dispatchCountry', 'getDispatchCountry', 'setDispatchCountry'], 'rates' => ['rates', 'getRates', 'setRates'], 'lastModified' => ['lastModified', 'getLastModified', 'setLastModified']];
     }
 }

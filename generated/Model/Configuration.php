@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Configuration extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Configuration implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -65,5 +69,10 @@ class Configuration extends \ArrayObject
         $this->price = $price;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['constraintCriteria' => ['constraintCriteria', 'getConstraintCriteria', 'setConstraintCriteria'], 'price' => ['price', 'getPrice', 'setPrice']];
     }
 }

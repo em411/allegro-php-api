@@ -42,48 +42,53 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraints();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraints();
         if (\array_key_exists('allowed', $data) && \is_int($data['allowed'])) {
             $data['allowed'] = (bool) $data['allowed'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('allowed', $data) && null !== $data['allowed']) {
             $object->setAllowed($data['allowed']);
             unset($data['allowed']);
         } elseif (\array_key_exists('allowed', $data) && null === $data['allowed']) {
             $object->setAllowed(null);
+            unset($data['allowed']);
         }
         if (\array_key_exists('maxQuantityPerPackage', $data) && null !== $data['maxQuantityPerPackage']) {
             $object->setMaxQuantityPerPackage($this->denormalizer->denormalize($data['maxQuantityPerPackage'], \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsMaxQuantityPerPackage::class, 'json', $context));
             unset($data['maxQuantityPerPackage']);
         } elseif (\array_key_exists('maxQuantityPerPackage', $data) && null === $data['maxQuantityPerPackage']) {
             $object->setMaxQuantityPerPackage(null);
+            unset($data['maxQuantityPerPackage']);
         }
         if (\array_key_exists('maxPackageWeight', $data) && null !== $data['maxPackageWeight']) {
             $object->setMaxPackageWeight($this->denormalizer->denormalize($data['maxPackageWeight'], \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsMaxPackageWeight::class, 'json', $context));
             unset($data['maxPackageWeight']);
         } elseif (\array_key_exists('maxPackageWeight', $data) && null === $data['maxPackageWeight']) {
             $object->setMaxPackageWeight(null);
+            unset($data['maxPackageWeight']);
         }
         if (\array_key_exists('firstItemRate', $data) && null !== $data['firstItemRate']) {
             $object->setFirstItemRate($this->denormalizer->denormalize($data['firstItemRate'], \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsFirstItemRate::class, 'json', $context));
             unset($data['firstItemRate']);
         } elseif (\array_key_exists('firstItemRate', $data) && null === $data['firstItemRate']) {
             $object->setFirstItemRate(null);
+            unset($data['firstItemRate']);
         }
         if (\array_key_exists('shippingTime', $data) && null !== $data['shippingTime']) {
             $object->setShippingTime($this->denormalizer->denormalize($data['shippingTime'], \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsShippingTime::class, 'json', $context));
             unset($data['shippingTime']);
         } elseif (\array_key_exists('shippingTime', $data) && null === $data['shippingTime']) {
             $object->setShippingTime(null);
+            unset($data['shippingTime']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -101,18 +106,18 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
             $dataArray['allowed'] = $data->getAllowed();
         }
         if ($data->isInitialized('maxQuantityPerPackage') && null !== $data->getMaxQuantityPerPackage()) {
-            $dataArray['maxQuantityPerPackage'] = $this->normalizer->normalize($data->getMaxQuantityPerPackage(), 'json', $context);
+            $dataArray['maxQuantityPerPackage'] = null === $data->getMaxQuantityPerPackage() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMaxQuantityPerPackage(), 'json', $context));
         }
         if ($data->isInitialized('maxPackageWeight') && null !== $data->getMaxPackageWeight()) {
-            $dataArray['maxPackageWeight'] = $this->normalizer->normalize($data->getMaxPackageWeight(), 'json', $context);
+            $dataArray['maxPackageWeight'] = null === $data->getMaxPackageWeight() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMaxPackageWeight(), 'json', $context));
         }
         if ($data->isInitialized('firstItemRate') && null !== $data->getFirstItemRate()) {
-            $dataArray['firstItemRate'] = $this->normalizer->normalize($data->getFirstItemRate(), 'json', $context);
+            $dataArray['firstItemRate'] = null === $data->getFirstItemRate() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getFirstItemRate(), 'json', $context));
         }
         if ($data->isInitialized('shippingTime') && null !== $data->getShippingTime()) {
-            $dataArray['shippingTime'] = $this->normalizer->normalize($data->getShippingTime(), 'json', $context);
+            $dataArray['shippingTime'] = null === $data->getShippingTime() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getShippingTime(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

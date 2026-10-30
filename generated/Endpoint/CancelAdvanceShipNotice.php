@@ -21,11 +21,10 @@ class CancelAdvanceShipNotice extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
     /**
      * Use this resource to cancel an Advance Ship Notice in IN_TRANSIT status. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#anuluj-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#cancel-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param string $id               an identifier of the Advance Ship Notice to cancel
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $id an identifier of the Advance Ship Notice to cancel
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $id = '0b488a23-bc99-470d-8842-0c585adf2479', array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class CancelAdvanceShipNotice extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/fulfillment/advance-ship-notices/{id}/cancel');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/fulfillment/advance-ship-notices/{id}/cancel');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

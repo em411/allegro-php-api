@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductAiCoCreatedContent extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductAiCoCreatedContent implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -81,5 +85,10 @@ class ProductAiCoCreatedContent extends \ArrayObject
         $this->paths = $paths;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['images' => ['images', 'getImages', 'setImages'], 'paths' => ['paths', 'getPaths', 'setPaths']];
     }
 }

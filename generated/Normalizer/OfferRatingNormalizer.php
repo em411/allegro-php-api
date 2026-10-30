@@ -42,21 +42,22 @@ class OfferRatingNormalizer implements DenormalizerInterface, NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferRating();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferRating();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('averageScore', $data) && null !== $data['averageScore']) {
             $object->setAverageScore($data['averageScore']);
             unset($data['averageScore']);
         } elseif (\array_key_exists('averageScore', $data) && null === $data['averageScore']) {
             $object->setAverageScore(null);
+            unset($data['averageScore']);
         }
         if (\array_key_exists('scoreDistribution', $data) && null !== $data['scoreDistribution']) {
             $values = [];
@@ -67,12 +68,14 @@ class OfferRatingNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['scoreDistribution']);
         } elseif (\array_key_exists('scoreDistribution', $data) && null === $data['scoreDistribution']) {
             $object->setScoreDistribution(null);
+            unset($data['scoreDistribution']);
         }
         if (\array_key_exists('totalResponses', $data) && null !== $data['totalResponses']) {
             $object->setTotalResponses($data['totalResponses']);
             unset($data['totalResponses']);
         } elseif (\array_key_exists('totalResponses', $data) && null === $data['totalResponses']) {
             $object->setTotalResponses(null);
+            unset($data['totalResponses']);
         }
         if (\array_key_exists('sizeFeedback', $data) && null !== $data['sizeFeedback']) {
             $values_1 = [];
@@ -83,6 +86,7 @@ class OfferRatingNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['sizeFeedback']);
         } elseif (\array_key_exists('sizeFeedback', $data) && null === $data['sizeFeedback']) {
             $object->setSizeFeedback(null);
+            unset($data['sizeFeedback']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -102,7 +106,7 @@ class OfferRatingNormalizer implements DenormalizerInterface, NormalizerInterfac
         if ($data->isInitialized('scoreDistribution') && null !== $data->getScoreDistribution()) {
             $values = [];
             foreach ($data->getScoreDistribution() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['scoreDistribution'] = $values;
         }
@@ -112,11 +116,11 @@ class OfferRatingNormalizer implements DenormalizerInterface, NormalizerInterfac
         if ($data->isInitialized('sizeFeedback') && null !== $data->getSizeFeedback()) {
             $values_1 = [];
             foreach ($data->getSizeFeedback() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['sizeFeedback'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

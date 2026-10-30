@@ -42,45 +42,49 @@ class MyBidResponseNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\MyBidResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\MyBidResponse();
         if (\array_key_exists('minimalPriceMet', $data) && \is_int($data['minimalPriceMet'])) {
             $data['minimalPriceMet'] = (bool) $data['minimalPriceMet'];
         }
         if (\array_key_exists('highBidder', $data) && \is_int($data['highBidder'])) {
             $data['highBidder'] = (bool) $data['highBidder'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('maxAmount', $data) && null !== $data['maxAmount']) {
             $object->setMaxAmount($this->denormalizer->denormalize($data['maxAmount'], \Em411\Allegro\Api\Model\MaxPrice::class, 'json', $context));
             unset($data['maxAmount']);
         } elseif (\array_key_exists('maxAmount', $data) && null === $data['maxAmount']) {
             $object->setMaxAmount(null);
+            unset($data['maxAmount']);
         }
         if (\array_key_exists('minimalPriceMet', $data) && null !== $data['minimalPriceMet']) {
             $object->setMinimalPriceMet($data['minimalPriceMet']);
             unset($data['minimalPriceMet']);
         } elseif (\array_key_exists('minimalPriceMet', $data) && null === $data['minimalPriceMet']) {
             $object->setMinimalPriceMet(null);
+            unset($data['minimalPriceMet']);
         }
         if (\array_key_exists('highBidder', $data) && null !== $data['highBidder']) {
             $object->setHighBidder($data['highBidder']);
             unset($data['highBidder']);
         } elseif (\array_key_exists('highBidder', $data) && null === $data['highBidder']) {
             $object->setHighBidder(null);
+            unset($data['highBidder']);
         }
         if (\array_key_exists('auction', $data) && null !== $data['auction']) {
             $object->setAuction($this->denormalizer->denormalize($data['auction'], \Em411\Allegro\Api\Model\MyBidResponseAuction::class, 'json', $context));
             unset($data['auction']);
         } elseif (\array_key_exists('auction', $data) && null === $data['auction']) {
             $object->setAuction(null);
+            unset($data['auction']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -94,13 +98,13 @@ class MyBidResponseNormalizer implements DenormalizerInterface, NormalizerInterf
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['maxAmount'] = $this->normalizer->normalize($data->getMaxAmount(), 'json', $context);
+        $dataArray['maxAmount'] = null === $data->getMaxAmount() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMaxAmount(), 'json', $context));
         if ($data->isInitialized('minimalPriceMet') && null !== $data->getMinimalPriceMet()) {
             $dataArray['minimalPriceMet'] = $data->getMinimalPriceMet();
         }
         $dataArray['highBidder'] = $data->getHighBidder();
-        $dataArray['auction'] = $this->normalizer->normalize($data->getAuction(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['auction'] = null === $data->getAuction() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAuction(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

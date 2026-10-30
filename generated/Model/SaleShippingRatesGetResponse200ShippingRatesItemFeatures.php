@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleShippingRatesGetResponse200ShippingRatesItemFeatures extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleShippingRatesGetResponse200ShippingRatesItemFeatures implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class SaleShippingRatesGetResponse200ShippingRatesItemFeatures extends \ArrayObj
         $this->isFulfillment = $isFulfillment;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['managedByAllegro' => ['managedByAllegro', 'getManagedByAllegro', 'setManagedByAllegro'], 'isFulfillment' => ['isFulfillment', 'getIsFulfillment', 'setIsFulfillment']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class LineItemAllegroAds extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class LineItemAllegroAds implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class LineItemAllegroAds extends \ArrayObject
         $this->attributed = $attributed;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['attributed' => ['attributed', 'getAttributed', 'setAttributed']];
     }
 }

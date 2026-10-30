@@ -23,13 +23,11 @@ class UpdateAdvanceShipNotice extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
      * Use this resource to update an Advance Ship Notice.
      * If a client wants to update read-only property, an error is returned (only in cases when sent value will be different than actual on the server). Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#uzupelnij-dane-o-awizo" target="_blank">PL</a> / <a href="../../one-fulfillment-by-allegro-4R9dXyMPlc9#complete-the-data-of-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param string $id               an identifier of Advance Ship Notice
-     * @param array  $headerParameters {
-     *
-     * @var string $if-match A current version of Advance Ship Notice (e.g. from etag header obtained via get).
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $id an identifier of Advance Ship Notice
+     * @param array{
+     *    "if-match": string, //A current version of Advance Ship Notice (e.g. from etag header obtained via get).
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      */
     public function __construct(string $id, ?\Em411\Allegro\Api\Model\AdvanceShipNotice $requestBody = null, array $headerParameters = [], array $accept = [])
@@ -47,13 +45,13 @@ class UpdateAdvanceShipNotice extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/fulfillment/advance-ship-notices/{id}');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/fulfillment/advance-ship-notices/{id}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Em411\Allegro\Api\Model\AdvanceShipNotice) {
-            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], \Em411\Allegro\Api\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -98,7 +96,7 @@ class UpdateAdvanceShipNotice extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AdvanceShipNoticeResponse', 'json');
         }
         if (400 === $status) {
@@ -113,7 +111,7 @@ class UpdateAdvanceShipNotice extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
         if (412 === $status) {
             throw new \Em411\Allegro\Api\Exception\UpdateAdvanceShipNoticePreconditionFailedException($response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\UpdateAdvanceShipNoticeUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

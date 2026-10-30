@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductParseResult extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductParseResult implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -135,5 +139,10 @@ class ProductParseResult extends \ArrayObject
         $this->warnings = $warnings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['productId' => ['productId', 'getProductId', 'setProductId'], 'items' => ['items', 'getItems', 'setItems'], 'errors' => ['errors', 'getErrors', 'setErrors'], 'warnings' => ['warnings', 'getWarnings', 'setWarnings']];
     }
 }

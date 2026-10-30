@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FlexibleBundleGetOfferDTO extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FlexibleBundleGetOfferDTO implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -127,5 +131,10 @@ class FlexibleBundleGetOfferDTO extends \ArrayObject
         $this->marketplaces = $marketplaces;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'excludedFromDiscount' => ['excludedFromDiscount', 'getExcludedFromDiscount', 'setExcludedFromDiscount'], 'entryPoint' => ['entryPoint', 'getEntryPoint', 'setEntryPoint'], 'marketplaces' => ['marketplaces', 'getMarketplaces', 'setMarketplaces']];
     }
 }

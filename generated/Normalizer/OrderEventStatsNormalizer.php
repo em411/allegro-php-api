@@ -42,21 +42,22 @@ class OrderEventStatsNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OrderEventStats();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OrderEventStats();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('latestEvent', $data) && null !== $data['latestEvent']) {
             $object->setLatestEvent($this->denormalizer->denormalize($data['latestEvent'], \Em411\Allegro\Api\Model\LatestOrderEvent::class, 'json', $context));
             unset($data['latestEvent']);
         } elseif (\array_key_exists('latestEvent', $data) && null === $data['latestEvent']) {
             $object->setLatestEvent(null);
+            unset($data['latestEvent']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,9 +72,9 @@ class OrderEventStatsNormalizer implements DenormalizerInterface, NormalizerInte
     {
         $dataArray = [];
         if ($data->isInitialized('latestEvent') && null !== $data->getLatestEvent()) {
-            $dataArray['latestEvent'] = $this->normalizer->normalize($data->getLatestEvent(), 'json', $context);
+            $dataArray['latestEvent'] = null === $data->getLatestEvent() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getLatestEvent(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

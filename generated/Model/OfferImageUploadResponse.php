@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferImageUploadResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferImageUploadResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class OfferImageUploadResponse extends \ArrayObject
         $this->location = $location;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['expiresAt' => ['expiresAt', 'getExpiresAt', 'setExpiresAt'], 'location' => ['location', 'getLocation', 'setLocation']];
     }
 }

@@ -42,45 +42,74 @@ class AdvanceShipNoticeListItemResponseNormalizer implements DenormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AdvanceShipNoticeListItemResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AdvanceShipNoticeListItemResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('displayNumber', $data) && null !== $data['displayNumber']) {
             $object->setDisplayNumber($data['displayNumber']);
             unset($data['displayNumber']);
         } elseif (\array_key_exists('displayNumber', $data) && null === $data['displayNumber']) {
             $object->setDisplayNumber(null);
+            unset($data['displayNumber']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
-            $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']);
+            if (false === $date) {
+                if (\is_string($data['createdAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['createdAt'])) {
+                    try {
+                        $date = new \DateTime($data['createdAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setCreatedAt($date);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('updatedAt', $data) && null !== $data['updatedAt']) {
-            $object->setUpdatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['updatedAt']));
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['updatedAt']);
+            if (false === $date_1) {
+                if (\is_string($data['updatedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['updatedAt'])) {
+                    try {
+                        $date_1 = new \DateTime($data['updatedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['updatedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['updatedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setUpdatedAt($date_1);
             unset($data['updatedAt']);
         } elseif (\array_key_exists('updatedAt', $data) && null === $data['updatedAt']) {
             $object->setUpdatedAt(null);
+            unset($data['updatedAt']);
         }
         if (\array_key_exists('items', $data) && null !== $data['items']) {
             $values = [];
@@ -91,30 +120,47 @@ class AdvanceShipNoticeListItemResponseNormalizer implements DenormalizerInterfa
             unset($data['items']);
         } elseif (\array_key_exists('items', $data) && null === $data['items']) {
             $object->setItems(null);
+            unset($data['items']);
         }
         if (\array_key_exists('handlingUnit', $data) && null !== $data['handlingUnit']) {
             $object->setHandlingUnit($this->denormalizer->denormalize($data['handlingUnit'], \Em411\Allegro\Api\Model\HandlingUnit::class, 'json', $context));
             unset($data['handlingUnit']);
         } elseif (\array_key_exists('handlingUnit', $data) && null === $data['handlingUnit']) {
             $object->setHandlingUnit(null);
+            unset($data['handlingUnit']);
         }
         if (\array_key_exists('labels', $data) && null !== $data['labels']) {
             $object->setLabels($this->denormalizer->denormalize($data['labels'], \Em411\Allegro\Api\Model\Labels::class, 'json', $context));
             unset($data['labels']);
         } elseif (\array_key_exists('labels', $data) && null === $data['labels']) {
             $object->setLabels(null);
+            unset($data['labels']);
         }
         if (\array_key_exists('shipping', $data) && null !== $data['shipping']) {
             $object->setShipping($this->denormalizer->denormalize($data['shipping'], \Em411\Allegro\Api\Model\ShippingExtended::class, 'json', $context));
             unset($data['shipping']);
         } elseif (\array_key_exists('shipping', $data) && null === $data['shipping']) {
             $object->setShipping(null);
+            unset($data['shipping']);
         }
         if (\array_key_exists('submittedAt', $data) && null !== $data['submittedAt']) {
-            $object->setSubmittedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['submittedAt']));
+            $date_2 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['submittedAt']);
+            if (false === $date_2) {
+                if (\is_string($data['submittedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['submittedAt'])) {
+                    try {
+                        $date_2 = new \DateTime($data['submittedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['submittedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['submittedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setSubmittedAt($date_2);
             unset($data['submittedAt']);
         } elseif (\array_key_exists('submittedAt', $data) && null === $data['submittedAt']) {
             $object->setSubmittedAt(null);
+            unset($data['submittedAt']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -135,22 +181,22 @@ class AdvanceShipNoticeListItemResponseNormalizer implements DenormalizerInterfa
         $dataArray['updatedAt'] = $data->getUpdatedAt()->format('Y-m-d\TH:i:sP');
         $values = [];
         foreach ($data->getItems() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['items'] = $values;
         if ($data->isInitialized('handlingUnit') && null !== $data->getHandlingUnit()) {
-            $dataArray['handlingUnit'] = $this->normalizer->normalize($data->getHandlingUnit(), 'json', $context);
+            $dataArray['handlingUnit'] = null === $data->getHandlingUnit() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getHandlingUnit(), 'json', $context));
         }
         if ($data->isInitialized('labels') && null !== $data->getLabels()) {
-            $dataArray['labels'] = $this->normalizer->normalize($data->getLabels(), 'json', $context);
+            $dataArray['labels'] = null === $data->getLabels() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getLabels(), 'json', $context));
         }
         if ($data->isInitialized('shipping') && null !== $data->getShipping()) {
-            $dataArray['shipping'] = $this->normalizer->normalize($data->getShipping(), 'json', $context);
+            $dataArray['shipping'] = null === $data->getShipping() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getShipping(), 'json', $context));
         }
         if ($data->isInitialized('submittedAt') && null !== $data->getSubmittedAt()) {
             $dataArray['submittedAt'] = $data->getSubmittedAt()->format('Y-m-d\TH:i:sP');
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

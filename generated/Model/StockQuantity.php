@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class StockQuantity extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class StockQuantity implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class StockQuantity extends \ArrayObject
         $this->onHold = $onHold;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['available' => ['available', 'getAvailable', 'setAvailable'], 'onOrder' => ['onOrder', 'getOnOrder', 'setOnOrder'], 'onHold' => ['onHold', 'getOnHold', 'setOnHold']];
     }
 }

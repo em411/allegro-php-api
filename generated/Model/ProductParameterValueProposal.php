@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductParameterValueProposal extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductParameterValueProposal implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class ProductParameterValueProposal extends \ArrayObject
         $this->resolutionType = $resolutionType;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['current' => ['current', 'getCurrent', 'setCurrent'], 'proposal' => ['proposal', 'getProposal', 'setProposal'], 'reason' => ['reason', 'getReason', 'setReason'], 'resolutionType' => ['resolutionType', 'getResolutionType', 'setResolutionType']];
     }
 }

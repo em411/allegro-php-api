@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferQuoteDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferQuoteDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -125,5 +129,10 @@ class OfferQuoteDto extends \ArrayObject
         $this->type = $type;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['enabled' => ['enabled', 'getEnabled', 'setEnabled'], 'fee' => ['fee', 'getFee', 'setFee'], 'name' => ['name', 'getName', 'setName'], 'nextDate' => ['nextDate', 'getNextDate', 'setNextDate'], 'offer' => ['offer', 'getOffer', 'setOffer'], 'type' => ['type', 'getType', 'setType']];
     }
 }

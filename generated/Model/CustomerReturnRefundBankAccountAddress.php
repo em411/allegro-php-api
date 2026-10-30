@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CustomerReturnRefundBankAccountAddress extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CustomerReturnRefundBankAccountAddress implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -91,5 +95,10 @@ class CustomerReturnRefundBankAccountAddress extends \ArrayObject
         $this->countryCode = $countryCode;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['street' => ['street', 'getStreet', 'setStreet'], 'city' => ['city', 'getCity', 'setCity'], 'postCode' => ['postCode', 'getPostCode', 'setPostCode'], 'countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class RecommendedPriceReductionDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class RecommendedPriceReductionDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class RecommendedPriceReductionDto extends \ArrayObject
         $this->sellerMaxDeclaredPercentage = $sellerMaxDeclaredPercentage;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['sellerMaxDeclaredPercentage' => ['sellerMaxDeclaredPercentage', 'getSellerMaxDeclaredPercentage', 'setSellerMaxDeclaredPercentage']];
     }
 }

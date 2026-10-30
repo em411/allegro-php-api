@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AdditionalServicesGroups extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AdditionalServicesGroups implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class AdditionalServicesGroups extends \ArrayObject
         $this->additionalServicesGroups = $additionalServicesGroups;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['additionalServicesGroups' => ['additionalServicesGroups', 'getAdditionalServicesGroups', 'setAdditionalServicesGroups']];
     }
 }

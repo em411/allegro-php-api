@@ -42,21 +42,26 @@ class UserRatingSummaryResponseV2UserNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UserRatingSummaryResponseV2User();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\UserRatingSummaryResponseV2User();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
-            $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d', $data['createdAt'])->setTime(0, 0, 0));
+            $date = \DateTime::createFromFormat('Y-m-d', $data['createdAt']);
+            if (false === $date) {
+                throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d');
+            }
+            $object->setCreatedAt($date->setTime(0, 0, 0));
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,7 +76,7 @@ class UserRatingSummaryResponseV2UserNormalizer implements DenormalizerInterface
     {
         $dataArray = [];
         $dataArray['createdAt'] = $data->getCreatedAt()->format('Y-m-d');
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

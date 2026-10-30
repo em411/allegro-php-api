@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductChangeProposalRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductChangeProposalRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -210,5 +214,10 @@ class ProductChangeProposalRequest extends \ArrayObject
         $this->language = $language;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['name', 'getName', 'setName'], 'note' => ['note', 'getNote', 'setNote'], 'category' => ['category', 'getCategory', 'setCategory'], 'images' => ['images', 'getImages', 'setImages'], 'parameters' => ['parameters', 'getParameters', 'setParameters'], 'notifyViaEmailAfterVerification' => ['notifyViaEmailAfterVerification', 'getNotifyViaEmailAfterVerification', 'setNotifyViaEmailAfterVerification'], 'language' => ['language', 'getLanguage', 'setLanguage']];
     }
 }

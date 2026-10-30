@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PublicationModification extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PublicationModification implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class PublicationModification extends \ArrayObject
         $this->scheduledFor = $scheduledFor;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['action' => ['action', 'getAction', 'setAction'], 'scheduledFor' => ['scheduledFor', 'getScheduledFor', 'setScheduledFor']];
     }
 }

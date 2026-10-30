@@ -42,33 +42,36 @@ class DeliveryOptionDtoLimitsDimensionsNormalizer implements DenormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\DeliveryOptionDtoLimitsDimensions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\DeliveryOptionDtoLimitsDimensions();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('length', $data) && null !== $data['length']) {
             $object->setLength($this->denormalizer->denormalize($data['length'], \Em411\Allegro\Api\Model\DimensionValue::class, 'json', $context));
             unset($data['length']);
         } elseif (\array_key_exists('length', $data) && null === $data['length']) {
             $object->setLength(null);
+            unset($data['length']);
         }
         if (\array_key_exists('width', $data) && null !== $data['width']) {
             $object->setWidth($this->denormalizer->denormalize($data['width'], \Em411\Allegro\Api\Model\DimensionValue::class, 'json', $context));
             unset($data['width']);
         } elseif (\array_key_exists('width', $data) && null === $data['width']) {
             $object->setWidth(null);
+            unset($data['width']);
         }
         if (\array_key_exists('height', $data) && null !== $data['height']) {
             $object->setHeight($this->denormalizer->denormalize($data['height'], \Em411\Allegro\Api\Model\DimensionValue::class, 'json', $context));
             unset($data['height']);
         } elseif (\array_key_exists('height', $data) && null === $data['height']) {
             $object->setHeight(null);
+            unset($data['height']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,15 +86,15 @@ class DeliveryOptionDtoLimitsDimensionsNormalizer implements DenormalizerInterfa
     {
         $dataArray = [];
         if ($data->isInitialized('length') && null !== $data->getLength()) {
-            $dataArray['length'] = $this->normalizer->normalize($data->getLength(), 'json', $context);
+            $dataArray['length'] = null === $data->getLength() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getLength(), 'json', $context));
         }
         if ($data->isInitialized('width') && null !== $data->getWidth()) {
-            $dataArray['width'] = $this->normalizer->normalize($data->getWidth(), 'json', $context);
+            $dataArray['width'] = null === $data->getWidth() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getWidth(), 'json', $context));
         }
         if ($data->isInitialized('height') && null !== $data->getHeight()) {
-            $dataArray['height'] = $this->normalizer->normalize($data->getHeight(), 'json', $context);
+            $dataArray['height'] = null === $data->getHeight() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getHeight(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

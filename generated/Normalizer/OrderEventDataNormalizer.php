@@ -42,27 +42,29 @@ class OrderEventDataNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OrderEventData();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OrderEventData();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('seller', $data) && null !== $data['seller']) {
             $object->setSeller($this->denormalizer->denormalize($data['seller'], \Em411\Allegro\Api\Model\SellerReference::class, 'json', $context));
             unset($data['seller']);
         } elseif (\array_key_exists('seller', $data) && null === $data['seller']) {
             $object->setSeller(null);
+            unset($data['seller']);
         }
         if (\array_key_exists('buyer', $data) && null !== $data['buyer']) {
             $object->setBuyer($this->denormalizer->denormalize($data['buyer'], \Em411\Allegro\Api\Model\BuyerReference::class, 'json', $context));
             unset($data['buyer']);
         } elseif (\array_key_exists('buyer', $data) && null === $data['buyer']) {
             $object->setBuyer(null);
+            unset($data['buyer']);
         }
         if (\array_key_exists('lineItems', $data) && null !== $data['lineItems']) {
             $values = [];
@@ -73,18 +75,21 @@ class OrderEventDataNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['lineItems']);
         } elseif (\array_key_exists('lineItems', $data) && null === $data['lineItems']) {
             $object->setLineItems(null);
+            unset($data['lineItems']);
         }
         if (\array_key_exists('checkoutForm', $data) && null !== $data['checkoutForm']) {
             $object->setCheckoutForm($this->denormalizer->denormalize($data['checkoutForm'], \Em411\Allegro\Api\Model\CheckoutFormReference::class, 'json', $context));
             unset($data['checkoutForm']);
         } elseif (\array_key_exists('checkoutForm', $data) && null === $data['checkoutForm']) {
             $object->setCheckoutForm(null);
+            unset($data['checkoutForm']);
         }
         if (\array_key_exists('marketplace', $data) && null !== $data['marketplace']) {
             $object->setMarketplace($this->denormalizer->denormalize($data['marketplace'], \Em411\Allegro\Api\Model\OrderMarketplace::class, 'json', $context));
             unset($data['marketplace']);
         } elseif (\array_key_exists('marketplace', $data) && null === $data['marketplace']) {
             $object->setMarketplace(null);
+            unset($data['marketplace']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -98,20 +103,20 @@ class OrderEventDataNormalizer implements DenormalizerInterface, NormalizerInter
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['seller'] = $this->normalizer->normalize($data->getSeller(), 'json', $context);
-        $dataArray['buyer'] = $this->normalizer->normalize($data->getBuyer(), 'json', $context);
+        $dataArray['seller'] = null === $data->getSeller() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSeller(), 'json', $context));
+        $dataArray['buyer'] = null === $data->getBuyer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBuyer(), 'json', $context));
         $values = [];
         foreach ($data->getLineItems() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['lineItems'] = $values;
         if ($data->isInitialized('checkoutForm') && null !== $data->getCheckoutForm()) {
-            $dataArray['checkoutForm'] = $this->normalizer->normalize($data->getCheckoutForm(), 'json', $context);
+            $dataArray['checkoutForm'] = null === $data->getCheckoutForm() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCheckoutForm(), 'json', $context));
         }
         if ($data->isInitialized('marketplace') && null !== $data->getMarketplace()) {
-            $dataArray['marketplace'] = $this->normalizer->normalize($data->getMarketplace(), 'json', $context);
+            $dataArray['marketplace'] = null === $data->getMarketplace() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMarketplace(), 'json', $context));
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

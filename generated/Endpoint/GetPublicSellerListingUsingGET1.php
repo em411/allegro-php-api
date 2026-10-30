@@ -20,16 +20,13 @@ class GetPublicSellerListingUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\
     /**
      * Use this resource to get the seller's return policies. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-zwrotow-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-return-policies-assigned-to-the-account" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int $limit the limit of elements in the response
-     * @var int $offset The offset of elements in the response.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "limit"?: int, //The limit of elements in the response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -96,7 +93,7 @@ class GetPublicSellerListingUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPoliciesListReturnPolicyV1', 'json');
         }
         if (401 === $status) {

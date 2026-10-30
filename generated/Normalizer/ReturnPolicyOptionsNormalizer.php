@@ -42,13 +42,16 @@ class ReturnPolicyOptionsNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ReturnPolicyOptions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ReturnPolicyOptions();
         if (\array_key_exists('cashOnDeliveryNotAllowed', $data) && \is_int($data['cashOnDeliveryNotAllowed'])) {
             $data['cashOnDeliveryNotAllowed'] = (bool) $data['cashOnDeliveryNotAllowed'];
         }
@@ -64,38 +67,40 @@ class ReturnPolicyOptionsNormalizer implements DenormalizerInterface, Normalizer
         if (\array_key_exists('collectBySellerOnly', $data) && \is_int($data['collectBySellerOnly'])) {
             $data['collectBySellerOnly'] = (bool) $data['collectBySellerOnly'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('cashOnDeliveryNotAllowed', $data) && null !== $data['cashOnDeliveryNotAllowed']) {
             $object->setCashOnDeliveryNotAllowed($data['cashOnDeliveryNotAllowed']);
             unset($data['cashOnDeliveryNotAllowed']);
         } elseif (\array_key_exists('cashOnDeliveryNotAllowed', $data) && null === $data['cashOnDeliveryNotAllowed']) {
             $object->setCashOnDeliveryNotAllowed(null);
+            unset($data['cashOnDeliveryNotAllowed']);
         }
         if (\array_key_exists('freeAccessoriesReturnRequired', $data) && null !== $data['freeAccessoriesReturnRequired']) {
             $object->setFreeAccessoriesReturnRequired($data['freeAccessoriesReturnRequired']);
             unset($data['freeAccessoriesReturnRequired']);
         } elseif (\array_key_exists('freeAccessoriesReturnRequired', $data) && null === $data['freeAccessoriesReturnRequired']) {
             $object->setFreeAccessoriesReturnRequired(null);
+            unset($data['freeAccessoriesReturnRequired']);
         }
         if (\array_key_exists('refundLoweredByReceivedDiscount', $data) && null !== $data['refundLoweredByReceivedDiscount']) {
             $object->setRefundLoweredByReceivedDiscount($data['refundLoweredByReceivedDiscount']);
             unset($data['refundLoweredByReceivedDiscount']);
         } elseif (\array_key_exists('refundLoweredByReceivedDiscount', $data) && null === $data['refundLoweredByReceivedDiscount']) {
             $object->setRefundLoweredByReceivedDiscount(null);
+            unset($data['refundLoweredByReceivedDiscount']);
         }
         if (\array_key_exists('businessReturnAllowed', $data) && null !== $data['businessReturnAllowed']) {
             $object->setBusinessReturnAllowed($data['businessReturnAllowed']);
             unset($data['businessReturnAllowed']);
         } elseif (\array_key_exists('businessReturnAllowed', $data) && null === $data['businessReturnAllowed']) {
             $object->setBusinessReturnAllowed(null);
+            unset($data['businessReturnAllowed']);
         }
         if (\array_key_exists('collectBySellerOnly', $data) && null !== $data['collectBySellerOnly']) {
             $object->setCollectBySellerOnly($data['collectBySellerOnly']);
             unset($data['collectBySellerOnly']);
         } elseif (\array_key_exists('collectBySellerOnly', $data) && null === $data['collectBySellerOnly']) {
             $object->setCollectBySellerOnly(null);
+            unset($data['collectBySellerOnly']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -114,7 +119,7 @@ class ReturnPolicyOptionsNormalizer implements DenormalizerInterface, Normalizer
         $dataArray['refundLoweredByReceivedDiscount'] = $data->getRefundLoweredByReceivedDiscount();
         $dataArray['businessReturnAllowed'] = $data->getBusinessReturnAllowed();
         $dataArray['collectBySellerOnly'] = $data->getCollectBySellerOnly();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

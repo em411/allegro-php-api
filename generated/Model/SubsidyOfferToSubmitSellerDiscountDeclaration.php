@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SubsidyOfferToSubmitSellerDiscountDeclaration extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SubsidyOfferToSubmitSellerDiscountDeclaration implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class SubsidyOfferToSubmitSellerDiscountDeclaration extends \ArrayObject
         $this->maxContributionPercentage = $maxContributionPercentage;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['maxContributionPercentage' => ['maxContributionPercentage', 'getMaxContributionPercentage', 'setMaxContributionPercentage']];
     }
 }

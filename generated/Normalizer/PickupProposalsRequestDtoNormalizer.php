@@ -42,15 +42,15 @@ class PickupProposalsRequestDtoNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PickupProposalsRequestDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PickupProposalsRequestDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('shipmentIds', $data) && null !== $data['shipmentIds']) {
             $values = [];
@@ -61,18 +61,21 @@ class PickupProposalsRequestDtoNormalizer implements DenormalizerInterface, Norm
             unset($data['shipmentIds']);
         } elseif (\array_key_exists('shipmentIds', $data) && null === $data['shipmentIds']) {
             $object->setShipmentIds(null);
+            unset($data['shipmentIds']);
         }
         if (\array_key_exists('readyDate', $data) && null !== $data['readyDate']) {
             $object->setReadyDate($data['readyDate']);
             unset($data['readyDate']);
         } elseif (\array_key_exists('readyDate', $data) && null === $data['readyDate']) {
             $object->setReadyDate(null);
+            unset($data['readyDate']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\PickupAddressDto::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -94,8 +97,8 @@ class PickupProposalsRequestDtoNormalizer implements DenormalizerInterface, Norm
         if ($data->isInitialized('readyDate') && null !== $data->getReadyDate()) {
             $dataArray['readyDate'] = $data->getReadyDate();
         }
-        $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
-        foreach ($data as $key => $value_1) {
+        $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

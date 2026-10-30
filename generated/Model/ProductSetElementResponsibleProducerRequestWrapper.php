@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductSetElementResponsibleProducerRequestWrapper extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductSetElementResponsibleProducerRequestWrapper implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class ProductSetElementResponsibleProducerRequestWrapper extends \ArrayObject
         $this->responsibleProducer = $responsibleProducer;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['responsibleProducer' => ['responsibleProducer', 'getResponsibleProducer', 'setResponsibleProducer']];
     }
 }

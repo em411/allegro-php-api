@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormAdditionalService extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormAdditionalService implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class CheckoutFormAdditionalService extends \ArrayObject
         $this->quantity = $quantity;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['definitionId' => ['definitionId', 'getDefinitionId', 'setDefinitionId'], 'name' => ['name', 'getName', 'setName'], 'price' => ['price', 'getPrice', 'setPrice'], 'quantity' => ['quantity', 'getQuantity', 'setQuantity']];
     }
 }

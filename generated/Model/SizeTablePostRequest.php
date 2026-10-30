@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SizeTablePostRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SizeTablePostRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class SizeTablePostRequest extends \ArrayObject
         $this->values = $values;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['name', 'getName', 'setName'], 'template' => ['template', 'getTemplate', 'setTemplate'], 'headers' => ['headers', 'getHeaders', 'setHeaders'], 'values' => ['values', 'getValues', 'setValues']];
     }
 }

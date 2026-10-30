@@ -42,33 +42,36 @@ class UpdateResponsibleProducerRequestNormalizer implements DenormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UpdateResponsibleProducerRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\UpdateResponsibleProducerRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('producerData', $data) && null !== $data['producerData']) {
             $object->setProducerData($this->denormalizer->denormalize($data['producerData'], \Em411\Allegro\Api\Model\UpdateResponsibleProducerRequestProducerData::class, 'json', $context));
             unset($data['producerData']);
         } elseif (\array_key_exists('producerData', $data) && null === $data['producerData']) {
             $object->setProducerData(null);
+            unset($data['producerData']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,9 +92,9 @@ class UpdateResponsibleProducerRequestNormalizer implements DenormalizerInterfac
             $dataArray['name'] = $data->getName();
         }
         if ($data->isInitialized('producerData') && null !== $data->getProducerData()) {
-            $dataArray['producerData'] = $this->normalizer->normalize($data->getProducerData(), 'json', $context);
+            $dataArray['producerData'] = null === $data->getProducerData() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getProducerData(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

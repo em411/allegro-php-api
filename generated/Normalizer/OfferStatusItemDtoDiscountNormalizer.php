@@ -42,24 +42,25 @@ class OfferStatusItemDtoDiscountNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferStatusItemDtoDiscount();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\OfferStatusItemDtoDiscount();
         if (\array_key_exists('opportunity', $data) && \is_int($data['opportunity'])) {
             $data['opportunity'] = (bool) $data['opportunity'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('opportunity', $data) && null !== $data['opportunity']) {
             $object->setOpportunity($data['opportunity']);
             unset($data['opportunity']);
         } elseif (\array_key_exists('opportunity', $data) && null === $data['opportunity']) {
             $object->setOpportunity(null);
+            unset($data['opportunity']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -74,7 +75,7 @@ class OfferStatusItemDtoDiscountNormalizer implements DenormalizerInterface, Nor
     {
         $dataArray = [];
         $dataArray['opportunity'] = $data->getOpportunity();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

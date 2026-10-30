@@ -42,33 +42,36 @@ class CheckoutFormLineItemTaxNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemTax();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemTax();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('rate', $data) && null !== $data['rate']) {
             $object->setRate($data['rate']);
             unset($data['rate']);
         } elseif (\array_key_exists('rate', $data) && null === $data['rate']) {
             $object->setRate(null);
+            unset($data['rate']);
         }
         if (\array_key_exists('subject', $data) && null !== $data['subject']) {
             $object->setSubject($data['subject']);
             unset($data['subject']);
         } elseif (\array_key_exists('subject', $data) && null === $data['subject']) {
             $object->setSubject(null);
+            unset($data['subject']);
         }
         if (\array_key_exists('exemption', $data) && null !== $data['exemption']) {
             $object->setExemption($data['exemption']);
             unset($data['exemption']);
         } elseif (\array_key_exists('exemption', $data) && null === $data['exemption']) {
             $object->setExemption(null);
+            unset($data['exemption']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,16 +85,16 @@ class CheckoutFormLineItemTaxNormalizer implements DenormalizerInterface, Normal
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('rate')) {
+        if ($data->isInitialized('rate') && null !== $data->getRate()) {
             $dataArray['rate'] = $data->getRate();
         }
-        if ($data->isInitialized('subject')) {
+        if ($data->isInitialized('subject') && null !== $data->getSubject()) {
             $dataArray['subject'] = $data->getSubject();
         }
-        if ($data->isInitialized('exemption')) {
+        if ($data->isInitialized('exemption') && null !== $data->getExemption()) {
             $dataArray['exemption'] = $data->getExemption();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

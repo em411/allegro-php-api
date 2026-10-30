@@ -42,33 +42,36 @@ class PriceModificationValueChangeDecreaseNormalizer implements DenormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PriceModificationValueChangeDecrease();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PriceModificationValueChangeDecrease();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
             $object->setMarketplaceId($data['marketplaceId']);
             unset($data['marketplaceId']);
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
+            unset($data['marketplaceId']);
         }
         if (\array_key_exists('value', $data) && null !== $data['value']) {
             $object->setValue($this->denormalizer->denormalize($data['value'], \Em411\Allegro\Api\Model\PriceModificationValueChangeHolder::class, 'json', $context));
             unset($data['value']);
         } elseif (\array_key_exists('value', $data) && null === $data['value']) {
             $object->setValue(null);
+            unset($data['value']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,13 +88,13 @@ class PriceModificationValueChangeDecreaseNormalizer implements DenormalizerInte
         if ($data->isInitialized('type') && null !== $data->getType()) {
             $dataArray['type'] = $data->getType();
         }
-        if ($data->isInitialized('marketplaceId')) {
+        if ($data->isInitialized('marketplaceId') && null !== $data->getMarketplaceId()) {
             $dataArray['marketplaceId'] = $data->getMarketplaceId();
         }
         if ($data->isInitialized('value') && null !== $data->getValue()) {
-            $dataArray['value'] = $this->normalizer->normalize($data->getValue(), 'json', $context);
+            $dataArray['value'] = null === $data->getValue() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getValue(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class NewAttachmentDeclaration extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class NewAttachmentDeclaration implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -57,5 +61,10 @@ class NewAttachmentDeclaration extends \ArrayObject
         $this->size = $size;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['filename' => ['filename', 'getFilename', 'setFilename'], 'size' => ['size', 'getSize', 'setSize']];
     }
 }

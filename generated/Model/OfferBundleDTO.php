@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferBundleDTO extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferBundleDTO implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -185,5 +189,10 @@ class OfferBundleDTO extends \ArrayObject
         $this->createdBy = $createdBy;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'offers' => ['offers', 'getOffers', 'setOffers'], 'publication' => ['publication', 'getPublication', 'setPublication'], 'discounts' => ['discounts', 'getDiscounts', 'setDiscounts'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'createdBy' => ['createdBy', 'getCreatedBy', 'setCreatedBy']];
     }
 }

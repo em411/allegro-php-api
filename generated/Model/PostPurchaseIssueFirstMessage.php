@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PostPurchaseIssueFirstMessage extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PostPurchaseIssueFirstMessage implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -114,5 +118,10 @@ class PostPurchaseIssueFirstMessage extends \ArrayObject
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'text' => ['text', 'getText', 'setText'], 'attachments' => ['attachments', 'getAttachments', 'setAttachments'], 'author' => ['author', 'getAuthor', 'setAuthor'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt']];
     }
 }

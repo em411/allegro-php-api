@@ -21481,14 +21481,14 @@ paths:
       security:
         - bearer-token-for-user:
             - allegro:api:fulfillment:read
-  /fulfillment/submit-commands/{commandId}:
+  /fulfillment/submit-commands/{command-id}:
     put:
       summary: 'Submit the Advance Ship Notice'
       description: >-
         Use this resource to submit the Advance Ship Notice. After this operation, updates of the Advance Ship Notice are limited to selected properties only. See <a href="../../documentation#operation/updateSubmittedAdvanceShipNotice">PUT /fulfillment/advance-ship-notices/{id}/submitted</a>.
         Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#zakoncz-edycje-i-wyslij-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#finish-editing-and-submit-the-advance-ship-notice" target="_blank">EN</a>.
       parameters:
-        - name: commandId
+        - name: command-id
           in: path
           description: The identifier of the command.
           required: true
@@ -21586,7 +21586,7 @@ paths:
       summary: 'Get submit status'
       description: 'Use this resource to get submit status of the Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#zakoncz-edycje-i-wyslij-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#finish-editing-and-submit-the-advance-ship-notice" target="_blank">EN</a>.'
       parameters:
-        - name: commandId
+        - name: command-id
           in: path
           description: An identifier of the command.
           required: true

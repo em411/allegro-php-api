@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferRules extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferRules implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class OfferRules extends \ArrayObject
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['rules' => ['rules', 'getRules', 'setRules'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt']];
     }
 }

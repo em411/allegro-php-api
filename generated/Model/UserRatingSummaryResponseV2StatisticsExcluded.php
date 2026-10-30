@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class UserRatingSummaryResponseV2StatisticsExcluded extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class UserRatingSummaryResponseV2StatisticsExcluded implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class UserRatingSummaryResponseV2StatisticsExcluded extends \ArrayObject
         $this->total = $total;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['total' => ['total', 'getTotal', 'setTotal']];
     }
 }

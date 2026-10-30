@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferListingDtoV1Stock extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferListingDtoV1Stock implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class OfferListingDtoV1Stock extends \ArrayObject
         $this->sold = $sold;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['available' => ['available', 'getAvailable', 'setAvailable'], 'sold' => ['sold', 'getSold', 'setSold']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ListingResponseSort extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ListingResponseSort implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class ListingResponseSort extends \ArrayObject
         $this->selected = $selected;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['value' => ['value', 'getValue', 'setValue'], 'name' => ['name', 'getName', 'setName'], 'order' => ['order', 'getOrder', 'setOrder'], 'selected' => ['selected', 'getSelected', 'setSelected']];
     }
 }

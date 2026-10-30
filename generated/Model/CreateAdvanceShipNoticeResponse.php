@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CreateAdvanceShipNoticeResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CreateAdvanceShipNoticeResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -292,5 +296,10 @@ class CreateAdvanceShipNoticeResponse extends \ArrayObject
         $this->volumeInCc = $volumeInCc;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'displayNumber' => ['displayNumber', 'getDisplayNumber', 'setDisplayNumber'], 'status' => ['status', 'getStatus', 'setStatus'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'items' => ['items', 'getItems', 'setItems'], 'handlingUnit' => ['handlingUnit', 'getHandlingUnit', 'setHandlingUnit'], 'labels' => ['labels', 'getLabels', 'setLabels'], 'shipping' => ['shipping', 'getShipping', 'setShipping'], 'volumeInCc' => ['volumeInCc', 'getVolumeInCc', 'setVolumeInCc']];
     }
 }

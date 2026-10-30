@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class MarketplaceItemLanguages extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class MarketplaceItemLanguages implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -81,5 +85,10 @@ class MarketplaceItemLanguages extends \ArrayObject
         $this->offerDisplay = $offerDisplay;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['offerCreation' => ['offerCreation', 'getOfferCreation', 'setOfferCreation'], 'offerDisplay' => ['offerDisplay', 'getOfferDisplay', 'setOfferDisplay']];
     }
 }

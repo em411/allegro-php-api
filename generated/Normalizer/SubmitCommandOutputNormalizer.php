@@ -42,6 +42,16 @@ class SubmitCommandOutputNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
+        $object = new \Em411\Allegro\Api\Model\SubmitCommandOutput();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
+        }
         if (\array_key_exists('status', $data) && 'RUNNING' === $data['status']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\SubmitRunningCommandOutput', $format, $context);
         }
@@ -51,21 +61,12 @@ class SubmitCommandOutputNormalizer implements DenormalizerInterface, Normalizer
         if (\array_key_exists('status', $data) && 'FAILED' === $data['status']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\SubmitFailedCommandOutput', $format, $context);
         }
-        if (isset($data['$ref'])) {
-            return new Reference($data['$ref'], $context['document-origin']);
-        }
-        if (isset($data['$recursiveRef'])) {
-            return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SubmitCommandOutput();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,7 +90,7 @@ class SubmitCommandOutputNormalizer implements DenormalizerInterface, Normalizer
             return $this->normalizer->normalize($data, $format, $context);
         }
         $dataArray['status'] = $data->getStatus();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -49,4 +49,9 @@ class PriceModificationFixedPrice extends PriceModification
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['price' => ['price', 'getPrice', 'setPrice']]);
+    }
 }

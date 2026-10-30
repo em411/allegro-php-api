@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AlleDiscountListCampaignsResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AlleDiscountListCampaignsResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class AlleDiscountListCampaignsResponse extends \ArrayObject
         $this->alleDiscountCampaigns = $alleDiscountCampaigns;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['alleDiscountCampaigns' => ['alleDiscountCampaigns', 'getAlleDiscountCampaigns', 'setAlleDiscountCampaigns']];
     }
 }

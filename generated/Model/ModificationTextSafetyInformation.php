@@ -49,4 +49,9 @@ class ModificationTextSafetyInformation extends ModificationSafetyInformation
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['description' => ['description', 'getDescription', 'setDescription']]);
+    }
 }

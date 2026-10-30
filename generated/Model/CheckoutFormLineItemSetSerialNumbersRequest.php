@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormLineItemSetSerialNumbersRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormLineItemSetSerialNumbersRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class CheckoutFormLineItemSetSerialNumbersRequest extends \ArrayObject
         $this->serialNumbers = $serialNumbers;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'serialNumbers' => ['serialNumbers', 'getSerialNumbers', 'setSerialNumbers']];
     }
 }

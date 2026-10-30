@@ -42,21 +42,22 @@ class CarrierParcelTrackingResponseNormalizer implements DenormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CarrierParcelTrackingResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CarrierParcelTrackingResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('carrierId', $data) && null !== $data['carrierId']) {
             $object->setCarrierId($data['carrierId']);
             unset($data['carrierId']);
         } elseif (\array_key_exists('carrierId', $data) && null === $data['carrierId']) {
             $object->setCarrierId(null);
+            unset($data['carrierId']);
         }
         if (\array_key_exists('waybills', $data) && null !== $data['waybills']) {
             $values = [];
@@ -67,6 +68,7 @@ class CarrierParcelTrackingResponseNormalizer implements DenormalizerInterface, 
             unset($data['waybills']);
         } elseif (\array_key_exists('waybills', $data) && null === $data['waybills']) {
             $object->setWaybills(null);
+            unset($data['waybills']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,10 +85,10 @@ class CarrierParcelTrackingResponseNormalizer implements DenormalizerInterface, 
         $dataArray['carrierId'] = $data->getCarrierId();
         $values = [];
         foreach ($data->getWaybills() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['waybills'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

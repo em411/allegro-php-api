@@ -21,11 +21,10 @@ class GetCategoryUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     /**
      * Use this resource to get the details of a specific category. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#jak-utworzyc-nowy-produkt" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#how-to-create-a-product" target="_blank">EN</a>.
      *
-     * @param string $categoryId       the category ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $categoryId the category ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $categoryId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetCategoryUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
 
     public function getUri(): string
     {
-        return str_replace(['{categoryId}'], [$this->categoryId], '/sale/categories/{categoryId}');
+        return str_replace(['{categoryId}'], [rawurlencode($this->categoryId)], '/sale/categories/{categoryId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -78,10 +77,10 @@ class GetCategoryUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\CategoryDto', 'json');
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCategoryUsingGET1NotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

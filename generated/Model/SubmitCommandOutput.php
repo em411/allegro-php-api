@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SubmitCommandOutput extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SubmitCommandOutput implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class SubmitCommandOutput extends \ArrayObject
     {
         $this->initialized['status'] = true;
         $this->status = $status;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['status' => ['status', 'getStatus', 'setStatus']];
     }
 }

@@ -21,11 +21,10 @@ class GetFulfillmentOrderParcels extends \Em411\Allegro\Api\Runtime\Client\BaseE
     /**
      * Use this resource to get list of parcels and included items for a given order. Items include detailed information such as expiration dates and serial numbers. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-obslugiwac-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-handle-orders" target="_blank">EN</a>.
      *
-     * @param string $orderId          the Allegro's platform order identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $orderId the Allegro's platform order identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $orderId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetFulfillmentOrderParcels extends \Em411\Allegro\Api\Runtime\Client\BaseE
 
     public function getUri(): string
     {
-        return str_replace(['{orderId}'], [$this->orderId], '/fulfillment/orders/{orderId}/parcels');
+        return str_replace(['{orderId}'], [rawurlencode($this->orderId)], '/fulfillment/orders/{orderId}/parcels');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -79,7 +78,7 @@ class GetFulfillmentOrderParcels extends \Em411\Allegro\Api\Runtime\Client\BaseE
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\FulfillmentOrder', 'json');
         }
         if (404 === $status) {

@@ -42,30 +42,32 @@ class WarrantyPeriodNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\WarrantyPeriod();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\WarrantyPeriod();
         if (\array_key_exists('lifetime', $data) && \is_int($data['lifetime'])) {
             $data['lifetime'] = (bool) $data['lifetime'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('period', $data) && null !== $data['period']) {
             $object->setPeriod($data['period']);
             unset($data['period']);
         } elseif (\array_key_exists('period', $data) && null === $data['period']) {
             $object->setPeriod(null);
+            unset($data['period']);
         }
         if (\array_key_exists('lifetime', $data) && null !== $data['lifetime']) {
             $object->setLifetime($data['lifetime']);
             unset($data['lifetime']);
         } elseif (\array_key_exists('lifetime', $data) && null === $data['lifetime']) {
             $object->setLifetime(null);
+            unset($data['lifetime']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,7 +87,7 @@ class WarrantyPeriodNormalizer implements DenormalizerInterface, NormalizerInter
         if ($data->isInitialized('lifetime') && null !== $data->getLifetime()) {
             $dataArray['lifetime'] = $data->getLifetime();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

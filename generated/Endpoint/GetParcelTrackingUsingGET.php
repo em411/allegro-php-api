@@ -21,16 +21,13 @@ class GetParcelTrackingUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEn
     /**
      * Get tracking history for parcels. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-historie-statusow-przesylek" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-parcels-statuses-history" target="_blank">EN</a>.
      *
-     * @param string $carrierId       carrier identifier
-     * @param array  $queryParameters {
-     *
-     * @var array $waybill Waybill number (parcel tracking number). Example: `waybill=AAA0000E5D201&waybill=BBB00000E5D202` - returns parcel tracking history for `AAA0000E5D201` as well as for `BBB00000E5D202`.
-     *            }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $carrierId carrier identifier
+     * @param array{
+     *    "waybill": array, //Waybill number (parcel tracking number). Example: `waybill=AAA0000E5D201&waybill=BBB00000E5D202` - returns parcel tracking history for `AAA0000E5D201` as well as for `BBB00000E5D202`.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $carrierId, array $queryParameters = [], array $headerParameters = [])
     {
@@ -46,7 +43,7 @@ class GetParcelTrackingUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEn
 
     public function getUri(): string
     {
-        return str_replace(['{carrierId}'], [$this->carrierId], '/order/carriers/{carrierId}/tracking');
+        return str_replace(['{carrierId}'], [rawurlencode($this->carrierId)], '/order/carriers/{carrierId}/tracking');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -86,6 +83,11 @@ class GetParcelTrackingUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEn
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['waybill' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\CarrierParcelTrackingResponse|null
      *
@@ -96,7 +98,7 @@ class GetParcelTrackingUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEn
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\CarrierParcelTrackingResponse', 'json');
         }
         if (400 === $status) {

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CustomerReturn extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CustomerReturn implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -316,5 +320,10 @@ class CustomerReturn extends \ArrayObject
         $this->status = $status;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'isFulfillment' => ['isFulfillment', 'getIsFulfillment', 'setIsFulfillment'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'referenceNumber' => ['referenceNumber', 'getReferenceNumber', 'setReferenceNumber'], 'orderId' => ['orderId', 'getOrderId', 'setOrderId'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'items' => ['items', 'getItems', 'setItems'], 'refund' => ['refund', 'getRefund', 'setRefund'], 'parcels' => ['parcels', 'getParcels', 'setParcels'], 'rejection' => ['rejection', 'getRejection', 'setRejection'], 'marketplaceId' => ['marketplaceId', 'getMarketplaceId', 'setMarketplaceId'], 'status' => ['status', 'getStatus', 'setStatus']];
     }
 }

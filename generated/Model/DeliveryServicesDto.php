@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
 /**
  * @deprecated
  */
-class DeliveryServicesDto extends \ArrayObject
+class DeliveryServicesDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -49,5 +53,10 @@ class DeliveryServicesDto extends \ArrayObject
         $this->services = $services;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['services' => ['services', 'getServices', 'setServices']];
     }
 }

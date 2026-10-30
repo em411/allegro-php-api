@@ -49,4 +49,9 @@ class ProductSetElementResponsibleProducerNameRequest extends ProductSetElementR
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['name' => ['name', 'getName', 'setName']]);
+    }
 }

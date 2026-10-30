@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductChangesResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductChangesResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class ProductChangesResponse extends \ArrayObject
         $this->productChanges = $productChanges;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['productChanges' => ['productChanges', 'getProductChanges', 'setProductChanges']];
     }
 }

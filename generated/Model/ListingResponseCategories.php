@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ListingResponseCategories extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ListingResponseCategories implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -81,5 +85,10 @@ class ListingResponseCategories extends \ArrayObject
         $this->path = $path;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['subcategories' => ['subcategories', 'getSubcategories', 'setSubcategories'], 'path' => ['path', 'getPath', 'setPath']];
     }
 }

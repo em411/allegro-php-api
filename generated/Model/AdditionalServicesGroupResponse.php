@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AdditionalServicesGroupResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AdditionalServicesGroupResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -189,5 +193,10 @@ class AdditionalServicesGroupResponse extends \ArrayObject
         $this->managedByAllegro = $managedByAllegro;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['additionalServices' => ['additionalServices', 'getAdditionalServices', 'setAdditionalServices'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'id' => ['id', 'getId', 'setId'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'name' => ['name', 'getName', 'setName'], 'seller' => ['seller', 'getSeller', 'setSeller'], 'language' => ['language', 'getLanguage', 'setLanguage'], 'managedByAllegro' => ['managedByAllegro', 'getManagedByAllegro', 'setManagedByAllegro']];
     }
 }

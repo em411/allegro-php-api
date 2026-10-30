@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class UserRatingVBeta1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class UserRatingVBeta1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -312,5 +316,10 @@ class UserRatingVBeta1 extends \ArrayObject
         $this->firstNegativeReviewInLast30Days = $firstNegativeReviewInLast30Days;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['answer' => ['answer', 'getAnswer', 'setAnswer'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'comment' => ['comment', 'getComment', 'setComment'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'editedAt' => ['editedAt', 'getEditedAt', 'setEditedAt'], 'exclusion' => ['exclusion', 'getExclusion', 'setExclusion'], 'id' => ['id', 'getId', 'setId'], 'justifications' => ['justifications', 'getJustifications', 'setJustifications'], 'lastChangedAt' => ['lastChangedAt', 'getLastChangedAt', 'setLastChangedAt'], 'order' => ['order', 'getOrder', 'setOrder'], 'recommended' => ['recommended', 'getRecommended', 'setRecommended'], 'removal' => ['removal', 'getRemoval', 'setRemoval'], 'firstNegativeReviewInLast30Days' => ['firstNegativeReviewInLast30Days', 'getFirstNegativeReviewInLast30Days', 'setFirstNegativeReviewInLast30Days']];
     }
 }

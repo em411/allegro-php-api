@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SalePartialProductOfferResponseAdditionalMarketplacesItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SalePartialProductOfferResponseAdditionalMarketplacesItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class SalePartialProductOfferResponseAdditionalMarketplacesItem extends \ArrayOb
         $this->sellingMode = $sellingMode;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['sellingMode' => ['sellingMode', 'getSellingMode', 'setSellingMode']];
     }
 }

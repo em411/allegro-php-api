@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class TaxIdResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class TaxIdResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class TaxIdResponse extends \ArrayObject
         $this->verificationStatus = $verificationStatus;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['taxId' => ['taxId', 'getTaxId', 'setTaxId'], 'verificationStatus' => ['verificationStatus', 'getVerificationStatus', 'setVerificationStatus']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CarrierParcelTrackingResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CarrierParcelTrackingResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class CarrierParcelTrackingResponse extends \ArrayObject
         $this->waybills = $waybills;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['carrierId' => ['carrierId', 'getCarrierId', 'setCarrierId'], 'waybills' => ['waybills', 'getWaybills', 'setWaybills']];
     }
 }

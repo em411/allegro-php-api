@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FlexibleBundleCreateDTO extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FlexibleBundleCreateDTO implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -69,5 +73,10 @@ class FlexibleBundleCreateDTO extends \ArrayObject
         $this->discount = $discount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['slots' => ['slots', 'getSlots', 'setSlots'], 'discount' => ['discount', 'getDiscount', 'setDiscount']];
     }
 }

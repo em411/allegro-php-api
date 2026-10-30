@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CustomerReturnRefund extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CustomerReturnRefund implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -40,5 +44,10 @@ class CustomerReturnRefund extends \ArrayObject
         $this->bankAccount = $bankAccount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['bankAccount' => ['bankAccount', 'getBankAccount', 'setBankAccount']];
     }
 }

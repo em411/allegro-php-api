@@ -49,4 +49,9 @@ class BlockadeOperation extends BaseOperation
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['payment' => ['payment', 'getPayment', 'setPayment']]);
+    }
 }

@@ -42,27 +42,29 @@ class PromoGeneralReportNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PromoGeneralReport();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PromoGeneralReport();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('taskCount', $data) && null !== $data['taskCount']) {
             $object->setTaskCount($this->denormalizer->denormalize($data['taskCount'], \Em411\Allegro\Api\Model\TaskCount::class, 'json', $context));
             unset($data['taskCount']);
         } elseif (\array_key_exists('taskCount', $data) && null === $data['taskCount']) {
             $object->setTaskCount(null);
+            unset($data['taskCount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,9 +82,9 @@ class PromoGeneralReportNormalizer implements DenormalizerInterface, NormalizerI
             $dataArray['id'] = $data->getId();
         }
         if ($data->isInitialized('taskCount') && null !== $data->getTaskCount()) {
-            $dataArray['taskCount'] = $this->normalizer->normalize($data->getTaskCount(), 'json', $context);
+            $dataArray['taskCount'] = null === $data->getTaskCount() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTaskCount(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

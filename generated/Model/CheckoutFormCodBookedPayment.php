@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormCodBookedPayment extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormCodBookedPayment implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class CheckoutFormCodBookedPayment extends \ArrayObject
         $this->paidAt = $paidAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['paymentId' => ['paymentId', 'getPaymentId', 'setPaymentId'], 'shipmentId' => ['shipmentId', 'getShipmentId', 'setShipmentId'], 'paidAmount' => ['paidAmount', 'getPaidAmount', 'setPaidAmount'], 'paidAt' => ['paidAt', 'getPaidAt', 'setPaidAt']];
     }
 }

@@ -42,33 +42,36 @@ class UserRatingSummaryResponseV2StatisticsNormalizer implements DenormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UserRatingSummaryResponseV2Statistics();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\UserRatingSummaryResponseV2Statistics();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('received', $data) && null !== $data['received']) {
             $object->setReceived($this->denormalizer->denormalize($data['received'], \Em411\Allegro\Api\Model\UserRatingSummaryResponseV2StatisticsReceived::class, 'json', $context));
             unset($data['received']);
         } elseif (\array_key_exists('received', $data) && null === $data['received']) {
             $object->setReceived(null);
+            unset($data['received']);
         }
         if (\array_key_exists('excluded', $data) && null !== $data['excluded']) {
             $object->setExcluded($this->denormalizer->denormalize($data['excluded'], \Em411\Allegro\Api\Model\UserRatingSummaryResponseV2StatisticsExcluded::class, 'json', $context));
             unset($data['excluded']);
         } elseif (\array_key_exists('excluded', $data) && null === $data['excluded']) {
             $object->setExcluded(null);
+            unset($data['excluded']);
         }
         if (\array_key_exists('removed', $data) && null !== $data['removed']) {
             $object->setRemoved($this->denormalizer->denormalize($data['removed'], \Em411\Allegro\Api\Model\UserRatingSummaryResponseV2StatisticsRemoved::class, 'json', $context));
             unset($data['removed']);
         } elseif (\array_key_exists('removed', $data) && null === $data['removed']) {
             $object->setRemoved(null);
+            unset($data['removed']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,10 +85,10 @@ class UserRatingSummaryResponseV2StatisticsNormalizer implements DenormalizerInt
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['received'] = $this->normalizer->normalize($data->getReceived(), 'json', $context);
-        $dataArray['excluded'] = $this->normalizer->normalize($data->getExcluded(), 'json', $context);
-        $dataArray['removed'] = $this->normalizer->normalize($data->getRemoved(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['received'] = null === $data->getReceived() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getReceived(), 'json', $context));
+        $dataArray['excluded'] = null === $data->getExcluded() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getExcluded(), 'json', $context));
+        $dataArray['removed'] = null === $data->getRemoved() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRemoved(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

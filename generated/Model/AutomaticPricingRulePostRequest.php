@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AutomaticPricingRulePostRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AutomaticPricingRulePostRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -132,5 +136,10 @@ class AutomaticPricingRulePostRequest extends \ArrayObject
         $this->configuration = $configuration;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['name', 'getName', 'setName'], 'type' => ['type', 'getType', 'setType'], 'configuration' => ['configuration', 'getConfiguration', 'setConfiguration']];
     }
 }

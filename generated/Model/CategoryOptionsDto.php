@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CategoryOptionsDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CategoryOptionsDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class CategoryOptionsDto extends \ArrayObject
         $this->sellerCanRequirePurchaseComments = $sellerCanRequirePurchaseComments;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['advertisement' => ['advertisement', 'getAdvertisement', 'setAdvertisement'], 'offersWithProductPublicationEnabled' => ['offersWithProductPublicationEnabled', 'getOffersWithProductPublicationEnabled', 'setOffersWithProductPublicationEnabled'], 'productCreationEnabled' => ['productCreationEnabled', 'getProductCreationEnabled', 'setProductCreationEnabled'], 'sellerCanRequirePurchaseComments' => ['sellerCanRequirePurchaseComments', 'getSellerCanRequirePurchaseComments', 'setSellerCanRequirePurchaseComments']];
     }
 }

@@ -21,11 +21,10 @@ class GetAfterSalesServiceWarrantyUsingGET extends \Em411\Allegro\Api\Runtime\Cl
     /**
      * Use this resource to get a warranty details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-informacje-o-gwarancjach-przypisanych-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-warranties-assigned-to-the-account" target="_blank">EN</a>.
      *
-     * @param string $warrantyId       the ID of the warranty
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $warrantyId the ID of the warranty
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $warrantyId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetAfterSalesServiceWarrantyUsingGET extends \Em411\Allegro\Api\Runtime\Cl
 
     public function getUri(): string
     {
-        return str_replace(['{warrantyId}'], [$this->warrantyId], '/after-sales-service-conditions/warranties/{warrantyId}');
+        return str_replace(['{warrantyId}'], [rawurlencode($this->warrantyId)], '/after-sales-service-conditions/warranties/{warrantyId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -80,7 +79,7 @@ class GetAfterSalesServiceWarrantyUsingGET extends \Em411\Allegro\Api\Runtime\Cl
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\WarrantyResponse', 'json');
         }
         if (401 === $status) {

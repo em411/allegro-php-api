@@ -21,11 +21,10 @@ class UpdateAutomaticPricingRuleUsingPut extends \Em411\Allegro\Api\Runtime\Clie
     /**
      * Use this resource to update automatic pricing rule. This resource is rate limited to 5 requests per second. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-edytowac-regule-cenowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-modify-a-pricing-rule" target="_blank">EN</a>.
      *
-     * @param string $ruleId           the rule identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $ruleId the rule identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $ruleId, ?\Em411\Allegro\Api\Model\AutomaticPricingRulePutRequest $requestBody = null, array $headerParameters = [])
     {
@@ -41,13 +40,13 @@ class UpdateAutomaticPricingRuleUsingPut extends \Em411\Allegro\Api\Runtime\Clie
 
     public function getUri(): string
     {
-        return str_replace(['{ruleId}'], [$this->ruleId], '/sale/price-automation/rules/{ruleId}');
+        return str_replace(['{ruleId}'], [rawurlencode($this->ruleId)], '/sale/price-automation/rules/{ruleId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Em411\Allegro\Api\Model\AutomaticPricingRulePutRequest) {
-            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], \Em411\Allegro\Api\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -87,7 +86,7 @@ class UpdateAutomaticPricingRuleUsingPut extends \Em411\Allegro\Api\Runtime\Clie
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AutomaticPricingRuleResponse', 'json');
         }
         if (400 === $status) {

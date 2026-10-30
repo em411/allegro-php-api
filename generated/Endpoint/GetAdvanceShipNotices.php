@@ -21,18 +21,14 @@ class GetAdvanceShipNotices extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
     /**
      * Use this resource to get a list of Advance Ship Notices. The list is ordered by **createdAt** property. Default **offset** is 0, default **limit** is 50. A list can be filtered by statuses. Multiple status query parameters are allowed. In such cases, filters are joined with **OR** logical operator. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-przegladac-utworzone-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-get-created-advance-ship-notices" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int   $offset the offset of elements in the response
-     * @var int   $limit maximum number of elements in response
-     * @var array $status A status of the Advance Ship Notices in the response.
-     *            }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //Maximum number of elements in response.
+     *    "status"?: array, //A status of the Advance Ship Notices in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [], array $accept = [])
@@ -95,6 +91,11 @@ class GetAdvanceShipNotices extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['status' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\AdvanceShipNoticeList|null
      *
@@ -106,7 +107,7 @@ class GetAdvanceShipNotices extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AdvanceShipNoticeList', 'json');
         }
         if (401 === $status) {
@@ -115,7 +116,7 @@ class GetAdvanceShipNotices extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
         if (403 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetAdvanceShipNoticesForbiddenException($response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\GetAdvanceShipNoticesUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

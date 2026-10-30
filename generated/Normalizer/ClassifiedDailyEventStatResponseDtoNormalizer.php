@@ -42,21 +42,22 @@ class ClassifiedDailyEventStatResponseDtoNormalizer implements DenormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ClassifiedDailyEventStatResponseDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ClassifiedDailyEventStatResponseDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('date', $data) && null !== $data['date']) {
             $object->setDate($data['date']);
             unset($data['date']);
         } elseif (\array_key_exists('date', $data) && null === $data['date']) {
             $object->setDate(null);
+            unset($data['date']);
         }
         if (\array_key_exists('eventStats', $data) && null !== $data['eventStats']) {
             $values = [];
@@ -67,6 +68,7 @@ class ClassifiedDailyEventStatResponseDtoNormalizer implements DenormalizerInter
             unset($data['eventStats']);
         } elseif (\array_key_exists('eventStats', $data) && null === $data['eventStats']) {
             $object->setEventStats(null);
+            unset($data['eventStats']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,11 +88,11 @@ class ClassifiedDailyEventStatResponseDtoNormalizer implements DenormalizerInter
         if ($data->isInitialized('eventStats') && null !== $data->getEventStats()) {
             $values = [];
             foreach ($data->getEventStats() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['eventStats'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

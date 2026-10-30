@@ -42,15 +42,15 @@ class SalesQualityHistoryResponseNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SalesQualityHistoryResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SalesQualityHistoryResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('quality', $data) && null !== $data['quality']) {
             $values = [];
@@ -61,6 +61,7 @@ class SalesQualityHistoryResponseNormalizer implements DenormalizerInterface, No
             unset($data['quality']);
         } elseif (\array_key_exists('quality', $data) && null === $data['quality']) {
             $object->setQuality(null);
+            unset($data['quality']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,10 +77,10 @@ class SalesQualityHistoryResponseNormalizer implements DenormalizerInterface, No
         $dataArray = [];
         $values = [];
         foreach ($data->getQuality() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['quality'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -42,13 +42,16 @@ class ProductParameterDtoOptionsNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductParameterDtoOptions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ProductParameterDtoOptions();
         if (\array_key_exists('identifiesProduct', $data) && \is_int($data['identifiesProduct'])) {
             $data['identifiesProduct'] = (bool) $data['identifiesProduct'];
         }
@@ -61,32 +64,33 @@ class ProductParameterDtoOptionsNormalizer implements DenormalizerInterface, Nor
         if (\array_key_exists('isAiCoCreated', $data) && \is_int($data['isAiCoCreated'])) {
             $data['isAiCoCreated'] = (bool) $data['isAiCoCreated'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('identifiesProduct', $data) && null !== $data['identifiesProduct']) {
             $object->setIdentifiesProduct($data['identifiesProduct']);
             unset($data['identifiesProduct']);
         } elseif (\array_key_exists('identifiesProduct', $data) && null === $data['identifiesProduct']) {
             $object->setIdentifiesProduct(null);
+            unset($data['identifiesProduct']);
         }
         if (\array_key_exists('isGTIN', $data) && null !== $data['isGTIN']) {
             $object->setIsGTIN($data['isGTIN']);
             unset($data['isGTIN']);
         } elseif (\array_key_exists('isGTIN', $data) && null === $data['isGTIN']) {
             $object->setIsGTIN(null);
+            unset($data['isGTIN']);
         }
         if (\array_key_exists('isTrusted', $data) && null !== $data['isTrusted']) {
             $object->setIsTrusted($data['isTrusted']);
             unset($data['isTrusted']);
         } elseif (\array_key_exists('isTrusted', $data) && null === $data['isTrusted']) {
             $object->setIsTrusted(null);
+            unset($data['isTrusted']);
         }
         if (\array_key_exists('isAiCoCreated', $data) && null !== $data['isAiCoCreated']) {
             $object->setIsAiCoCreated($data['isAiCoCreated']);
             unset($data['isAiCoCreated']);
         } elseif (\array_key_exists('isAiCoCreated', $data) && null === $data['isAiCoCreated']) {
             $object->setIsAiCoCreated(null);
+            unset($data['isAiCoCreated']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -110,7 +114,7 @@ class ProductParameterDtoOptionsNormalizer implements DenormalizerInterface, Nor
         if ($data->isInitialized('isAiCoCreated') && null !== $data->getIsAiCoCreated()) {
             $dataArray['isAiCoCreated'] = $data->getIsAiCoCreated();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,30 +42,32 @@ class LimitWithCurrencyDtoNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\LimitWithCurrencyDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\LimitWithCurrencyDto();
         if (\array_key_exists('limit', $data) && \is_int($data['limit'])) {
             $data['limit'] = (float) $data['limit'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('limit', $data) && null !== $data['limit']) {
             $object->setLimit($data['limit']);
             unset($data['limit']);
         } elseif (\array_key_exists('limit', $data) && null === $data['limit']) {
             $object->setLimit(null);
+            unset($data['limit']);
         }
         if (\array_key_exists('currency', $data) && null !== $data['currency']) {
             $object->setCurrency($data['currency']);
             unset($data['currency']);
         } elseif (\array_key_exists('currency', $data) && null === $data['currency']) {
             $object->setCurrency(null);
+            unset($data['currency']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,7 +87,7 @@ class LimitWithCurrencyDtoNormalizer implements DenormalizerInterface, Normalize
         if ($data->isInitialized('currency') && null !== $data->getCurrency()) {
             $dataArray['currency'] = $data->getCurrency();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

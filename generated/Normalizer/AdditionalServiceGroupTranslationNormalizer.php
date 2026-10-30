@@ -42,27 +42,29 @@ class AdditionalServiceGroupTranslationNormalizer implements DenormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AdditionalServiceGroupTranslation();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AdditionalServiceGroupTranslation();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('language', $data) && null !== $data['language']) {
             $object->setLanguage($data['language']);
             unset($data['language']);
         } elseif (\array_key_exists('language', $data) && null === $data['language']) {
             $object->setLanguage(null);
+            unset($data['language']);
         }
         if (\array_key_exists('additionalServices', $data) && null !== $data['additionalServices']) {
             $object->setAdditionalServices($this->denormalizer->denormalize($data['additionalServices'], \Em411\Allegro\Api\Model\AdditionalServicesGroupTranslationWrapperWithType::class, 'json', $context));
             unset($data['additionalServices']);
         } elseif (\array_key_exists('additionalServices', $data) && null === $data['additionalServices']) {
             $object->setAdditionalServices(null);
+            unset($data['additionalServices']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,9 +82,9 @@ class AdditionalServiceGroupTranslationNormalizer implements DenormalizerInterfa
             $dataArray['language'] = $data->getLanguage();
         }
         if ($data->isInitialized('additionalServices') && null !== $data->getAdditionalServices()) {
-            $dataArray['additionalServices'] = $this->normalizer->normalize($data->getAdditionalServices(), 'json', $context);
+            $dataArray['additionalServices'] = null === $data->getAdditionalServices() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAdditionalServices(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class MessageAdditionalInformation extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class MessageAdditionalInformation implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class MessageAdditionalInformation extends \ArrayObject
         $this->vin = $vin;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['vin' => ['vin', 'getVin', 'setVin']];
     }
 }

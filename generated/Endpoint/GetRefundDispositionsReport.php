@@ -20,18 +20,15 @@ class GetRefundDispositionsReport extends \Em411\Allegro\Api\Runtime\Client\Base
     /**
      * Use this resource to get refund dispositions for returns handled in One Fulfillment. The response contains data from the last 90 days only. The response contains both buyer returns and operational returns. When there is no matching disposition, the `report` array is empty. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-pobrac-raport-dyspozycji-zwrotu-srodkow" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-retrieve-the-refund-disposition-report" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $createdAt.gte Date of the return in ISO 8601 format to search by greater or equal.
-     * @var string $createdAt.lte Date of the return in ISO 8601 format to search by lower or equal.
-     * @var int    $limit maximum number of elements in response
-     * @var int    $offset The offset of elements in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "createdAt.gte"?: string, //Date of the return in ISO 8601 format to search by greater or equal.
+     *    "createdAt.lte"?: string, //Date of the return in ISO 8601 format to search by lower or equal.
+     *    "limit"?: int, //Maximum number of elements in response.
+     *    "offset"?: int, //The offset of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -101,7 +98,7 @@ class GetRefundDispositionsReport extends \Em411\Allegro\Api\Runtime\Client\Base
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\FulfillmentRefundDispositionsResponse', 'json');
         }
         if (401 === $status) {
@@ -110,10 +107,10 @@ class GetRefundDispositionsReport extends \Em411\Allegro\Api\Runtime\Client\Base
         if (403 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetRefundDispositionsReportForbiddenException($response);
         }
-        if ((null === $contentType) === false && (406 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (406 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetRefundDispositionsReportNotAcceptableException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\FulfillmentRefundDispositionsValidationErrorResponse', 'json'), $response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetRefundDispositionsReportUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\FulfillmentRefundDispositionsValidationErrorResponse', 'json'), $response);
         }
     }

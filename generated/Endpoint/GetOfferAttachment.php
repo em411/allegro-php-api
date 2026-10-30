@@ -21,11 +21,10 @@ class GetOfferAttachment extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint 
     /**
      * Get details of an offer attachments, including download link, by attachment identifier ("attachmentId"). The attachment id can be retrieved by querying a particular offer, for example by using <a href="#operation/getProductOffer">`GET /sale/product-offers/{offerId}`</a>. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#zalaczniki" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#attachments" target="_blank">EN</a>.
      *
-     * @param string $attachmentId     the ID of the attachment
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $attachmentId the ID of the attachment
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $attachmentId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetOfferAttachment extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint 
 
     public function getUri(): string
     {
-        return str_replace(['{attachmentId}'], [$this->attachmentId], '/sale/offer-attachments/{attachmentId}');
+        return str_replace(['{attachmentId}'], [rawurlencode($this->attachmentId)], '/sale/offer-attachments/{attachmentId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -79,7 +78,7 @@ class GetOfferAttachment extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint 
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\OfferAttachment', 'json');
         }
         if (403 === $status) {

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Caption extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Caption implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -57,5 +61,10 @@ class Caption extends \ArrayObject
         $this->value = $value;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['index' => ['index', 'getIndex', 'setIndex'], 'value' => ['value', 'getValue', 'setValue']];
     }
 }

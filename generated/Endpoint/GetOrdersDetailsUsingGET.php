@@ -21,11 +21,10 @@ class GetOrdersDetailsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
     /**
      * Use this resource to get an order details. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#szczegoly-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#order-details" target="_blank">EN</a>.
      *
-     * @param string $id               checkout form identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $id checkout form identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $id, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetOrdersDetailsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/order/checkout-forms/{id}');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/order/checkout-forms/{id}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -82,7 +81,7 @@ class GetOrdersDetailsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\CheckoutForm', 'json');
         }
         if (400 === $status) {

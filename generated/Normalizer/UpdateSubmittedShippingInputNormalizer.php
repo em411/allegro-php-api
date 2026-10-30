@@ -42,39 +42,55 @@ class UpdateSubmittedShippingInputNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UpdateSubmittedShippingInput();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\UpdateSubmittedShippingInput();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('estimatedTimeOfArrival', $data) && null !== $data['estimatedTimeOfArrival']) {
-            $object->setEstimatedTimeOfArrival(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['estimatedTimeOfArrival']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['estimatedTimeOfArrival']);
+            if (false === $date) {
+                if (\is_string($data['estimatedTimeOfArrival']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['estimatedTimeOfArrival'])) {
+                    try {
+                        $date = new \DateTime($data['estimatedTimeOfArrival']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['estimatedTimeOfArrival'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['estimatedTimeOfArrival'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setEstimatedTimeOfArrival($date);
             unset($data['estimatedTimeOfArrival']);
         } elseif (\array_key_exists('estimatedTimeOfArrival', $data) && null === $data['estimatedTimeOfArrival']) {
             $object->setEstimatedTimeOfArrival(null);
+            unset($data['estimatedTimeOfArrival']);
         }
         if (\array_key_exists('truckLicencePlate', $data) && null !== $data['truckLicencePlate']) {
             $object->setTruckLicencePlate($data['truckLicencePlate']);
             unset($data['truckLicencePlate']);
         } elseif (\array_key_exists('truckLicencePlate', $data) && null === $data['truckLicencePlate']) {
             $object->setTruckLicencePlate(null);
+            unset($data['truckLicencePlate']);
         }
         if (\array_key_exists('courier', $data) && null !== $data['courier']) {
             $object->setCourier($this->denormalizer->denormalize($data['courier'], \Em411\Allegro\Api\Model\Courier::class, 'json', $context));
             unset($data['courier']);
         } elseif (\array_key_exists('courier', $data) && null === $data['courier']) {
             $object->setCourier(null);
+            unset($data['courier']);
         }
         if (\array_key_exists('thirdParty', $data) && null !== $data['thirdParty']) {
             $object->setThirdParty($this->denormalizer->denormalize($data['thirdParty'], \Em411\Allegro\Api\Model\ThirdParty::class, 'json', $context));
             unset($data['thirdParty']);
         } elseif (\array_key_exists('thirdParty', $data) && null === $data['thirdParty']) {
             $object->setThirdParty(null);
+            unset($data['thirdParty']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -95,12 +111,12 @@ class UpdateSubmittedShippingInputNormalizer implements DenormalizerInterface, N
             $dataArray['truckLicencePlate'] = $data->getTruckLicencePlate();
         }
         if ($data->isInitialized('courier') && null !== $data->getCourier()) {
-            $dataArray['courier'] = $this->normalizer->normalize($data->getCourier(), 'json', $context);
+            $dataArray['courier'] = null === $data->getCourier() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCourier(), 'json', $context));
         }
         if ($data->isInitialized('thirdParty') && null !== $data->getThirdParty()) {
-            $dataArray['thirdParty'] = $this->normalizer->normalize($data->getThirdParty(), 'json', $context);
+            $dataArray['thirdParty'] = null === $data->getThirdParty() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getThirdParty(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

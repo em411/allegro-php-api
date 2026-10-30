@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CompatibilityListProductBasedProductOfferResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CompatibilityListProductBasedProductOfferResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -69,5 +73,10 @@ class CompatibilityListProductBasedProductOfferResponse extends \ArrayObject
         $this->items = $items;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['type', 'getType', 'setType'], 'items' => ['items', 'getItems', 'setItems']];
     }
 }

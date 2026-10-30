@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BadgeProcess extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BadgeProcess implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -69,5 +73,10 @@ class BadgeProcess extends \ArrayObject
         $this->rejectionReasons = $rejectionReasons;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['status' => ['status', 'getStatus', 'setStatus'], 'rejectionReasons' => ['rejectionReasons', 'getRejectionReasons', 'setRejectionReasons']];
     }
 }

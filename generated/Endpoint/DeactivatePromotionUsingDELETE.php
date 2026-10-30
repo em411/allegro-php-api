@@ -22,12 +22,10 @@ class DeactivatePromotionUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\B
     /**
      * Use this resource to deactivate the requested promotion. You need to use its unique id. <br> Read more about: Large order discount <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#usun-rabat" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#remove-large-order-discount" target="_blank">EN</a>, Wholesale price list <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#usun-cennik" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#remove-wholesale-price-list" target="_blank">EN</a>, Multipack <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#usun-rabat-ilosciowy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#remove-an-quantitative-discount" target="_blank">EN</a>.
      *
-     * @param string $promotionId      promotion identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $promotionId promotion identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|*\/*
      */
     public function __construct(string $promotionId, array $headerParameters = [], array $accept = [])
@@ -44,7 +42,7 @@ class DeactivatePromotionUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\B
 
     public function getUri(): string
     {
-        return str_replace(['{promotionId}'], [$this->promotionId], '/sale/loyalty/promotions/{promotionId}');
+        return str_replace(['{promotionId}'], [rawurlencode($this->promotionId)], '/sale/loyalty/promotions/{promotionId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -87,7 +85,7 @@ class DeactivatePromotionUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\B
         if (204 === $status) {
             return null;
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeactivatePromotionUsingDELETEUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
         if (404 === $status) {

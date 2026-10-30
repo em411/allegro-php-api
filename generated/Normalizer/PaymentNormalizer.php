@@ -42,21 +42,22 @@ class PaymentNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Payment();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Payment();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('method', $data) && null !== $data['method']) {
             $object->setMethod($data['method']);
             unset($data['method']);
         } elseif (\array_key_exists('method', $data) && null === $data['method']) {
             $object->setMethod(null);
+            unset($data['method']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,7 +72,7 @@ class PaymentNormalizer implements DenormalizerInterface, NormalizerInterface, D
     {
         $dataArray = [];
         $dataArray['method'] = $data->getMethod();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

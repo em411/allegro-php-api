@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Message extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Message implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -241,5 +245,10 @@ class Message extends \ArrayObject
         $this->additionalInformation = $additionalInformation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'status' => ['status', 'getStatus', 'setStatus'], 'type' => ['type', 'getType', 'setType'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'thread' => ['thread', 'getThread', 'setThread'], 'author' => ['author', 'getAuthor', 'setAuthor'], 'text' => ['text', 'getText', 'setText'], 'subject' => ['subject', 'getSubject', 'setSubject'], 'relatesTo' => ['relatesTo', 'getRelatesTo', 'setRelatesTo'], 'hasAdditionalAttachments' => ['hasAdditionalAttachments', 'getHasAdditionalAttachments', 'setHasAdditionalAttachments'], 'attachments' => ['attachments', 'getAttachments', 'setAttachments'], 'additionalInformation' => ['additionalInformation', 'getAdditionalInformation', 'setAdditionalInformation']];
     }
 }

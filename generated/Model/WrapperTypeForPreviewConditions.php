@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class WrapperTypeForPreviewConditions extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class WrapperTypeForPreviewConditions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -65,5 +69,10 @@ class WrapperTypeForPreviewConditions extends \ArrayObject
         $this->offer = $offer;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['includeQuotingBundles' => ['includeQuotingBundles', 'getIncludeQuotingBundles', 'setIncludeQuotingBundles'], 'offer' => ['offer', 'getOffer', 'setOffer']];
     }
 }

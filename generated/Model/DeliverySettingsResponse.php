@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DeliverySettingsResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DeliverySettingsResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -148,5 +152,10 @@ class DeliverySettingsResponse extends \ArrayObject
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['marketplace' => ['marketplace', 'getMarketplace', 'setMarketplace'], 'freeDelivery' => ['freeDelivery', 'getFreeDelivery', 'setFreeDelivery'], 'abroadFreeDelivery' => ['abroadFreeDelivery', 'getAbroadFreeDelivery', 'setAbroadFreeDelivery'], 'joinPolicy' => ['joinPolicy', 'getJoinPolicy', 'setJoinPolicy'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt']];
     }
 }

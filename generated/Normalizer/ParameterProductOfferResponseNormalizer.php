@@ -42,33 +42,36 @@ class ParameterProductOfferResponseNormalizer implements DenormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ParameterProductOfferResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ParameterProductOfferResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('rangeValue', $data) && null !== $data['rangeValue']) {
             $object->setRangeValue($this->denormalizer->denormalize($data['rangeValue'], \Em411\Allegro\Api\Model\ParameterProductOfferResponseRangeValue::class, 'json', $context));
             unset($data['rangeValue']);
         } elseif (\array_key_exists('rangeValue', $data) && null === $data['rangeValue']) {
             $object->setRangeValue(null);
+            unset($data['rangeValue']);
         }
         if (\array_key_exists('values', $data) && null !== $data['values']) {
             $values = [];
@@ -79,6 +82,7 @@ class ParameterProductOfferResponseNormalizer implements DenormalizerInterface, 
             unset($data['values']);
         } elseif (\array_key_exists('values', $data) && null === $data['values']) {
             $object->setValues(null);
+            unset($data['values']);
         }
         if (\array_key_exists('valuesIds', $data) && null !== $data['valuesIds']) {
             $values_1 = [];
@@ -89,6 +93,7 @@ class ParameterProductOfferResponseNormalizer implements DenormalizerInterface, 
             unset($data['valuesIds']);
         } elseif (\array_key_exists('valuesIds', $data) && null === $data['valuesIds']) {
             $object->setValuesIds(null);
+            unset($data['valuesIds']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -108,8 +113,8 @@ class ParameterProductOfferResponseNormalizer implements DenormalizerInterface, 
         if ($data->isInitialized('name') && null !== $data->getName()) {
             $dataArray['name'] = $data->getName();
         }
-        if ($data->isInitialized('rangeValue')) {
-            $dataArray['rangeValue'] = $this->normalizer->normalize($data->getRangeValue(), 'json', $context);
+        if ($data->isInitialized('rangeValue') && null !== $data->getRangeValue()) {
+            $dataArray['rangeValue'] = null === $data->getRangeValue() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRangeValue(), 'json', $context));
         }
         if ($data->isInitialized('values') && null !== $data->getValues()) {
             $values = [];
@@ -118,14 +123,14 @@ class ParameterProductOfferResponseNormalizer implements DenormalizerInterface, 
             }
             $dataArray['values'] = $values;
         }
-        if ($data->isInitialized('valuesIds')) {
+        if ($data->isInitialized('valuesIds') && null !== $data->getValuesIds()) {
             $values_1 = [];
             foreach ($data->getValuesIds() as $value_1) {
                 $values_1[] = $value_1;
             }
             $dataArray['valuesIds'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

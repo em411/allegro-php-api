@@ -42,36 +42,39 @@ class CheckoutFormInvoiceInfoNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormInvoiceInfo();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormInvoiceInfo();
         if (\array_key_exists('required', $data) && \is_int($data['required'])) {
             $data['required'] = (bool) $data['required'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('required', $data) && null !== $data['required']) {
             $object->setRequired($data['required']);
             unset($data['required']);
         } elseif (\array_key_exists('required', $data) && null === $data['required']) {
             $object->setRequired(null);
+            unset($data['required']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\CheckoutFormInvoiceAddress::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         if (\array_key_exists('dueDate', $data) && null !== $data['dueDate']) {
             $object->setDueDate($data['dueDate']);
             unset($data['dueDate']);
         } elseif (\array_key_exists('dueDate', $data) && null === $data['dueDate']) {
             $object->setDueDate(null);
+            unset($data['dueDate']);
         }
         if (\array_key_exists('features', $data) && null !== $data['features']) {
             $values = [];
@@ -82,6 +85,7 @@ class CheckoutFormInvoiceInfoNormalizer implements DenormalizerInterface, Normal
             unset($data['features']);
         } elseif (\array_key_exists('features', $data) && null === $data['features']) {
             $object->setFeatures(null);
+            unset($data['features']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -97,7 +101,7 @@ class CheckoutFormInvoiceInfoNormalizer implements DenormalizerInterface, Normal
         $dataArray = [];
         $dataArray['required'] = $data->getRequired();
         if ($data->isInitialized('address') && null !== $data->getAddress()) {
-            $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+            $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         }
         if ($data->isInitialized('dueDate') && null !== $data->getDueDate()) {
             $dataArray['dueDate'] = $data->getDueDate();
@@ -109,7 +113,7 @@ class CheckoutFormInvoiceInfoNormalizer implements DenormalizerInterface, Normal
             }
             $dataArray['features'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

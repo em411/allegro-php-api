@@ -42,42 +42,46 @@ class BaseSaleProductResponseDtoNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BaseSaleProductResponseDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\BaseSaleProductResponseDto();
         if (\array_key_exists('hasProtectedBrand', $data) && \is_int($data['hasProtectedBrand'])) {
             $data['hasProtectedBrand'] = (bool) $data['hasProtectedBrand'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($this->denormalizer->denormalize($data['description'], \Em411\Allegro\Api\Model\StandardizedDescription::class, 'json', $context));
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('category', $data) && null !== $data['category']) {
             $object->setCategory($this->denormalizer->denormalize($data['category'], \Em411\Allegro\Api\Model\ProductCategoryWithPath::class, 'json', $context));
             unset($data['category']);
         } elseif (\array_key_exists('category', $data) && null === $data['category']) {
             $object->setCategory(null);
+            unset($data['category']);
         }
         if (\array_key_exists('images', $data) && null !== $data['images']) {
             $values = [];
@@ -88,6 +92,7 @@ class BaseSaleProductResponseDtoNormalizer implements DenormalizerInterface, Nor
             unset($data['images']);
         } elseif (\array_key_exists('images', $data) && null === $data['images']) {
             $object->setImages(null);
+            unset($data['images']);
         }
         if (\array_key_exists('parameters', $data) && null !== $data['parameters']) {
             $values_1 = [];
@@ -98,36 +103,42 @@ class BaseSaleProductResponseDtoNormalizer implements DenormalizerInterface, Nor
             unset($data['parameters']);
         } elseif (\array_key_exists('parameters', $data) && null === $data['parameters']) {
             $object->setParameters(null);
+            unset($data['parameters']);
         }
         if (\array_key_exists('aiCoCreatedContent', $data) && null !== $data['aiCoCreatedContent']) {
             $object->setAiCoCreatedContent($this->denormalizer->denormalize($data['aiCoCreatedContent'], \Em411\Allegro\Api\Model\ProductAiCoCreatedContent::class, 'json', $context));
             unset($data['aiCoCreatedContent']);
         } elseif (\array_key_exists('aiCoCreatedContent', $data) && null === $data['aiCoCreatedContent']) {
             $object->setAiCoCreatedContent(null);
+            unset($data['aiCoCreatedContent']);
         }
         if (\array_key_exists('trustedContent', $data) && null !== $data['trustedContent']) {
             $object->setTrustedContent($this->denormalizer->denormalize($data['trustedContent'], \Em411\Allegro\Api\Model\TrustedContent::class, 'json', $context));
             unset($data['trustedContent']);
         } elseif (\array_key_exists('trustedContent', $data) && null === $data['trustedContent']) {
             $object->setTrustedContent(null);
+            unset($data['trustedContent']);
         }
         if (\array_key_exists('hasProtectedBrand', $data) && null !== $data['hasProtectedBrand']) {
             $object->setHasProtectedBrand($data['hasProtectedBrand']);
             unset($data['hasProtectedBrand']);
         } elseif (\array_key_exists('hasProtectedBrand', $data) && null === $data['hasProtectedBrand']) {
             $object->setHasProtectedBrand(null);
+            unset($data['hasProtectedBrand']);
         }
         if (\array_key_exists('productSafety', $data) && null !== $data['productSafety']) {
             $object->setProductSafety($this->denormalizer->denormalize($data['productSafety'], \Em411\Allegro\Api\Model\SaleProductSafetyDto::class, 'json', $context));
             unset($data['productSafety']);
         } elseif (\array_key_exists('productSafety', $data) && null === $data['productSafety']) {
             $object->setProductSafety(null);
+            unset($data['productSafety']);
         }
         if (\array_key_exists('publication', $data) && null !== $data['publication']) {
             $object->setPublication($this->denormalizer->denormalize($data['publication'], \Em411\Allegro\Api\Model\BaseSaleProductResponseDtoPublication::class, 'json', $context));
             unset($data['publication']);
         } elseif (\array_key_exists('publication', $data) && null === $data['publication']) {
             $object->setPublication(null);
+            unset($data['publication']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -144,39 +155,39 @@ class BaseSaleProductResponseDtoNormalizer implements DenormalizerInterface, Nor
         $dataArray['id'] = $data->getId();
         $dataArray['name'] = $data->getName();
         if ($data->isInitialized('description') && null !== $data->getDescription()) {
-            $dataArray['description'] = $this->normalizer->normalize($data->getDescription(), 'json', $context);
+            $dataArray['description'] = null === $data->getDescription() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDescription(), 'json', $context));
         }
-        $dataArray['category'] = $this->normalizer->normalize($data->getCategory(), 'json', $context);
+        $dataArray['category'] = null === $data->getCategory() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCategory(), 'json', $context));
         if ($data->isInitialized('images') && null !== $data->getImages()) {
             $values = [];
             foreach ($data->getImages() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['images'] = $values;
         }
         if ($data->isInitialized('parameters') && null !== $data->getParameters()) {
             $values_1 = [];
             foreach ($data->getParameters() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['parameters'] = $values_1;
         }
         if ($data->isInitialized('aiCoCreatedContent') && null !== $data->getAiCoCreatedContent()) {
-            $dataArray['aiCoCreatedContent'] = $this->normalizer->normalize($data->getAiCoCreatedContent(), 'json', $context);
+            $dataArray['aiCoCreatedContent'] = null === $data->getAiCoCreatedContent() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAiCoCreatedContent(), 'json', $context));
         }
         if ($data->isInitialized('trustedContent') && null !== $data->getTrustedContent()) {
-            $dataArray['trustedContent'] = $this->normalizer->normalize($data->getTrustedContent(), 'json', $context);
+            $dataArray['trustedContent'] = null === $data->getTrustedContent() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTrustedContent(), 'json', $context));
         }
         if ($data->isInitialized('hasProtectedBrand') && null !== $data->getHasProtectedBrand()) {
             $dataArray['hasProtectedBrand'] = $data->getHasProtectedBrand();
         }
-        if ($data->isInitialized('productSafety')) {
-            $dataArray['productSafety'] = $this->normalizer->normalize($data->getProductSafety(), 'json', $context);
+        if ($data->isInitialized('productSafety') && null !== $data->getProductSafety()) {
+            $dataArray['productSafety'] = null === $data->getProductSafety() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getProductSafety(), 'json', $context));
         }
         if ($data->isInitialized('publication') && null !== $data->getPublication()) {
-            $dataArray['publication'] = $this->normalizer->normalize($data->getPublication(), 'json', $context);
+            $dataArray['publication'] = null === $data->getPublication() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPublication(), 'json', $context));
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

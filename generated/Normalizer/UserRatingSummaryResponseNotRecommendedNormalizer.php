@@ -42,27 +42,29 @@ class UserRatingSummaryResponseNotRecommendedNormalizer implements DenormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UserRatingSummaryResponseNotRecommended();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\UserRatingSummaryResponseNotRecommended();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('total', $data) && null !== $data['total']) {
             $object->setTotal($data['total']);
             unset($data['total']);
         } elseif (\array_key_exists('total', $data) && null === $data['total']) {
             $object->setTotal(null);
+            unset($data['total']);
         }
         if (\array_key_exists('unique', $data) && null !== $data['unique']) {
             $object->setUnique($data['unique']);
             unset($data['unique']);
         } elseif (\array_key_exists('unique', $data) && null === $data['unique']) {
             $object->setUnique(null);
+            unset($data['unique']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,7 +80,7 @@ class UserRatingSummaryResponseNotRecommendedNormalizer implements DenormalizerI
         $dataArray = [];
         $dataArray['total'] = $data->getTotal();
         $dataArray['unique'] = $data->getUnique();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

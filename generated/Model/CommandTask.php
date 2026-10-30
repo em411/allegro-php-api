@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CommandTask extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CommandTask implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -144,5 +148,10 @@ class CommandTask extends \ArrayObject
         $this->errors = $errors;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['field' => ['field', 'getField', 'setField'], 'message' => ['message', 'getMessage', 'setMessage'], 'offer' => ['offer', 'getOffer', 'setOffer'], 'status' => ['status', 'getStatus', 'setStatus'], 'errors' => ['errors', 'getErrors', 'setErrors']];
     }
 }

@@ -42,33 +42,36 @@ class ParseDiagnosticResponseNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ParseDiagnosticResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ParseDiagnosticResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('code', $data) && null !== $data['code']) {
             $object->setCode($data['code']);
             unset($data['code']);
         } elseif (\array_key_exists('code', $data) && null === $data['code']) {
             $object->setCode(null);
+            unset($data['code']);
         }
         if (\array_key_exists('message', $data) && null !== $data['message']) {
             $object->setMessage($data['message']);
             unset($data['message']);
         } elseif (\array_key_exists('message', $data) && null === $data['message']) {
             $object->setMessage(null);
+            unset($data['message']);
         }
         if (\array_key_exists('context', $data) && null !== $data['context']) {
             $object->setContext($data['context']);
             unset($data['context']);
         } elseif (\array_key_exists('context', $data) && null === $data['context']) {
             $object->setContext(null);
+            unset($data['context']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -91,7 +94,7 @@ class ParseDiagnosticResponseNormalizer implements DenormalizerInterface, Normal
         if ($data->isInitialized('context') && null !== $data->getContext()) {
             $dataArray['context'] = $data->getContext();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

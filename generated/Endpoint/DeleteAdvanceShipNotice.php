@@ -21,11 +21,10 @@ class DeleteAdvanceShipNotice extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
     /**
      * Use this resource to delete an Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#jak-usunac-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#how-to-delete-advance-ship-notice" target="_blank">EN</a>.
      *
-     * @param string $id               an identifier of the Advance Ship Notice to delete
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $id an identifier of the Advance Ship Notice to delete
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $id = '0b488a23-bc99-470d-8842-0c585adf2479', array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class DeleteAdvanceShipNotice extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/fulfillment/advance-ship-notices/{id}');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/fulfillment/advance-ship-notices/{id}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

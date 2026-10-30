@@ -20,16 +20,13 @@ class GetAllegroPickupDropOffPointsGET extends \Em411\Allegro\Api\Runtime\Client
     /**
      * Get a list of Allegro pickup drop off points. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-liste-punktow-allegro" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-list-of-allegro-pickup-drop-off-points" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var array $carriers List of carrier ids to filter the drop off/pick up points to only the ones where any of the listed carriers operate. In case of an empty list, all points are returned.
-     *            }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $If-Modified-Since Date of last data modification. If data has been modified after specified date, full set of data is returned. If header is not specified, full set of data is returned. Date has to be provided in HTTP-date format. Information about date (the same HTTP-date format) of last modified data is available in response - `Last-Modified`.
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "carriers"?: array, //List of carrier ids to filter the drop off/pick up points to only the ones where any of the listed carriers operate. In case of an empty list, all points are returned.
+     * } $queryParameters
+     * @param array{
+     *    "If-Modified-Since"?: string, //Date of last data modification. If data has been modified after specified date, full set of data is returned. If header is not specified, full set of data is returned. Date has to be provided in HTTP-date format. Information about date (the same HTTP-date format) of last modified data is available in response - `Last-Modified`.
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -85,6 +82,11 @@ class GetAllegroPickupDropOffPointsGET extends \Em411\Allegro\Api\Runtime\Client
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['carriers' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\AllegroPickupDropOffPointsResponse|null
      *
@@ -95,7 +97,7 @@ class GetAllegroPickupDropOffPointsGET extends \Em411\Allegro\Api\Runtime\Client
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AllegroPickupDropOffPointsResponse', 'json');
         }
         if (304 === $status) {

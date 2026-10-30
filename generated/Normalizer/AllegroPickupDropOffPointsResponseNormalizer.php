@@ -42,15 +42,15 @@ class AllegroPickupDropOffPointsResponseNormalizer implements DenormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AllegroPickupDropOffPointsResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AllegroPickupDropOffPointsResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('points', $data) && null !== $data['points']) {
             $values = [];
@@ -61,6 +61,7 @@ class AllegroPickupDropOffPointsResponseNormalizer implements DenormalizerInterf
             unset($data['points']);
         } elseif (\array_key_exists('points', $data) && null === $data['points']) {
             $object->setPoints(null);
+            unset($data['points']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,11 +78,11 @@ class AllegroPickupDropOffPointsResponseNormalizer implements DenormalizerInterf
         if ($data->isInitialized('points') && null !== $data->getPoints()) {
             $values = [];
             foreach ($data->getPoints() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['points'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class WarrantyPeriod extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class WarrantyPeriod implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class WarrantyPeriod extends \ArrayObject
         $this->lifetime = $lifetime;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['period' => ['period', 'getPeriod', 'setPeriod'], 'lifetime' => ['lifetime', 'getLifetime', 'setLifetime']];
     }
 }

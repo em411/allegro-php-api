@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class RefundDetails extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class RefundDetails implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -385,5 +389,10 @@ class RefundDetails extends \ArrayObject
         $this->sellerComment = $sellerComment;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'payment' => ['payment', 'getPayment', 'setPayment'], 'order' => ['order', 'getOrder', 'setOrder'], 'reason' => ['reason', 'getReason', 'setReason'], 'status' => ['status', 'getStatus', 'setStatus'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'totalValue' => ['totalValue', 'getTotalValue', 'setTotalValue'], 'lineItems' => ['lineItems', 'getLineItems', 'setLineItems'], 'deposits' => ['deposits', 'getDeposits', 'setDeposits'], 'delivery' => ['delivery', 'getDelivery', 'setDelivery'], 'overpaid' => ['overpaid', 'getOverpaid', 'setOverpaid'], 'surcharges' => ['surcharges', 'getSurcharges', 'setSurcharges'], 'additionalServices' => ['additionalServices', 'getAdditionalServices', 'setAdditionalServices'], 'sellerComment' => ['sellerComment', 'getSellerComment', 'setSellerComment']];
     }
 }

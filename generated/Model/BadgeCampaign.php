@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BadgeCampaign extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BadgeCampaign implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -265,5 +269,10 @@ class BadgeCampaign extends \ArrayObject
         $this->stockReservationIsRequired = $stockReservationIsRequired;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'marketplace' => ['marketplace', 'getMarketplace', 'setMarketplace'], 'type' => ['type', 'getType', 'setType'], 'eligibility' => ['eligibility', 'getEligibility', 'setEligibility'], 'application' => ['application', 'getApplication', 'setApplication'], 'visibility' => ['visibility', 'getVisibility', 'setVisibility'], 'publication' => ['publication', 'getPublication', 'setPublication'], 'regulationsLink' => ['regulationsLink', 'getRegulationsLink', 'setRegulationsLink'], 'stockReservationIsRequired' => ['stockReservationIsRequired', 'getStockReservationIsRequired', 'setStockReservationIsRequired']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AutomaticPricingRuleConfigurationChangeByAmountChangeByAmountValuesItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AutomaticPricingRuleConfigurationChangeByAmountChangeByAmountValuesItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -57,5 +61,10 @@ class AutomaticPricingRuleConfigurationChangeByAmountChangeByAmountValuesItem ex
         $this->currency = $currency;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['amount' => ['amount', 'getAmount', 'setAmount'], 'currency' => ['currency', 'getCurrency', 'setCurrency']];
     }
 }

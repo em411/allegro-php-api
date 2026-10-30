@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Cells extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Cells implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class Cells extends \ArrayObject
         $this->cells = $cells;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['cells' => ['cells', 'getCells', 'setCells']];
     }
 }

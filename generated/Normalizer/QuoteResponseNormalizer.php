@@ -42,45 +42,50 @@ class QuoteResponseNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\QuoteResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\QuoteResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('fee', $data) && null !== $data['fee']) {
             $object->setFee($this->denormalizer->denormalize($data['fee'], \Em411\Allegro\Api\Model\Price::class, 'json', $context));
             unset($data['fee']);
         } elseif (\array_key_exists('fee', $data) && null === $data['fee']) {
             $object->setFee(null);
+            unset($data['fee']);
         }
         if (\array_key_exists('cycleDuration', $data) && null !== $data['cycleDuration']) {
             $object->setCycleDuration($data['cycleDuration']);
             unset($data['cycleDuration']);
         } elseif (\array_key_exists('cycleDuration', $data) && null === $data['cycleDuration']) {
             $object->setCycleDuration(null);
+            unset($data['cycleDuration']);
         }
         if (\array_key_exists('classifiedsPackage', $data) && null !== $data['classifiedsPackage']) {
             $object->setClassifiedsPackage($this->denormalizer->denormalize($data['classifiedsPackage'], \Em411\Allegro\Api\Model\ClassifiedPackage::class, 'json', $context));
             unset($data['classifiedsPackage']);
         } elseif (\array_key_exists('classifiedsPackage', $data) && null === $data['classifiedsPackage']) {
             $object->setClassifiedsPackage(null);
+            unset($data['classifiedsPackage']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -101,15 +106,15 @@ class QuoteResponseNormalizer implements DenormalizerInterface, NormalizerInterf
             $dataArray['type'] = $data->getType();
         }
         if ($data->isInitialized('fee') && null !== $data->getFee()) {
-            $dataArray['fee'] = $this->normalizer->normalize($data->getFee(), 'json', $context);
+            $dataArray['fee'] = null === $data->getFee() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getFee(), 'json', $context));
         }
         if ($data->isInitialized('cycleDuration') && null !== $data->getCycleDuration()) {
             $dataArray['cycleDuration'] = $data->getCycleDuration();
         }
         if ($data->isInitialized('classifiedsPackage') && null !== $data->getClassifiedsPackage()) {
-            $dataArray['classifiedsPackage'] = $this->normalizer->normalize($data->getClassifiedsPackage(), 'json', $context);
+            $dataArray['classifiedsPackage'] = null === $data->getClassifiedsPackage() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getClassifiedsPackage(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

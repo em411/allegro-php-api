@@ -42,51 +42,69 @@ class CustomerReturnReturnParcelNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CustomerReturnReturnParcel();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CustomerReturnReturnParcel();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
-            $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']);
+            if (false === $date) {
+                if (\is_string($data['createdAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['createdAt'])) {
+                    try {
+                        $date = new \DateTime($data['createdAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setCreatedAt($date);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('waybill', $data) && null !== $data['waybill']) {
             $object->setWaybill($data['waybill']);
             unset($data['waybill']);
         } elseif (\array_key_exists('waybill', $data) && null === $data['waybill']) {
             $object->setWaybill(null);
+            unset($data['waybill']);
         }
         if (\array_key_exists('transportingWaybill', $data) && null !== $data['transportingWaybill']) {
             $object->setTransportingWaybill($data['transportingWaybill']);
             unset($data['transportingWaybill']);
         } elseif (\array_key_exists('transportingWaybill', $data) && null === $data['transportingWaybill']) {
             $object->setTransportingWaybill(null);
+            unset($data['transportingWaybill']);
         }
         if (\array_key_exists('carrierId', $data) && null !== $data['carrierId']) {
             $object->setCarrierId($data['carrierId']);
             unset($data['carrierId']);
         } elseif (\array_key_exists('carrierId', $data) && null === $data['carrierId']) {
             $object->setCarrierId(null);
+            unset($data['carrierId']);
         }
         if (\array_key_exists('transportingCarrierId', $data) && null !== $data['transportingCarrierId']) {
             $object->setTransportingCarrierId($data['transportingCarrierId']);
             unset($data['transportingCarrierId']);
         } elseif (\array_key_exists('transportingCarrierId', $data) && null === $data['transportingCarrierId']) {
             $object->setTransportingCarrierId(null);
+            unset($data['transportingCarrierId']);
         }
         if (\array_key_exists('sender', $data) && null !== $data['sender']) {
             $object->setSender($this->denormalizer->denormalize($data['sender'], \Em411\Allegro\Api\Model\CustomerReturnParcelSender::class, 'json', $context));
             unset($data['sender']);
         } elseif (\array_key_exists('sender', $data) && null === $data['sender']) {
             $object->setSender(null);
+            unset($data['sender']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -106,19 +124,19 @@ class CustomerReturnReturnParcelNormalizer implements DenormalizerInterface, Nor
         if ($data->isInitialized('waybill') && null !== $data->getWaybill()) {
             $dataArray['waybill'] = $data->getWaybill();
         }
-        if ($data->isInitialized('transportingWaybill')) {
+        if ($data->isInitialized('transportingWaybill') && null !== $data->getTransportingWaybill()) {
             $dataArray['transportingWaybill'] = $data->getTransportingWaybill();
         }
         if ($data->isInitialized('carrierId') && null !== $data->getCarrierId()) {
             $dataArray['carrierId'] = $data->getCarrierId();
         }
-        if ($data->isInitialized('transportingCarrierId')) {
+        if ($data->isInitialized('transportingCarrierId') && null !== $data->getTransportingCarrierId()) {
             $dataArray['transportingCarrierId'] = $data->getTransportingCarrierId();
         }
         if ($data->isInitialized('sender') && null !== $data->getSender()) {
-            $dataArray['sender'] = $this->normalizer->normalize($data->getSender(), 'json', $context);
+            $dataArray['sender'] = null === $data->getSender() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSender(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

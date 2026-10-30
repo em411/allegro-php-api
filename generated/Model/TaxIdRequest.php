@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class TaxIdRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class TaxIdRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class TaxIdRequest extends \ArrayObject
         $this->taxId = $taxId;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['taxId' => ['taxId', 'getTaxId', 'setTaxId']];
     }
 }

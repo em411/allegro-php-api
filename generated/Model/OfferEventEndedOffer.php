@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferEventEndedOffer extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferEventEndedOffer implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -34,7 +38,7 @@ class OfferEventEndedOffer extends \ArrayObject
     /**
      * Information about publication of the given offer.
      *
-     * @var OfferEventEndedOfferpublication|null
+     * @var OfferEventEndedOfferPublication|null
      */
     protected $publication;
 
@@ -84,7 +88,7 @@ class OfferEventEndedOffer extends \ArrayObject
     /**
      * Information about publication of the given offer.
      */
-    public function getPublication(): ?OfferEventEndedOfferpublication
+    public function getPublication(): ?OfferEventEndedOfferPublication
     {
         return $this->publication;
     }
@@ -92,11 +96,16 @@ class OfferEventEndedOffer extends \ArrayObject
     /**
      * Information about publication of the given offer.
      */
-    public function setPublication(?OfferEventEndedOfferpublication $publication): self
+    public function setPublication(?OfferEventEndedOfferPublication $publication): self
     {
         $this->initialized['publication'] = true;
         $this->publication = $publication;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'external' => ['external', 'getExternal', 'setExternal'], 'publication' => ['publication', 'getPublication', 'setPublication']];
     }
 }

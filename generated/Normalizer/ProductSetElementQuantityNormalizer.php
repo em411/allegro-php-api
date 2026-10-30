@@ -42,21 +42,22 @@ class ProductSetElementQuantityNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductSetElementQuantity();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductSetElementQuantity();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('quantity', $data) && null !== $data['quantity']) {
             $object->setQuantity($this->denormalizer->denormalize($data['quantity'], \Em411\Allegro\Api\Model\ProductSetElementQuantityQuantity::class, 'json', $context));
             unset($data['quantity']);
         } elseif (\array_key_exists('quantity', $data) && null === $data['quantity']) {
             $object->setQuantity(null);
+            unset($data['quantity']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,9 +72,9 @@ class ProductSetElementQuantityNormalizer implements DenormalizerInterface, Norm
     {
         $dataArray = [];
         if ($data->isInitialized('quantity') && null !== $data->getQuantity()) {
-            $dataArray['quantity'] = $this->normalizer->normalize($data->getQuantity(), 'json', $context);
+            $dataArray['quantity'] = null === $data->getQuantity() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getQuantity(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

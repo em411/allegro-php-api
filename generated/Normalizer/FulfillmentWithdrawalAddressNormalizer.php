@@ -42,57 +42,64 @@ class FulfillmentWithdrawalAddressNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FulfillmentWithdrawalAddress();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FulfillmentWithdrawalAddress();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('company', $data) && null !== $data['company']) {
             $object->setCompany($data['company']);
             unset($data['company']);
         } elseif (\array_key_exists('company', $data) && null === $data['company']) {
             $object->setCompany(null);
+            unset($data['company']);
         }
         if (\array_key_exists('street', $data) && null !== $data['street']) {
             $object->setStreet($data['street']);
             unset($data['street']);
         } elseif (\array_key_exists('street', $data) && null === $data['street']) {
             $object->setStreet(null);
+            unset($data['street']);
         }
         if (\array_key_exists('postalCode', $data) && null !== $data['postalCode']) {
             $object->setPostalCode($data['postalCode']);
             unset($data['postalCode']);
         } elseif (\array_key_exists('postalCode', $data) && null === $data['postalCode']) {
             $object->setPostalCode(null);
+            unset($data['postalCode']);
         }
         if (\array_key_exists('city', $data) && null !== $data['city']) {
             $object->setCity($data['city']);
             unset($data['city']);
         } elseif (\array_key_exists('city', $data) && null === $data['city']) {
             $object->setCity(null);
+            unset($data['city']);
         }
         if (\array_key_exists('countryCode', $data) && null !== $data['countryCode']) {
             $object->setCountryCode($data['countryCode']);
             unset($data['countryCode']);
         } elseif (\array_key_exists('countryCode', $data) && null === $data['countryCode']) {
             $object->setCountryCode(null);
+            unset($data['countryCode']);
         }
         if (\array_key_exists('phone', $data) && null !== $data['phone']) {
             $object->setPhone($this->denormalizer->denormalize($data['phone'], \Em411\Allegro\Api\Model\PhoneNumberWithCountryCode::class, 'json', $context));
             unset($data['phone']);
         } elseif (\array_key_exists('phone', $data) && null === $data['phone']) {
             $object->setPhone(null);
+            unset($data['phone']);
         }
         if (\array_key_exists('additionalInfo', $data) && null !== $data['additionalInfo']) {
             $object->setAdditionalInfo($data['additionalInfo']);
             unset($data['additionalInfo']);
         } elseif (\array_key_exists('additionalInfo', $data) && null === $data['additionalInfo']) {
             $object->setAdditionalInfo(null);
+            unset($data['additionalInfo']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -111,11 +118,11 @@ class FulfillmentWithdrawalAddressNormalizer implements DenormalizerInterface, N
         $dataArray['postalCode'] = $data->getPostalCode();
         $dataArray['city'] = $data->getCity();
         $dataArray['countryCode'] = $data->getCountryCode();
-        $dataArray['phone'] = $this->normalizer->normalize($data->getPhone(), 'json', $context);
+        $dataArray['phone'] = null === $data->getPhone() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPhone(), 'json', $context));
         if ($data->isInitialized('additionalInfo') && null !== $data->getAdditionalInfo()) {
             $dataArray['additionalInfo'] = $data->getAdditionalInfo();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

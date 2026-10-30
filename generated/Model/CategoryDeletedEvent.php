@@ -28,7 +28,7 @@ class CategoryDeletedEvent extends CategoryBaseEvent
     /**
      * Category that should be used instead of deleted one.
      *
-     * @var CategoryDeletedEventredirectCategory|null
+     * @var CategoryDeletedEventRedirectCategory|null
      */
     protected $redirectCategory;
 
@@ -59,7 +59,7 @@ class CategoryDeletedEvent extends CategoryBaseEvent
     /**
      * Category that should be used instead of deleted one.
      */
-    public function getRedirectCategory(): ?CategoryDeletedEventredirectCategory
+    public function getRedirectCategory(): ?CategoryDeletedEventRedirectCategory
     {
         return $this->redirectCategory;
     }
@@ -67,11 +67,16 @@ class CategoryDeletedEvent extends CategoryBaseEvent
     /**
      * Category that should be used instead of deleted one.
      */
-    public function setRedirectCategory(?CategoryDeletedEventredirectCategory $redirectCategory): self
+    public function setRedirectCategory(?CategoryDeletedEventRedirectCategory $redirectCategory): self
     {
         $this->initialized['redirectCategory'] = true;
         $this->redirectCategory = $redirectCategory;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['category' => ['category', 'getCategory', 'setCategory'], 'redirectCategory' => ['redirectCategory', 'getRedirectCategory', 'setRedirectCategory']]);
     }
 }

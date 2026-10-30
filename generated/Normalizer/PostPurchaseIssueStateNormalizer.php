@@ -42,45 +42,61 @@ class PostPurchaseIssueStateNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PostPurchaseIssueState();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\PostPurchaseIssueState();
         if (\array_key_exists('returnRequired', $data) && \is_int($data['returnRequired'])) {
             $data['returnRequired'] = (bool) $data['returnRequired'];
         }
         if (\array_key_exists('chatActive', $data) && \is_int($data['chatActive'])) {
             $data['chatActive'] = (bool) $data['chatActive'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('statusDueDate', $data) && null !== $data['statusDueDate']) {
-            $object->setStatusDueDate(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['statusDueDate']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['statusDueDate']);
+            if (false === $date) {
+                if (\is_string($data['statusDueDate']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['statusDueDate'])) {
+                    try {
+                        $date = new \DateTime($data['statusDueDate']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['statusDueDate'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['statusDueDate'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setStatusDueDate($date);
             unset($data['statusDueDate']);
         } elseif (\array_key_exists('statusDueDate', $data) && null === $data['statusDueDate']) {
             $object->setStatusDueDate(null);
+            unset($data['statusDueDate']);
         }
         if (\array_key_exists('returnRequired', $data) && null !== $data['returnRequired']) {
             $object->setReturnRequired($data['returnRequired']);
             unset($data['returnRequired']);
         } elseif (\array_key_exists('returnRequired', $data) && null === $data['returnRequired']) {
             $object->setReturnRequired(null);
+            unset($data['returnRequired']);
         }
         if (\array_key_exists('chatActive', $data) && null !== $data['chatActive']) {
             $object->setChatActive($data['chatActive']);
             unset($data['chatActive']);
         } elseif (\array_key_exists('chatActive', $data) && null === $data['chatActive']) {
             $object->setChatActive(null);
+            unset($data['chatActive']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -97,16 +113,16 @@ class PostPurchaseIssueStateNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('status') && null !== $data->getStatus()) {
             $dataArray['status'] = $data->getStatus();
         }
-        if ($data->isInitialized('statusDueDate')) {
+        if ($data->isInitialized('statusDueDate') && null !== $data->getStatusDueDate()) {
             $dataArray['statusDueDate'] = $data->getStatusDueDate()?->format('Y-m-d\TH:i:sP');
         }
-        if ($data->isInitialized('returnRequired')) {
+        if ($data->isInitialized('returnRequired') && null !== $data->getReturnRequired()) {
             $dataArray['returnRequired'] = $data->getReturnRequired();
         }
         if ($data->isInitialized('chatActive') && null !== $data->getChatActive()) {
             $dataArray['chatActive'] = $data->getChatActive();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

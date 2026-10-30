@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ManualSafetyInformationTranslation extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ManualSafetyInformationTranslation implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class ManualSafetyInformationTranslation extends \ArrayObject
         $this->products = $products;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['products' => ['products', 'getProducts', 'setProducts']];
     }
 }

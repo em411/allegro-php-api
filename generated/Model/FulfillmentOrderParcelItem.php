@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FulfillmentOrderParcelItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FulfillmentOrderParcelItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -152,5 +156,10 @@ class FulfillmentOrderParcelItem extends \ArrayObject
         $this->offerId = $offerId;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['productId' => ['productId', 'getProductId', 'setProductId'], 'quantity' => ['quantity', 'getQuantity', 'setQuantity'], 'serialNumbers' => ['serialNumbers', 'getSerialNumbers', 'setSerialNumbers'], 'expirationDate' => ['expirationDate', 'getExpirationDate', 'setExpirationDate'], 'offerId' => ['offerId', 'getOfferId', 'setOfferId']];
     }
 }

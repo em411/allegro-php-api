@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Publication extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Publication implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -184,5 +188,10 @@ class Publication extends \ArrayObject
         $this->endedBy = $endedBy;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['duration' => ['duration', 'getDuration', 'setDuration'], 'startingAt' => ['startingAt', 'getStartingAt', 'setStartingAt'], 'status' => ['status', 'getStatus', 'setStatus'], 'republish' => ['republish', 'getRepublish', 'setRepublish'], 'endingAt' => ['endingAt', 'getEndingAt', 'setEndingAt'], 'endedBy' => ['endedBy', 'getEndedBy', 'setEndedBy']];
     }
 }

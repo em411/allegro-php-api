@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Payments extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Payments implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class Payments extends \ArrayObject
         $this->invoice = $invoice;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['invoice' => ['invoice', 'getInvoice', 'setInvoice']];
     }
 }

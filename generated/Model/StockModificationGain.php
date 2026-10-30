@@ -49,4 +49,9 @@ class StockModificationGain extends OfferBulkModificationStock
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['value' => ['value', 'getValue', 'setValue']]);
+    }
 }

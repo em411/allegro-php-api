@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FulfillmentRefundDispositionsResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FulfillmentRefundDispositionsResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class FulfillmentRefundDispositionsResponse extends \ArrayObject
         $this->report = $report;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['report' => ['report', 'getReport', 'setReport']];
     }
 }

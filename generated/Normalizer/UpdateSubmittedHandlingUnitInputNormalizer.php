@@ -42,24 +42,25 @@ class UpdateSubmittedHandlingUnitInputNormalizer implements DenormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UpdateSubmittedHandlingUnitInput();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\UpdateSubmittedHandlingUnitInput();
         if (\array_key_exists('amount', $data) && \is_int($data['amount'])) {
             $data['amount'] = (float) $data['amount'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('amount', $data) && null !== $data['amount']) {
             $object->setAmount($data['amount']);
             unset($data['amount']);
         } elseif (\array_key_exists('amount', $data) && null === $data['amount']) {
             $object->setAmount(null);
+            unset($data['amount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,7 +77,7 @@ class UpdateSubmittedHandlingUnitInputNormalizer implements DenormalizerInterfac
         if ($data->isInitialized('amount') && null !== $data->getAmount()) {
             $dataArray['amount'] = $data->getAmount();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

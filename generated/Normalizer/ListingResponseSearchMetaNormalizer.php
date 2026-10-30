@@ -42,36 +42,39 @@ class ListingResponseSearchMetaNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ListingResponseSearchMeta();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ListingResponseSearchMeta();
         if (\array_key_exists('fallback', $data) && \is_int($data['fallback'])) {
             $data['fallback'] = (bool) $data['fallback'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('availableCount', $data) && null !== $data['availableCount']) {
             $object->setAvailableCount($data['availableCount']);
             unset($data['availableCount']);
         } elseif (\array_key_exists('availableCount', $data) && null === $data['availableCount']) {
             $object->setAvailableCount(null);
+            unset($data['availableCount']);
         }
         if (\array_key_exists('totalCount', $data) && null !== $data['totalCount']) {
             $object->setTotalCount($data['totalCount']);
             unset($data['totalCount']);
         } elseif (\array_key_exists('totalCount', $data) && null === $data['totalCount']) {
             $object->setTotalCount(null);
+            unset($data['totalCount']);
         }
         if (\array_key_exists('fallback', $data) && null !== $data['fallback']) {
             $object->setFallback($data['fallback']);
             unset($data['fallback']);
         } elseif (\array_key_exists('fallback', $data) && null === $data['fallback']) {
             $object->setFallback(null);
+            unset($data['fallback']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -94,7 +97,7 @@ class ListingResponseSearchMetaNormalizer implements DenormalizerInterface, Norm
         if ($data->isInitialized('fallback') && null !== $data->getFallback()) {
             $dataArray['fallback'] = $data->getFallback();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

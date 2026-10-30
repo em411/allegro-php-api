@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class TurnoverDiscountDefinitionDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class TurnoverDiscountDefinitionDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -202,5 +206,10 @@ class TurnoverDiscountDefinitionDto extends \ArrayObject
         $this->thresholds = $thresholds;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['cumulatingFromDate' => ['cumulatingFromDate', 'getCumulatingFromDate', 'setCumulatingFromDate'], 'cumulatingToDate' => ['cumulatingToDate', 'getCumulatingToDate', 'setCumulatingToDate'], 'spendingFromDate' => ['spendingFromDate', 'getSpendingFromDate', 'setSpendingFromDate'], 'spendingToDate' => ['spendingToDate', 'getSpendingToDate', 'setSpendingToDate'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'thresholds' => ['thresholds', 'getThresholds', 'setThresholds']];
     }
 }

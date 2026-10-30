@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SearchResult extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SearchResult implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class SearchResult extends \ArrayObject
         $this->posList = $posList;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['posList' => ['posList', 'getPosList', 'setPosList']];
     }
 }

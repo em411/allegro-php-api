@@ -42,24 +42,25 @@ class LineItemAllegroAdsNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\LineItemAllegroAds();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\LineItemAllegroAds();
         if (\array_key_exists('attributed', $data) && \is_int($data['attributed'])) {
             $data['attributed'] = (bool) $data['attributed'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('attributed', $data) && null !== $data['attributed']) {
             $object->setAttributed($data['attributed']);
             unset($data['attributed']);
         } elseif (\array_key_exists('attributed', $data) && null === $data['attributed']) {
             $object->setAttributed(null);
+            unset($data['attributed']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -74,7 +75,7 @@ class LineItemAllegroAdsNormalizer implements DenormalizerInterface, NormalizerI
     {
         $dataArray = [];
         $dataArray['attributed'] = $data->getAttributed();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

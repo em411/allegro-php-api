@@ -42,21 +42,22 @@ class OfferListingDtoV1AdditionalMarketplaceSellingModePriceAutomationNormalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1AdditionalMarketplaceSellingModePriceAutomation();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1AdditionalMarketplaceSellingModePriceAutomation();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('rule', $data) && null !== $data['rule']) {
             $object->setRule($this->denormalizer->denormalize($data['rule'], \Em411\Allegro\Api\Model\PriceAutomationRule::class, 'json', $context));
             unset($data['rule']);
         } elseif (\array_key_exists('rule', $data) && null === $data['rule']) {
             $object->setRule(null);
+            unset($data['rule']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,9 +72,9 @@ class OfferListingDtoV1AdditionalMarketplaceSellingModePriceAutomationNormalizer
     {
         $dataArray = [];
         if ($data->isInitialized('rule') && null !== $data->getRule()) {
-            $dataArray['rule'] = $this->normalizer->normalize($data->getRule(), 'json', $context);
+            $dataArray['rule'] = null === $data->getRule() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRule(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

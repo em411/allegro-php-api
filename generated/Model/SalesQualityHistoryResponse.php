@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SalesQualityHistoryResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SalesQualityHistoryResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class SalesQualityHistoryResponse extends \ArrayObject
         $this->quality = $quality;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['quality' => ['quality', 'getQuality', 'setQuality']];
     }
 }

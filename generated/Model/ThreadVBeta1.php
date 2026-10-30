@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ThreadVBeta1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ThreadVBeta1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -204,5 +208,10 @@ class ThreadVBeta1 extends \ArrayObject
         $this->status = $status;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'read' => ['read', 'getRead', 'setRead'], 'type' => ['type', 'getType', 'setType'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'lastMessageDateTime' => ['lastMessageDateTime', 'getLastMessageDateTime', 'setLastMessageDateTime'], 'participants' => ['participants', 'getParticipants', 'setParticipants'], 'orders' => ['orders', 'getOrders', 'setOrders'], 'subType' => ['subType', 'getSubType', 'setSubType'], 'status' => ['status', 'getStatus', 'setStatus']];
     }
 }

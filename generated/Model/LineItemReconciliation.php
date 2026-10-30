@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class LineItemReconciliation extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class LineItemReconciliation implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class LineItemReconciliation extends \ArrayObject
         $this->quantity = $quantity;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['value' => ['value', 'getValue', 'setValue'], 'type' => ['type', 'getType', 'setType'], 'quantity' => ['quantity', 'getQuantity', 'setQuantity']];
     }
 }

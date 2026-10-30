@@ -42,27 +42,29 @@ class DeliveryServiceIdDtoNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\DeliveryServiceIdDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\DeliveryServiceIdDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('deliveryMethodId', $data) && null !== $data['deliveryMethodId']) {
             $object->setDeliveryMethodId($data['deliveryMethodId']);
             unset($data['deliveryMethodId']);
         } elseif (\array_key_exists('deliveryMethodId', $data) && null === $data['deliveryMethodId']) {
             $object->setDeliveryMethodId(null);
+            unset($data['deliveryMethodId']);
         }
         if (\array_key_exists('credentialsId', $data) && null !== $data['credentialsId']) {
             $object->setCredentialsId($data['credentialsId']);
             unset($data['credentialsId']);
         } elseif (\array_key_exists('credentialsId', $data) && null === $data['credentialsId']) {
             $object->setCredentialsId(null);
+            unset($data['credentialsId']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +84,7 @@ class DeliveryServiceIdDtoNormalizer implements DenormalizerInterface, Normalize
         if ($data->isInitialized('credentialsId') && null !== $data->getCredentialsId()) {
             $dataArray['credentialsId'] = $data->getCredentialsId();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

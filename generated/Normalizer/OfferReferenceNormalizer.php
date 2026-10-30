@@ -42,45 +42,50 @@ class OfferReferenceNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferReference();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferReference();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('external', $data) && null !== $data['external']) {
             $object->setExternal($this->denormalizer->denormalize($data['external'], \Em411\Allegro\Api\Model\ExternalId::class, 'json', $context));
             unset($data['external']);
         } elseif (\array_key_exists('external', $data) && null === $data['external']) {
             $object->setExternal(null);
+            unset($data['external']);
         }
         if (\array_key_exists('productSet', $data) && null !== $data['productSet']) {
             $object->setProductSet($this->denormalizer->denormalize($data['productSet'], \Em411\Allegro\Api\Model\OfferProductSetReference::class, 'json', $context));
             unset($data['productSet']);
         } elseif (\array_key_exists('productSet', $data) && null === $data['productSet']) {
             $object->setProductSet(null);
+            unset($data['productSet']);
         }
         if (\array_key_exists('hsNumber', $data) && null !== $data['hsNumber']) {
             $object->setHsNumber($data['hsNumber']);
             unset($data['hsNumber']);
         } elseif (\array_key_exists('hsNumber', $data) && null === $data['hsNumber']) {
             $object->setHsNumber(null);
+            unset($data['hsNumber']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -97,15 +102,15 @@ class OfferReferenceNormalizer implements DenormalizerInterface, NormalizerInter
         $dataArray['id'] = $data->getId();
         $dataArray['name'] = $data->getName();
         if ($data->isInitialized('external') && null !== $data->getExternal()) {
-            $dataArray['external'] = $this->normalizer->normalize($data->getExternal(), 'json', $context);
+            $dataArray['external'] = null === $data->getExternal() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getExternal(), 'json', $context));
         }
         if ($data->isInitialized('productSet') && null !== $data->getProductSet()) {
-            $dataArray['productSet'] = $this->normalizer->normalize($data->getProductSet(), 'json', $context);
+            $dataArray['productSet'] = null === $data->getProductSet() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getProductSet(), 'json', $context));
         }
         if ($data->isInitialized('hsNumber') && null !== $data->getHsNumber()) {
             $dataArray['hsNumber'] = $data->getHsNumber();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

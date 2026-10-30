@@ -42,51 +42,57 @@ class AddressNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Address();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Address();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('street', $data) && null !== $data['street']) {
             $object->setStreet($data['street']);
             unset($data['street']);
         } elseif (\array_key_exists('street', $data) && null === $data['street']) {
             $object->setStreet(null);
+            unset($data['street']);
         }
         if (\array_key_exists('city', $data) && null !== $data['city']) {
             $object->setCity($data['city']);
             unset($data['city']);
         } elseif (\array_key_exists('city', $data) && null === $data['city']) {
             $object->setCity(null);
+            unset($data['city']);
         }
         if (\array_key_exists('zipCode', $data) && null !== $data['zipCode']) {
             $object->setZipCode($data['zipCode']);
             unset($data['zipCode']);
         } elseif (\array_key_exists('zipCode', $data) && null === $data['zipCode']) {
             $object->setZipCode(null);
+            unset($data['zipCode']);
         }
         if (\array_key_exists('state', $data) && null !== $data['state']) {
             $object->setState($data['state']);
             unset($data['state']);
         } elseif (\array_key_exists('state', $data) && null === $data['state']) {
             $object->setState(null);
+            unset($data['state']);
         }
         if (\array_key_exists('countryCode', $data) && null !== $data['countryCode']) {
             $object->setCountryCode($data['countryCode']);
             unset($data['countryCode']);
         } elseif (\array_key_exists('countryCode', $data) && null === $data['countryCode']) {
             $object->setCountryCode(null);
+            unset($data['countryCode']);
         }
         if (\array_key_exists('coordinates', $data) && null !== $data['coordinates']) {
             $object->setCoordinates($this->denormalizer->denormalize($data['coordinates'], \Em411\Allegro\Api\Model\Coordinates::class, 'json', $context));
             unset($data['coordinates']);
         } elseif (\array_key_exists('coordinates', $data) && null === $data['coordinates']) {
             $object->setCoordinates(null);
+            unset($data['coordinates']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -108,9 +114,9 @@ class AddressNormalizer implements DenormalizerInterface, NormalizerInterface, D
         $dataArray['state'] = $data->getState();
         $dataArray['countryCode'] = $data->getCountryCode();
         if ($data->isInitialized('coordinates') && null !== $data->getCoordinates()) {
-            $dataArray['coordinates'] = $this->normalizer->normalize($data->getCoordinates(), 'json', $context);
+            $dataArray['coordinates'] = null === $data->getCoordinates() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCoordinates(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

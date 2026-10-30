@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormDeliveryReference extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormDeliveryReference implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -191,5 +195,10 @@ class CheckoutFormDeliveryReference extends \ArrayObject
         $this->calculatedNumberOfPackages = $calculatedNumberOfPackages;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['address' => ['address', 'getAddress', 'setAddress'], 'method' => ['method', 'getMethod', 'setMethod'], 'pickupPoint' => ['pickupPoint', 'getPickupPoint', 'setPickupPoint'], 'cost' => ['cost', 'getCost', 'setCost'], 'time' => ['time', 'getTime', 'setTime'], 'smart' => ['smart', 'getSmart', 'setSmart'], 'cancellation' => ['cancellation', 'getCancellation', 'setCancellation'], 'calculatedNumberOfPackages' => ['calculatedNumberOfPackages', 'getCalculatedNumberOfPackages', 'setCalculatedNumberOfPackages']];
     }
 }

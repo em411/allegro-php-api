@@ -42,21 +42,22 @@ class OfferPriceChangeCommandNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferPriceChangeCommand();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferPriceChangeCommand();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('modification', $data) && null !== $data['modification']) {
             $object->setModification($this->denormalizer->denormalize($data['modification'], \Em411\Allegro\Api\Model\PriceModification::class, 'json', $context));
             unset($data['modification']);
         } elseif (\array_key_exists('modification', $data) && null === $data['modification']) {
             $object->setModification(null);
+            unset($data['modification']);
         }
         if (\array_key_exists('offerCriteria', $data) && null !== $data['offerCriteria']) {
             $values = [];
@@ -67,6 +68,7 @@ class OfferPriceChangeCommandNormalizer implements DenormalizerInterface, Normal
             unset($data['offerCriteria']);
         } elseif (\array_key_exists('offerCriteria', $data) && null === $data['offerCriteria']) {
             $object->setOfferCriteria(null);
+            unset($data['offerCriteria']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -81,16 +83,16 @@ class OfferPriceChangeCommandNormalizer implements DenormalizerInterface, Normal
     {
         $dataArray = [];
         if ($data->isInitialized('modification') && null !== $data->getModification()) {
-            $dataArray['modification'] = $this->normalizer->normalize($data->getModification(), 'json', $context);
+            $dataArray['modification'] = null === $data->getModification() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getModification(), 'json', $context));
         }
         if ($data->isInitialized('offerCriteria') && null !== $data->getOfferCriteria()) {
             $values = [];
             foreach ($data->getOfferCriteria() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['offerCriteria'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

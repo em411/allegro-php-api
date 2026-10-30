@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferImageLinkUploadRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferImageLinkUploadRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class OfferImageLinkUploadRequest extends \ArrayObject
         $this->isAiCoCreated = $isAiCoCreated;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['url' => ['url', 'getUrl', 'setUrl'], 'isAiCoCreated' => ['isAiCoCreated', 'getIsAiCoCreated', 'setIsAiCoCreated']];
     }
 }

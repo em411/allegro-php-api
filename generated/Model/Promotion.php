@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Promotion extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Promotion implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -74,5 +78,10 @@ class Promotion extends \ArrayObject
         $this->departmentPage = $departmentPage;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['emphasized1d' => ['emphasized1d', 'getEmphasized1d', 'setEmphasized1d'], 'emphasized10d' => ['emphasized10d', 'getEmphasized10d', 'setEmphasized10d'], 'departmentPage' => ['departmentPage', 'getDepartmentPage', 'setDepartmentPage']];
     }
 }

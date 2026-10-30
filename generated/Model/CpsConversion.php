@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CpsConversion extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CpsConversion implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -252,5 +256,10 @@ class CpsConversion extends \ArrayObject
         $this->publisherUrlParameters = $publisherUrlParameters;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'status' => ['status', 'getStatus', 'setStatus'], 'lastModifiedAt' => ['lastModifiedAt', 'getLastModifiedAt', 'setLastModifiedAt'], 'orderCreatedAt' => ['orderCreatedAt', 'getOrderCreatedAt', 'setOrderCreatedAt'], 'quantity' => ['quantity', 'getQuantity', 'setQuantity'], 'marketplace' => ['marketplace', 'getMarketplace', 'setMarketplace'], 'offer' => ['offer', 'getOffer', 'setOffer'], 'commission' => ['commission', 'getCommission', 'setCommission'], 'publisherUrlParameters' => ['publisherUrlParameters', 'getPublisherUrlParameters', 'setPublisherUrlParameters']];
     }
 }

@@ -22,7 +22,7 @@ class IntegerCategoryProductParameter extends CategoryProductParameter
     /**
      * The restrictions on values of this parameter.
      *
-     * @var IntegerCategoryProductParameterrestrictions|null
+     * @var IntegerCategoryProductParameterRestrictions|null
      */
     protected $restrictions;
 
@@ -34,7 +34,7 @@ class IntegerCategoryProductParameter extends CategoryProductParameter
     /**
      * The restrictions on values of this parameter.
      */
-    public function getRestrictions(): ?IntegerCategoryProductParameterrestrictions
+    public function getRestrictions(): ?IntegerCategoryProductParameterRestrictions
     {
         return $this->restrictions;
     }
@@ -42,11 +42,16 @@ class IntegerCategoryProductParameter extends CategoryProductParameter
     /**
      * The restrictions on values of this parameter.
      */
-    public function setRestrictions(?IntegerCategoryProductParameterrestrictions $restrictions): self
+    public function setRestrictions(?IntegerCategoryProductParameterRestrictions $restrictions): self
     {
         $this->initialized['restrictions'] = true;
         $this->restrictions = $restrictions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['restrictions' => ['restrictions', 'getRestrictions', 'setRestrictions']]);
     }
 }

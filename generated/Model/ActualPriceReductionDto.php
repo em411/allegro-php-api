@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ActualPriceReductionDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ActualPriceReductionDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -116,5 +120,10 @@ class ActualPriceReductionDto extends \ArrayObject
         $this->finalPriceForTheBuyer = $finalPriceForTheBuyer;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['sellerMaxDeclaredPercentage' => ['sellerMaxDeclaredPercentage', 'getSellerMaxDeclaredPercentage', 'setSellerMaxDeclaredPercentage'], 'sellerMaxDeclaredDiscount' => ['sellerMaxDeclaredDiscount', 'getSellerMaxDeclaredDiscount', 'setSellerMaxDeclaredDiscount'], 'sellerDiscount' => ['sellerDiscount', 'getSellerDiscount', 'setSellerDiscount'], 'allegroDiscount' => ['allegroDiscount', 'getAllegroDiscount', 'setAllegroDiscount'], 'finalPriceForTheBuyer' => ['finalPriceForTheBuyer', 'getFinalPriceForTheBuyer', 'setFinalPriceForTheBuyer']];
     }
 }

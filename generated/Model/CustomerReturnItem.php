@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CustomerReturnItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CustomerReturnItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -162,5 +166,10 @@ class CustomerReturnItem extends \ArrayObject
         $this->serialNumbers = $serialNumbers;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['offerId' => ['offerId', 'getOfferId', 'setOfferId'], 'quantity' => ['quantity', 'getQuantity', 'setQuantity'], 'name' => ['name', 'getName', 'setName'], 'price' => ['price', 'getPrice', 'setPrice'], 'url' => ['url', 'getUrl', 'setUrl'], 'reason' => ['reason', 'getReason', 'setReason'], 'serialNumbers' => ['serialNumbers', 'getSerialNumbers', 'setSerialNumbers']];
     }
 }

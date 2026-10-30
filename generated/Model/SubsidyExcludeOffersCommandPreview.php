@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SubsidyExcludeOffersCommandPreview extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SubsidyExcludeOffersCommandPreview implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class SubsidyExcludeOffersCommandPreview extends \ArrayObject
         $this->offers = $offers;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['commandId' => ['commandId', 'getCommandId', 'setCommandId'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'offers' => ['offers', 'getOffers', 'setOffers']];
     }
 }

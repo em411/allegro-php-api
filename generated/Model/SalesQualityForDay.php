@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SalesQualityForDay extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SalesQualityForDay implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -146,5 +150,10 @@ class SalesQualityForDay extends \ArrayObject
         $this->metrics = $metrics;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['resultFor' => ['resultFor', 'getResultFor', 'setResultFor'], 'score' => ['score', 'getScore', 'setScore'], 'grade' => ['grade', 'getGrade', 'setGrade'], 'maxScore' => ['maxScore', 'getMaxScore', 'setMaxScore'], 'metrics' => ['metrics', 'getMetrics', 'setMetrics']];
     }
 }

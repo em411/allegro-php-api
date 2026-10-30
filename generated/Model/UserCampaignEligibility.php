@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class UserCampaignEligibility extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class UserCampaignEligibility implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class UserCampaignEligibility extends \ArrayObject
         $this->refusalReasons = $refusalReasons;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['eligible' => ['eligible', 'getEligible', 'setEligible'], 'refusalReasons' => ['refusalReasons', 'getRefusalReasons', 'setRefusalReasons']];
     }
 }

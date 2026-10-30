@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CompatibilityListSupportedCategoriesDtoSupportedCategoriesItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CompatibilityListSupportedCategoriesDtoSupportedCategoriesItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -148,5 +152,10 @@ class CompatibilityListSupportedCategoriesDtoSupportedCategoriesItem extends \Ar
         $this->validationRules = $validationRules;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['categoryId' => ['categoryId', 'getCategoryId', 'setCategoryId'], 'name' => ['name', 'getName', 'setName'], 'itemsType' => ['itemsType', 'getItemsType', 'setItemsType'], 'inputType' => ['inputType', 'getInputType', 'setInputType'], 'validationRules' => ['validationRules', 'getValidationRules', 'setValidationRules']];
     }
 }

@@ -42,51 +42,56 @@ class AdditionalPropertyDtoNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AdditionalPropertyDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\AdditionalPropertyDto();
         if (\array_key_exists('required', $data) && \is_int($data['required'])) {
             $data['required'] = (bool) $data['required'];
         }
         if (\array_key_exists('readOnly', $data) && \is_int($data['readOnly'])) {
             $data['readOnly'] = (bool) $data['readOnly'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($data['description']);
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('required', $data) && null !== $data['required']) {
             $object->setRequired($data['required']);
             unset($data['required']);
         } elseif (\array_key_exists('required', $data) && null === $data['required']) {
             $object->setRequired(null);
+            unset($data['required']);
         }
         if (\array_key_exists('readOnly', $data) && null !== $data['readOnly']) {
             $object->setReadOnly($data['readOnly']);
             unset($data['readOnly']);
         } elseif (\array_key_exists('readOnly', $data) && null === $data['readOnly']) {
             $object->setReadOnly(null);
+            unset($data['readOnly']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -105,7 +110,7 @@ class AdditionalPropertyDtoNormalizer implements DenormalizerInterface, Normaliz
         $dataArray['description'] = $data->getDescription();
         $dataArray['required'] = $data->getRequired();
         $dataArray['readOnly'] = $data->getReadOnly();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DeliveryOptionDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DeliveryOptionDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -211,5 +215,10 @@ class DeliveryOptionDto extends \ArrayObject
         $this->additionalProperties = $additionalProperties;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['deliveryType' => ['deliveryType', 'getDeliveryType', 'setDeliveryType'], 'paymentType' => ['paymentType', 'getPaymentType', 'setPaymentType'], 'packageType' => ['packageType', 'getPackageType', 'setPackageType'], 'originCountry' => ['originCountry', 'getOriginCountry', 'setOriginCountry'], 'destinationCountry' => ['destinationCountry', 'getDestinationCountry', 'setDestinationCountry'], 'limits' => ['limits', 'getLimits', 'setLimits'], 'additionalServices' => ['additionalServices', 'getAdditionalServices', 'setAdditionalServices'], 'additionalProperties' => ['additionalProperties', 'getAdditionalProperties', 'setAdditionalProperties']];
     }
 }

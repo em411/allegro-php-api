@@ -42,45 +42,50 @@ class CustomerReturnRefundBankAccountNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CustomerReturnRefundBankAccount();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CustomerReturnRefundBankAccount();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('owner', $data) && null !== $data['owner']) {
             $object->setOwner($data['owner']);
             unset($data['owner']);
         } elseif (\array_key_exists('owner', $data) && null === $data['owner']) {
             $object->setOwner(null);
+            unset($data['owner']);
         }
         if (\array_key_exists('accountNumber', $data) && null !== $data['accountNumber']) {
             $object->setAccountNumber($data['accountNumber']);
             unset($data['accountNumber']);
         } elseif (\array_key_exists('accountNumber', $data) && null === $data['accountNumber']) {
             $object->setAccountNumber(null);
+            unset($data['accountNumber']);
         }
         if (\array_key_exists('iban', $data) && null !== $data['iban']) {
             $object->setIban($data['iban']);
             unset($data['iban']);
         } elseif (\array_key_exists('iban', $data) && null === $data['iban']) {
             $object->setIban(null);
+            unset($data['iban']);
         }
         if (\array_key_exists('swift', $data) && null !== $data['swift']) {
             $object->setSwift($data['swift']);
             unset($data['swift']);
         } elseif (\array_key_exists('swift', $data) && null === $data['swift']) {
             $object->setSwift(null);
+            unset($data['swift']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\CustomerReturnRefundBankAccountAddress::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -107,9 +112,9 @@ class CustomerReturnRefundBankAccountNormalizer implements DenormalizerInterface
             $dataArray['swift'] = $data->getSwift();
         }
         if ($data->isInitialized('address') && null !== $data->getAddress()) {
-            $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+            $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

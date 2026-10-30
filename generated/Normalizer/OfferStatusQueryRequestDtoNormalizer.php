@@ -42,39 +42,43 @@ class OfferStatusQueryRequestDtoNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferStatusQueryRequestDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferStatusQueryRequestDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('offer', $data) && null !== $data['offer']) {
             $object->setOffer($this->denormalizer->denormalize($data['offer'], \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoOffer::class, 'json', $context));
             unset($data['offer']);
         } elseif (\array_key_exists('offer', $data) && null === $data['offer']) {
             $object->setOffer(null);
+            unset($data['offer']);
         }
         if (\array_key_exists('marketplace', $data) && null !== $data['marketplace']) {
             $object->setMarketplace($this->denormalizer->denormalize($data['marketplace'], \Em411\Allegro\Api\Model\OfferStatusQueryRequestDtoMarketplace::class, 'json', $context));
             unset($data['marketplace']);
         } elseif (\array_key_exists('marketplace', $data) && null === $data['marketplace']) {
             $object->setMarketplace(null);
+            unset($data['marketplace']);
         }
         if (\array_key_exists('limit', $data) && null !== $data['limit']) {
             $object->setLimit($data['limit']);
             unset($data['limit']);
         } elseif (\array_key_exists('limit', $data) && null === $data['limit']) {
             $object->setLimit(null);
+            unset($data['limit']);
         }
         if (\array_key_exists('offset', $data) && null !== $data['offset']) {
             $object->setOffset($data['offset']);
             unset($data['offset']);
         } elseif (\array_key_exists('offset', $data) && null === $data['offset']) {
             $object->setOffset(null);
+            unset($data['offset']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,16 +93,16 @@ class OfferStatusQueryRequestDtoNormalizer implements DenormalizerInterface, Nor
     {
         $dataArray = [];
         if ($data->isInitialized('offer') && null !== $data->getOffer()) {
-            $dataArray['offer'] = $this->normalizer->normalize($data->getOffer(), 'json', $context);
+            $dataArray['offer'] = null === $data->getOffer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOffer(), 'json', $context));
         }
-        $dataArray['marketplace'] = $this->normalizer->normalize($data->getMarketplace(), 'json', $context);
+        $dataArray['marketplace'] = null === $data->getMarketplace() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMarketplace(), 'json', $context));
         if ($data->isInitialized('limit') && null !== $data->getLimit()) {
             $dataArray['limit'] = $data->getLimit();
         }
         if ($data->isInitialized('offset') && null !== $data->getOffset()) {
             $dataArray['offset'] = $data->getOffset();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

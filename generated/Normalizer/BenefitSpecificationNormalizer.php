@@ -42,6 +42,16 @@ class BenefitSpecificationNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
+        $object = new \Em411\Allegro\Api\Model\BenefitSpecification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
+        }
         if (\array_key_exists('type', $data) && 'LARGE_ORDER_DISCOUNT' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\LargeOrderDiscountBenefitSpecification', $format, $context);
         }
@@ -51,21 +61,12 @@ class BenefitSpecificationNormalizer implements DenormalizerInterface, Normalize
         if (\array_key_exists('type', $data) && 'UNIT_PERCENTAGE_DISCOUNT' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\MultiPackBenefitSpecification', $format, $context);
         }
-        if (isset($data['$ref'])) {
-            return new Reference($data['$ref'], $context['document-origin']);
-        }
-        if (isset($data['$recursiveRef'])) {
-            return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BenefitSpecification();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,7 +90,7 @@ class BenefitSpecificationNormalizer implements DenormalizerInterface, Normalize
             return $this->normalizer->normalize($data, $format, $context);
         }
         $dataArray['type'] = $data->getType();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

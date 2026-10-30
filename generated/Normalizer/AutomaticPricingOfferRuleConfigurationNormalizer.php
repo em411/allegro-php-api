@@ -42,21 +42,22 @@ class AutomaticPricingOfferRuleConfigurationNormalizer implements DenormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AutomaticPricingOfferRuleConfiguration();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AutomaticPricingOfferRuleConfiguration();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('priceRange', $data) && null !== $data['priceRange']) {
             $object->setPriceRange($this->denormalizer->denormalize($data['priceRange'], \Em411\Allegro\Api\Model\AutomaticPricingOfferRuleConfigurationPriceRange::class, 'json', $context));
             unset($data['priceRange']);
         } elseif (\array_key_exists('priceRange', $data) && null === $data['priceRange']) {
             $object->setPriceRange(null);
+            unset($data['priceRange']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,9 +72,9 @@ class AutomaticPricingOfferRuleConfigurationNormalizer implements DenormalizerIn
     {
         $dataArray = [];
         if ($data->isInitialized('priceRange') && null !== $data->getPriceRange()) {
-            $dataArray['priceRange'] = $this->normalizer->normalize($data->getPriceRange(), 'json', $context);
+            $dataArray['priceRange'] = null === $data->getPriceRange() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPriceRange(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

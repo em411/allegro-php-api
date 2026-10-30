@@ -42,15 +42,15 @@ class PromotionCampaignsResponseDtoNormalizer implements DenormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PromotionCampaignsResponseDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PromotionCampaignsResponseDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('promotionCampaigns', $data) && null !== $data['promotionCampaigns']) {
             $values = [];
@@ -61,12 +61,14 @@ class PromotionCampaignsResponseDtoNormalizer implements DenormalizerInterface, 
             unset($data['promotionCampaigns']);
         } elseif (\array_key_exists('promotionCampaigns', $data) && null === $data['promotionCampaigns']) {
             $object->setPromotionCampaigns(null);
+            unset($data['promotionCampaigns']);
         }
         if (\array_key_exists('totalCount', $data) && null !== $data['totalCount']) {
             $object->setTotalCount($data['totalCount']);
             unset($data['totalCount']);
         } elseif (\array_key_exists('totalCount', $data) && null === $data['totalCount']) {
             $object->setTotalCount(null);
+            unset($data['totalCount']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,11 +84,11 @@ class PromotionCampaignsResponseDtoNormalizer implements DenormalizerInterface, 
         $dataArray = [];
         $values = [];
         foreach ($data->getPromotionCampaigns() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['promotionCampaigns'] = $values;
         $dataArray['totalCount'] = $data->getTotalCount();
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -42,21 +42,22 @@ class OfferBulkModificationPricesItemNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferBulkModificationPricesItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferBulkModificationPricesItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('changeType', $data) && null !== $data['changeType']) {
             $object->setChangeType($data['changeType']);
             unset($data['changeType']);
         } elseif (\array_key_exists('changeType', $data) && null === $data['changeType']) {
             $object->setChangeType(null);
+            unset($data['changeType']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,7 +72,7 @@ class OfferBulkModificationPricesItemNormalizer implements DenormalizerInterface
     {
         $dataArray = [];
         $dataArray['changeType'] = $data->getChangeType();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

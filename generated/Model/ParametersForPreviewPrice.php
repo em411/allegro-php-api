@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ParametersForPreviewPrice extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ParametersForPreviewPrice implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -368,5 +372,10 @@ class ParametersForPreviewPrice extends \ArrayObject
         $this->multiVariant = $multiVariant;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['category' => ['category', 'getCategory', 'setCategory'], 'condition' => ['condition', 'getCondition', 'setCondition'], 'duration' => ['duration', 'getDuration', 'setDuration'], 'hasAnyQuantity' => ['hasAnyQuantity', 'getHasAnyQuantity', 'setHasAnyQuantity'], 'numberOfBigPhotos' => ['numberOfBigPhotos', 'getNumberOfBigPhotos', 'setNumberOfBigPhotos'], 'numberOfPhotos' => ['numberOfPhotos', 'getNumberOfPhotos', 'setNumberOfPhotos'], 'quantity' => ['quantity', 'getQuantity', 'setQuantity'], 'shop' => ['shop', 'getShop', 'setShop'], 'soldQuantity' => ['soldQuantity', 'getSoldQuantity', 'setSoldQuantity'], 'type' => ['type', 'getType', 'setType'], 'unitPrice' => ['unitPrice', 'getUnitPrice', 'setUnitPrice'], 'bold' => ['bold', 'getBold', 'setBold'], 'highlight' => ['highlight', 'getHighlight', 'setHighlight'], 'departmentPage' => ['departmentPage', 'getDepartmentPage', 'setDepartmentPage'], 'emphasized' => ['emphasized', 'getEmphasized', 'setEmphasized'], 'emphasizedHighlightBoldPackage' => ['emphasizedHighlightBoldPackage', 'getEmphasizedHighlightBoldPackage', 'setEmphasizedHighlightBoldPackage'], 'multiVariant' => ['multiVariant', 'getMultiVariant', 'setMultiVariant']];
     }
 }

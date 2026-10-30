@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AuthError extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AuthError implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class AuthError extends \ArrayObject
         $this->errorDescription = $errorDescription;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['error' => ['error', 'getError', 'setError'], 'errorDescription' => ['error_description', 'getErrorDescription', 'setErrorDescription']];
     }
 }

@@ -21,11 +21,10 @@ class GetSubmitOfferToAlleDiscountCommandsStatus extends \Em411\Allegro\Api\Runt
     /**
      * Use this resource to get information about the submit offer command execution status. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#jak-sprawdzic-status-zgloszenia-oferty-do-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#how-to-check-the-status-of-an-offer-submission-to-a-campaign" target="_blank">EN</a>.
      *
-     * @param string $commandId        command id in UUID format, must be unique
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $commandId command id in UUID format, must be unique
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $commandId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetSubmitOfferToAlleDiscountCommandsStatus extends \Em411\Allegro\Api\Runt
 
     public function getUri(): string
     {
-        return str_replace(['{commandId}'], [$this->commandId], '/sale/alle-discount/submit-offer-commands/{commandId}');
+        return str_replace(['{commandId}'], [rawurlencode($this->commandId)], '/sale/alle-discount/submit-offer-commands/{commandId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -79,7 +78,7 @@ class GetSubmitOfferToAlleDiscountCommandsStatus extends \Em411\Allegro\Api\Runt
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AlleDiscountGetSubmitCommandResponse', 'json');
         }
         if (401 === $status) {

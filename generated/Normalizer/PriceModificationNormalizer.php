@@ -42,6 +42,16 @@ class PriceModificationNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
+        $object = new \Em411\Allegro\Api\Model\PriceModification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
+        }
         if (\array_key_exists('type', $data) && 'FIXED_PRICE' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\PriceModificationFixedPrice', $format, $context);
         }
@@ -57,27 +67,19 @@ class PriceModificationNormalizer implements DenormalizerInterface, NormalizerIn
         if (\array_key_exists('type', $data) && 'DECREASE_PERCENTAGE' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\PriceModificationPercentageChangeDecrease', $format, $context);
         }
-        if (isset($data['$ref'])) {
-            return new Reference($data['$ref'], $context['document-origin']);
-        }
-        if (isset($data['$recursiveRef'])) {
-            return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PriceModification();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
             $object->setMarketplaceId($data['marketplaceId']);
             unset($data['marketplaceId']);
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
+            unset($data['marketplaceId']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -107,10 +109,10 @@ class PriceModificationNormalizer implements DenormalizerInterface, NormalizerIn
             return $this->normalizer->normalize($data, $format, $context);
         }
         $dataArray['type'] = $data->getType();
-        if ($data->isInitialized('marketplaceId')) {
+        if ($data->isInitialized('marketplaceId') && null !== $data->getMarketplaceId()) {
             $dataArray['marketplaceId'] = $data->getMarketplaceId();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

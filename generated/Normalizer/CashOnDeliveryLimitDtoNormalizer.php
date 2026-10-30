@@ -42,45 +42,49 @@ class CashOnDeliveryLimitDtoNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CashOnDeliveryLimitDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CashOnDeliveryLimitDto();
         if (\array_key_exists('limit', $data) && \is_int($data['limit'])) {
             $data['limit'] = (float) $data['limit'];
         }
         if (\array_key_exists('forceRequireIban', $data) && \is_int($data['forceRequireIban'])) {
             $data['forceRequireIban'] = (bool) $data['forceRequireIban'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('limit', $data) && null !== $data['limit']) {
             $object->setLimit($data['limit']);
             unset($data['limit']);
         } elseif (\array_key_exists('limit', $data) && null === $data['limit']) {
             $object->setLimit(null);
+            unset($data['limit']);
         }
         if (\array_key_exists('currency', $data) && null !== $data['currency']) {
             $object->setCurrency($data['currency']);
             unset($data['currency']);
         } elseif (\array_key_exists('currency', $data) && null === $data['currency']) {
             $object->setCurrency(null);
+            unset($data['currency']);
         }
         if (\array_key_exists('paymentType', $data) && null !== $data['paymentType']) {
             $object->setPaymentType($data['paymentType']);
             unset($data['paymentType']);
         } elseif (\array_key_exists('paymentType', $data) && null === $data['paymentType']) {
             $object->setPaymentType(null);
+            unset($data['paymentType']);
         }
         if (\array_key_exists('forceRequireIban', $data) && null !== $data['forceRequireIban']) {
             $object->setForceRequireIban($data['forceRequireIban']);
             unset($data['forceRequireIban']);
         } elseif (\array_key_exists('forceRequireIban', $data) && null === $data['forceRequireIban']) {
             $object->setForceRequireIban(null);
+            unset($data['forceRequireIban']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -106,7 +110,7 @@ class CashOnDeliveryLimitDtoNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('forceRequireIban') && null !== $data->getForceRequireIban()) {
             $dataArray['forceRequireIban'] = $data->getForceRequireIban();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

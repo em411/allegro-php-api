@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AllegroParcelTrackingHistory extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AllegroParcelTrackingHistory implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class AllegroParcelTrackingHistory extends \ArrayObject
         $this->trackingDetails = $trackingDetails;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['waybill' => ['waybill', 'getWaybill', 'setWaybill'], 'trackingDetails' => ['trackingDetails', 'getTrackingDetails', 'setTrackingDetails']];
     }
 }

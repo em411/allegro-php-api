@@ -42,33 +42,36 @@ class AutomaticPricingOfferRuleConfigurationPriceRangeNormalizer implements Deno
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AutomaticPricingOfferRuleConfigurationPriceRange();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AutomaticPricingOfferRuleConfigurationPriceRange();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('minPrice', $data) && null !== $data['minPrice']) {
             $object->setMinPrice($this->denormalizer->denormalize($data['minPrice'], \Em411\Allegro\Api\Model\AutomaticPricingOfferRuleConfigurationPriceRangeMinPrice::class, 'json', $context));
             unset($data['minPrice']);
         } elseif (\array_key_exists('minPrice', $data) && null === $data['minPrice']) {
             $object->setMinPrice(null);
+            unset($data['minPrice']);
         }
         if (\array_key_exists('maxPrice', $data) && null !== $data['maxPrice']) {
             $object->setMaxPrice($this->denormalizer->denormalize($data['maxPrice'], \Em411\Allegro\Api\Model\AutomaticPricingOfferRuleConfigurationPriceRangeMaxPrice::class, 'json', $context));
             unset($data['maxPrice']);
         } elseif (\array_key_exists('maxPrice', $data) && null === $data['maxPrice']) {
             $object->setMaxPrice(null);
+            unset($data['maxPrice']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,9 +86,9 @@ class AutomaticPricingOfferRuleConfigurationPriceRangeNormalizer implements Deno
     {
         $dataArray = [];
         $dataArray['type'] = $data->getType();
-        $dataArray['minPrice'] = $this->normalizer->normalize($data->getMinPrice(), 'json', $context);
-        $dataArray['maxPrice'] = $this->normalizer->normalize($data->getMaxPrice(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['minPrice'] = null === $data->getMinPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMinPrice(), 'json', $context));
+        $dataArray['maxPrice'] = null === $data->getMaxPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMaxPrice(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

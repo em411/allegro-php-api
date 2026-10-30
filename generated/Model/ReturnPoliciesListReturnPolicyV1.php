@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReturnPoliciesListReturnPolicyV1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ReturnPoliciesListReturnPolicyV1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -63,5 +67,10 @@ class ReturnPoliciesListReturnPolicyV1 extends \ArrayObject
         $this->returnPolicies = $returnPolicies;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['count' => ['count', 'getCount', 'setCount'], 'returnPolicies' => ['returnPolicies', 'getReturnPolicies', 'setReturnPolicies']];
     }
 }

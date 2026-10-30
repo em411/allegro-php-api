@@ -42,21 +42,22 @@ class LabelRequestDtoSummaryReportNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\LabelRequestDtoSummaryReport();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\LabelRequestDtoSummaryReport();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('placement', $data) && null !== $data['placement']) {
             $object->setPlacement($data['placement']);
             unset($data['placement']);
         } elseif (\array_key_exists('placement', $data) && null === $data['placement']) {
             $object->setPlacement(null);
+            unset($data['placement']);
         }
         if (\array_key_exists('fields', $data) && null !== $data['fields']) {
             $values = [];
@@ -67,6 +68,7 @@ class LabelRequestDtoSummaryReportNormalizer implements DenormalizerInterface, N
             unset($data['fields']);
         } elseif (\array_key_exists('fields', $data) && null === $data['fields']) {
             $object->setFields(null);
+            unset($data['fields']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,7 +88,7 @@ class LabelRequestDtoSummaryReportNormalizer implements DenormalizerInterface, N
             $values[] = $value;
         }
         $dataArray['fields'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

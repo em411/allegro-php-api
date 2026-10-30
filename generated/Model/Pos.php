@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Pos extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Pos implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -395,5 +399,10 @@ class Pos extends \ArrayObject
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'externalId' => ['externalId', 'getExternalId', 'setExternalId'], 'name' => ['name', 'getName', 'setName'], 'seller' => ['seller', 'getSeller', 'setSeller'], 'type' => ['type', 'getType', 'setType'], 'address' => ['address', 'getAddress', 'setAddress'], 'phoneNumber' => ['phoneNumber', 'getPhoneNumber', 'setPhoneNumber'], 'email' => ['email', 'getEmail', 'setEmail'], 'locations' => ['locations', 'getLocations', 'setLocations'], 'openHours' => ['openHours', 'getOpenHours', 'setOpenHours'], 'serviceTime' => ['serviceTime', 'getServiceTime', 'setServiceTime'], 'payments' => ['payments', 'getPayments', 'setPayments'], 'confirmationType' => ['confirmationType', 'getConfirmationType', 'setConfirmationType'], 'status' => ['status', 'getStatus', 'setStatus'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt']];
     }
 }

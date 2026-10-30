@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class GeneralReport extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class GeneralReport implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class GeneralReport extends \ArrayObject
         $this->taskCount = $taskCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'completedAt' => ['completedAt', 'getCompletedAt', 'setCompletedAt'], 'taskCount' => ['taskCount', 'getTaskCount', 'setTaskCount']];
     }
 }

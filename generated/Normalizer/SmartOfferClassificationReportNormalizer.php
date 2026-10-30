@@ -42,30 +42,32 @@ class SmartOfferClassificationReportNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SmartOfferClassificationReport();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SmartOfferClassificationReport();
         if (\array_key_exists('scheduledForReclassification', $data) && \is_int($data['scheduledForReclassification'])) {
             $data['scheduledForReclassification'] = (bool) $data['scheduledForReclassification'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('classification', $data) && null !== $data['classification']) {
             $object->setClassification($this->denormalizer->denormalize($data['classification'], \Em411\Allegro\Api\Model\SmartOfferClassificationReportClassification::class, 'json', $context));
             unset($data['classification']);
         } elseif (\array_key_exists('classification', $data) && null === $data['classification']) {
             $object->setClassification(null);
+            unset($data['classification']);
         }
         if (\array_key_exists('scheduledForReclassification', $data) && null !== $data['scheduledForReclassification']) {
             $object->setScheduledForReclassification($data['scheduledForReclassification']);
             unset($data['scheduledForReclassification']);
         } elseif (\array_key_exists('scheduledForReclassification', $data) && null === $data['scheduledForReclassification']) {
             $object->setScheduledForReclassification(null);
+            unset($data['scheduledForReclassification']);
         }
         if (\array_key_exists('conditions', $data) && null !== $data['conditions']) {
             $values = [];
@@ -76,6 +78,7 @@ class SmartOfferClassificationReportNormalizer implements DenormalizerInterface,
             unset($data['conditions']);
         } elseif (\array_key_exists('conditions', $data) && null === $data['conditions']) {
             $object->setConditions(null);
+            unset($data['conditions']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -90,7 +93,7 @@ class SmartOfferClassificationReportNormalizer implements DenormalizerInterface,
     {
         $dataArray = [];
         if ($data->isInitialized('classification') && null !== $data->getClassification()) {
-            $dataArray['classification'] = $this->normalizer->normalize($data->getClassification(), 'json', $context);
+            $dataArray['classification'] = null === $data->getClassification() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getClassification(), 'json', $context));
         }
         if ($data->isInitialized('scheduledForReclassification') && null !== $data->getScheduledForReclassification()) {
             $dataArray['scheduledForReclassification'] = $data->getScheduledForReclassification();
@@ -98,11 +101,11 @@ class SmartOfferClassificationReportNormalizer implements DenormalizerInterface,
         if ($data->isInitialized('conditions') && null !== $data->getConditions()) {
             $values = [];
             foreach ($data->getConditions() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['conditions'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

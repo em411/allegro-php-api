@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OrderEvent extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OrderEvent implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class OrderEvent extends \ArrayObject
         $this->occurredAt = $occurredAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'order' => ['order', 'getOrder', 'setOrder'], 'type' => ['type', 'getType', 'setType'], 'occurredAt' => ['occurredAt', 'getOccurredAt', 'setOccurredAt']];
     }
 }

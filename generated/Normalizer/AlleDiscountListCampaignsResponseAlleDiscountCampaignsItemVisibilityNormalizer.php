@@ -42,33 +42,60 @@ class AlleDiscountListCampaignsResponseAlleDiscountCampaignsItemVisibilityNormal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AlleDiscountListCampaignsResponseAlleDiscountCampaignsItemVisibility();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AlleDiscountListCampaignsResponseAlleDiscountCampaignsItemVisibility();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('from', $data) && null !== $data['from']) {
-            $object->setFrom(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['from']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['from']);
+            if (false === $date) {
+                if (\is_string($data['from']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['from'])) {
+                    try {
+                        $date = new \DateTime($data['from']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['from'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['from'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setFrom($date);
             unset($data['from']);
         } elseif (\array_key_exists('from', $data) && null === $data['from']) {
             $object->setFrom(null);
+            unset($data['from']);
         }
         if (\array_key_exists('to', $data) && null !== $data['to']) {
-            $object->setTo(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['to']));
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['to']);
+            if (false === $date_1) {
+                if (\is_string($data['to']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['to'])) {
+                    try {
+                        $date_1 = new \DateTime($data['to']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['to'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['to'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setTo($date_1);
             unset($data['to']);
         } elseif (\array_key_exists('to', $data) && null === $data['to']) {
             $object->setTo(null);
+            unset($data['to']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -91,7 +118,7 @@ class AlleDiscountListCampaignsResponseAlleDiscountCampaignsItemVisibilityNormal
         if ($data->isInitialized('to') && null !== $data->getTo()) {
             $dataArray['to'] = $data->getTo()->format('Y-m-d\TH:i:sP');
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -20,18 +20,15 @@ class GetListOfIssuesUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
     /**
      * Use this resource to get the list of your disputes and claims ordered by descending opened date. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#lista-dyskusji-i-reklamacji-na-koncie" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#all-disputes-and-claims" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $checkoutForm.id Checkout form identifier.
-     * @var int    $limit the maximum number of issues in a response
-     * @var int    $offset index of first returned issue
-     * @var array  $status Filter issues with given set of statuses.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of subject field.
-     *             }
+     * @param array{
+     *    "checkoutForm.id"?: string, //Checkout form identifier.
+     *    "limit"?: int, //The maximum number of issues in a response.
+     *    "offset"?: int, //Index of first returned issue.
+     *    "status"?: array, //Filter issues with given set of statuses.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of subject field.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -89,6 +86,11 @@ class GetListOfIssuesUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['status' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\PostPurchaseIssueListResponse|null
      *
@@ -100,7 +102,7 @@ class GetListOfIssuesUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PostPurchaseIssueListResponse', 'json');
         }
         if (401 === $status) {

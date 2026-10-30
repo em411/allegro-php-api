@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class MeResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class MeResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -217,5 +221,10 @@ class MeResponse extends \ArrayObject
         $this->features = $features;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'login' => ['login', 'getLogin', 'setLogin'], 'firstName' => ['firstName', 'getFirstName', 'setFirstName'], 'lastName' => ['lastName', 'getLastName', 'setLastName'], 'email' => ['email', 'getEmail', 'setEmail'], 'baseMarketplace' => ['baseMarketplace', 'getBaseMarketplace', 'setBaseMarketplace'], 'company' => ['company', 'getCompany', 'setCompany'], 'features' => ['features', 'getFeatures', 'setFeatures']];
     }
 }

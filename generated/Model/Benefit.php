@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Benefit extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Benefit implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class Benefit extends \ArrayObject
         $this->specification = $specification;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['specification' => ['specification', 'getSpecification', 'setSpecification']];
     }
 }

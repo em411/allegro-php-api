@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormsOrderInvoice extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormsOrderInvoice implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -91,5 +95,10 @@ class CheckoutFormsOrderInvoice extends \ArrayObject
         $this->file = $file;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'invoiceNumber' => ['invoiceNumber', 'getInvoiceNumber', 'setInvoiceNumber'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'file' => ['file', 'getFile', 'setFile']];
     }
 }

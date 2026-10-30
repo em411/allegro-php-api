@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class GetBadgeCampaignsList extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class GetBadgeCampaignsList implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class GetBadgeCampaignsList extends \ArrayObject
         $this->badgeCampaigns = $badgeCampaigns;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['badgeCampaigns' => ['badgeCampaigns', 'getBadgeCampaigns', 'setBadgeCampaigns']];
     }
 }

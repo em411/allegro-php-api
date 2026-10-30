@@ -42,57 +42,76 @@ class DeductionChargeOperationNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\DeductionChargeOperation();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\DeductionChargeOperation();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('group', $data) && null !== $data['group']) {
             $object->setGroup($data['group']);
             unset($data['group']);
         } elseif (\array_key_exists('group', $data) && null === $data['group']) {
             $object->setGroup(null);
+            unset($data['group']);
         }
         if (\array_key_exists('wallet', $data) && null !== $data['wallet']) {
             $object->setWallet($this->denormalizer->denormalize($data['wallet'], \Em411\Allegro\Api\Model\Wallet::class, 'json', $context));
             unset($data['wallet']);
         } elseif (\array_key_exists('wallet', $data) && null === $data['wallet']) {
             $object->setWallet(null);
+            unset($data['wallet']);
         }
         if (\array_key_exists('value', $data) && null !== $data['value']) {
             $object->setValue($this->denormalizer->denormalize($data['value'], \Em411\Allegro\Api\Model\OperationValue::class, 'json', $context));
             unset($data['value']);
         } elseif (\array_key_exists('value', $data) && null === $data['value']) {
             $object->setValue(null);
+            unset($data['value']);
         }
         if (\array_key_exists('occurredAt', $data) && null !== $data['occurredAt']) {
-            $object->setOccurredAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['occurredAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['occurredAt']);
+            if (false === $date) {
+                if (\is_string($data['occurredAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['occurredAt'])) {
+                    try {
+                        $date = new \DateTime($data['occurredAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['occurredAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['occurredAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setOccurredAt($date);
             unset($data['occurredAt']);
         } elseif (\array_key_exists('occurredAt', $data) && null === $data['occurredAt']) {
             $object->setOccurredAt(null);
+            unset($data['occurredAt']);
         }
         if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
             $object->setMarketplaceId($data['marketplaceId']);
             unset($data['marketplaceId']);
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
+            unset($data['marketplaceId']);
         }
         if (\array_key_exists('deduction', $data) && null !== $data['deduction']) {
             $object->setDeduction($this->denormalizer->denormalize($data['deduction'], \Em411\Allegro\Api\Model\Deduction::class, 'json', $context));
             unset($data['deduction']);
         } elseif (\array_key_exists('deduction', $data) && null === $data['deduction']) {
             $object->setDeduction(null);
+            unset($data['deduction']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -110,16 +129,16 @@ class DeductionChargeOperationNormalizer implements DenormalizerInterface, Norma
             $dataArray['type'] = $data->getType();
         }
         $dataArray['group'] = $data->getGroup();
-        $dataArray['wallet'] = $this->normalizer->normalize($data->getWallet(), 'json', $context);
-        $dataArray['value'] = $this->normalizer->normalize($data->getValue(), 'json', $context);
+        $dataArray['wallet'] = null === $data->getWallet() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getWallet(), 'json', $context));
+        $dataArray['value'] = null === $data->getValue() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getValue(), 'json', $context));
         $dataArray['occurredAt'] = $data->getOccurredAt()->format('Y-m-d\TH:i:sP');
         if ($data->isInitialized('marketplaceId') && null !== $data->getMarketplaceId()) {
             $dataArray['marketplaceId'] = $data->getMarketplaceId();
         }
         if ($data->isInitialized('deduction') && null !== $data->getDeduction()) {
-            $dataArray['deduction'] = $this->normalizer->normalize($data->getDeduction(), 'json', $context);
+            $dataArray['deduction'] = null === $data->getDeduction() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDeduction(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

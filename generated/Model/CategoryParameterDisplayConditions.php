@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CategoryParameterDisplayConditions extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CategoryParameterDisplayConditions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class CategoryParameterDisplayConditions extends \ArrayObject
         $this->parametersWithValue = $parametersWithValue;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['parametersWithValue' => ['parametersWithValue', 'getParametersWithValue', 'setParametersWithValue']];
     }
 }

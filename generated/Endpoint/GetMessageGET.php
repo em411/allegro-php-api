@@ -22,12 +22,10 @@ class GetMessageGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imple
     /**
      * Use this resource to get message with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#szczegolowe-informacje-o-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#information-about-a-particular-message" target="_blank">EN</a>.
      *
-     * @param string $messageId        identifier of message to be returned
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $messageId identifier of message to be returned
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
     public function __construct(string $messageId, array $headerParameters = [], array $accept = [])
@@ -44,7 +42,7 @@ class GetMessageGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imple
 
     public function getUri(): string
     {
-        return str_replace(['{messageId}'], [$this->messageId], '/messaging/messages/{messageId}');
+        return str_replace(['{messageId}'], [rawurlencode($this->messageId)], '/messaging/messages/{messageId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -88,10 +86,10 @@ class GetMessageGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imple
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
                 return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\Message', 'json');
             }
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
                 return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessageVBeta1', 'json');
             }
         }

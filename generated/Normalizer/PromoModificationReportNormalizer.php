@@ -42,15 +42,15 @@ class PromoModificationReportNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PromoModificationReport();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PromoModificationReport();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('tasks', $data) && null !== $data['tasks']) {
             $values = [];
@@ -61,12 +61,14 @@ class PromoModificationReportNormalizer implements DenormalizerInterface, Normal
             unset($data['tasks']);
         } elseif (\array_key_exists('tasks', $data) && null === $data['tasks']) {
             $object->setTasks(null);
+            unset($data['tasks']);
         }
         if (\array_key_exists('modification', $data) && null !== $data['modification']) {
             $object->setModification($this->denormalizer->denormalize($data['modification'], \Em411\Allegro\Api\Model\PromoOptionsCommandModification::class, 'json', $context));
             unset($data['modification']);
         } elseif (\array_key_exists('modification', $data) && null === $data['modification']) {
             $object->setModification(null);
+            unset($data['modification']);
         }
         if (\array_key_exists('additionalMarketplaces', $data) && null !== $data['additionalMarketplaces']) {
             $values_1 = [];
@@ -77,6 +79,7 @@ class PromoModificationReportNormalizer implements DenormalizerInterface, Normal
             unset($data['additionalMarketplaces']);
         } elseif (\array_key_exists('additionalMarketplaces', $data) && null === $data['additionalMarketplaces']) {
             $object->setAdditionalMarketplaces(null);
+            unset($data['additionalMarketplaces']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -93,21 +96,21 @@ class PromoModificationReportNormalizer implements DenormalizerInterface, Normal
         if ($data->isInitialized('tasks') && null !== $data->getTasks()) {
             $values = [];
             foreach ($data->getTasks() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['tasks'] = $values;
         }
         if ($data->isInitialized('modification') && null !== $data->getModification()) {
-            $dataArray['modification'] = $this->normalizer->normalize($data->getModification(), 'json', $context);
+            $dataArray['modification'] = null === $data->getModification() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getModification(), 'json', $context));
         }
         if ($data->isInitialized('additionalMarketplaces') && null !== $data->getAdditionalMarketplaces()) {
             $values_1 = [];
             foreach ($data->getAdditionalMarketplaces() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['additionalMarketplaces'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class UserRating extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class UserRating implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -316,5 +320,10 @@ class UserRating extends \ArrayObject
         $this->removal = $removal;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['answer' => ['answer', 'getAnswer', 'setAnswer'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'comment' => ['comment', 'getComment', 'setComment'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'editedAt' => ['editedAt', 'getEditedAt', 'setEditedAt'], 'excludedFromAverageRates' => ['excludedFromAverageRates', 'getExcludedFromAverageRates', 'setExcludedFromAverageRates'], 'excludedFromAverageRatesReason' => ['excludedFromAverageRatesReason', 'getExcludedFromAverageRatesReason', 'setExcludedFromAverageRatesReason'], 'id' => ['id', 'getId', 'setId'], 'lastChangedAt' => ['lastChangedAt', 'getLastChangedAt', 'setLastChangedAt'], 'order' => ['order', 'getOrder', 'setOrder'], 'rates' => ['rates', 'getRates', 'setRates'], 'recommended' => ['recommended', 'getRecommended', 'setRecommended'], 'removal' => ['removal', 'getRemoval', 'setRemoval']];
     }
 }

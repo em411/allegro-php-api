@@ -42,39 +42,43 @@ class ProductImageProposalNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductImageProposal();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductImageProposal();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('current', $data) && null !== $data['current']) {
             $object->setCurrent($data['current']);
             unset($data['current']);
         } elseif (\array_key_exists('current', $data) && null === $data['current']) {
             $object->setCurrent(null);
+            unset($data['current']);
         }
         if (\array_key_exists('proposal', $data) && null !== $data['proposal']) {
             $object->setProposal($data['proposal']);
             unset($data['proposal']);
         } elseif (\array_key_exists('proposal', $data) && null === $data['proposal']) {
             $object->setProposal(null);
+            unset($data['proposal']);
         }
         if (\array_key_exists('reason', $data) && null !== $data['reason']) {
             $object->setReason($data['reason']);
             unset($data['reason']);
         } elseif (\array_key_exists('reason', $data) && null === $data['reason']) {
             $object->setReason(null);
+            unset($data['reason']);
         }
         if (\array_key_exists('resolutionType', $data) && null !== $data['resolutionType']) {
             $object->setResolutionType($data['resolutionType']);
             unset($data['resolutionType']);
         } elseif (\array_key_exists('resolutionType', $data) && null === $data['resolutionType']) {
             $object->setResolutionType(null);
+            unset($data['resolutionType']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,7 +104,7 @@ class ProductImageProposalNormalizer implements DenormalizerInterface, Normalize
         if ($data->isInitialized('resolutionType') && null !== $data->getResolutionType()) {
             $dataArray['resolutionType'] = $data->getResolutionType();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

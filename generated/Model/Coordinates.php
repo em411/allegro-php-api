@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Coordinates extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Coordinates implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -57,5 +61,10 @@ class Coordinates extends \ArrayObject
         $this->lon = $lon;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['lat' => ['lat', 'getLat', 'setLat'], 'lon' => ['lon', 'getLon', 'setLon']];
     }
 }

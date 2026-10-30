@@ -22,7 +22,7 @@ class FloatCategoryProductParameter extends CategoryProductParameter
     /**
      * The restrictions on values of this parameter.
      *
-     * @var FloatCategoryProductParameterrestrictions|null
+     * @var FloatCategoryProductParameterRestrictions|null
      */
     protected $restrictions;
 
@@ -34,7 +34,7 @@ class FloatCategoryProductParameter extends CategoryProductParameter
     /**
      * The restrictions on values of this parameter.
      */
-    public function getRestrictions(): ?FloatCategoryProductParameterrestrictions
+    public function getRestrictions(): ?FloatCategoryProductParameterRestrictions
     {
         return $this->restrictions;
     }
@@ -42,11 +42,16 @@ class FloatCategoryProductParameter extends CategoryProductParameter
     /**
      * The restrictions on values of this parameter.
      */
-    public function setRestrictions(?FloatCategoryProductParameterrestrictions $restrictions): self
+    public function setRestrictions(?FloatCategoryProductParameterRestrictions $restrictions): self
     {
         $this->initialized['restrictions'] = true;
         $this->restrictions = $restrictions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['restrictions' => ['restrictions', 'getRestrictions', 'setRestrictions']]);
     }
 }

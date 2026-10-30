@@ -42,33 +42,36 @@ class CategorySuggestionCategoryNodeNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CategorySuggestionCategoryNode();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CategorySuggestionCategoryNode();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('parent', $data) && null !== $data['parent']) {
             $object->setParent($this->denormalizer->denormalize($data['parent'], \Em411\Allegro\Api\Model\CategorySuggestionCategoryNode::class, 'json', $context));
             unset($data['parent']);
         } elseif (\array_key_exists('parent', $data) && null === $data['parent']) {
             $object->setParent(null);
+            unset($data['parent']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,9 +88,9 @@ class CategorySuggestionCategoryNodeNormalizer implements DenormalizerInterface,
         $dataArray['id'] = $data->getId();
         $dataArray['name'] = $data->getName();
         if ($data->isInitialized('parent') && null !== $data->getParent()) {
-            $dataArray['parent'] = $this->normalizer->normalize($data->getParent(), 'json', $context);
+            $dataArray['parent'] = null === $data->getParent() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getParent(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

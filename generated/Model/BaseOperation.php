@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BaseOperation extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BaseOperation implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -161,5 +165,10 @@ class BaseOperation extends \ArrayObject
     {
         $this->initialized['marketplaceId'] = true;
         $this->marketplaceId = $marketplaceId;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['type', 'getType', 'setType'], 'group' => ['group', 'getGroup', 'setGroup'], 'wallet' => ['wallet', 'getWallet', 'setWallet'], 'value' => ['value', 'getValue', 'setValue'], 'occurredAt' => ['occurredAt', 'getOccurredAt', 'setOccurredAt'], 'marketplaceId' => ['marketplaceId', 'getMarketplaceId', 'setMarketplaceId']];
     }
 }

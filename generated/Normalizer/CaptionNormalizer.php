@@ -42,27 +42,29 @@ class CaptionNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Caption();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Caption();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('index', $data) && null !== $data['index']) {
             $object->setIndex($data['index']);
             unset($data['index']);
         } elseif (\array_key_exists('index', $data) && null === $data['index']) {
             $object->setIndex(null);
+            unset($data['index']);
         }
         if (\array_key_exists('value', $data) && null !== $data['value']) {
             $object->setValue($data['value']);
             unset($data['value']);
         } elseif (\array_key_exists('value', $data) && null === $data['value']) {
             $object->setValue(null);
+            unset($data['value']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,7 +80,7 @@ class CaptionNormalizer implements DenormalizerInterface, NormalizerInterface, D
         $dataArray = [];
         $dataArray['index'] = $data->getIndex();
         $dataArray['value'] = $data->getValue();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

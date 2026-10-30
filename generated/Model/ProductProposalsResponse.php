@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductProposalsResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductProposalsResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -232,5 +236,10 @@ class ProductProposalsResponse extends \ArrayObject
         $this->publication = $publication;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'category' => ['category', 'getCategory', 'setCategory'], 'images' => ['images', 'getImages', 'setImages'], 'parameters' => ['parameters', 'getParameters', 'setParameters'], 'description' => ['description', 'getDescription', 'setDescription'], 'aiCoCreatedContent' => ['aiCoCreatedContent', 'getAiCoCreatedContent', 'setAiCoCreatedContent'], 'language' => ['language', 'getLanguage', 'setLanguage'], 'publication' => ['publication', 'getPublication', 'setPublication']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReceivingState extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ReceivingState implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -127,5 +131,10 @@ class ReceivingState extends \ArrayObject
         $this->content = $content;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'stage' => ['stage', 'getStage', 'setStage'], 'displayNumber' => ['displayNumber', 'getDisplayNumber', 'setDisplayNumber'], 'content' => ['content', 'getContent', 'setContent']];
     }
 }

@@ -42,27 +42,29 @@ class CreateResponsiblePersonRequestNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CreateResponsiblePersonRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CreateResponsiblePersonRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('personalData', $data) && null !== $data['personalData']) {
             $object->setPersonalData($this->denormalizer->denormalize($data['personalData'], \Em411\Allegro\Api\Model\CreateResponsiblePersonRequestPersonalData::class, 'json', $context));
             unset($data['personalData']);
         } elseif (\array_key_exists('personalData', $data) && null === $data['personalData']) {
             $object->setPersonalData(null);
+            unset($data['personalData']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,9 +82,9 @@ class CreateResponsiblePersonRequestNormalizer implements DenormalizerInterface,
             $dataArray['name'] = $data->getName();
         }
         if ($data->isInitialized('personalData') && null !== $data->getPersonalData()) {
-            $dataArray['personalData'] = $this->normalizer->normalize($data->getPersonalData(), 'json', $context);
+            $dataArray['personalData'] = null === $data->getPersonalData() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPersonalData(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

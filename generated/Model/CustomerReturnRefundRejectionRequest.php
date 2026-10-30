@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CustomerReturnRefundRejectionRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CustomerReturnRefundRejectionRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class CustomerReturnRefundRejectionRequest extends \ArrayObject
         $this->rejection = $rejection;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['rejection' => ['rejection', 'getRejection', 'setRejection']];
     }
 }

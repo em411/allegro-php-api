@@ -42,21 +42,22 @@ class FulfillmentRefundDispositionBuyerNormalizer implements DenormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FulfillmentRefundDispositionBuyer();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FulfillmentRefundDispositionBuyer();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('login', $data) && null !== $data['login']) {
             $object->setLogin($data['login']);
             unset($data['login']);
         } elseif (\array_key_exists('login', $data) && null === $data['login']) {
             $object->setLogin(null);
+            unset($data['login']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +74,7 @@ class FulfillmentRefundDispositionBuyerNormalizer implements DenormalizerInterfa
         if ($data->isInitialized('login') && null !== $data->getLogin()) {
             $dataArray['login'] = $data->getLogin();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

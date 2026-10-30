@@ -22,7 +22,7 @@ class MarketplacePriceModificationFixed extends MarketplacePriceModification
     /**
      * New offer's BUY NOW price set with the `FIXED` type modification.
      *
-     * @var MarketplacePriceModificationFixedvalue|null
+     * @var MarketplacePriceModificationFixedValue|null
      */
     protected $value;
 
@@ -34,7 +34,7 @@ class MarketplacePriceModificationFixed extends MarketplacePriceModification
     /**
      * New offer's BUY NOW price set with the `FIXED` type modification.
      */
-    public function getValue(): ?MarketplacePriceModificationFixedvalue
+    public function getValue(): ?MarketplacePriceModificationFixedValue
     {
         return $this->value;
     }
@@ -42,11 +42,16 @@ class MarketplacePriceModificationFixed extends MarketplacePriceModification
     /**
      * New offer's BUY NOW price set with the `FIXED` type modification.
      */
-    public function setValue(?MarketplacePriceModificationFixedvalue $value): self
+    public function setValue(?MarketplacePriceModificationFixedValue $value): self
     {
         $this->initialized['value'] = true;
         $this->value = $value;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['value' => ['value', 'getValue', 'setValue']]);
     }
 }

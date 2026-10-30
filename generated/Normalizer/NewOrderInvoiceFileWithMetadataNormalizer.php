@@ -42,27 +42,29 @@ class NewOrderInvoiceFileWithMetadataNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\NewOrderInvoiceFileWithMetadata();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\NewOrderInvoiceFileWithMetadata();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('file', $data) && null !== $data['file']) {
             $object->setFile($data['file']);
             unset($data['file']);
         } elseif (\array_key_exists('file', $data) && null === $data['file']) {
             $object->setFile(null);
+            unset($data['file']);
         }
         if (\array_key_exists('invoiceNumber', $data) && null !== $data['invoiceNumber']) {
             $object->setInvoiceNumber($data['invoiceNumber']);
             unset($data['invoiceNumber']);
         } elseif (\array_key_exists('invoiceNumber', $data) && null === $data['invoiceNumber']) {
             $object->setInvoiceNumber(null);
+            unset($data['invoiceNumber']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,7 +82,7 @@ class NewOrderInvoiceFileWithMetadataNormalizer implements DenormalizerInterface
         if ($data->isInitialized('invoiceNumber') && null !== $data->getInvoiceNumber()) {
             $dataArray['invoiceNumber'] = $data->getInvoiceNumber();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

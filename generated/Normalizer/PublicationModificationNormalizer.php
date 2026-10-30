@@ -42,27 +42,41 @@ class PublicationModificationNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PublicationModification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PublicationModification();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('action', $data) && null !== $data['action']) {
             $object->setAction($data['action']);
             unset($data['action']);
         } elseif (\array_key_exists('action', $data) && null === $data['action']) {
             $object->setAction(null);
+            unset($data['action']);
         }
         if (\array_key_exists('scheduledFor', $data) && null !== $data['scheduledFor']) {
-            $object->setScheduledFor(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledFor']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledFor']);
+            if (false === $date) {
+                if (\is_string($data['scheduledFor']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['scheduledFor'])) {
+                    try {
+                        $date = new \DateTime($data['scheduledFor']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledFor'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledFor'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setScheduledFor($date);
             unset($data['scheduledFor']);
         } elseif (\array_key_exists('scheduledFor', $data) && null === $data['scheduledFor']) {
             $object->setScheduledFor(null);
+            unset($data['scheduledFor']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +96,7 @@ class PublicationModificationNormalizer implements DenormalizerInterface, Normal
         if ($data->isInitialized('scheduledFor') && null !== $data->getScheduledFor()) {
             $dataArray['scheduledFor'] = $data->getScheduledFor()->format('Y-m-d\TH:i:sP');
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

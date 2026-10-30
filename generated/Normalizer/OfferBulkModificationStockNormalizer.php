@@ -42,27 +42,28 @@ class OfferBulkModificationStockNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
+        $object = new \Em411\Allegro\Api\Model\OfferBulkModificationStock();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
+        }
         if (\array_key_exists('changeType', $data) && 'FIXED' === $data['changeType']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\StockModificationFixed', $format, $context);
         }
         if (\array_key_exists('changeType', $data) && 'GAIN' === $data['changeType']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\StockModificationGain', $format, $context);
         }
-        if (isset($data['$ref'])) {
-            return new Reference($data['$ref'], $context['document-origin']);
-        }
-        if (isset($data['$recursiveRef'])) {
-            return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferBulkModificationStock();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('changeType', $data) && null !== $data['changeType']) {
             $object->setChangeType($data['changeType']);
             unset($data['changeType']);
         } elseif (\array_key_exists('changeType', $data) && null === $data['changeType']) {
             $object->setChangeType(null);
+            unset($data['changeType']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,7 +84,7 @@ class OfferBulkModificationStockNormalizer implements DenormalizerInterface, Nor
             return $this->normalizer->normalize($data, $format, $context);
         }
         $dataArray['changeType'] = $data->getChangeType();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,15 +42,15 @@ class ValidationNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Validation();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Validation();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('errors', $data) && null !== $data['errors']) {
             $values = [];
@@ -61,6 +61,7 @@ class ValidationNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['errors']);
         } elseif (\array_key_exists('errors', $data) && null === $data['errors']) {
             $object->setErrors(null);
+            unset($data['errors']);
         }
         if (\array_key_exists('warnings', $data) && null !== $data['warnings']) {
             $values_1 = [];
@@ -71,12 +72,26 @@ class ValidationNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['warnings']);
         } elseif (\array_key_exists('warnings', $data) && null === $data['warnings']) {
             $object->setWarnings(null);
+            unset($data['warnings']);
         }
         if (\array_key_exists('validatedAt', $data) && null !== $data['validatedAt']) {
-            $object->setValidatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['validatedAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['validatedAt']);
+            if (false === $date) {
+                if (\is_string($data['validatedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['validatedAt'])) {
+                    try {
+                        $date = new \DateTime($data['validatedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['validatedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['validatedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setValidatedAt($date);
             unset($data['validatedAt']);
         } elseif (\array_key_exists('validatedAt', $data) && null === $data['validatedAt']) {
             $object->setValidatedAt(null);
+            unset($data['validatedAt']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -92,20 +107,20 @@ class ValidationNormalizer implements DenormalizerInterface, NormalizerInterface
         $dataArray = [];
         $values = [];
         foreach ($data->getErrors() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['errors'] = $values;
         if ($data->isInitialized('warnings') && null !== $data->getWarnings()) {
             $values_1 = [];
             foreach ($data->getWarnings() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['warnings'] = $values_1;
         }
         if ($data->isInitialized('validatedAt') && null !== $data->getValidatedAt()) {
             $dataArray['validatedAt'] = $data->getValidatedAt()->format('Y-m-d\TH:i:sP');
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

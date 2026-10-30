@@ -21,16 +21,13 @@ class SetOrderFulfillmentUsingPUT extends \Em411\Allegro\Api\Runtime\Client\Base
     /**
      * Use to set seller order status. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#zmiana-statusu-realizacji-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#order-fulfillment-status-change" target="_blank">EN</a>.
      *
-     * @param string $id              order identifier
-     * @param array  $queryParameters {
-     *
-     * @var string $checkoutForm.revision Checkout form revision.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $id order identifier
+     * @param array{
+     *    "checkoutForm.revision"?: string, //Checkout form revision.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $id, ?\Em411\Allegro\Api\Model\CheckoutFormFulfillment $requestBody = null, array $queryParameters = [], array $headerParameters = [])
     {
@@ -47,13 +44,13 @@ class SetOrderFulfillmentUsingPUT extends \Em411\Allegro\Api\Runtime\Client\Base
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/order/checkout-forms/{id}/fulfillment');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/order/checkout-forms/{id}/fulfillment');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Em411\Allegro\Api\Model\CheckoutFormFulfillment) {
-            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], \Em411\Allegro\Api\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -110,10 +107,10 @@ class SetOrderFulfillmentUsingPUT extends \Em411\Allegro\Api\Runtime\Client\Base
         if (404 === $status) {
             throw new \Em411\Allegro\Api\Exception\SetOrderFulfillmentUsingPUTNotFoundException($response);
         }
-        if ((null === $contentType) === false && (409 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (409 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\SetOrderFulfillmentUsingPUTConflictException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\SetOrderFulfillmentUsingPUTUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

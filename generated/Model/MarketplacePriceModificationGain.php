@@ -22,7 +22,7 @@ class MarketplacePriceModificationGain extends MarketplacePriceModification
     /**
      * Value, which will be added to the current offer's BUY_NOW price with the `GAIN` modification type.
      *
-     * @var MarketplacePriceModificationGainvalue|null
+     * @var MarketplacePriceModificationGainValue|null
      */
     protected $value;
 
@@ -34,7 +34,7 @@ class MarketplacePriceModificationGain extends MarketplacePriceModification
     /**
      * Value, which will be added to the current offer's BUY_NOW price with the `GAIN` modification type.
      */
-    public function getValue(): ?MarketplacePriceModificationGainvalue
+    public function getValue(): ?MarketplacePriceModificationGainValue
     {
         return $this->value;
     }
@@ -42,11 +42,16 @@ class MarketplacePriceModificationGain extends MarketplacePriceModification
     /**
      * Value, which will be added to the current offer's BUY_NOW price with the `GAIN` modification type.
      */
-    public function setValue(?MarketplacePriceModificationGainvalue $value): self
+    public function setValue(?MarketplacePriceModificationGainValue $value): self
     {
         $this->initialized['value'] = true;
         $this->value = $value;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['value' => ['value', 'getValue', 'setValue']]);
     }
 }

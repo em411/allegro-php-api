@@ -42,21 +42,22 @@ class CheckoutFormInvoiceAddressCompanyNormalizer implements DenormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormInvoiceAddressCompany();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormInvoiceAddressCompany();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('ids', $data) && null !== $data['ids']) {
             $values = [];
@@ -67,18 +68,21 @@ class CheckoutFormInvoiceAddressCompanyNormalizer implements DenormalizerInterfa
             unset($data['ids']);
         } elseif (\array_key_exists('ids', $data) && null === $data['ids']) {
             $object->setIds(null);
+            unset($data['ids']);
         }
         if (\array_key_exists('vatPayerStatus', $data) && null !== $data['vatPayerStatus']) {
             $object->setVatPayerStatus($data['vatPayerStatus']);
             unset($data['vatPayerStatus']);
         } elseif (\array_key_exists('vatPayerStatus', $data) && null === $data['vatPayerStatus']) {
             $object->setVatPayerStatus(null);
+            unset($data['vatPayerStatus']);
         }
         if (\array_key_exists('taxId', $data) && null !== $data['taxId']) {
             $object->setTaxId($data['taxId']);
             unset($data['taxId']);
         } elseif (\array_key_exists('taxId', $data) && null === $data['taxId']) {
             $object->setTaxId(null);
+            unset($data['taxId']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -96,7 +100,7 @@ class CheckoutFormInvoiceAddressCompanyNormalizer implements DenormalizerInterfa
         if ($data->isInitialized('ids') && null !== $data->getIds()) {
             $values = [];
             foreach ($data->getIds() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['ids'] = $values;
         }
@@ -104,7 +108,7 @@ class CheckoutFormInvoiceAddressCompanyNormalizer implements DenormalizerInterfa
         if ($data->isInitialized('taxId') && null !== $data->getTaxId()) {
             $dataArray['taxId'] = $data->getTaxId();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

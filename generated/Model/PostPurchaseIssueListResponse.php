@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PostPurchaseIssueListResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PostPurchaseIssueListResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class PostPurchaseIssueListResponse extends \ArrayObject
         $this->issues = $issues;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['issues' => ['issues', 'getIssues', 'setIssues']];
     }
 }

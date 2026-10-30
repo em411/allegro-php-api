@@ -42,48 +42,53 @@ class ValidationErrorNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ValidationError();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ValidationError();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('code', $data) && null !== $data['code']) {
             $object->setCode($data['code']);
             unset($data['code']);
         } elseif (\array_key_exists('code', $data) && null === $data['code']) {
             $object->setCode(null);
+            unset($data['code']);
         }
         if (\array_key_exists('details', $data) && null !== $data['details']) {
             $object->setDetails($data['details']);
             unset($data['details']);
         } elseif (\array_key_exists('details', $data) && null === $data['details']) {
             $object->setDetails(null);
+            unset($data['details']);
         }
         if (\array_key_exists('message', $data) && null !== $data['message']) {
             $object->setMessage($data['message']);
             unset($data['message']);
         } elseif (\array_key_exists('message', $data) && null === $data['message']) {
             $object->setMessage(null);
+            unset($data['message']);
         }
         if (\array_key_exists('path', $data) && null !== $data['path']) {
             $object->setPath($data['path']);
             unset($data['path']);
         } elseif (\array_key_exists('path', $data) && null === $data['path']) {
             $object->setPath(null);
+            unset($data['path']);
         }
         if (\array_key_exists('userMessage', $data) && null !== $data['userMessage']) {
             $object->setUserMessage($data['userMessage']);
             unset($data['userMessage']);
         } elseif (\array_key_exists('userMessage', $data) && null === $data['userMessage']) {
             $object->setUserMessage(null);
+            unset($data['userMessage']);
         }
         if (\array_key_exists('metadata', $data) && null !== $data['metadata']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['metadata'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -91,6 +96,7 @@ class ValidationErrorNormalizer implements DenormalizerInterface, NormalizerInte
             unset($data['metadata']);
         } elseif (\array_key_exists('metadata', $data) && null === $data['metadata']) {
             $object->setMetadata(null);
+            unset($data['metadata']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -107,26 +113,26 @@ class ValidationErrorNormalizer implements DenormalizerInterface, NormalizerInte
         if ($data->isInitialized('code') && null !== $data->getCode()) {
             $dataArray['code'] = $data->getCode();
         }
-        if ($data->isInitialized('details')) {
+        if ($data->isInitialized('details') && null !== $data->getDetails()) {
             $dataArray['details'] = $data->getDetails();
         }
         if ($data->isInitialized('message') && null !== $data->getMessage()) {
             $dataArray['message'] = $data->getMessage();
         }
-        if ($data->isInitialized('path')) {
+        if ($data->isInitialized('path') && null !== $data->getPath()) {
             $dataArray['path'] = $data->getPath();
         }
         if ($data->isInitialized('userMessage') && null !== $data->getUserMessage()) {
             $dataArray['userMessage'] = $data->getUserMessage();
         }
         if ($data->isInitialized('metadata') && null !== $data->getMetadata()) {
-            $values = [];
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data->getMetadata() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['metadata'] = $values;
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

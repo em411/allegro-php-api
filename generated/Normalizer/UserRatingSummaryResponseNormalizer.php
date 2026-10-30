@@ -42,39 +42,43 @@ class UserRatingSummaryResponseNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UserRatingSummaryResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\UserRatingSummaryResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('averageRates', $data) && null !== $data['averageRates']) {
             $object->setAverageRates($this->denormalizer->denormalize($data['averageRates'], \Em411\Allegro\Api\Model\AverageRates::class, 'json', $context));
             unset($data['averageRates']);
         } elseif (\array_key_exists('averageRates', $data) && null === $data['averageRates']) {
             $object->setAverageRates(null);
+            unset($data['averageRates']);
         }
         if (\array_key_exists('notRecommended', $data) && null !== $data['notRecommended']) {
             $object->setNotRecommended($this->denormalizer->denormalize($data['notRecommended'], \Em411\Allegro\Api\Model\UserRatingSummaryResponseNotRecommended::class, 'json', $context));
             unset($data['notRecommended']);
         } elseif (\array_key_exists('notRecommended', $data) && null === $data['notRecommended']) {
             $object->setNotRecommended(null);
+            unset($data['notRecommended']);
         }
         if (\array_key_exists('recommended', $data) && null !== $data['recommended']) {
             $object->setRecommended($this->denormalizer->denormalize($data['recommended'], \Em411\Allegro\Api\Model\UserRatingSummaryResponseRecommended::class, 'json', $context));
             unset($data['recommended']);
         } elseif (\array_key_exists('recommended', $data) && null === $data['recommended']) {
             $object->setRecommended(null);
+            unset($data['recommended']);
         }
         if (\array_key_exists('recommendedPercentage', $data) && null !== $data['recommendedPercentage']) {
             $object->setRecommendedPercentage($data['recommendedPercentage']);
             unset($data['recommendedPercentage']);
         } elseif (\array_key_exists('recommendedPercentage', $data) && null === $data['recommendedPercentage']) {
             $object->setRecommendedPercentage(null);
+            unset($data['recommendedPercentage']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,12 +93,12 @@ class UserRatingSummaryResponseNormalizer implements DenormalizerInterface, Norm
     {
         $dataArray = [];
         if ($data->isInitialized('averageRates') && null !== $data->getAverageRates()) {
-            $dataArray['averageRates'] = $this->normalizer->normalize($data->getAverageRates(), 'json', $context);
+            $dataArray['averageRates'] = null === $data->getAverageRates() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAverageRates(), 'json', $context));
         }
-        $dataArray['notRecommended'] = $this->normalizer->normalize($data->getNotRecommended(), 'json', $context);
-        $dataArray['recommended'] = $this->normalizer->normalize($data->getRecommended(), 'json', $context);
+        $dataArray['notRecommended'] = null === $data->getNotRecommended() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getNotRecommended(), 'json', $context));
+        $dataArray['recommended'] = null === $data->getRecommended() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRecommended(), 'json', $context));
         $dataArray['recommendedPercentage'] = $data->getRecommendedPercentage();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AllegroPricesAccountParticipationResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AllegroPricesAccountParticipationResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class AllegroPricesAccountParticipationResponse extends \ArrayObject
         $this->marketplaces = $marketplaces;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['marketplaces' => ['marketplaces', 'getMarketplaces', 'setMarketplaces']];
     }
 }

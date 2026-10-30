@@ -42,39 +42,43 @@ class RatesNormalizer implements DenormalizerInterface, NormalizerInterface, Den
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Rates();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Rates();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('delivery', $data) && null !== $data['delivery']) {
             $object->setDelivery($data['delivery']);
             unset($data['delivery']);
         } elseif (\array_key_exists('delivery', $data) && null === $data['delivery']) {
             $object->setDelivery(null);
+            unset($data['delivery']);
         }
         if (\array_key_exists('deliveryCost', $data) && null !== $data['deliveryCost']) {
             $object->setDeliveryCost($data['deliveryCost']);
             unset($data['deliveryCost']);
         } elseif (\array_key_exists('deliveryCost', $data) && null === $data['deliveryCost']) {
             $object->setDeliveryCost(null);
+            unset($data['deliveryCost']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($data['description']);
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('service', $data) && null !== $data['service']) {
             $object->setService($data['service']);
             unset($data['service']);
         } elseif (\array_key_exists('service', $data) && null === $data['service']) {
             $object->setService(null);
+            unset($data['service']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,7 +104,7 @@ class RatesNormalizer implements DenormalizerInterface, NormalizerInterface, Den
         if ($data->isInitialized('service') && null !== $data->getService()) {
             $dataArray['service'] = $data->getService();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

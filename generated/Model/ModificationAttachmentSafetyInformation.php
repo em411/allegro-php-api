@@ -22,7 +22,7 @@ class ModificationAttachmentSafetyInformation extends ModificationSafetyInformat
     /**
      * Full list of safety information attachments.
      *
-     * @var list<ModificationAttachmentSafetyInformationattachmentsItem>|null
+     * @var list<ModificationAttachmentSafetyInformationAttachmentsItem>|null
      */
     protected $attachments;
 
@@ -34,7 +34,7 @@ class ModificationAttachmentSafetyInformation extends ModificationSafetyInformat
     /**
      * Full list of safety information attachments.
      *
-     * @return list<ModificationAttachmentSafetyInformationattachmentsItem>|null
+     * @return list<ModificationAttachmentSafetyInformationAttachmentsItem>|null
      */
     public function getAttachments(): ?array
     {
@@ -44,7 +44,7 @@ class ModificationAttachmentSafetyInformation extends ModificationSafetyInformat
     /**
      * Full list of safety information attachments.
      *
-     * @param list<ModificationAttachmentSafetyInformationattachmentsItem>|null $attachments
+     * @param list<ModificationAttachmentSafetyInformationAttachmentsItem>|null $attachments
      */
     public function setAttachments(?array $attachments): self
     {
@@ -52,5 +52,10 @@ class ModificationAttachmentSafetyInformation extends ModificationSafetyInformat
         $this->attachments = $attachments;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['attachments' => ['attachments', 'getAttachments', 'setAttachments']]);
     }
 }

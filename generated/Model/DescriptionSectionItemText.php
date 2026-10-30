@@ -41,4 +41,9 @@ class DescriptionSectionItemText extends DescriptionSectionItem
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['content' => ['content', 'getContent', 'setContent']]);
+    }
 }

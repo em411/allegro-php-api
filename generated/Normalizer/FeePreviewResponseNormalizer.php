@@ -42,15 +42,15 @@ class FeePreviewResponseNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FeePreviewResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FeePreviewResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('commissions', $data) && null !== $data['commissions']) {
             $values = [];
@@ -61,6 +61,7 @@ class FeePreviewResponseNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['commissions']);
         } elseif (\array_key_exists('commissions', $data) && null === $data['commissions']) {
             $object->setCommissions(null);
+            unset($data['commissions']);
         }
         if (\array_key_exists('quotes', $data) && null !== $data['quotes']) {
             $values_1 = [];
@@ -71,6 +72,7 @@ class FeePreviewResponseNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['quotes']);
         } elseif (\array_key_exists('quotes', $data) && null === $data['quotes']) {
             $object->setQuotes(null);
+            unset($data['quotes']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -87,18 +89,18 @@ class FeePreviewResponseNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('commissions') && null !== $data->getCommissions()) {
             $values = [];
             foreach ($data->getCommissions() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['commissions'] = $values;
         }
         if ($data->isInitialized('quotes') && null !== $data->getQuotes()) {
             $values_1 = [];
             foreach ($data->getQuotes() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['quotes'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class WarrantiesListWarrantyBasic extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class WarrantiesListWarrantyBasic implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -63,5 +67,10 @@ class WarrantiesListWarrantyBasic extends \ArrayObject
         $this->warranties = $warranties;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['count' => ['count', 'getCount', 'setCount'], 'warranties' => ['warranties', 'getWarranties', 'setWarranties']];
     }
 }

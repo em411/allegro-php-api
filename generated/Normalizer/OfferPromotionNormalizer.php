@@ -42,13 +42,16 @@ class OfferPromotionNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferPromotion();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\OfferPromotion();
         if (\array_key_exists('emphasized', $data) && \is_int($data['emphasized'])) {
             $data['emphasized'] = (bool) $data['emphasized'];
         }
@@ -58,26 +61,26 @@ class OfferPromotionNormalizer implements DenormalizerInterface, NormalizerInter
         if (\array_key_exists('highlight', $data) && \is_int($data['highlight'])) {
             $data['highlight'] = (bool) $data['highlight'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('emphasized', $data) && null !== $data['emphasized']) {
             $object->setEmphasized($data['emphasized']);
             unset($data['emphasized']);
         } elseif (\array_key_exists('emphasized', $data) && null === $data['emphasized']) {
             $object->setEmphasized(null);
+            unset($data['emphasized']);
         }
         if (\array_key_exists('bold', $data) && null !== $data['bold']) {
             $object->setBold($data['bold']);
             unset($data['bold']);
         } elseif (\array_key_exists('bold', $data) && null === $data['bold']) {
             $object->setBold(null);
+            unset($data['bold']);
         }
         if (\array_key_exists('highlight', $data) && null !== $data['highlight']) {
             $object->setHighlight($data['highlight']);
             unset($data['highlight']);
         } elseif (\array_key_exists('highlight', $data) && null === $data['highlight']) {
             $object->setHighlight(null);
+            unset($data['highlight']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,7 +103,7 @@ class OfferPromotionNormalizer implements DenormalizerInterface, NormalizerInter
         if ($data->isInitialized('highlight') && null !== $data->getHighlight()) {
             $dataArray['highlight'] = $data->getHighlight();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AlleDiscountGetWithdrawCommandResponseInput extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AlleDiscountGetWithdrawCommandResponseInput implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class AlleDiscountGetWithdrawCommandResponseInput extends \ArrayObject
         $this->participationId = $participationId;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['participationId' => ['participationId', 'getParticipationId', 'setParticipationId']];
     }
 }

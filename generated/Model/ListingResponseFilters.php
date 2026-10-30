@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ListingResponseFilters extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ListingResponseFilters implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -220,5 +224,10 @@ class ListingResponseFilters extends \ArrayObject
         $this->unit = $unit;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'type' => ['type', 'getType', 'setType'], 'name' => ['name', 'getName', 'setName'], 'values' => ['values', 'getValues', 'setValues'], 'minValue' => ['minValue', 'getMinValue', 'setMinValue'], 'maxValue' => ['maxValue', 'getMaxValue', 'setMaxValue'], 'unit' => ['unit', 'getUnit', 'setUnit']];
     }
 }

@@ -42,48 +42,77 @@ class ThreadVBeta1Normalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ThreadVBeta1();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ThreadVBeta1();
         if (\array_key_exists('read', $data) && \is_int($data['read'])) {
             $data['read'] = (bool) $data['read'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('read', $data) && null !== $data['read']) {
             $object->setRead($data['read']);
             unset($data['read']);
         } elseif (\array_key_exists('read', $data) && null === $data['read']) {
             $object->setRead(null);
+            unset($data['read']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
-            $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']);
+            if (false === $date) {
+                if (\is_string($data['createdAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['createdAt'])) {
+                    try {
+                        $date = new \DateTime($data['createdAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setCreatedAt($date);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('lastMessageDateTime', $data) && null !== $data['lastMessageDateTime']) {
-            $object->setLastMessageDateTime(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['lastMessageDateTime']));
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['lastMessageDateTime']);
+            if (false === $date_1) {
+                if (\is_string($data['lastMessageDateTime']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['lastMessageDateTime'])) {
+                    try {
+                        $date_1 = new \DateTime($data['lastMessageDateTime']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['lastMessageDateTime'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['lastMessageDateTime'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setLastMessageDateTime($date_1);
             unset($data['lastMessageDateTime']);
         } elseif (\array_key_exists('lastMessageDateTime', $data) && null === $data['lastMessageDateTime']) {
             $object->setLastMessageDateTime(null);
+            unset($data['lastMessageDateTime']);
         }
         if (\array_key_exists('participants', $data) && null !== $data['participants']) {
             $values = [];
@@ -94,6 +123,7 @@ class ThreadVBeta1Normalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['participants']);
         } elseif (\array_key_exists('participants', $data) && null === $data['participants']) {
             $object->setParticipants(null);
+            unset($data['participants']);
         }
         if (\array_key_exists('orders', $data) && null !== $data['orders']) {
             $values_1 = [];
@@ -104,18 +134,21 @@ class ThreadVBeta1Normalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['orders']);
         } elseif (\array_key_exists('orders', $data) && null === $data['orders']) {
             $object->setOrders(null);
+            unset($data['orders']);
         }
         if (\array_key_exists('subType', $data) && null !== $data['subType']) {
             $object->setSubType($data['subType']);
             unset($data['subType']);
         } elseif (\array_key_exists('subType', $data) && null === $data['subType']) {
             $object->setSubType(null);
+            unset($data['subType']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -136,21 +169,21 @@ class ThreadVBeta1Normalizer implements DenormalizerInterface, NormalizerInterfa
         $dataArray['lastMessageDateTime'] = $data->getLastMessageDateTime()->format('Y-m-d\TH:i:sP');
         $values = [];
         foreach ($data->getParticipants() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['participants'] = $values;
-        if ($data->isInitialized('orders')) {
+        if ($data->isInitialized('orders') && null !== $data->getOrders()) {
             $values_1 = [];
             foreach ($data->getOrders() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['orders'] = $values_1;
         }
-        if ($data->isInitialized('subType')) {
+        if ($data->isInitialized('subType') && null !== $data->getSubType()) {
             $dataArray['subType'] = $data->getSubType();
         }
         $dataArray['status'] = $data->getStatus();
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

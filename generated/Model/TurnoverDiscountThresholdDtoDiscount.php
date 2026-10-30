@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class TurnoverDiscountThresholdDtoDiscount extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class TurnoverDiscountThresholdDtoDiscount implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class TurnoverDiscountThresholdDtoDiscount extends \ArrayObject
         $this->percentage = $percentage;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['percentage' => ['percentage', 'getPercentage', 'setPercentage']];
     }
 }

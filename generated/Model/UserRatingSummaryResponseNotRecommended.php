@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class UserRatingSummaryResponseNotRecommended extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class UserRatingSummaryResponseNotRecommended implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class UserRatingSummaryResponseNotRecommended extends \ArrayObject
         $this->unique = $unique;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['total' => ['total', 'getTotal', 'setTotal'], 'unique' => ['unique', 'getUnique', 'setUnique']];
     }
 }

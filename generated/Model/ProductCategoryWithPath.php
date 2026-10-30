@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductCategoryWithPath extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductCategoryWithPath implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -100,5 +104,10 @@ class ProductCategoryWithPath extends \ArrayObject
         $this->similar = $similar;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'path' => ['path', 'getPath', 'setPath'], 'similar' => ['similar', 'getSimilar', 'setSimilar']];
     }
 }

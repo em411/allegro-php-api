@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormsOrderInvoices extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormsOrderInvoices implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -119,5 +123,10 @@ class CheckoutFormsOrderInvoices extends \ArrayObject
         $this->hasExternalInvoices = $hasExternalInvoices;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['orderMode' => ['orderMode', 'getOrderMode', 'setOrderMode'], 'invoices' => ['invoices', 'getInvoices', 'setInvoices'], 'links' => ['links', 'getLinks', 'setLinks'], 'hasExternalInvoices' => ['hasExternalInvoices', 'getHasExternalInvoices', 'setHasExternalInvoices']];
     }
 }

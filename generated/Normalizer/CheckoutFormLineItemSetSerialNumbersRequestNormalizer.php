@@ -42,27 +42,29 @@ class CheckoutFormLineItemSetSerialNumbersRequestNormalizer implements Denormali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('serialNumbers', $data) && null !== $data['serialNumbers']) {
             $object->setSerialNumbers($this->denormalizer->denormalize($data['serialNumbers'], \Em411\Allegro\Api\Model\CheckoutFormLineItemSetSerialNumbersEntriesRequest::class, 'json', $context));
             unset($data['serialNumbers']);
         } elseif (\array_key_exists('serialNumbers', $data) && null === $data['serialNumbers']) {
             $object->setSerialNumbers(null);
+            unset($data['serialNumbers']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,8 +79,8 @@ class CheckoutFormLineItemSetSerialNumbersRequestNormalizer implements Denormali
     {
         $dataArray = [];
         $dataArray['id'] = $data->getId();
-        $dataArray['serialNumbers'] = $this->normalizer->normalize($data->getSerialNumbers(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['serialNumbers'] = null === $data->getSerialNumbers() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSerialNumbers(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

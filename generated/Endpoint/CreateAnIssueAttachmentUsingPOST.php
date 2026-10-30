@@ -20,10 +20,9 @@ class CreateAnIssueAttachmentUsingPOST extends \Em411\Allegro\Api\Runtime\Client
     /**
      * Use this resource to post an attachment declaration. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#deklaracja-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#attachment-declaration" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(?\Em411\Allegro\Api\Model\AttachmentDeclaration $requestBody = null, array $headerParameters = [])
     {
@@ -44,7 +43,7 @@ class CreateAnIssueAttachmentUsingPOST extends \Em411\Allegro\Api\Runtime\Client
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Em411\Allegro\Api\Model\AttachmentDeclaration) {
-            return [['Content-Type' => ['application/vnd.allegro.beta.v1+json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/vnd.allegro.beta.v1+json']], \Em411\Allegro\Api\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -82,7 +81,7 @@ class CreateAnIssueAttachmentUsingPOST extends \Em411\Allegro\Api\Runtime\Client
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (201 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (201 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PostPurchaseIssueAttachmentId', 'json');
         }
         if (401 === $status) {

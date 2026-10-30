@@ -42,42 +42,46 @@ class ListingResponseSortNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ListingResponseSort();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ListingResponseSort();
         if (\array_key_exists('selected', $data) && \is_int($data['selected'])) {
             $data['selected'] = (bool) $data['selected'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('value', $data) && null !== $data['value']) {
             $object->setValue($data['value']);
             unset($data['value']);
         } elseif (\array_key_exists('value', $data) && null === $data['value']) {
             $object->setValue(null);
+            unset($data['value']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('order', $data) && null !== $data['order']) {
             $object->setOrder($data['order']);
             unset($data['order']);
         } elseif (\array_key_exists('order', $data) && null === $data['order']) {
             $object->setOrder(null);
+            unset($data['order']);
         }
         if (\array_key_exists('selected', $data) && null !== $data['selected']) {
             $object->setSelected($data['selected']);
             unset($data['selected']);
         } elseif (\array_key_exists('selected', $data) && null === $data['selected']) {
             $object->setSelected(null);
+            unset($data['selected']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -103,7 +107,7 @@ class ListingResponseSortNormalizer implements DenormalizerInterface, Normalizer
         if ($data->isInitialized('selected') && null !== $data->getSelected()) {
             $dataArray['selected'] = $data->getSelected();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

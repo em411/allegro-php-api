@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Error404 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Error404 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -148,5 +152,10 @@ class Error404 extends \ArrayObject
         $this->userMessage = $userMessage;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['code' => ['code', 'getCode', 'setCode'], 'details' => ['details', 'getDetails', 'setDetails'], 'message' => ['message', 'getMessage', 'setMessage'], 'path' => ['path', 'getPath', 'setPath'], 'userMessage' => ['userMessage', 'getUserMessage', 'setUserMessage']];
     }
 }

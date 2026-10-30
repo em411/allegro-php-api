@@ -42,27 +42,29 @@ class SizeTablePostRequestNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SizeTablePostRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SizeTablePostRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('template', $data) && null !== $data['template']) {
             $object->setTemplate($this->denormalizer->denormalize($data['template'], \Em411\Allegro\Api\Model\JustId::class, 'json', $context));
             unset($data['template']);
         } elseif (\array_key_exists('template', $data) && null === $data['template']) {
             $object->setTemplate(null);
+            unset($data['template']);
         }
         if (\array_key_exists('headers', $data) && null !== $data['headers']) {
             $values = [];
@@ -73,6 +75,7 @@ class SizeTablePostRequestNormalizer implements DenormalizerInterface, Normalize
             unset($data['headers']);
         } elseif (\array_key_exists('headers', $data) && null === $data['headers']) {
             $object->setHeaders(null);
+            unset($data['headers']);
         }
         if (\array_key_exists('values', $data) && null !== $data['values']) {
             $values_1 = [];
@@ -83,6 +86,7 @@ class SizeTablePostRequestNormalizer implements DenormalizerInterface, Normalize
             unset($data['values']);
         } elseif (\array_key_exists('values', $data) && null === $data['values']) {
             $object->setValues(null);
+            unset($data['values']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -97,18 +101,18 @@ class SizeTablePostRequestNormalizer implements DenormalizerInterface, Normalize
     {
         $dataArray = [];
         $dataArray['name'] = $data->getName();
-        $dataArray['template'] = $this->normalizer->normalize($data->getTemplate(), 'json', $context);
+        $dataArray['template'] = null === $data->getTemplate() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTemplate(), 'json', $context));
         $values = [];
         foreach ($data->getHeaders() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['headers'] = $values;
         $values_1 = [];
         foreach ($data->getValues() as $value_1) {
-            $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
         }
         $dataArray['values'] = $values_1;
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

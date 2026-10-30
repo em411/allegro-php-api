@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AlleDiscountSubmittedOfferDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AlleDiscountSubmittedOfferDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -173,5 +177,10 @@ class AlleDiscountSubmittedOfferDto extends \ArrayObject
         $this->purchaseLimit = $purchaseLimit;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['participationId' => ['participationId', 'getParticipationId', 'setParticipationId'], 'offer' => ['offer', 'getOffer', 'setOffer'], 'campaign' => ['campaign', 'getCampaign', 'setCampaign'], 'prices' => ['prices', 'getPrices', 'setPrices'], 'process' => ['process', 'getProcess', 'setProcess'], 'purchaseLimit' => ['purchaseLimit', 'getPurchaseLimit', 'setPurchaseLimit']];
     }
 }

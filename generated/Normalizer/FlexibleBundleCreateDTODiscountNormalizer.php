@@ -42,24 +42,25 @@ class FlexibleBundleCreateDTODiscountNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FlexibleBundleCreateDTODiscount();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FlexibleBundleCreateDTODiscount();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('bundle', $data) && null !== $data['bundle']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['bundle'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -67,9 +68,10 @@ class FlexibleBundleCreateDTODiscountNormalizer implements DenormalizerInterface
             unset($data['bundle']);
         } elseif (\array_key_exists('bundle', $data) && null === $data['bundle']) {
             $object->setBundle(null);
+            unset($data['bundle']);
         }
         if (\array_key_exists('slot', $data) && null !== $data['slot']) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['slot'] as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
@@ -77,6 +79,7 @@ class FlexibleBundleCreateDTODiscountNormalizer implements DenormalizerInterface
             unset($data['slot']);
         } elseif (\array_key_exists('slot', $data) && null === $data['slot']) {
             $object->setSlot(null);
+            unset($data['slot']);
         }
         foreach ($data as $key_2 => $value_2) {
             if (preg_match('/.*/', (string) $key_2)) {
@@ -91,21 +94,21 @@ class FlexibleBundleCreateDTODiscountNormalizer implements DenormalizerInterface
     {
         $dataArray = [];
         $dataArray['type'] = $data->getType();
-        if ($data->isInitialized('bundle')) {
-            $values = [];
+        if ($data->isInitialized('bundle') && null !== $data->getBundle()) {
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data->getBundle() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['bundle'] = $values;
         }
-        if ($data->isInitialized('slot')) {
-            $values_1 = [];
+        if ($data->isInitialized('slot') && null !== $data->getSlot()) {
+            $values_1 = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data->getSlot() as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
             $dataArray['slot'] = $values_1;
         }
-        foreach ($data as $key_2 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_2 => $value_2) {
             if (preg_match('/.*/', (string) $key_2)) {
                 $dataArray[$key_2] = $value_2;
             }

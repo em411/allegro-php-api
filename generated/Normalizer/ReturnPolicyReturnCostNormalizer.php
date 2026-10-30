@@ -42,21 +42,22 @@ class ReturnPolicyReturnCostNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ReturnPolicyReturnCost();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ReturnPolicyReturnCost();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('coveredBy', $data) && null !== $data['coveredBy']) {
             $object->setCoveredBy($data['coveredBy']);
             unset($data['coveredBy']);
         } elseif (\array_key_exists('coveredBy', $data) && null === $data['coveredBy']) {
             $object->setCoveredBy(null);
+            unset($data['coveredBy']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +74,7 @@ class ReturnPolicyReturnCostNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('coveredBy') && null !== $data->getCoveredBy()) {
             $dataArray['coveredBy'] = $data->getCoveredBy();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

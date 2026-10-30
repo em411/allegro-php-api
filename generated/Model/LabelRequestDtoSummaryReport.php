@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class LabelRequestDtoSummaryReport extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class LabelRequestDtoSummaryReport implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class LabelRequestDtoSummaryReport extends \ArrayObject
         $this->fields = $fields;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['placement' => ['placement', 'getPlacement', 'setPlacement'], 'fields' => ['fields', 'getFields', 'setFields']];
     }
 }

@@ -42,15 +42,15 @@ class SaleProductOfferTaxSettingsNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SaleProductOfferTaxSettings();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SaleProductOfferTaxSettings();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('rates', $data) && null !== $data['rates']) {
             $values = [];
@@ -61,18 +61,21 @@ class SaleProductOfferTaxSettingsNormalizer implements DenormalizerInterface, No
             unset($data['rates']);
         } elseif (\array_key_exists('rates', $data) && null === $data['rates']) {
             $object->setRates(null);
+            unset($data['rates']);
         }
         if (\array_key_exists('subject', $data) && null !== $data['subject']) {
             $object->setSubject($data['subject']);
             unset($data['subject']);
         } elseif (\array_key_exists('subject', $data) && null === $data['subject']) {
             $object->setSubject(null);
+            unset($data['subject']);
         }
         if (\array_key_exists('exemption', $data) && null !== $data['exemption']) {
             $object->setExemption($data['exemption']);
             unset($data['exemption']);
         } elseif (\array_key_exists('exemption', $data) && null === $data['exemption']) {
             $object->setExemption(null);
+            unset($data['exemption']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -88,7 +91,7 @@ class SaleProductOfferTaxSettingsNormalizer implements DenormalizerInterface, No
         $dataArray = [];
         $values = [];
         foreach ($data->getRates() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['rates'] = $values;
         if ($data->isInitialized('subject') && null !== $data->getSubject()) {
@@ -97,7 +100,7 @@ class SaleProductOfferTaxSettingsNormalizer implements DenormalizerInterface, No
         if ($data->isInitialized('exemption') && null !== $data->getExemption()) {
             $dataArray['exemption'] = $data->getExemption();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -42,24 +42,25 @@ class CheckoutFormsOrderInvoicesNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoices();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoices();
         if (\array_key_exists('hasExternalInvoices', $data) && \is_int($data['hasExternalInvoices'])) {
             $data['hasExternalInvoices'] = (bool) $data['hasExternalInvoices'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('orderMode', $data) && null !== $data['orderMode']) {
             $object->setOrderMode($data['orderMode']);
             unset($data['orderMode']);
         } elseif (\array_key_exists('orderMode', $data) && null === $data['orderMode']) {
             $object->setOrderMode(null);
+            unset($data['orderMode']);
         }
         if (\array_key_exists('invoices', $data) && null !== $data['invoices']) {
             $values = [];
@@ -70,6 +71,7 @@ class CheckoutFormsOrderInvoicesNormalizer implements DenormalizerInterface, Nor
             unset($data['invoices']);
         } elseif (\array_key_exists('invoices', $data) && null === $data['invoices']) {
             $object->setInvoices(null);
+            unset($data['invoices']);
         }
         if (\array_key_exists('links', $data) && null !== $data['links']) {
             $values_1 = [];
@@ -80,12 +82,14 @@ class CheckoutFormsOrderInvoicesNormalizer implements DenormalizerInterface, Nor
             unset($data['links']);
         } elseif (\array_key_exists('links', $data) && null === $data['links']) {
             $object->setLinks(null);
+            unset($data['links']);
         }
         if (\array_key_exists('hasExternalInvoices', $data) && null !== $data['hasExternalInvoices']) {
             $object->setHasExternalInvoices($data['hasExternalInvoices']);
             unset($data['hasExternalInvoices']);
         } elseif (\array_key_exists('hasExternalInvoices', $data) && null === $data['hasExternalInvoices']) {
             $object->setHasExternalInvoices(null);
+            unset($data['hasExternalInvoices']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -105,21 +109,21 @@ class CheckoutFormsOrderInvoicesNormalizer implements DenormalizerInterface, Nor
         if ($data->isInitialized('invoices') && null !== $data->getInvoices()) {
             $values = [];
             foreach ($data->getInvoices() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['invoices'] = $values;
         }
         if ($data->isInitialized('links') && null !== $data->getLinks()) {
             $values_1 = [];
             foreach ($data->getLinks() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['links'] = $values_1;
         }
         if ($data->isInitialized('hasExternalInvoices') && null !== $data->getHasExternalInvoices()) {
             $dataArray['hasExternalInvoices'] = $data->getHasExternalInvoices();
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ResponsibleProducerAddress extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ResponsibleProducerAddress implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class ResponsibleProducerAddress extends \ArrayObject
         $this->city = $city;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode'], 'street' => ['street', 'getStreet', 'setStreet'], 'postalCode' => ['postalCode', 'getPostalCode', 'setPostalCode'], 'city' => ['city', 'getCity', 'setCity']];
     }
 }

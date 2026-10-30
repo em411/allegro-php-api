@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CategoryBaseEvent extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CategoryBaseEvent implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -92,5 +96,10 @@ class CategoryBaseEvent extends \ArrayObject
     {
         $this->initialized['type'] = true;
         $this->type = $type;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'occurredAt' => ['occurredAt', 'getOccurredAt', 'setOccurredAt'], 'type' => ['type', 'getType', 'setType']];
     }
 }

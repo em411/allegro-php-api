@@ -42,39 +42,43 @@ class CashOnDeliveryDtoNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CashOnDeliveryDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CashOnDeliveryDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('amount', $data) && null !== $data['amount']) {
             $object->setAmount($data['amount']);
             unset($data['amount']);
         } elseif (\array_key_exists('amount', $data) && null === $data['amount']) {
             $object->setAmount(null);
+            unset($data['amount']);
         }
         if (\array_key_exists('currency', $data) && null !== $data['currency']) {
             $object->setCurrency($data['currency']);
             unset($data['currency']);
         } elseif (\array_key_exists('currency', $data) && null === $data['currency']) {
             $object->setCurrency(null);
+            unset($data['currency']);
         }
         if (\array_key_exists('ownerName', $data) && null !== $data['ownerName']) {
             $object->setOwnerName($data['ownerName']);
             unset($data['ownerName']);
         } elseif (\array_key_exists('ownerName', $data) && null === $data['ownerName']) {
             $object->setOwnerName(null);
+            unset($data['ownerName']);
         }
         if (\array_key_exists('iban', $data) && null !== $data['iban']) {
             $object->setIban($data['iban']);
             unset($data['iban']);
         } elseif (\array_key_exists('iban', $data) && null === $data['iban']) {
             $object->setIban(null);
+            unset($data['iban']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -96,7 +100,7 @@ class CashOnDeliveryDtoNormalizer implements DenormalizerInterface, NormalizerIn
         if ($data->isInitialized('iban') && null !== $data->getIban()) {
             $dataArray['iban'] = $data->getIban();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

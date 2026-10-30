@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SellerOfferStatsResponseDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SellerOfferStatsResponseDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -69,5 +73,10 @@ class SellerOfferStatsResponseDto extends \ArrayObject
         $this->eventsPerDay = $eventsPerDay;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['eventStatsTotal' => ['eventStatsTotal', 'getEventStatsTotal', 'setEventStatsTotal'], 'eventsPerDay' => ['eventsPerDay', 'getEventsPerDay', 'setEventsPerDay']];
     }
 }

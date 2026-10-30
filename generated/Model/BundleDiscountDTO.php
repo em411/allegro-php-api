@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BundleDiscountDTO extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BundleDiscountDTO implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -90,5 +94,10 @@ class BundleDiscountDTO extends \ArrayObject
         $this->currency = $currency;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['marketplace' => ['marketplace', 'getMarketplace', 'setMarketplace'], 'amount' => ['amount', 'getAmount', 'setAmount'], 'currency' => ['currency', 'getCurrency', 'setCurrency']];
     }
 }

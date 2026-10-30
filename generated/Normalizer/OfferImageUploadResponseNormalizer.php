@@ -42,27 +42,41 @@ class OfferImageUploadResponseNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferImageUploadResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\OfferImageUploadResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('expiresAt', $data) && null !== $data['expiresAt']) {
-            $object->setExpiresAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['expiresAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['expiresAt']);
+            if (false === $date) {
+                if (\is_string($data['expiresAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['expiresAt'])) {
+                    try {
+                        $date = new \DateTime($data['expiresAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['expiresAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['expiresAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setExpiresAt($date);
             unset($data['expiresAt']);
         } elseif (\array_key_exists('expiresAt', $data) && null === $data['expiresAt']) {
             $object->setExpiresAt(null);
+            unset($data['expiresAt']);
         }
         if (\array_key_exists('location', $data) && null !== $data['location']) {
             $object->setLocation($data['location']);
             unset($data['location']);
         } elseif (\array_key_exists('location', $data) && null === $data['location']) {
             $object->setLocation(null);
+            unset($data['location']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +96,7 @@ class OfferImageUploadResponseNormalizer implements DenormalizerInterface, Norma
         if ($data->isInitialized('location') && null !== $data->getLocation()) {
             $dataArray['location'] = $data->getLocation();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

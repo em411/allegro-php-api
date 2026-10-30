@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Wallet extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Wallet implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class Wallet extends \ArrayObject
         $this->balance = $balance;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['paymentOperator' => ['paymentOperator', 'getPaymentOperator', 'setPaymentOperator'], 'type' => ['type', 'getType', 'setType'], 'balance' => ['balance', 'getBalance', 'setBalance']];
     }
 }

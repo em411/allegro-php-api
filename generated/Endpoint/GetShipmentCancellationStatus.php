@@ -21,11 +21,10 @@ class GetShipmentCancellationStatus extends \Em411\Allegro\Api\Runtime\Client\Ba
     /**
      * Use this resource to get parcel cancellation status. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-sprawdzic-status-anulowania-paczki" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-check-shipment-cancellation-status" target="_blank">EN</a>.
      *
-     * @param string $commandId        command UUID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $commandId command UUID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $commandId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetShipmentCancellationStatus extends \Em411\Allegro\Api\Runtime\Client\Ba
 
     public function getUri(): string
     {
-        return str_replace(['{commandId}'], [$this->commandId], '/shipment-management/shipments/cancel-commands/{commandId}');
+        return str_replace(['{commandId}'], [rawurlencode($this->commandId)], '/shipment-management/shipments/cancel-commands/{commandId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -82,22 +81,22 @@ class GetShipmentCancellationStatus extends \Em411\Allegro\Api\Runtime\Client\Ba
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\CancelShipmentCommandStatusDto', 'json');
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetShipmentCancellationStatusBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementShipmentsCancelCommandsCommandIdGetResponse400', 'json'), $response);
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetShipmentCancellationStatusUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (403 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetShipmentCancellationStatusForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementShipmentsCancelCommandsCommandIdGetResponse403', 'json'), $response);
         }
         if (404 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetShipmentCancellationStatusNotFoundException($response);
         }
-        if ((null === $contentType) === false && (504 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (504 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetShipmentCancellationStatusGatewayTimeoutException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ShipmentManagementShipmentsCancelCommandsCommandIdGetResponse504', 'json'), $response);
         }
     }

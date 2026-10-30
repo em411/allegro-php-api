@@ -22,7 +22,7 @@ class LargeOrderDiscountBenefitSpecification extends BenefitSpecification
     /**
      * List of order discount thresholds. A threshold with a higher orderValue.lowerBound.amount than another one must also have a higher discount.percentage.
      *
-     * @var list<LargeOrderDiscountBenefitSpecificationthresholdsItem>|null
+     * @var list<LargeOrderDiscountBenefitSpecificationThresholdsItem>|null
      */
     protected $thresholds;
 
@@ -34,7 +34,7 @@ class LargeOrderDiscountBenefitSpecification extends BenefitSpecification
     /**
      * List of order discount thresholds. A threshold with a higher orderValue.lowerBound.amount than another one must also have a higher discount.percentage.
      *
-     * @return list<LargeOrderDiscountBenefitSpecificationthresholdsItem>|null
+     * @return list<LargeOrderDiscountBenefitSpecificationThresholdsItem>|null
      */
     public function getThresholds(): ?array
     {
@@ -44,7 +44,7 @@ class LargeOrderDiscountBenefitSpecification extends BenefitSpecification
     /**
      * List of order discount thresholds. A threshold with a higher orderValue.lowerBound.amount than another one must also have a higher discount.percentage.
      *
-     * @param list<LargeOrderDiscountBenefitSpecificationthresholdsItem>|null $thresholds
+     * @param list<LargeOrderDiscountBenefitSpecificationThresholdsItem>|null $thresholds
      */
     public function setThresholds(?array $thresholds): self
     {
@@ -52,5 +52,10 @@ class LargeOrderDiscountBenefitSpecification extends BenefitSpecification
         $this->thresholds = $thresholds;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['thresholds' => ['thresholds', 'getThresholds', 'setThresholds']]);
     }
 }

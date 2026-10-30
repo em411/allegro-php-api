@@ -42,27 +42,29 @@ class DeliverySettingsRequestAbroadFreeDeliveryNormalizer implements Denormalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\DeliverySettingsRequestAbroadFreeDelivery();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\DeliverySettingsRequestAbroadFreeDelivery();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('amount', $data) && null !== $data['amount']) {
             $object->setAmount($data['amount']);
             unset($data['amount']);
         } elseif (\array_key_exists('amount', $data) && null === $data['amount']) {
             $object->setAmount(null);
+            unset($data['amount']);
         }
         if (\array_key_exists('currency', $data) && null !== $data['currency']) {
             $object->setCurrency($data['currency']);
             unset($data['currency']);
         } elseif (\array_key_exists('currency', $data) && null === $data['currency']) {
             $object->setCurrency(null);
+            unset($data['currency']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,7 +80,7 @@ class DeliverySettingsRequestAbroadFreeDeliveryNormalizer implements Denormalize
         $dataArray = [];
         $dataArray['amount'] = $data->getAmount();
         $dataArray['currency'] = $data->getCurrency();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

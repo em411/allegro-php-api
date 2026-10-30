@@ -42,27 +42,29 @@ class CheckoutFormInvoiceAddressNaturalPersonNormalizer implements DenormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormInvoiceAddressNaturalPerson();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormInvoiceAddressNaturalPerson();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('firstName', $data) && null !== $data['firstName']) {
             $object->setFirstName($data['firstName']);
             unset($data['firstName']);
         } elseif (\array_key_exists('firstName', $data) && null === $data['firstName']) {
             $object->setFirstName(null);
+            unset($data['firstName']);
         }
         if (\array_key_exists('lastName', $data) && null !== $data['lastName']) {
             $object->setLastName($data['lastName']);
             unset($data['lastName']);
         } elseif (\array_key_exists('lastName', $data) && null === $data['lastName']) {
             $object->setLastName(null);
+            unset($data['lastName']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,7 +80,7 @@ class CheckoutFormInvoiceAddressNaturalPersonNormalizer implements DenormalizerI
         $dataArray = [];
         $dataArray['firstName'] = $data->getFirstName();
         $dataArray['lastName'] = $data->getLastName();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SellingModeWithNetPrice extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SellingModeWithNetPrice implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -148,5 +152,10 @@ class SellingModeWithNetPrice extends \ArrayObject
         $this->netPrice = $netPrice;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['format' => ['format', 'getFormat', 'setFormat'], 'price' => ['price', 'getPrice', 'setPrice'], 'minimalPrice' => ['minimalPrice', 'getMinimalPrice', 'setMinimalPrice'], 'startingPrice' => ['startingPrice', 'getStartingPrice', 'setStartingPrice'], 'netPrice' => ['netPrice', 'getNetPrice', 'setNetPrice']];
     }
 }

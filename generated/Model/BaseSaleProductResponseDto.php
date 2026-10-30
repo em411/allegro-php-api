@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BaseSaleProductResponseDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BaseSaleProductResponseDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -262,5 +266,10 @@ class BaseSaleProductResponseDto extends \ArrayObject
         $this->publication = $publication;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'description' => ['description', 'getDescription', 'setDescription'], 'category' => ['category', 'getCategory', 'setCategory'], 'images' => ['images', 'getImages', 'setImages'], 'parameters' => ['parameters', 'getParameters', 'setParameters'], 'aiCoCreatedContent' => ['aiCoCreatedContent', 'getAiCoCreatedContent', 'setAiCoCreatedContent'], 'trustedContent' => ['trustedContent', 'getTrustedContent', 'setTrustedContent'], 'hasProtectedBrand' => ['hasProtectedBrand', 'getHasProtectedBrand', 'setHasProtectedBrand'], 'productSafety' => ['productSafety', 'getProductSafety', 'setProductSafety'], 'publication' => ['publication', 'getPublication', 'setPublication']];
     }
 }

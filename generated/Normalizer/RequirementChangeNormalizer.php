@@ -42,45 +42,74 @@ class RequirementChangeNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\RequirementChange();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\RequirementChange();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('scheduledAt', $data) && null !== $data['scheduledAt']) {
-            $object->setScheduledAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledAt']);
+            if (false === $date) {
+                if (\is_string($data['scheduledAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['scheduledAt'])) {
+                    try {
+                        $date = new \DateTime($data['scheduledAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setScheduledAt($date);
             unset($data['scheduledAt']);
         } elseif (\array_key_exists('scheduledAt', $data) && null === $data['scheduledAt']) {
             $object->setScheduledAt(null);
+            unset($data['scheduledAt']);
         }
         if (\array_key_exists('scheduledFor', $data) && null !== $data['scheduledFor']) {
-            $object->setScheduledFor(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledFor']));
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledFor']);
+            if (false === $date_1) {
+                if (\is_string($data['scheduledFor']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['scheduledFor'])) {
+                    try {
+                        $date_1 = new \DateTime($data['scheduledFor']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledFor'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledFor'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setScheduledFor($date_1);
             unset($data['scheduledFor']);
         } elseif (\array_key_exists('scheduledFor', $data) && null === $data['scheduledFor']) {
             $object->setScheduledFor(null);
+            unset($data['scheduledFor']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('category', $data) && null !== $data['category']) {
             $object->setCategory($this->denormalizer->denormalize($data['category'], \Em411\Allegro\Api\Model\CategoryParametersScheduledBaseChangeCategory::class, 'json', $context));
             unset($data['category']);
         } elseif (\array_key_exists('category', $data) && null === $data['category']) {
             $object->setCategory(null);
+            unset($data['category']);
         }
         if (\array_key_exists('parameter', $data) && null !== $data['parameter']) {
             $object->setParameter($this->denormalizer->denormalize($data['parameter'], \Em411\Allegro\Api\Model\CategoryParametersScheduledBaseChangeParameter::class, 'json', $context));
             unset($data['parameter']);
         } elseif (\array_key_exists('parameter', $data) && null === $data['parameter']) {
             $object->setParameter(null);
+            unset($data['parameter']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -99,9 +128,9 @@ class RequirementChangeNormalizer implements DenormalizerInterface, NormalizerIn
         if ($data->isInitialized('type') && null !== $data->getType()) {
             $dataArray['type'] = $data->getType();
         }
-        $dataArray['category'] = $this->normalizer->normalize($data->getCategory(), 'json', $context);
-        $dataArray['parameter'] = $this->normalizer->normalize($data->getParameter(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['category'] = null === $data->getCategory() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCategory(), 'json', $context));
+        $dataArray['parameter'] = null === $data->getParameter() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getParameter(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

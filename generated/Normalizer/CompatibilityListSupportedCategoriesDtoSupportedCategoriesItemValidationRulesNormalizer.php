@@ -42,27 +42,29 @@ class CompatibilityListSupportedCategoriesDtoSupportedCategoriesItemValidationRu
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CompatibilityListSupportedCategoriesDtoSupportedCategoriesItemValidationRules();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CompatibilityListSupportedCategoriesDtoSupportedCategoriesItemValidationRules();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('maxRows', $data) && null !== $data['maxRows']) {
             $object->setMaxRows($data['maxRows']);
             unset($data['maxRows']);
         } elseif (\array_key_exists('maxRows', $data) && null === $data['maxRows']) {
             $object->setMaxRows(null);
+            unset($data['maxRows']);
         }
         if (\array_key_exists('maxCharactersPerLine', $data) && null !== $data['maxCharactersPerLine']) {
             $object->setMaxCharactersPerLine($data['maxCharactersPerLine']);
             unset($data['maxCharactersPerLine']);
         } elseif (\array_key_exists('maxCharactersPerLine', $data) && null === $data['maxCharactersPerLine']) {
             $object->setMaxCharactersPerLine(null);
+            unset($data['maxCharactersPerLine']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +84,7 @@ class CompatibilityListSupportedCategoriesDtoSupportedCategoriesItemValidationRu
         if ($data->isInitialized('maxCharactersPerLine') && null !== $data->getMaxCharactersPerLine()) {
             $dataArray['maxCharactersPerLine'] = $data->getMaxCharactersPerLine();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

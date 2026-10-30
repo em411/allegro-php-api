@@ -42,18 +42,18 @@ class LabelRequestDtoNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\LabelRequestDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\LabelRequestDto();
         if (\array_key_exists('cutLine', $data) && \is_int($data['cutLine'])) {
             $data['cutLine'] = (bool) $data['cutLine'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('shipmentIds', $data) && null !== $data['shipmentIds']) {
             $values = [];
@@ -64,24 +64,28 @@ class LabelRequestDtoNormalizer implements DenormalizerInterface, NormalizerInte
             unset($data['shipmentIds']);
         } elseif (\array_key_exists('shipmentIds', $data) && null === $data['shipmentIds']) {
             $object->setShipmentIds(null);
+            unset($data['shipmentIds']);
         }
         if (\array_key_exists('pageSize', $data) && null !== $data['pageSize']) {
             $object->setPageSize($data['pageSize']);
             unset($data['pageSize']);
         } elseif (\array_key_exists('pageSize', $data) && null === $data['pageSize']) {
             $object->setPageSize(null);
+            unset($data['pageSize']);
         }
         if (\array_key_exists('cutLine', $data) && null !== $data['cutLine']) {
             $object->setCutLine($data['cutLine']);
             unset($data['cutLine']);
         } elseif (\array_key_exists('cutLine', $data) && null === $data['cutLine']) {
             $object->setCutLine(null);
+            unset($data['cutLine']);
         }
         if (\array_key_exists('summaryReport', $data) && null !== $data['summaryReport']) {
             $object->setSummaryReport($this->denormalizer->denormalize($data['summaryReport'], \Em411\Allegro\Api\Model\LabelRequestDtoSummaryReport::class, 'json', $context));
             unset($data['summaryReport']);
         } elseif (\array_key_exists('summaryReport', $data) && null === $data['summaryReport']) {
             $object->setSummaryReport(null);
+            unset($data['summaryReport']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -107,9 +111,9 @@ class LabelRequestDtoNormalizer implements DenormalizerInterface, NormalizerInte
             $dataArray['cutLine'] = $data->getCutLine();
         }
         if ($data->isInitialized('summaryReport') && null !== $data->getSummaryReport()) {
-            $dataArray['summaryReport'] = $this->normalizer->normalize($data->getSummaryReport(), 'json', $context);
+            $dataArray['summaryReport'] = null === $data->getSummaryReport() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSummaryReport(), 'json', $context));
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

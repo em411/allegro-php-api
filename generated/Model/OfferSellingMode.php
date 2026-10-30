@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferSellingMode extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferSellingMode implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -173,5 +177,10 @@ class OfferSellingMode extends \ArrayObject
         $this->bidCount = $bidCount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['format' => ['format', 'getFormat', 'setFormat'], 'price' => ['price', 'getPrice', 'setPrice'], 'fixedPrice' => ['fixedPrice', 'getFixedPrice', 'setFixedPrice'], 'popularity' => ['popularity', 'getPopularity', 'setPopularity'], 'popularityRange' => ['popularityRange', 'getPopularityRange', 'setPopularityRange'], 'bidCount' => ['bidCount', 'getBidCount', 'setBidCount']];
     }
 }

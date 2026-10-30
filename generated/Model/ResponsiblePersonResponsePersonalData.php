@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ResponsiblePersonResponsePersonalData extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ResponsiblePersonResponsePersonalData implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class ResponsiblePersonResponsePersonalData extends \ArrayObject
         $this->contact = $contact;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['name', 'getName', 'setName'], 'address' => ['address', 'getAddress', 'setAddress'], 'contact' => ['contact', 'getContact', 'setContact']];
     }
 }

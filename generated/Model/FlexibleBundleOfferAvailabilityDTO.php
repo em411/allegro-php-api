@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FlexibleBundleOfferAvailabilityDTO extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FlexibleBundleOfferAvailabilityDTO implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class FlexibleBundleOfferAvailabilityDTO extends \ArrayObject
         $this->reasons = $reasons;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['available' => ['available', 'getAvailable', 'setAvailable'], 'reasons' => ['reasons', 'getReasons', 'setReasons']];
     }
 }

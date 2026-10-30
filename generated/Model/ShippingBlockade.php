@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ShippingBlockade extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ShippingBlockade implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class ShippingBlockade extends \ArrayObject
         $this->reason = $reason;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['country' => ['country', 'getCountry', 'setCountry'], 'reason' => ['reason', 'getReason', 'setReason']];
     }
 }

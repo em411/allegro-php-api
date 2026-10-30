@@ -21,11 +21,10 @@ class DeletePOSUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     /**
      * Use this resource to delete a point of service. Read more: <a href="../../news/punkty-odbioru-osobistego-8dmlj8qk7ik" target="_blank">PL</a> / <a href="../../news/points-of-service-Rdoz09ZE7sW" target="_blank">EN</a>.
      *
-     * @param string $id               point of service ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $id point of service ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $id, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class DeletePOSUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
 
     public function getUri(): string
     {
-        return str_replace(['{id}'], [$this->id], '/points-of-service/{id}');
+        return str_replace(['{id}'], [rawurlencode($this->id)], '/points-of-service/{id}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -87,7 +86,7 @@ class DeletePOSUsingDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
         if (403 === $status) {
             throw new \Em411\Allegro\Api\Exception\DeletePOSUsingDELETEForbiddenException($response);
         }
-        if ((null === $contentType) === false && (404 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (404 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeletePOSUsingDELETENotFoundException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

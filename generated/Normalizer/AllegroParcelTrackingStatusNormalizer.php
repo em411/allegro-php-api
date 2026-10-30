@@ -42,42 +42,58 @@ class AllegroParcelTrackingStatusNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AllegroParcelTrackingStatus();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\AllegroParcelTrackingStatus();
         if (\array_key_exists('terminal', $data) && \is_int($data['terminal'])) {
             $data['terminal'] = (bool) $data['terminal'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('occurredAt', $data) && null !== $data['occurredAt']) {
-            $object->setOccurredAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['occurredAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['occurredAt']);
+            if (false === $date) {
+                if (\is_string($data['occurredAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['occurredAt'])) {
+                    try {
+                        $date = new \DateTime($data['occurredAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['occurredAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['occurredAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setOccurredAt($date);
             unset($data['occurredAt']);
         } elseif (\array_key_exists('occurredAt', $data) && null === $data['occurredAt']) {
             $object->setOccurredAt(null);
+            unset($data['occurredAt']);
         }
         if (\array_key_exists('code', $data) && null !== $data['code']) {
             $object->setCode($data['code']);
             unset($data['code']);
         } elseif (\array_key_exists('code', $data) && null === $data['code']) {
             $object->setCode(null);
+            unset($data['code']);
         }
         if (\array_key_exists('details', $data) && null !== $data['details']) {
             $object->setDetails($data['details']);
             unset($data['details']);
         } elseif (\array_key_exists('details', $data) && null === $data['details']) {
             $object->setDetails(null);
+            unset($data['details']);
         }
         if (\array_key_exists('terminal', $data) && null !== $data['terminal']) {
             $object->setTerminal($data['terminal']);
             unset($data['terminal']);
         } elseif (\array_key_exists('terminal', $data) && null === $data['terminal']) {
             $object->setTerminal(null);
+            unset($data['terminal']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -99,7 +115,7 @@ class AllegroParcelTrackingStatusNormalizer implements DenormalizerInterface, No
         if ($data->isInitialized('terminal') && null !== $data->getTerminal()) {
             $dataArray['terminal'] = $data->getTerminal();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

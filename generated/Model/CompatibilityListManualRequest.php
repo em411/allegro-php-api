@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CompatibilityListManualRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CompatibilityListManualRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -22,7 +26,7 @@ class CompatibilityListManualRequest extends \ArrayObject
     /**
      * List of the compatible items. Maximum number of elements on the list depends on type of included compatible items. Configuration and details concerning the compatible items in selected category are provided in the response for GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource in `validationRules` object.
      *
-     * @var list<mixed>|null
+     * @var list<CompatibilityListTextItem>|list<CompatibilityListIdItem>|null
      */
     protected $items;
 
@@ -34,7 +38,7 @@ class CompatibilityListManualRequest extends \ArrayObject
     /**
      * List of the compatible items. Maximum number of elements on the list depends on type of included compatible items. Configuration and details concerning the compatible items in selected category are provided in the response for GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource in `validationRules` object.
      *
-     * @return list<mixed>|null
+     * @return list<CompatibilityListTextItem>|list<CompatibilityListIdItem>|null
      */
     public function getItems(): ?array
     {
@@ -44,7 +48,7 @@ class CompatibilityListManualRequest extends \ArrayObject
     /**
      * List of the compatible items. Maximum number of elements on the list depends on type of included compatible items. Configuration and details concerning the compatible items in selected category are provided in the response for GET <a href="/documentation/#tag/Compatibility-List/paths/~1sale~1compatibility-list~1supported-categories/get"> supported-categories</a> resource in `validationRules` object.
      *
-     * @param list<mixed>|null $items
+     * @param list<CompatibilityListTextItem>|list<CompatibilityListIdItem>|null $items
      */
     public function setItems(?array $items): self
     {
@@ -52,5 +56,10 @@ class CompatibilityListManualRequest extends \ArrayObject
         $this->items = $items;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['items' => ['items', 'getItems', 'setItems']];
     }
 }

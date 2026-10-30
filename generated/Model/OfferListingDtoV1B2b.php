@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferListingDtoV1B2b extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferListingDtoV1B2b implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -40,5 +44,10 @@ class OfferListingDtoV1B2b extends \ArrayObject
         $this->buyableOnlyByBusiness = $buyableOnlyByBusiness;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['buyableOnlyByBusiness' => ['buyableOnlyByBusiness', 'getBuyableOnlyByBusiness', 'setBuyableOnlyByBusiness']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductParameterDtoOptions extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductParameterDtoOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -107,5 +111,10 @@ class ProductParameterDtoOptions extends \ArrayObject
         $this->isAiCoCreated = $isAiCoCreated;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['identifiesProduct' => ['identifiesProduct', 'getIdentifiesProduct', 'setIdentifiesProduct'], 'isGTIN' => ['isGTIN', 'getIsGTIN', 'setIsGTIN'], 'isTrusted' => ['isTrusted', 'getIsTrusted', 'setIsTrusted'], 'isAiCoCreated' => ['isAiCoCreated', 'getIsAiCoCreated', 'setIsAiCoCreated']];
     }
 }

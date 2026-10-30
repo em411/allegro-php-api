@@ -49,4 +49,9 @@ class CategoryCreatedEvent extends CategoryBaseEvent
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['category' => ['category', 'getCategory', 'setCategory']]);
+    }
 }

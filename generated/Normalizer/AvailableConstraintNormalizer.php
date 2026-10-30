@@ -42,21 +42,22 @@ class AvailableConstraintNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AvailableConstraint();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AvailableConstraint();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('availableDeliveryMethods', $data) && null !== $data['availableDeliveryMethods']) {
             $values = [];
@@ -67,6 +68,7 @@ class AvailableConstraintNormalizer implements DenormalizerInterface, Normalizer
             unset($data['availableDeliveryMethods']);
         } elseif (\array_key_exists('availableDeliveryMethods', $data) && null === $data['availableDeliveryMethods']) {
             $object->setAvailableDeliveryMethods(null);
+            unset($data['availableDeliveryMethods']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,17 +82,17 @@ class AvailableConstraintNormalizer implements DenormalizerInterface, Normalizer
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('type')) {
+        if ($data->isInitialized('type') && null !== $data->getType()) {
             $dataArray['type'] = $data->getType();
         }
-        if ($data->isInitialized('availableDeliveryMethods')) {
+        if ($data->isInitialized('availableDeliveryMethods') && null !== $data->getAvailableDeliveryMethods()) {
             $values = [];
             foreach ($data->getAvailableDeliveryMethods() as $value) {
                 $values[] = $value;
             }
             $dataArray['availableDeliveryMethods'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

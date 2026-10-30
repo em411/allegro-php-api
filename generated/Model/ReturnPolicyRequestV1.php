@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReturnPolicyRequestV1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ReturnPolicyRequestV1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -207,5 +211,10 @@ class ReturnPolicyRequestV1 extends \ArrayObject
         $this->options = $options;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['name', 'getName', 'setName'], 'isFulfillment' => ['isFulfillment', 'getIsFulfillment', 'setIsFulfillment'], 'availability' => ['availability', 'getAvailability', 'setAvailability'], 'withdrawalPeriod' => ['withdrawalPeriod', 'getWithdrawalPeriod', 'setWithdrawalPeriod'], 'returnCost' => ['returnCost', 'getReturnCost', 'setReturnCost'], 'address' => ['address', 'getAddress', 'setAddress'], 'contact' => ['contact', 'getContact', 'setContact'], 'options' => ['options', 'getOptions', 'setOptions']];
     }
 }

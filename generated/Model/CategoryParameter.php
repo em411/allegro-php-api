@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CategoryParameter extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CategoryParameter implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -253,5 +257,10 @@ class CategoryParameter extends \ArrayObject
     {
         $this->initialized['formerData'] = true;
         $this->formerData = $formerData;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'type' => ['type', 'getType', 'setType'], 'required' => ['required', 'getRequired', 'setRequired'], 'requiredForProduct' => ['requiredForProduct', 'getRequiredForProduct', 'setRequiredForProduct'], 'requiredIf' => ['requiredIf', 'getRequiredIf', 'setRequiredIf'], 'displayedIf' => ['displayedIf', 'getDisplayedIf', 'setDisplayedIf'], 'unit' => ['unit', 'getUnit', 'setUnit'], 'options' => ['options', 'getOptions', 'setOptions'], 'formerData' => ['formerData', 'getFormerData', 'setFormerData']];
     }
 }

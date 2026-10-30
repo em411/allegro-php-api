@@ -22,13 +22,13 @@ class DictionaryCategoryParameter extends CategoryParameter
     /**
      * The restrictions on values of this parameter.
      *
-     * @var DictionaryCategoryParameterrestrictions|null
+     * @var DictionaryCategoryParameterRestrictions|null
      */
     protected $restrictions;
     /**
      * Defines the values accepted for this parameter.
      *
-     * @var list<DictionaryCategoryParameterdictionaryItem>|null
+     * @var list<DictionaryCategoryParameterDictionaryItem>|null
      */
     protected $dictionary;
 
@@ -40,7 +40,7 @@ class DictionaryCategoryParameter extends CategoryParameter
     /**
      * The restrictions on values of this parameter.
      */
-    public function getRestrictions(): ?DictionaryCategoryParameterrestrictions
+    public function getRestrictions(): ?DictionaryCategoryParameterRestrictions
     {
         return $this->restrictions;
     }
@@ -48,7 +48,7 @@ class DictionaryCategoryParameter extends CategoryParameter
     /**
      * The restrictions on values of this parameter.
      */
-    public function setRestrictions(?DictionaryCategoryParameterrestrictions $restrictions): self
+    public function setRestrictions(?DictionaryCategoryParameterRestrictions $restrictions): self
     {
         $this->initialized['restrictions'] = true;
         $this->restrictions = $restrictions;
@@ -59,7 +59,7 @@ class DictionaryCategoryParameter extends CategoryParameter
     /**
      * Defines the values accepted for this parameter.
      *
-     * @return list<DictionaryCategoryParameterdictionaryItem>|null
+     * @return list<DictionaryCategoryParameterDictionaryItem>|null
      */
     public function getDictionary(): ?array
     {
@@ -69,7 +69,7 @@ class DictionaryCategoryParameter extends CategoryParameter
     /**
      * Defines the values accepted for this parameter.
      *
-     * @param list<DictionaryCategoryParameterdictionaryItem>|null $dictionary
+     * @param list<DictionaryCategoryParameterDictionaryItem>|null $dictionary
      */
     public function setDictionary(?array $dictionary): self
     {
@@ -77,5 +77,10 @@ class DictionaryCategoryParameter extends CategoryParameter
         $this->dictionary = $dictionary;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['restrictions' => ['restrictions', 'getRestrictions', 'setRestrictions'], 'dictionary' => ['dictionary', 'getDictionary', 'setDictionary']]);
     }
 }

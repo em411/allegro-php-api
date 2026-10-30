@@ -21,11 +21,10 @@ class DownloadAttachmentGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
     /**
      * Use this resource to download attachment with provided identifier. You can retrieve attachments uploaded within the last 6 months. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#pobranie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#attachment-related-to-the-message" target="_blank">EN</a>.
      *
-     * @param string $attachmentId     identifier of the attachment that will be downloaded
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $attachmentId identifier of the attachment that will be downloaded
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $attachmentId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class DownloadAttachmentGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
 
     public function getUri(): string
     {
-        return str_replace(['{attachmentId}'], [$this->attachmentId], '/messaging/message-attachments/{attachmentId}');
+        return str_replace(['{attachmentId}'], [rawurlencode($this->attachmentId)], '/messaging/message-attachments/{attachmentId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

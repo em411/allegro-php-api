@@ -42,15 +42,15 @@ class FlexibleBundleSlotsDiscountDTONormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FlexibleBundleSlotsDiscountDTO();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FlexibleBundleSlotsDiscountDTO();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('slots', $data) && null !== $data['slots']) {
             $values = [];
@@ -61,6 +61,7 @@ class FlexibleBundleSlotsDiscountDTONormalizer implements DenormalizerInterface,
             unset($data['slots']);
         } elseif (\array_key_exists('slots', $data) && null === $data['slots']) {
             $object->setSlots(null);
+            unset($data['slots']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,10 +77,10 @@ class FlexibleBundleSlotsDiscountDTONormalizer implements DenormalizerInterface,
         $dataArray = [];
         $values = [];
         foreach ($data->getSlots() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['slots'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

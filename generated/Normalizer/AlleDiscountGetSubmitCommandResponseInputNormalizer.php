@@ -42,33 +42,36 @@ class AlleDiscountGetSubmitCommandResponseInputNormalizer implements Denormalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AlleDiscountGetSubmitCommandResponseInput();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AlleDiscountGetSubmitCommandResponseInput();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('offer', $data) && null !== $data['offer']) {
             $object->setOffer($this->denormalizer->denormalize($data['offer'], \Em411\Allegro\Api\Model\AlleDiscountGetSubmitCommandResponseInputOffer::class, 'json', $context));
             unset($data['offer']);
         } elseif (\array_key_exists('offer', $data) && null === $data['offer']) {
             $object->setOffer(null);
+            unset($data['offer']);
         }
         if (\array_key_exists('campaign', $data) && null !== $data['campaign']) {
             $object->setCampaign($this->denormalizer->denormalize($data['campaign'], \Em411\Allegro\Api\Model\AlleDiscountGetSubmitCommandResponseInputCampaign::class, 'json', $context));
             unset($data['campaign']);
         } elseif (\array_key_exists('campaign', $data) && null === $data['campaign']) {
             $object->setCampaign(null);
+            unset($data['campaign']);
         }
         if (\array_key_exists('proposedPrice', $data) && null !== $data['proposedPrice']) {
             $object->setProposedPrice($this->denormalizer->denormalize($data['proposedPrice'], \Em411\Allegro\Api\Model\AlleDiscountGetSubmitCommandResponseInputProposedPrice::class, 'json', $context));
             unset($data['proposedPrice']);
         } elseif (\array_key_exists('proposedPrice', $data) && null === $data['proposedPrice']) {
             $object->setProposedPrice(null);
+            unset($data['proposedPrice']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,15 +86,15 @@ class AlleDiscountGetSubmitCommandResponseInputNormalizer implements Denormalize
     {
         $dataArray = [];
         if ($data->isInitialized('offer') && null !== $data->getOffer()) {
-            $dataArray['offer'] = $this->normalizer->normalize($data->getOffer(), 'json', $context);
+            $dataArray['offer'] = null === $data->getOffer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOffer(), 'json', $context));
         }
         if ($data->isInitialized('campaign') && null !== $data->getCampaign()) {
-            $dataArray['campaign'] = $this->normalizer->normalize($data->getCampaign(), 'json', $context);
+            $dataArray['campaign'] = null === $data->getCampaign() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCampaign(), 'json', $context));
         }
         if ($data->isInitialized('proposedPrice') && null !== $data->getProposedPrice()) {
-            $dataArray['proposedPrice'] = $this->normalizer->normalize($data->getProposedPrice(), 'json', $context);
+            $dataArray['proposedPrice'] = null === $data->getProposedPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getProposedPrice(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

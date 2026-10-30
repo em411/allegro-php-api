@@ -42,15 +42,15 @@ class SaleProductSafetyDtoNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SaleProductSafetyDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SaleProductSafetyDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('responsibleProducers', $data) && null !== $data['responsibleProducers']) {
             $values = [];
@@ -61,16 +61,24 @@ class SaleProductSafetyDtoNormalizer implements DenormalizerInterface, Normalize
             unset($data['responsibleProducers']);
         } elseif (\array_key_exists('responsibleProducers', $data) && null === $data['responsibleProducers']) {
             $object->setResponsibleProducers(null);
+            unset($data['responsibleProducers']);
         }
         if (\array_key_exists('safetyInformation', $data) && null !== $data['safetyInformation']) {
-            $object->setSafetyInformation($data['safetyInformation']);
+            $value_1 = $data['safetyInformation'];
+            if (\is_array($data['safetyInformation']) && (\array_key_exists('type', $data['safetyInformation']) && 'TEXT' == $data['safetyInformation']['type']) && \array_key_exists('description', $data['safetyInformation']) && (isset($data['safetyInformation']['type']) && 'TEXT' == $data['safetyInformation']['type'])) {
+                $value_1 = $this->denormalizer->denormalize($data['safetyInformation'], \Em411\Allegro\Api\Model\TextSafetyInformation::class, 'json', $context);
+            } elseif (\is_array($data['safetyInformation']) && (\array_key_exists('type', $data['safetyInformation']) && 'ATTACHMENTS' == $data['safetyInformation']['type']) && \array_key_exists('attachments', $data['safetyInformation']) && (isset($data['safetyInformation']['type']) && 'ATTACHMENTS' == $data['safetyInformation']['type'])) {
+                $value_1 = $this->denormalizer->denormalize($data['safetyInformation'], \Em411\Allegro\Api\Model\AttachmentsSafetyInformation::class, 'json', $context);
+            }
+            $object->setSafetyInformation($value_1);
             unset($data['safetyInformation']);
         } elseif (\array_key_exists('safetyInformation', $data) && null === $data['safetyInformation']) {
             $object->setSafetyInformation(null);
+            unset($data['safetyInformation']);
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+                $object[$key] = $value_2;
             }
         }
 
@@ -80,19 +88,25 @@ class SaleProductSafetyDtoNormalizer implements DenormalizerInterface, Normalize
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('responsibleProducers')) {
+        if ($data->isInitialized('responsibleProducers') && null !== $data->getResponsibleProducers()) {
             $values = [];
             foreach ($data->getResponsibleProducers() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['responsibleProducers'] = $values;
         }
-        if ($data->isInitialized('safetyInformation')) {
-            $dataArray['safetyInformation'] = $data->getSafetyInformation();
+        if ($data->isInitialized('safetyInformation') && null !== $data->getSafetyInformation()) {
+            $value_1 = $data->getSafetyInformation();
+            if (\is_object($data->getSafetyInformation())) {
+                $value_1 = null === $data->getSafetyInformation() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSafetyInformation(), 'json', $context));
+            } elseif (\is_object($data->getSafetyInformation())) {
+                $value_1 = null === $data->getSafetyInformation() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSafetyInformation(), 'json', $context));
+            }
+            $dataArray['safetyInformation'] = $value_1;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+                $dataArray[$key] = $value_2;
             }
         }
 

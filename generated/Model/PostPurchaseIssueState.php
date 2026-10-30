@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PostPurchaseIssueState extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PostPurchaseIssueState implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -121,5 +125,10 @@ class PostPurchaseIssueState extends \ArrayObject
         $this->chatActive = $chatActive;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['status' => ['status', 'getStatus', 'setStatus'], 'statusDueDate' => ['statusDueDate', 'getStatusDueDate', 'setStatusDueDate'], 'returnRequired' => ['returnRequired', 'getReturnRequired', 'setReturnRequired'], 'chatActive' => ['chatActive', 'getChatActive', 'setChatActive']];
     }
 }

@@ -42,30 +42,32 @@ class ModificationPublicationNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ModificationPublication();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ModificationPublication();
         if (\array_key_exists('durationUnlimited', $data) && \is_int($data['durationUnlimited'])) {
             $data['durationUnlimited'] = (bool) $data['durationUnlimited'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('duration', $data) && null !== $data['duration']) {
             $object->setDuration($data['duration']);
             unset($data['duration']);
         } elseif (\array_key_exists('duration', $data) && null === $data['duration']) {
             $object->setDuration(null);
+            unset($data['duration']);
         }
         if (\array_key_exists('durationUnlimited', $data) && null !== $data['durationUnlimited']) {
             $object->setDurationUnlimited($data['durationUnlimited']);
             unset($data['durationUnlimited']);
         } elseif (\array_key_exists('durationUnlimited', $data) && null === $data['durationUnlimited']) {
             $object->setDurationUnlimited(null);
+            unset($data['durationUnlimited']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,7 +87,7 @@ class ModificationPublicationNormalizer implements DenormalizerInterface, Normal
         if ($data->isInitialized('durationUnlimited') && null !== $data->getDurationUnlimited()) {
             $dataArray['durationUnlimited'] = $data->getDurationUnlimited();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -22,12 +22,10 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
     /**
      * Use this resource to write new message in existing thread. This resource is rate limited to 1 request per second for a user. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#nowa-wiadomosc" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#add-a-new-message" target="_blank">EN</a>.
      *
-     * @param string $threadId         identifier of thread to write message to
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $threadId identifier of thread to write message to
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
     public function __construct(string $threadId, ?\Em411\Allegro\Api\Model\NewMessageInThread $requestBody = null, array $headerParameters = [], array $accept = [])
@@ -45,16 +43,16 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
 
     public function getUri(): string
     {
-        return str_replace(['{threadId}'], [$this->threadId], '/messaging/threads/{threadId}/messages');
+        return str_replace(['{threadId}'], [rawurlencode($this->threadId)], '/messaging/threads/{threadId}/messages');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Em411\Allegro\Api\Model\NewMessageInThread) {
-            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], \Em411\Allegro\Api\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
         if ($this->body instanceof \Em411\Allegro\Api\Model\NewMessageInThread) {
-            return [['Content-Type' => ['application/vnd.allegro.beta.v1+json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/vnd.allegro.beta.v1+json']], \Em411\Allegro\Api\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -98,10 +96,10 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (201 === $status) {
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
                 return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\Message', 'json');
             }
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
                 return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessageVBeta1', 'json');
             }
         }
@@ -114,7 +112,7 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
         if (404 === $status) {
             throw new \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTNotFoundException($response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

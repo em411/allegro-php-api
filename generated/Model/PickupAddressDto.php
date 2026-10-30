@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PickupAddressDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PickupAddressDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -224,5 +228,10 @@ class PickupAddressDto extends \ArrayObject
         $this->phone = $phone;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['name', 'getName', 'setName'], 'company' => ['company', 'getCompany', 'setCompany'], 'street' => ['street', 'getStreet', 'setStreet'], 'postalCode' => ['postalCode', 'getPostalCode', 'setPostalCode'], 'city' => ['city', 'getCity', 'setCity'], 'state' => ['state', 'getState', 'setState'], 'countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode'], 'email' => ['email', 'getEmail', 'setEmail'], 'phone' => ['phone', 'getPhone', 'setPhone']];
     }
 }

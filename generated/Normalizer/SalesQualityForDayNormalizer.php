@@ -42,45 +42,53 @@ class SalesQualityForDayNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SalesQualityForDay();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SalesQualityForDay();
         if (\array_key_exists('score', $data) && \is_int($data['score'])) {
             $data['score'] = (float) $data['score'];
         }
         if (\array_key_exists('maxScore', $data) && \is_int($data['maxScore'])) {
             $data['maxScore'] = (float) $data['maxScore'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('resultFor', $data) && null !== $data['resultFor']) {
-            $object->setResultFor(\DateTime::createFromFormat('Y-m-d', $data['resultFor'])->setTime(0, 0, 0));
+            $date = \DateTime::createFromFormat('Y-m-d', $data['resultFor']);
+            if (false === $date) {
+                throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['resultFor'], 'Y-m-d');
+            }
+            $object->setResultFor($date->setTime(0, 0, 0));
             unset($data['resultFor']);
         } elseif (\array_key_exists('resultFor', $data) && null === $data['resultFor']) {
             $object->setResultFor(null);
+            unset($data['resultFor']);
         }
         if (\array_key_exists('score', $data) && null !== $data['score']) {
             $object->setScore($data['score']);
             unset($data['score']);
         } elseif (\array_key_exists('score', $data) && null === $data['score']) {
             $object->setScore(null);
+            unset($data['score']);
         }
         if (\array_key_exists('grade', $data) && null !== $data['grade']) {
             $object->setGrade($data['grade']);
             unset($data['grade']);
         } elseif (\array_key_exists('grade', $data) && null === $data['grade']) {
             $object->setGrade(null);
+            unset($data['grade']);
         }
         if (\array_key_exists('maxScore', $data) && null !== $data['maxScore']) {
             $object->setMaxScore($data['maxScore']);
             unset($data['maxScore']);
         } elseif (\array_key_exists('maxScore', $data) && null === $data['maxScore']) {
             $object->setMaxScore(null);
+            unset($data['maxScore']);
         }
         if (\array_key_exists('metrics', $data) && null !== $data['metrics']) {
             $values = [];
@@ -91,6 +99,7 @@ class SalesQualityForDayNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['metrics']);
         } elseif (\array_key_exists('metrics', $data) && null === $data['metrics']) {
             $object->setMetrics(null);
+            unset($data['metrics']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -110,10 +119,10 @@ class SalesQualityForDayNormalizer implements DenormalizerInterface, NormalizerI
         $dataArray['maxScore'] = $data->getMaxScore();
         $values = [];
         foreach ($data->getMetrics() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['metrics'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BadgeApplicationPurchaseConstraintsLimit extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BadgeApplicationPurchaseConstraintsLimit implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class BadgeApplicationPurchaseConstraintsLimit extends \ArrayObject
         $this->perUser = $perUser;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['perUser' => ['perUser', 'getPerUser', 'setPerUser']];
     }
 }

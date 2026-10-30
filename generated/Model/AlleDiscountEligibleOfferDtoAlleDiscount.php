@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AlleDiscountEligibleOfferDtoAlleDiscount extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AlleDiscountEligibleOfferDtoAlleDiscount implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class AlleDiscountEligibleOfferDtoAlleDiscount extends \ArrayObject
         $this->minimumGuaranteedDiscount = $minimumGuaranteedDiscount;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['campaignConditions' => ['campaignConditions', 'getCampaignConditions', 'setCampaignConditions'], 'requiredMerchantPrice' => ['requiredMerchantPrice', 'getRequiredMerchantPrice', 'setRequiredMerchantPrice'], 'minimumGuaranteedDiscount' => ['minimumGuaranteedDiscount', 'getMinimumGuaranteedDiscount', 'setMinimumGuaranteedDiscount']];
     }
 }

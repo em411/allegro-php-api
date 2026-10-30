@@ -42,21 +42,22 @@ class ModificationDiscountsNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ModificationDiscounts();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ModificationDiscounts();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('wholesalePriceList', $data) && null !== $data['wholesalePriceList']) {
             $object->setWholesalePriceList($this->denormalizer->denormalize($data['wholesalePriceList'], \Em411\Allegro\Api\Model\ModificationDiscountsWholesalePriceList::class, 'json', $context));
             unset($data['wholesalePriceList']);
         } elseif (\array_key_exists('wholesalePriceList', $data) && null === $data['wholesalePriceList']) {
             $object->setWholesalePriceList(null);
+            unset($data['wholesalePriceList']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,9 +72,9 @@ class ModificationDiscountsNormalizer implements DenormalizerInterface, Normaliz
     {
         $dataArray = [];
         if ($data->isInitialized('wholesalePriceList') && null !== $data->getWholesalePriceList()) {
-            $dataArray['wholesalePriceList'] = $this->normalizer->normalize($data->getWholesalePriceList(), 'json', $context);
+            $dataArray['wholesalePriceList'] = null === $data->getWholesalePriceList() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getWholesalePriceList(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

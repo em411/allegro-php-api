@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleProductSafetyDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleProductSafetyDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -26,7 +30,7 @@ class SaleProductSafetyDto extends \ArrayObject
     /**
      * Contains information about product's safety.
      *
-     * @var mixed|null
+     * @var TextSafetyInformation|AttachmentsSafetyInformation|null
      */
     protected $safetyInformation;
 
@@ -56,6 +60,8 @@ class SaleProductSafetyDto extends \ArrayObject
 
     /**
      * Contains information about product's safety.
+     *
+     * @return TextSafetyInformation|AttachmentsSafetyInformation|null
      */
     public function getSafetyInformation()
     {
@@ -64,6 +70,8 @@ class SaleProductSafetyDto extends \ArrayObject
 
     /**
      * Contains information about product's safety.
+     *
+     * @param TextSafetyInformation|AttachmentsSafetyInformation|null $safetyInformation
      */
     public function setSafetyInformation($safetyInformation): self
     {
@@ -71,5 +79,10 @@ class SaleProductSafetyDto extends \ArrayObject
         $this->safetyInformation = $safetyInformation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['responsibleProducers' => ['responsibleProducers', 'getResponsibleProducers', 'setResponsibleProducers'], 'safetyInformation' => ['safetyInformation', 'getSafetyInformation', 'setSafetyInformation']];
     }
 }

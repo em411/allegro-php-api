@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsMaxPackageWeight extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsMaxPackageWeight implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
         $this->unit = $unit;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['supported' => ['supported', 'getSupported', 'setSupported'], 'min' => ['min', 'getMin', 'setMin'], 'max' => ['max', 'getMax', 'setMax'], 'unit' => ['unit', 'getUnit', 'setUnit']];
     }
 }

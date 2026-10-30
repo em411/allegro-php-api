@@ -42,33 +42,36 @@ class RemovalRequestNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\RemovalRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\RemovalRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
             $object->setCreatedAt($data['createdAt']);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('message', $data) && null !== $data['message']) {
             $object->setMessage($data['message']);
             unset($data['message']);
         } elseif (\array_key_exists('message', $data) && null === $data['message']) {
             $object->setMessage(null);
+            unset($data['message']);
         }
         if (\array_key_exists('source', $data) && null !== $data['source']) {
             $object->setSource($data['source']);
             unset($data['source']);
         } elseif (\array_key_exists('source', $data) && null === $data['source']) {
             $object->setSource(null);
+            unset($data['source']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -87,7 +90,7 @@ class RemovalRequestNormalizer implements DenormalizerInterface, NormalizerInter
         if ($data->isInitialized('source') && null !== $data->getSource()) {
             $dataArray['source'] = $data->getSource();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

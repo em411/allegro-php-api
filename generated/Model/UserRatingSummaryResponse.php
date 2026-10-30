@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class UserRatingSummaryResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class UserRatingSummaryResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class UserRatingSummaryResponse extends \ArrayObject
         $this->recommendedPercentage = $recommendedPercentage;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['averageRates' => ['averageRates', 'getAverageRates', 'setAverageRates'], 'notRecommended' => ['notRecommended', 'getNotRecommended', 'setNotRecommended'], 'recommended' => ['recommended', 'getRecommended', 'setRecommended'], 'recommendedPercentage' => ['recommendedPercentage', 'getRecommendedPercentage', 'setRecommendedPercentage']];
     }
 }

@@ -42,21 +42,22 @@ class LabelsNormalizer implements DenormalizerInterface, NormalizerInterface, De
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Labels();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Labels();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('fileUrl', $data) && null !== $data['fileUrl']) {
             $object->setFileUrl($data['fileUrl']);
             unset($data['fileUrl']);
         } elseif (\array_key_exists('fileUrl', $data) && null === $data['fileUrl']) {
             $object->setFileUrl(null);
+            unset($data['fileUrl']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +74,7 @@ class LabelsNormalizer implements DenormalizerInterface, NormalizerInterface, De
         if ($data->isInitialized('fileUrl') && null !== $data->getFileUrl()) {
             $dataArray['fileUrl'] = $data->getFileUrl();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

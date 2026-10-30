@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class UserRatingSummaryResponseV2StatisticsRemoved extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class UserRatingSummaryResponseV2StatisticsRemoved implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class UserRatingSummaryResponseV2StatisticsRemoved extends \ArrayObject
         $this->byBuyerDueToCompensation = $byBuyerDueToCompensation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['total' => ['total', 'getTotal', 'setTotal'], 'byAdmin' => ['byAdmin', 'getByAdmin', 'setByAdmin'], 'byBuyer' => ['byBuyer', 'getByBuyer', 'setByBuyer'], 'byBuyerDueToCompensation' => ['byBuyerDueToCompensation', 'getByBuyerDueToCompensation', 'setByBuyerDueToCompensation']];
     }
 }

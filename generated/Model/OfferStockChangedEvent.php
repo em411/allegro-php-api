@@ -41,4 +41,9 @@ class OfferStockChangedEvent extends SellerOfferBaseEvent
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['offer' => ['offer', 'getOffer', 'setOffer']]);
+    }
 }

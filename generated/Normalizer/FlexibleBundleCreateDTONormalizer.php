@@ -42,15 +42,15 @@ class FlexibleBundleCreateDTONormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FlexibleBundleCreateDTO();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FlexibleBundleCreateDTO();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('slots', $data) && null !== $data['slots']) {
             $values = [];
@@ -61,9 +61,10 @@ class FlexibleBundleCreateDTONormalizer implements DenormalizerInterface, Normal
             unset($data['slots']);
         } elseif (\array_key_exists('slots', $data) && null === $data['slots']) {
             $object->setSlots(null);
+            unset($data['slots']);
         }
         if (\array_key_exists('discount', $data) && null !== $data['discount']) {
-            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['discount'] as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
@@ -71,6 +72,7 @@ class FlexibleBundleCreateDTONormalizer implements DenormalizerInterface, Normal
             unset($data['discount']);
         } elseif (\array_key_exists('discount', $data) && null === $data['discount']) {
             $object->setDiscount(null);
+            unset($data['discount']);
         }
         foreach ($data as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -86,17 +88,17 @@ class FlexibleBundleCreateDTONormalizer implements DenormalizerInterface, Normal
         $dataArray = [];
         $values = [];
         foreach ($data->getSlots() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['slots'] = $values;
-        if ($data->isInitialized('discount')) {
-            $values_1 = [];
+        if ($data->isInitialized('discount') && null !== $data->getDiscount()) {
+            $values_1 = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data->getDiscount() as $key => $value_1) {
                 $values_1[$key] = $value_1;
             }
             $dataArray['discount'] = $values_1;
         }
-        foreach ($data as $key_1 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_2;
             }

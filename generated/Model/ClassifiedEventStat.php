@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ClassifiedEventStat extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ClassifiedEventStat implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -65,5 +69,10 @@ class ClassifiedEventStat extends \ArrayObject
         $this->eventType = $eventType;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['count' => ['count', 'getCount', 'setCount'], 'eventType' => ['eventType', 'getEventType', 'setEventType']];
     }
 }

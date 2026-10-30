@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PromoOptionsCommand extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PromoOptionsCommand implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -92,5 +96,10 @@ class PromoOptionsCommand extends \ArrayObject
         $this->additionalMarketplaces = $additionalMarketplaces;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['offerCriteria' => ['offerCriteria', 'getOfferCriteria', 'setOfferCriteria'], 'modification' => ['modification', 'getModification', 'setModification'], 'additionalMarketplaces' => ['additionalMarketplaces', 'getAdditionalMarketplaces', 'setAdditionalMarketplaces']];
     }
 }

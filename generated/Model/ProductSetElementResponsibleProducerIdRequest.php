@@ -49,4 +49,9 @@ class ProductSetElementResponsibleProducerIdRequest extends ProductSetElementRes
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['id' => ['id', 'getId', 'setId']]);
+    }
 }

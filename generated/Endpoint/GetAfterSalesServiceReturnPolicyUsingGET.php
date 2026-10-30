@@ -21,11 +21,10 @@ class GetAfterSalesServiceReturnPolicyUsingGET extends \Em411\Allegro\Api\Runtim
     /**
      * Use this resource to get a return policy details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-warunki-zwrotow-przypisane-do-konta" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-retrieve-return-policies-assigned-to-the-account" target="_blank">EN</a>.
      *
-     * @param string $returnPolicyId   the ID of the return policy
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $returnPolicyId the ID of the return policy
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $returnPolicyId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetAfterSalesServiceReturnPolicyUsingGET extends \Em411\Allegro\Api\Runtim
 
     public function getUri(): string
     {
-        return str_replace(['{returnPolicyId}'], [$this->returnPolicyId], '/after-sales-service-conditions/return-policies/{returnPolicyId}');
+        return str_replace(['{returnPolicyId}'], [rawurlencode($this->returnPolicyId)], '/after-sales-service-conditions/return-policies/{returnPolicyId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -80,7 +79,7 @@ class GetAfterSalesServiceReturnPolicyUsingGET extends \Em411\Allegro\Api\Runtim
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV1', 'json');
         }
         if (401 === $status) {

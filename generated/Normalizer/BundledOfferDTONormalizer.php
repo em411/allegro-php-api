@@ -42,36 +42,39 @@ class BundledOfferDTONormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BundledOfferDTO();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\BundledOfferDTO();
         if (\array_key_exists('entryPoint', $data) && \is_int($data['entryPoint'])) {
             $data['entryPoint'] = (bool) $data['entryPoint'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('requiredQuantity', $data) && null !== $data['requiredQuantity']) {
             $object->setRequiredQuantity($data['requiredQuantity']);
             unset($data['requiredQuantity']);
         } elseif (\array_key_exists('requiredQuantity', $data) && null === $data['requiredQuantity']) {
             $object->setRequiredQuantity(null);
+            unset($data['requiredQuantity']);
         }
         if (\array_key_exists('entryPoint', $data) && null !== $data['entryPoint']) {
             $object->setEntryPoint($data['entryPoint']);
             unset($data['entryPoint']);
         } elseif (\array_key_exists('entryPoint', $data) && null === $data['entryPoint']) {
             $object->setEntryPoint(null);
+            unset($data['entryPoint']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -88,7 +91,7 @@ class BundledOfferDTONormalizer implements DenormalizerInterface, NormalizerInte
         $dataArray['id'] = $data->getId();
         $dataArray['requiredQuantity'] = $data->getRequiredQuantity();
         $dataArray['entryPoint'] = $data->getEntryPoint();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

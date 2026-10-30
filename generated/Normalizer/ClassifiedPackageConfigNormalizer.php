@@ -42,15 +42,15 @@ class ClassifiedPackageConfigNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ClassifiedPackageConfig();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ClassifiedPackageConfig();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('extensions', $data) && null !== $data['extensions']) {
             $values = [];
@@ -61,18 +61,21 @@ class ClassifiedPackageConfigNormalizer implements DenormalizerInterface, Normal
             unset($data['extensions']);
         } elseif (\array_key_exists('extensions', $data) && null === $data['extensions']) {
             $object->setExtensions(null);
+            unset($data['extensions']);
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('promotions', $data) && null !== $data['promotions']) {
             $values_1 = [];
@@ -83,18 +86,21 @@ class ClassifiedPackageConfigNormalizer implements DenormalizerInterface, Normal
             unset($data['promotions']);
         } elseif (\array_key_exists('promotions', $data) && null === $data['promotions']) {
             $object->setPromotions(null);
+            unset($data['promotions']);
         }
         if (\array_key_exists('publication', $data) && null !== $data['publication']) {
             $object->setPublication($this->denormalizer->denormalize($data['publication'], \Em411\Allegro\Api\Model\ClassifiedPublication::class, 'json', $context));
             unset($data['publication']);
         } elseif (\array_key_exists('publication', $data) && null === $data['publication']) {
             $object->setPublication(null);
+            unset($data['publication']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -111,7 +117,7 @@ class ClassifiedPackageConfigNormalizer implements DenormalizerInterface, Normal
         if ($data->isInitialized('extensions') && null !== $data->getExtensions()) {
             $values = [];
             foreach ($data->getExtensions() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['extensions'] = $values;
         }
@@ -120,15 +126,15 @@ class ClassifiedPackageConfigNormalizer implements DenormalizerInterface, Normal
         if ($data->isInitialized('promotions') && null !== $data->getPromotions()) {
             $values_1 = [];
             foreach ($data->getPromotions() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['promotions'] = $values_1;
         }
         if ($data->isInitialized('publication') && null !== $data->getPublication()) {
-            $dataArray['publication'] = $this->normalizer->normalize($data->getPublication(), 'json', $context);
+            $dataArray['publication'] = null === $data->getPublication() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPublication(), 'json', $context));
         }
         $dataArray['type'] = $data->getType();
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

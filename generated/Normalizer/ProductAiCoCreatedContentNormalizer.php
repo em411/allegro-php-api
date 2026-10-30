@@ -42,15 +42,15 @@ class ProductAiCoCreatedContentNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductAiCoCreatedContent();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductAiCoCreatedContent();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('images', $data) && null !== $data['images']) {
             $values = [];
@@ -61,6 +61,7 @@ class ProductAiCoCreatedContentNormalizer implements DenormalizerInterface, Norm
             unset($data['images']);
         } elseif (\array_key_exists('images', $data) && null === $data['images']) {
             $object->setImages(null);
+            unset($data['images']);
         }
         if (\array_key_exists('paths', $data) && null !== $data['paths']) {
             $values_1 = [];
@@ -71,6 +72,7 @@ class ProductAiCoCreatedContentNormalizer implements DenormalizerInterface, Norm
             unset($data['paths']);
         } elseif (\array_key_exists('paths', $data) && null === $data['paths']) {
             $object->setPaths(null);
+            unset($data['paths']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -87,7 +89,7 @@ class ProductAiCoCreatedContentNormalizer implements DenormalizerInterface, Norm
         if ($data->isInitialized('images') && null !== $data->getImages()) {
             $values = [];
             foreach ($data->getImages() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['images'] = $values;
         }
@@ -96,7 +98,7 @@ class ProductAiCoCreatedContentNormalizer implements DenormalizerInterface, Norm
             $values_1[] = $value_1;
         }
         $dataArray['paths'] = $values_1;
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

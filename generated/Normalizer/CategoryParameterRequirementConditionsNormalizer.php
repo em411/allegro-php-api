@@ -42,15 +42,15 @@ class CategoryParameterRequirementConditionsNormalizer implements DenormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CategoryParameterRequirementConditions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CategoryParameterRequirementConditions();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('parametersWithValue', $data) && null !== $data['parametersWithValue']) {
             $values = [];
@@ -61,6 +61,7 @@ class CategoryParameterRequirementConditionsNormalizer implements DenormalizerIn
             unset($data['parametersWithValue']);
         } elseif (\array_key_exists('parametersWithValue', $data) && null === $data['parametersWithValue']) {
             $object->setParametersWithValue(null);
+            unset($data['parametersWithValue']);
         }
         if (\array_key_exists('parametersWithoutValue', $data) && null !== $data['parametersWithoutValue']) {
             $values_1 = [];
@@ -71,6 +72,7 @@ class CategoryParameterRequirementConditionsNormalizer implements DenormalizerIn
             unset($data['parametersWithoutValue']);
         } elseif (\array_key_exists('parametersWithoutValue', $data) && null === $data['parametersWithoutValue']) {
             $object->setParametersWithoutValue(null);
+            unset($data['parametersWithoutValue']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,15 +88,15 @@ class CategoryParameterRequirementConditionsNormalizer implements DenormalizerIn
         $dataArray = [];
         $values = [];
         foreach ($data->getParametersWithValue() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['parametersWithValue'] = $values;
         $values_1 = [];
         foreach ($data->getParametersWithoutValue() as $value_1) {
-            $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
         }
         $dataArray['parametersWithoutValue'] = $values_1;
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

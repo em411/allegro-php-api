@@ -42,27 +42,29 @@ class OfferListingDtoV1StockNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1Stock();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1Stock();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('available', $data) && null !== $data['available']) {
             $object->setAvailable($data['available']);
             unset($data['available']);
         } elseif (\array_key_exists('available', $data) && null === $data['available']) {
             $object->setAvailable(null);
+            unset($data['available']);
         }
         if (\array_key_exists('sold', $data) && null !== $data['sold']) {
             $object->setSold($data['sold']);
             unset($data['sold']);
         } elseif (\array_key_exists('sold', $data) && null === $data['sold']) {
             $object->setSold(null);
+            unset($data['sold']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +84,7 @@ class OfferListingDtoV1StockNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('sold') && null !== $data->getSold()) {
             $dataArray['sold'] = $data->getSold();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

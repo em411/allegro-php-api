@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CompatibilityListSupportedCategoriesDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CompatibilityListSupportedCategoriesDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class CompatibilityListSupportedCategoriesDto extends \ArrayObject
         $this->supportedCategories = $supportedCategories;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['supportedCategories' => ['supportedCategories', 'getSupportedCategories', 'setSupportedCategories']];
     }
 }

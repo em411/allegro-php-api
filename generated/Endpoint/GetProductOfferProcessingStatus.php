@@ -22,12 +22,11 @@ class GetProductOfferProcessingStatus extends \Em411\Allegro\Api\Runtime\Client\
     /**
      * The URI for the resource given by Location header of POST /sale/product-offers and PATCH /sale/product-offers/{offerId}. Use this resource to check processing status of a POST or PATCH request. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#procesowanie-oferty" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#offer-processing" target="_blank">EN</a>.
      *
-     * @param string $offerId          offer identifier
-     * @param string $operationId      operation identifier provided in location header of POST or PATCH request
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $offerId     offer identifier
+     * @param string $operationId operation identifier provided in location header of POST or PATCH request
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $offerId, string $operationId, array $headerParameters = [])
     {
@@ -43,7 +42,7 @@ class GetProductOfferProcessingStatus extends \Em411\Allegro\Api\Runtime\Client\
 
     public function getUri(): string
     {
-        return str_replace(['{offerId}', '{operationId}'], [$this->offerId, $this->operationId], '/sale/product-offers/{offerId}/operations/{operationId}');
+        return str_replace(['{offerId}', '{operationId}'], [rawurlencode($this->offerId), rawurlencode($this->operationId)], '/sale/product-offers/{offerId}/operations/{operationId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -85,7 +84,7 @@ class GetProductOfferProcessingStatus extends \Em411\Allegro\Api\Runtime\Client\
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (202 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (202 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\SaleProductOfferStatusResponse', 'json');
         }
         if (303 === $status) {
@@ -103,7 +102,7 @@ class GetProductOfferProcessingStatus extends \Em411\Allegro\Api\Runtime\Client\
         if (404 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetProductOfferProcessingStatusNotFoundException($response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetProductOfferProcessingStatusUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

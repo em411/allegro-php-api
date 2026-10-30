@@ -22,13 +22,11 @@ class UploadAttachmentPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
     /**
      * Use this resource to upload attachment using identifier that was declared. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#dodanie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#add-an-attachment" target="_blank">EN</a>.
      *
-     * @param string                                                 $attachmentId     the identifier of attachment that will be uploaded
+     * @param string                                                 $attachmentId the identifier of attachment that will be uploaded
      * @param string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
     public function __construct(string $attachmentId, $requestBody = null, array $headerParameters = [], array $accept = [])
@@ -46,7 +44,7 @@ class UploadAttachmentPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
 
     public function getUri(): string
     {
-        return str_replace(['{attachmentId}'], [$this->attachmentId], '/messaging/message-attachments/{attachmentId}');
+        return str_replace(['{attachmentId}'], [rawurlencode($this->attachmentId)], '/messaging/message-attachments/{attachmentId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -112,10 +110,10 @@ class UploadAttachmentPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
                 return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessageAttachmentId', 'json');
             }
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
                 return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessageAttachmentId', 'json');
             }
         }

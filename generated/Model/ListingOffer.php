@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ListingOffer extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ListingOffer implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -306,5 +310,10 @@ class ListingOffer extends \ArrayObject
         $this->publication = $publication;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'seller' => ['seller', 'getSeller', 'setSeller'], 'promotion' => ['promotion', 'getPromotion', 'setPromotion'], 'delivery' => ['delivery', 'getDelivery', 'setDelivery'], 'images' => ['images', 'getImages', 'setImages'], 'sellingMode' => ['sellingMode', 'getSellingMode', 'setSellingMode'], 'stock' => ['stock', 'getStock', 'setStock'], 'vendor' => ['vendor', 'getVendor', 'setVendor'], 'category' => ['category', 'getCategory', 'setCategory'], 'publication' => ['publication', 'getPublication', 'setPublication']];
     }
 }

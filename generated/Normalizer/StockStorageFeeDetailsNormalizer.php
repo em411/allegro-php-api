@@ -42,13 +42,16 @@ class StockStorageFeeDetailsNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\StockStorageFeeDetails();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\StockStorageFeeDetails();
         if (\array_key_exists('chargedItemsQuantity', $data) && \is_int($data['chargedItemsQuantity'])) {
             $data['chargedItemsQuantity'] = (float) $data['chargedItemsQuantity'];
         }
@@ -58,32 +61,33 @@ class StockStorageFeeDetailsNormalizer implements DenormalizerInterface, Normali
         if (\array_key_exists('amountGross', $data) && \is_int($data['amountGross'])) {
             $data['amountGross'] = (float) $data['amountGross'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('chargedItemsQuantity', $data) && null !== $data['chargedItemsQuantity']) {
             $object->setChargedItemsQuantity($data['chargedItemsQuantity']);
             unset($data['chargedItemsQuantity']);
         } elseif (\array_key_exists('chargedItemsQuantity', $data) && null === $data['chargedItemsQuantity']) {
             $object->setChargedItemsQuantity(null);
+            unset($data['chargedItemsQuantity']);
         }
         if (\array_key_exists('amountNet', $data) && null !== $data['amountNet']) {
             $object->setAmountNet($data['amountNet']);
             unset($data['amountNet']);
         } elseif (\array_key_exists('amountNet', $data) && null === $data['amountNet']) {
             $object->setAmountNet(null);
+            unset($data['amountNet']);
         }
         if (\array_key_exists('amountGross', $data) && null !== $data['amountGross']) {
             $object->setAmountGross($data['amountGross']);
             unset($data['amountGross']);
         } elseif (\array_key_exists('amountGross', $data) && null === $data['amountGross']) {
             $object->setAmountGross(null);
+            unset($data['amountGross']);
         }
         if (\array_key_exists('currency', $data) && null !== $data['currency']) {
             $object->setCurrency($data['currency']);
             unset($data['currency']);
         } elseif (\array_key_exists('currency', $data) && null === $data['currency']) {
             $object->setCurrency(null);
+            unset($data['currency']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -109,7 +113,7 @@ class StockStorageFeeDetailsNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('currency') && null !== $data->getCurrency()) {
             $dataArray['currency'] = $data->getCurrency();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

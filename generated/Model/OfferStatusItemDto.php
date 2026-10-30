@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferStatusItemDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferStatusItemDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -273,5 +277,10 @@ class OfferStatusItemDto extends \ArrayObject
         $this->excludedAt = $excludedAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'marketplace' => ['marketplace', 'getMarketplace', 'setMarketplace'], 'basePrice' => ['basePrice', 'getBasePrice', 'setBasePrice'], 'discount' => ['discount', 'getDiscount', 'setDiscount'], 'recommendedPriceReduction' => ['recommendedPriceReduction', 'getRecommendedPriceReduction', 'setRecommendedPriceReduction'], 'declaredPriceReduction' => ['declaredPriceReduction', 'getDeclaredPriceReduction', 'setDeclaredPriceReduction'], 'actualPriceReduction' => ['actualPriceReduction', 'getActualPriceReduction', 'setActualPriceReduction'], 'discountedAt' => ['discountedAt', 'getDiscountedAt', 'setDiscountedAt'], 'excludedAt' => ['excludedAt', 'getExcludedAt', 'setExcludedAt']];
     }
 }

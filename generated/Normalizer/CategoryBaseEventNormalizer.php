@@ -42,6 +42,16 @@ class CategoryBaseEventNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
+        $object = new \Em411\Allegro\Api\Model\CategoryBaseEvent();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
+        }
         if (\array_key_exists('type', $data) && 'CATEGORY_CREATED' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\CategoryCreatedEvent', $format, $context);
         }
@@ -54,33 +64,38 @@ class CategoryBaseEventNormalizer implements DenormalizerInterface, NormalizerIn
         if (\array_key_exists('type', $data) && 'CATEGORY_DELETED' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\CategoryDeletedEvent', $format, $context);
         }
-        if (isset($data['$ref'])) {
-            return new Reference($data['$ref'], $context['document-origin']);
-        }
-        if (isset($data['$recursiveRef'])) {
-            return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CategoryBaseEvent();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('occurredAt', $data) && null !== $data['occurredAt']) {
-            $object->setOccurredAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['occurredAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['occurredAt']);
+            if (false === $date) {
+                if (\is_string($data['occurredAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['occurredAt'])) {
+                    try {
+                        $date = new \DateTime($data['occurredAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['occurredAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['occurredAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setOccurredAt($date);
             unset($data['occurredAt']);
         } elseif (\array_key_exists('occurredAt', $data) && null === $data['occurredAt']) {
             $object->setOccurredAt(null);
+            unset($data['occurredAt']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -109,7 +124,7 @@ class CategoryBaseEventNormalizer implements DenormalizerInterface, NormalizerIn
         $dataArray['id'] = $data->getId();
         $dataArray['occurredAt'] = $data->getOccurredAt()->format('Y-m-d\TH:i:sP');
         $dataArray['type'] = $data->getType();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

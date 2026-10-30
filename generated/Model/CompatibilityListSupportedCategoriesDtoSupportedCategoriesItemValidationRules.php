@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CompatibilityListSupportedCategoriesDtoSupportedCategoriesItemValidationRules extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CompatibilityListSupportedCategoriesDtoSupportedCategoriesItemValidationRules implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class CompatibilityListSupportedCategoriesDtoSupportedCategoriesItemValidationRu
         $this->maxCharactersPerLine = $maxCharactersPerLine;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['maxRows' => ['maxRows', 'getMaxRows', 'setMaxRows'], 'maxCharactersPerLine' => ['maxCharactersPerLine', 'getMaxCharactersPerLine', 'setMaxCharactersPerLine']];
     }
 }

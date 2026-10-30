@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DepositType extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DepositType implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -173,5 +177,10 @@ class DepositType extends \ArrayObject
         $this->currency = $currency;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'marketplaceId' => ['marketplaceId', 'getMarketplaceId', 'setMarketplaceId'], 'pricingMode' => ['pricingMode', 'getPricingMode', 'setPricingMode'], 'price' => ['price', 'getPrice', 'setPrice'], 'currency' => ['currency', 'getCurrency', 'setCurrency']];
     }
 }

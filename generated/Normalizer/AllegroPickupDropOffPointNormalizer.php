@@ -42,33 +42,36 @@ class AllegroPickupDropOffPointNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AllegroPickupDropOffPoint();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AllegroPickupDropOffPoint();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('services', $data) && null !== $data['services']) {
             $values = [];
@@ -79,6 +82,7 @@ class AllegroPickupDropOffPointNormalizer implements DenormalizerInterface, Norm
             unset($data['services']);
         } elseif (\array_key_exists('services', $data) && null === $data['services']) {
             $object->setServices(null);
+            unset($data['services']);
         }
         if (\array_key_exists('restrictions', $data) && null !== $data['restrictions']) {
             $values_1 = [];
@@ -89,12 +93,14 @@ class AllegroPickupDropOffPointNormalizer implements DenormalizerInterface, Norm
             unset($data['restrictions']);
         } elseif (\array_key_exists('restrictions', $data) && null === $data['restrictions']) {
             $object->setRestrictions(null);
+            unset($data['restrictions']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($data['description']);
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('payments', $data) && null !== $data['payments']) {
             $values_2 = [];
@@ -105,12 +111,14 @@ class AllegroPickupDropOffPointNormalizer implements DenormalizerInterface, Norm
             unset($data['payments']);
         } elseif (\array_key_exists('payments', $data) && null === $data['payments']) {
             $object->setPayments(null);
+            unset($data['payments']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\AllegroPickupDropOffPointAddress::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         if (\array_key_exists('opening', $data) && null !== $data['opening']) {
             $values_3 = [];
@@ -121,6 +129,7 @@ class AllegroPickupDropOffPointNormalizer implements DenormalizerInterface, Norm
             unset($data['opening']);
         } elseif (\array_key_exists('opening', $data) && null === $data['opening']) {
             $object->setOpening(null);
+            unset($data['opening']);
         }
         if (\array_key_exists('carriers', $data) && null !== $data['carriers']) {
             $values_4 = [];
@@ -131,6 +140,7 @@ class AllegroPickupDropOffPointNormalizer implements DenormalizerInterface, Norm
             unset($data['carriers']);
         } elseif (\array_key_exists('carriers', $data) && null === $data['carriers']) {
             $object->setCarriers(null);
+            unset($data['carriers']);
         }
         foreach ($data as $key => $value_5) {
             if (preg_match('/.*/', (string) $key)) {
@@ -149,12 +159,12 @@ class AllegroPickupDropOffPointNormalizer implements DenormalizerInterface, Norm
         $dataArray['type'] = $data->getType();
         $values = [];
         foreach ($data->getServices() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['services'] = $values;
         $values_1 = [];
         foreach ($data->getRestrictions() as $value_1) {
-            $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
         }
         $dataArray['restrictions'] = $values_1;
         if ($data->isInitialized('description') && null !== $data->getDescription()) {
@@ -162,13 +172,13 @@ class AllegroPickupDropOffPointNormalizer implements DenormalizerInterface, Norm
         }
         $values_2 = [];
         foreach ($data->getPayments() as $value_2) {
-            $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+            $values_2[] = null === $value_2 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
         }
         $dataArray['payments'] = $values_2;
-        $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+        $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         $values_3 = [];
         foreach ($data->getOpening() as $value_3) {
-            $values_3[] = $this->normalizer->normalize($value_3, 'json', $context);
+            $values_3[] = null === $value_3 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_3, 'json', $context));
         }
         $dataArray['opening'] = $values_3;
         $values_4 = [];
@@ -176,7 +186,7 @@ class AllegroPickupDropOffPointNormalizer implements DenormalizerInterface, Norm
             $values_4[] = $value_4;
         }
         $dataArray['carriers'] = $values_4;
-        foreach ($data as $key => $value_5) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_5) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_5;
             }

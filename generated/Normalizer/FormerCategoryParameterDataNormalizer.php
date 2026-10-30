@@ -42,15 +42,15 @@ class FormerCategoryParameterDataNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FormerCategoryParameterData();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FormerCategoryParameterData();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('ids', $data) && null !== $data['ids']) {
             $values = [];
@@ -61,6 +61,7 @@ class FormerCategoryParameterDataNormalizer implements DenormalizerInterface, No
             unset($data['ids']);
         } elseif (\array_key_exists('ids', $data) && null === $data['ids']) {
             $object->setIds(null);
+            unset($data['ids']);
         }
         if (\array_key_exists('names', $data) && null !== $data['names']) {
             $values_1 = [];
@@ -71,6 +72,7 @@ class FormerCategoryParameterDataNormalizer implements DenormalizerInterface, No
             unset($data['names']);
         } elseif (\array_key_exists('names', $data) && null === $data['names']) {
             $object->setNames(null);
+            unset($data['names']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -98,7 +100,7 @@ class FormerCategoryParameterDataNormalizer implements DenormalizerInterface, No
             }
             $dataArray['names'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

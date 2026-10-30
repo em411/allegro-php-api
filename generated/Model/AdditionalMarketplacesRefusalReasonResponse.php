@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AdditionalMarketplacesRefusalReasonResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AdditionalMarketplacesRefusalReasonResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class AdditionalMarketplacesRefusalReasonResponse extends \ArrayObject
         $this->parameters = $parameters;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['code' => ['code', 'getCode', 'setCode'], 'userMessage' => ['userMessage', 'getUserMessage', 'setUserMessage'], 'parameters' => ['parameters', 'getParameters', 'setParameters']];
     }
 }

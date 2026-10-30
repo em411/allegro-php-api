@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ResponsibleProducerContact extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ResponsibleProducerContact implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class ResponsibleProducerContact extends \ArrayObject
         $this->formUrl = $formUrl;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['email' => ['email', 'getEmail', 'setEmail'], 'phoneNumber' => ['phoneNumber', 'getPhoneNumber', 'setPhoneNumber'], 'formUrl' => ['formUrl', 'getFormUrl', 'setFormUrl']];
     }
 }

@@ -42,27 +42,29 @@ class ReturnPolicyAvailabilityNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ReturnPolicyAvailability();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ReturnPolicyAvailability();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('range', $data) && null !== $data['range']) {
             $object->setRange($data['range']);
             unset($data['range']);
         } elseif (\array_key_exists('range', $data) && null === $data['range']) {
             $object->setRange(null);
+            unset($data['range']);
         }
         if (\array_key_exists('restrictionCause', $data) && null !== $data['restrictionCause']) {
             $object->setRestrictionCause($this->denormalizer->denormalize($data['restrictionCause'], \Em411\Allegro\Api\Model\RestrictionCause::class, 'json', $context));
             unset($data['restrictionCause']);
         } elseif (\array_key_exists('restrictionCause', $data) && null === $data['restrictionCause']) {
             $object->setRestrictionCause(null);
+            unset($data['restrictionCause']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,10 +79,10 @@ class ReturnPolicyAvailabilityNormalizer implements DenormalizerInterface, Norma
     {
         $dataArray = [];
         $dataArray['range'] = $data->getRange();
-        if ($data->isInitialized('restrictionCause')) {
-            $dataArray['restrictionCause'] = $this->normalizer->normalize($data->getRestrictionCause(), 'json', $context);
+        if ($data->isInitialized('restrictionCause') && null !== $data->getRestrictionCause()) {
+            $dataArray['restrictionCause'] = null === $data->getRestrictionCause() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRestrictionCause(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

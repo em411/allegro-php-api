@@ -42,15 +42,15 @@ class GetBadgeCampaignsListNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\GetBadgeCampaignsList();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\GetBadgeCampaignsList();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('badgeCampaigns', $data) && null !== $data['badgeCampaigns']) {
             $values = [];
@@ -61,6 +61,7 @@ class GetBadgeCampaignsListNormalizer implements DenormalizerInterface, Normaliz
             unset($data['badgeCampaigns']);
         } elseif (\array_key_exists('badgeCampaigns', $data) && null === $data['badgeCampaigns']) {
             $object->setBadgeCampaigns(null);
+            unset($data['badgeCampaigns']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -76,10 +77,10 @@ class GetBadgeCampaignsListNormalizer implements DenormalizerInterface, Normaliz
         $dataArray = [];
         $values = [];
         foreach ($data->getBadgeCampaigns() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['badgeCampaigns'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

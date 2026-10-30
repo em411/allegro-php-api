@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class NewOrderInvoiceFileWithMetadata extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class NewOrderInvoiceFileWithMetadata implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -22,7 +26,7 @@ class NewOrderInvoiceFileWithMetadata extends \ArrayObject
     /**
      * Invoice file in a binary format (PDF only).
      *
-     * @var string|null
+     * @var string|resource|\Psr\Http\Message\StreamInterface|null
      */
     protected $file;
     /**
@@ -37,16 +41,20 @@ class NewOrderInvoiceFileWithMetadata extends \ArrayObject
 
     /**
      * Invoice file in a binary format (PDF only).
+     *
+     * @return string|resource|\Psr\Http\Message\StreamInterface|null
      */
-    public function getFile(): ?string
+    public function getFile()
     {
         return $this->file;
     }
 
     /**
      * Invoice file in a binary format (PDF only).
+     *
+     * @param string|resource|\Psr\Http\Message\StreamInterface|null $file
      */
-    public function setFile(?string $file): self
+    public function setFile($file): self
     {
         $this->initialized['file'] = true;
         $this->file = $file;
@@ -65,5 +73,10 @@ class NewOrderInvoiceFileWithMetadata extends \ArrayObject
         $this->invoiceNumber = $invoiceNumber;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['file' => ['file', 'getFile', 'setFile'], 'invoiceNumber' => ['invoiceNumber', 'getInvoiceNumber', 'setInvoiceNumber']];
     }
 }

@@ -49,4 +49,9 @@ class LoanDeductionChargeOperation extends BaseOperation
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['deduction' => ['deduction', 'getDeduction', 'setDeduction']]);
+    }
 }

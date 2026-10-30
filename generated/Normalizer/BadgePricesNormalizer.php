@@ -42,33 +42,36 @@ class BadgePricesNormalizer implements DenormalizerInterface, NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BadgePrices();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BadgePrices();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('market', $data) && null !== $data['market']) {
             $object->setMarket($this->denormalizer->denormalize($data['market'], \Em411\Allegro\Api\Model\BadgeMarketPrice::class, 'json', $context));
             unset($data['market']);
         } elseif (\array_key_exists('market', $data) && null === $data['market']) {
             $object->setMarket(null);
+            unset($data['market']);
         }
         if (\array_key_exists('bargain', $data) && null !== $data['bargain']) {
             $object->setBargain($this->denormalizer->denormalize($data['bargain'], \Em411\Allegro\Api\Model\BadgeApplicationBargainPrice::class, 'json', $context));
             unset($data['bargain']);
         } elseif (\array_key_exists('bargain', $data) && null === $data['bargain']) {
             $object->setBargain(null);
+            unset($data['bargain']);
         }
         if (\array_key_exists('subsidy', $data) && null !== $data['subsidy']) {
             $object->setSubsidy($this->denormalizer->denormalize($data['subsidy'], \Em411\Allegro\Api\Model\BadgeSubsidyPrices::class, 'json', $context));
             unset($data['subsidy']);
         } elseif (\array_key_exists('subsidy', $data) && null === $data['subsidy']) {
             $object->setSubsidy(null);
+            unset($data['subsidy']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,15 +86,15 @@ class BadgePricesNormalizer implements DenormalizerInterface, NormalizerInterfac
     {
         $dataArray = [];
         if ($data->isInitialized('market') && null !== $data->getMarket()) {
-            $dataArray['market'] = $this->normalizer->normalize($data->getMarket(), 'json', $context);
+            $dataArray['market'] = null === $data->getMarket() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMarket(), 'json', $context));
         }
-        if ($data->isInitialized('bargain')) {
-            $dataArray['bargain'] = $this->normalizer->normalize($data->getBargain(), 'json', $context);
+        if ($data->isInitialized('bargain') && null !== $data->getBargain()) {
+            $dataArray['bargain'] = null === $data->getBargain() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBargain(), 'json', $context));
         }
         if ($data->isInitialized('subsidy') && null !== $data->getSubsidy()) {
-            $dataArray['subsidy'] = $this->normalizer->normalize($data->getSubsidy(), 'json', $context);
+            $dataArray['subsidy'] = null === $data->getSubsidy() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSubsidy(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,30 +42,32 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemNormalizer implements 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItem();
         if (\array_key_exists('allegroEndorsed', $data) && \is_int($data['allegroEndorsed'])) {
             $data['allegroEndorsed'] = (bool) $data['allegroEndorsed'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('marketplaces', $data) && null !== $data['marketplaces']) {
             $values = [];
@@ -76,36 +78,42 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemNormalizer implements 
             unset($data['marketplaces']);
         } elseif (\array_key_exists('marketplaces', $data) && null === $data['marketplaces']) {
             $object->setMarketplaces(null);
+            unset($data['marketplaces']);
         }
         if (\array_key_exists('paymentPolicy', $data) && null !== $data['paymentPolicy']) {
             $object->setPaymentPolicy($data['paymentPolicy']);
             unset($data['paymentPolicy']);
         } elseif (\array_key_exists('paymentPolicy', $data) && null === $data['paymentPolicy']) {
             $object->setPaymentPolicy(null);
+            unset($data['paymentPolicy']);
         }
         if (\array_key_exists('allegroEndorsed', $data) && null !== $data['allegroEndorsed']) {
             $object->setAllegroEndorsed($data['allegroEndorsed']);
             unset($data['allegroEndorsed']);
         } elseif (\array_key_exists('allegroEndorsed', $data) && null === $data['allegroEndorsed']) {
             $object->setAllegroEndorsed(null);
+            unset($data['allegroEndorsed']);
         }
         if (\array_key_exists('dispatchCountry', $data) && null !== $data['dispatchCountry']) {
             $object->setDispatchCountry($data['dispatchCountry']);
             unset($data['dispatchCountry']);
         } elseif (\array_key_exists('dispatchCountry', $data) && null === $data['dispatchCountry']) {
             $object->setDispatchCountry(null);
+            unset($data['dispatchCountry']);
         }
         if (\array_key_exists('destinationCountry', $data) && null !== $data['destinationCountry']) {
             $object->setDestinationCountry($data['destinationCountry']);
             unset($data['destinationCountry']);
         } elseif (\array_key_exists('destinationCountry', $data) && null === $data['destinationCountry']) {
             $object->setDestinationCountry(null);
+            unset($data['destinationCountry']);
         }
         if (\array_key_exists('shippingRatesConstraints', $data) && null !== $data['shippingRatesConstraints']) {
             $object->setShippingRatesConstraints($this->denormalizer->denormalize($data['shippingRatesConstraints'], \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraints::class, 'json', $context));
             unset($data['shippingRatesConstraints']);
         } elseif (\array_key_exists('shippingRatesConstraints', $data) && null === $data['shippingRatesConstraints']) {
             $object->setShippingRatesConstraints(null);
+            unset($data['shippingRatesConstraints']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -138,16 +146,16 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemNormalizer implements 
         if ($data->isInitialized('allegroEndorsed') && null !== $data->getAllegroEndorsed()) {
             $dataArray['allegroEndorsed'] = $data->getAllegroEndorsed();
         }
-        if ($data->isInitialized('dispatchCountry')) {
+        if ($data->isInitialized('dispatchCountry') && null !== $data->getDispatchCountry()) {
             $dataArray['dispatchCountry'] = $data->getDispatchCountry();
         }
         if ($data->isInitialized('destinationCountry') && null !== $data->getDestinationCountry()) {
             $dataArray['destinationCountry'] = $data->getDestinationCountry();
         }
         if ($data->isInitialized('shippingRatesConstraints') && null !== $data->getShippingRatesConstraints()) {
-            $dataArray['shippingRatesConstraints'] = $this->normalizer->normalize($data->getShippingRatesConstraints(), 'json', $context);
+            $dataArray['shippingRatesConstraints'] = null === $data->getShippingRatesConstraints() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getShippingRatesConstraints(), 'json', $context));
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

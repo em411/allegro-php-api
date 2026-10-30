@@ -42,66 +42,74 @@ class CheckoutFormDeliveryReferenceNormalizer implements DenormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormDeliveryReference();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormDeliveryReference();
         if (\array_key_exists('smart', $data) && \is_int($data['smart'])) {
             $data['smart'] = (bool) $data['smart'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\CheckoutFormDeliveryAddress::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         if (\array_key_exists('method', $data) && null !== $data['method']) {
             $object->setMethod($this->denormalizer->denormalize($data['method'], \Em411\Allegro\Api\Model\CheckoutFormDeliveryMethod::class, 'json', $context));
             unset($data['method']);
         } elseif (\array_key_exists('method', $data) && null === $data['method']) {
             $object->setMethod(null);
+            unset($data['method']);
         }
         if (\array_key_exists('pickupPoint', $data) && null !== $data['pickupPoint']) {
             $object->setPickupPoint($this->denormalizer->denormalize($data['pickupPoint'], \Em411\Allegro\Api\Model\CheckoutFormDeliveryPickupPoint::class, 'json', $context));
             unset($data['pickupPoint']);
         } elseif (\array_key_exists('pickupPoint', $data) && null === $data['pickupPoint']) {
             $object->setPickupPoint(null);
+            unset($data['pickupPoint']);
         }
         if (\array_key_exists('cost', $data) && null !== $data['cost']) {
             $object->setCost($this->denormalizer->denormalize($data['cost'], \Em411\Allegro\Api\Model\Price::class, 'json', $context));
             unset($data['cost']);
         } elseif (\array_key_exists('cost', $data) && null === $data['cost']) {
             $object->setCost(null);
+            unset($data['cost']);
         }
         if (\array_key_exists('time', $data) && null !== $data['time']) {
             $object->setTime($this->denormalizer->denormalize($data['time'], \Em411\Allegro\Api\Model\CheckoutFormDeliveryTime::class, 'json', $context));
             unset($data['time']);
         } elseif (\array_key_exists('time', $data) && null === $data['time']) {
             $object->setTime(null);
+            unset($data['time']);
         }
         if (\array_key_exists('smart', $data) && null !== $data['smart']) {
             $object->setSmart($data['smart']);
             unset($data['smart']);
         } elseif (\array_key_exists('smart', $data) && null === $data['smart']) {
             $object->setSmart(null);
+            unset($data['smart']);
         }
         if (\array_key_exists('cancellation', $data) && null !== $data['cancellation']) {
             $object->setCancellation($this->denormalizer->denormalize($data['cancellation'], \Em411\Allegro\Api\Model\CheckoutFormDeliveryCancellation::class, 'json', $context));
             unset($data['cancellation']);
         } elseif (\array_key_exists('cancellation', $data) && null === $data['cancellation']) {
             $object->setCancellation(null);
+            unset($data['cancellation']);
         }
         if (\array_key_exists('calculatedNumberOfPackages', $data) && null !== $data['calculatedNumberOfPackages']) {
             $object->setCalculatedNumberOfPackages($data['calculatedNumberOfPackages']);
             unset($data['calculatedNumberOfPackages']);
         } elseif (\array_key_exists('calculatedNumberOfPackages', $data) && null === $data['calculatedNumberOfPackages']) {
             $object->setCalculatedNumberOfPackages(null);
+            unset($data['calculatedNumberOfPackages']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -116,30 +124,30 @@ class CheckoutFormDeliveryReferenceNormalizer implements DenormalizerInterface, 
     {
         $dataArray = [];
         if ($data->isInitialized('address') && null !== $data->getAddress()) {
-            $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+            $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         }
         if ($data->isInitialized('method') && null !== $data->getMethod()) {
-            $dataArray['method'] = $this->normalizer->normalize($data->getMethod(), 'json', $context);
+            $dataArray['method'] = null === $data->getMethod() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMethod(), 'json', $context));
         }
         if ($data->isInitialized('pickupPoint') && null !== $data->getPickupPoint()) {
-            $dataArray['pickupPoint'] = $this->normalizer->normalize($data->getPickupPoint(), 'json', $context);
+            $dataArray['pickupPoint'] = null === $data->getPickupPoint() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPickupPoint(), 'json', $context));
         }
         if ($data->isInitialized('cost') && null !== $data->getCost()) {
-            $dataArray['cost'] = $this->normalizer->normalize($data->getCost(), 'json', $context);
+            $dataArray['cost'] = null === $data->getCost() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCost(), 'json', $context));
         }
         if ($data->isInitialized('time') && null !== $data->getTime()) {
-            $dataArray['time'] = $this->normalizer->normalize($data->getTime(), 'json', $context);
+            $dataArray['time'] = null === $data->getTime() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTime(), 'json', $context));
         }
         if ($data->isInitialized('smart') && null !== $data->getSmart()) {
             $dataArray['smart'] = $data->getSmart();
         }
         if ($data->isInitialized('cancellation') && null !== $data->getCancellation()) {
-            $dataArray['cancellation'] = $this->normalizer->normalize($data->getCancellation(), 'json', $context);
+            $dataArray['cancellation'] = null === $data->getCancellation() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCancellation(), 'json', $context));
         }
         if ($data->isInitialized('calculatedNumberOfPackages') && null !== $data->getCalculatedNumberOfPackages()) {
             $dataArray['calculatedNumberOfPackages'] = $data->getCalculatedNumberOfPackages();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

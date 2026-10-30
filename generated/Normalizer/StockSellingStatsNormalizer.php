@@ -42,33 +42,35 @@ class StockSellingStatsNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\StockSellingStats();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\StockSellingStats();
         if (\array_key_exists('lastFourteenDaysAverage', $data) && \is_int($data['lastFourteenDaysAverage'])) {
             $data['lastFourteenDaysAverage'] = (float) $data['lastFourteenDaysAverage'];
         }
         if (\array_key_exists('lastThirtyDaysSum', $data) && \is_int($data['lastThirtyDaysSum'])) {
             $data['lastThirtyDaysSum'] = (float) $data['lastThirtyDaysSum'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('lastFourteenDaysAverage', $data) && null !== $data['lastFourteenDaysAverage']) {
             $object->setLastFourteenDaysAverage($data['lastFourteenDaysAverage']);
             unset($data['lastFourteenDaysAverage']);
         } elseif (\array_key_exists('lastFourteenDaysAverage', $data) && null === $data['lastFourteenDaysAverage']) {
             $object->setLastFourteenDaysAverage(null);
+            unset($data['lastFourteenDaysAverage']);
         }
         if (\array_key_exists('lastThirtyDaysSum', $data) && null !== $data['lastThirtyDaysSum']) {
             $object->setLastThirtyDaysSum($data['lastThirtyDaysSum']);
             unset($data['lastThirtyDaysSum']);
         } elseif (\array_key_exists('lastThirtyDaysSum', $data) && null === $data['lastThirtyDaysSum']) {
             $object->setLastThirtyDaysSum(null);
+            unset($data['lastThirtyDaysSum']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -88,7 +90,7 @@ class StockSellingStatsNormalizer implements DenormalizerInterface, NormalizerIn
         if ($data->isInitialized('lastThirtyDaysSum') && null !== $data->getLastThirtyDaysSum()) {
             $dataArray['lastThirtyDaysSum'] = $data->getLastThirtyDaysSum();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

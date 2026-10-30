@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AlleDiscountSubmittedOfferDtoPrices extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AlleDiscountSubmittedOfferDtoPrices implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class AlleDiscountSubmittedOfferDtoPrices extends \ArrayObject
         $this->maximumSellingPrice = $maximumSellingPrice;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['proposedPrice' => ['proposedPrice', 'getProposedPrice', 'setProposedPrice'], 'minimalPriceReduction' => ['minimalPriceReduction', 'getMinimalPriceReduction', 'setMinimalPriceReduction'], 'maximumSellingPrice' => ['maximumSellingPrice', 'getMaximumSellingPrice', 'setMaximumSellingPrice']];
     }
 }

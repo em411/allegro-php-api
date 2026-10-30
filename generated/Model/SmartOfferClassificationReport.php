@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SmartOfferClassificationReport extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SmartOfferClassificationReport implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class SmartOfferClassificationReport extends \ArrayObject
         $this->conditions = $conditions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['classification' => ['classification', 'getClassification', 'setClassification'], 'scheduledForReclassification' => ['scheduledForReclassification', 'getScheduledForReclassification', 'setScheduledForReclassification'], 'conditions' => ['conditions', 'getConditions', 'setConditions']];
     }
 }

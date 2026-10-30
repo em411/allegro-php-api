@@ -42,21 +42,22 @@ class SmartSellerClassificationReportNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SmartSellerClassificationReport();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SmartSellerClassificationReport();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('classification', $data) && null !== $data['classification']) {
             $object->setClassification($this->denormalizer->denormalize($data['classification'], \Em411\Allegro\Api\Model\SmartSellerClassificationReportClassification::class, 'json', $context));
             unset($data['classification']);
         } elseif (\array_key_exists('classification', $data) && null === $data['classification']) {
             $object->setClassification(null);
+            unset($data['classification']);
         }
         if (\array_key_exists('conditions', $data) && null !== $data['conditions']) {
             $values = [];
@@ -67,6 +68,7 @@ class SmartSellerClassificationReportNormalizer implements DenormalizerInterface
             unset($data['conditions']);
         } elseif (\array_key_exists('conditions', $data) && null === $data['conditions']) {
             $object->setConditions(null);
+            unset($data['conditions']);
         }
         if (\array_key_exists('excludedDeliveryMethods', $data) && null !== $data['excludedDeliveryMethods']) {
             $values_1 = [];
@@ -77,6 +79,7 @@ class SmartSellerClassificationReportNormalizer implements DenormalizerInterface
             unset($data['excludedDeliveryMethods']);
         } elseif (\array_key_exists('excludedDeliveryMethods', $data) && null === $data['excludedDeliveryMethods']) {
             $object->setExcludedDeliveryMethods(null);
+            unset($data['excludedDeliveryMethods']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -91,23 +94,23 @@ class SmartSellerClassificationReportNormalizer implements DenormalizerInterface
     {
         $dataArray = [];
         if ($data->isInitialized('classification') && null !== $data->getClassification()) {
-            $dataArray['classification'] = $this->normalizer->normalize($data->getClassification(), 'json', $context);
+            $dataArray['classification'] = null === $data->getClassification() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getClassification(), 'json', $context));
         }
         if ($data->isInitialized('conditions') && null !== $data->getConditions()) {
             $values = [];
             foreach ($data->getConditions() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['conditions'] = $values;
         }
         if ($data->isInitialized('excludedDeliveryMethods') && null !== $data->getExcludedDeliveryMethods()) {
             $values_1 = [];
             foreach ($data->getExcludedDeliveryMethods() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['excludedDeliveryMethods'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

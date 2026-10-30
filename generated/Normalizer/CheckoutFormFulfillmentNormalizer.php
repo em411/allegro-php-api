@@ -42,33 +42,36 @@ class CheckoutFormFulfillmentNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormFulfillment();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormFulfillment();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('shipmentSummary', $data) && null !== $data['shipmentSummary']) {
             $object->setShipmentSummary($this->denormalizer->denormalize($data['shipmentSummary'], \Em411\Allegro\Api\Model\CheckoutFormFulfillmentShipmentSummary::class, 'json', $context));
             unset($data['shipmentSummary']);
         } elseif (\array_key_exists('shipmentSummary', $data) && null === $data['shipmentSummary']) {
             $object->setShipmentSummary(null);
+            unset($data['shipmentSummary']);
         }
         if (\array_key_exists('provider', $data) && null !== $data['provider']) {
             $object->setProvider($this->denormalizer->denormalize($data['provider'], \Em411\Allegro\Api\Model\CheckoutFormFulfillmentProvider::class, 'json', $context));
             unset($data['provider']);
         } elseif (\array_key_exists('provider', $data) && null === $data['provider']) {
             $object->setProvider(null);
+            unset($data['provider']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,12 +89,12 @@ class CheckoutFormFulfillmentNormalizer implements DenormalizerInterface, Normal
             $dataArray['status'] = $data->getStatus();
         }
         if ($data->isInitialized('shipmentSummary') && null !== $data->getShipmentSummary()) {
-            $dataArray['shipmentSummary'] = $this->normalizer->normalize($data->getShipmentSummary(), 'json', $context);
+            $dataArray['shipmentSummary'] = null === $data->getShipmentSummary() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getShipmentSummary(), 'json', $context));
         }
         if ($data->isInitialized('provider') && null !== $data->getProvider()) {
-            $dataArray['provider'] = $this->normalizer->normalize($data->getProvider(), 'json', $context);
+            $dataArray['provider'] = null === $data->getProvider() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getProvider(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

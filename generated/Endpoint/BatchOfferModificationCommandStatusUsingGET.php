@@ -21,11 +21,10 @@ class BatchOfferModificationCommandStatusUsingGET extends \Em411\Allegro\Api\Run
     /**
      * Returns status and summary of particular command execution. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#cena-i-liczba-przedmiotow" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#price-and-stock" target="_blank">EN</a>. This resource is rate limited to retrieving information about 270 000 offer changes per minute.
      *
-     * @param string $commandId        command identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $commandId command identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $commandId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class BatchOfferModificationCommandStatusUsingGET extends \Em411\Allegro\Api\Run
 
     public function getUri(): string
     {
-        return str_replace(['{commandId}'], [$this->commandId], '/sale/offer-bulk-modification-commands/{commandId}');
+        return str_replace(['{commandId}'], [rawurlencode($this->commandId)], '/sale/offer-bulk-modification-commands/{commandId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -79,7 +78,7 @@ class BatchOfferModificationCommandStatusUsingGET extends \Em411\Allegro\Api\Run
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\GeneralReport', 'json');
         }
         if (401 === $status) {

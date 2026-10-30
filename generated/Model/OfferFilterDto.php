@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferFilterDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferFilterDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class OfferFilterDto extends \ArrayObject
         $this->substatus = $substatus;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['ids' => ['ids', 'getIds', 'setIds'], 'scope' => ['scope', 'getScope', 'setScope'], 'substatus' => ['substatus', 'getSubstatus', 'setSubstatus']];
     }
 }

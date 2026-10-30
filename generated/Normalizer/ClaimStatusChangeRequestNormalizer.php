@@ -42,33 +42,36 @@ class ClaimStatusChangeRequestNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ClaimStatusChangeRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ClaimStatusChangeRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('message', $data) && null !== $data['message']) {
             $object->setMessage($data['message']);
             unset($data['message']);
         } elseif (\array_key_exists('message', $data) && null === $data['message']) {
             $object->setMessage(null);
+            unset($data['message']);
         }
         if (\array_key_exists('partialRefund', $data) && null !== $data['partialRefund']) {
             $object->setPartialRefund($this->denormalizer->denormalize($data['partialRefund'], \Em411\Allegro\Api\Model\Price::class, 'json', $context));
             unset($data['partialRefund']);
         } elseif (\array_key_exists('partialRefund', $data) && null === $data['partialRefund']) {
             $object->setPartialRefund(null);
+            unset($data['partialRefund']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,9 +88,9 @@ class ClaimStatusChangeRequestNormalizer implements DenormalizerInterface, Norma
         $dataArray['status'] = $data->getStatus();
         $dataArray['message'] = $data->getMessage();
         if ($data->isInitialized('partialRefund') && null !== $data->getPartialRefund()) {
-            $dataArray['partialRefund'] = $this->normalizer->normalize($data->getPartialRefund(), 'json', $context);
+            $dataArray['partialRefund'] = null === $data->getPartialRefund() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPartialRefund(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BadgeApplicationPrices extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BadgeApplicationPrices implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class BadgeApplicationPrices extends \ArrayObject
         $this->bargain = $bargain;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['bargain' => ['bargain', 'getBargain', 'setBargain']];
     }
 }

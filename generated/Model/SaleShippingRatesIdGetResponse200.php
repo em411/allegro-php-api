@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleShippingRatesIdGetResponse200 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleShippingRatesIdGetResponse200 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -54,7 +58,7 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
      */
     protected $lastModified;
     /**
-     * @var SaleShippingRatesIdGetResponse200features|null
+     * @var SaleShippingRatesIdGetResponse200Features|null
      */
     protected $features;
 
@@ -177,16 +181,21 @@ class SaleShippingRatesIdGetResponse200 extends \ArrayObject
         return $this;
     }
 
-    public function getFeatures(): ?SaleShippingRatesIdGetResponse200features
+    public function getFeatures(): ?SaleShippingRatesIdGetResponse200Features
     {
         return $this->features;
     }
 
-    public function setFeatures(?SaleShippingRatesIdGetResponse200features $features): self
+    public function setFeatures(?SaleShippingRatesIdGetResponse200Features $features): self
     {
         $this->initialized['features'] = true;
         $this->features = $features;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'type' => ['type', 'getType', 'setType'], 'dispatchCountry' => ['dispatchCountry', 'getDispatchCountry', 'setDispatchCountry'], 'rates' => ['rates', 'getRates', 'setRates'], 'lastModified' => ['lastModified', 'getLastModified', 'setLastModified'], 'features' => ['features', 'getFeatures', 'setFeatures']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SubsidySubmitOfferItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SubsidySubmitOfferItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -161,5 +165,10 @@ class SubsidySubmitOfferItem extends \ArrayObject
         $this->errors = $errors;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'marketplace' => ['marketplace', 'getMarketplace', 'setMarketplace'], 'sellerDiscountDeclaration' => ['sellerDiscountDeclaration', 'getSellerDiscountDeclaration', 'setSellerDiscountDeclaration'], 'completedAt' => ['completedAt', 'getCompletedAt', 'setCompletedAt'], 'status' => ['status', 'getStatus', 'setStatus'], 'errors' => ['errors', 'getErrors', 'setErrors']];
     }
 }

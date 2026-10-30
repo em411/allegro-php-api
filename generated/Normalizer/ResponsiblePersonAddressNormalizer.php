@@ -42,39 +42,43 @@ class ResponsiblePersonAddressNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ResponsiblePersonAddress();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ResponsiblePersonAddress();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('countryCode', $data) && null !== $data['countryCode']) {
             $object->setCountryCode($data['countryCode']);
             unset($data['countryCode']);
         } elseif (\array_key_exists('countryCode', $data) && null === $data['countryCode']) {
             $object->setCountryCode(null);
+            unset($data['countryCode']);
         }
         if (\array_key_exists('street', $data) && null !== $data['street']) {
             $object->setStreet($data['street']);
             unset($data['street']);
         } elseif (\array_key_exists('street', $data) && null === $data['street']) {
             $object->setStreet(null);
+            unset($data['street']);
         }
         if (\array_key_exists('postalCode', $data) && null !== $data['postalCode']) {
             $object->setPostalCode($data['postalCode']);
             unset($data['postalCode']);
         } elseif (\array_key_exists('postalCode', $data) && null === $data['postalCode']) {
             $object->setPostalCode(null);
+            unset($data['postalCode']);
         }
         if (\array_key_exists('city', $data) && null !== $data['city']) {
             $object->setCity($data['city']);
             unset($data['city']);
         } elseif (\array_key_exists('city', $data) && null === $data['city']) {
             $object->setCity(null);
+            unset($data['city']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,7 +104,7 @@ class ResponsiblePersonAddressNormalizer implements DenormalizerInterface, Norma
         if ($data->isInitialized('city') && null !== $data->getCity()) {
             $dataArray['city'] = $data->getCity();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

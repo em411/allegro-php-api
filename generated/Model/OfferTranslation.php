@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferTranslation extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferTranslation implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class OfferTranslation extends \ArrayObject
         $this->safetyInformation = $safetyInformation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['description' => ['description', 'getDescription', 'setDescription'], 'language' => ['language', 'getLanguage', 'setLanguage'], 'title' => ['title', 'getTitle', 'setTitle'], 'safetyInformation' => ['safetyInformation', 'getSafetyInformation', 'setSafetyInformation']];
     }
 }

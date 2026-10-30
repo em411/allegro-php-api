@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PublicTableDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PublicTableDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -148,5 +152,10 @@ class PublicTableDto extends \ArrayObject
         $this->values = $values;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['headers' => ['headers', 'getHeaders', 'setHeaders'], 'id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'template' => ['template', 'getTemplate', 'setTemplate'], 'values' => ['values', 'getValues', 'setValues']];
     }
 }

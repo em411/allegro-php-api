@@ -42,27 +42,29 @@ class OfferListingDtoV1StatsNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1Stats();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1Stats();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('watchersCount', $data) && null !== $data['watchersCount']) {
             $object->setWatchersCount($data['watchersCount']);
             unset($data['watchersCount']);
         } elseif (\array_key_exists('watchersCount', $data) && null === $data['watchersCount']) {
             $object->setWatchersCount(null);
+            unset($data['watchersCount']);
         }
         if (\array_key_exists('visitsCount', $data) && null !== $data['visitsCount']) {
             $object->setVisitsCount($data['visitsCount']);
             unset($data['visitsCount']);
         } elseif (\array_key_exists('visitsCount', $data) && null === $data['visitsCount']) {
             $object->setVisitsCount(null);
+            unset($data['visitsCount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +84,7 @@ class OfferListingDtoV1StatsNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('visitsCount') && null !== $data->getVisitsCount()) {
             $dataArray['visitsCount'] = $data->getVisitsCount();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

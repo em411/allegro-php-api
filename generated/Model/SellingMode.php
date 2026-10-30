@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SellingMode extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SellingMode implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -107,5 +111,10 @@ class SellingMode extends \ArrayObject
         $this->startingPrice = $startingPrice;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['format' => ['format', 'getFormat', 'setFormat'], 'price' => ['price', 'getPrice', 'setPrice'], 'minimalPrice' => ['minimalPrice', 'getMinimalPrice', 'setMinimalPrice'], 'startingPrice' => ['startingPrice', 'getStartingPrice', 'setStartingPrice']];
     }
 }

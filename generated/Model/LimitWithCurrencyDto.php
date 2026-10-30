@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class LimitWithCurrencyDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class LimitWithCurrencyDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class LimitWithCurrencyDto extends \ArrayObject
         $this->currency = $currency;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['limit' => ['limit', 'getLimit', 'setLimit'], 'currency' => ['currency', 'getCurrency', 'setCurrency']];
     }
 }

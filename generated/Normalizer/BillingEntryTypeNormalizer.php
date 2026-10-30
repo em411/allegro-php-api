@@ -42,33 +42,36 @@ class BillingEntryTypeNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BillingEntryType();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BillingEntryType();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('group', $data) && null !== $data['group']) {
             $object->setGroup($this->denormalizer->denormalize($data['group'], \Em411\Allegro\Api\Model\BillingEntryTypeGroup::class, 'json', $context));
             unset($data['group']);
         } elseif (\array_key_exists('group', $data) && null === $data['group']) {
             $object->setGroup(null);
+            unset($data['group']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,9 +92,9 @@ class BillingEntryTypeNormalizer implements DenormalizerInterface, NormalizerInt
             $dataArray['name'] = $data->getName();
         }
         if ($data->isInitialized('group') && null !== $data->getGroup()) {
-            $dataArray['group'] = $this->normalizer->normalize($data->getGroup(), 'json', $context);
+            $dataArray['group'] = null === $data->getGroup() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getGroup(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

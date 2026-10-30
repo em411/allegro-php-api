@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class NullableTurnoverDiscountDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class NullableTurnoverDiscountDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class NullableTurnoverDiscountDto extends \ArrayObject
         $this->definitions = $definitions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['marketplaceId' => ['marketplaceId', 'getMarketplaceId', 'setMarketplaceId'], 'status' => ['status', 'getStatus', 'setStatus'], 'definitions' => ['definitions', 'getDefinitions', 'setDefinitions']];
     }
 }

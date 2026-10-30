@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OrderLineItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OrderLineItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -173,5 +177,10 @@ class OrderLineItem extends \ArrayObject
         $this->boughtAt = $boughtAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'offer' => ['offer', 'getOffer', 'setOffer'], 'quantity' => ['quantity', 'getQuantity', 'setQuantity'], 'originalPrice' => ['originalPrice', 'getOriginalPrice', 'setOriginalPrice'], 'price' => ['price', 'getPrice', 'setPrice'], 'boughtAt' => ['boughtAt', 'getBoughtAt', 'setBoughtAt']];
     }
 }

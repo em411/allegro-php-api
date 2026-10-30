@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Exclusion extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Exclusion implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class Exclusion extends \ArrayObject
         $this->reason = $reason;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['reason' => ['reason', 'getReason', 'setReason']];
     }
 }

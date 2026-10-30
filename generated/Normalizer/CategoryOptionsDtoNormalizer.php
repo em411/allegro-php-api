@@ -42,13 +42,16 @@ class CategoryOptionsDtoNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CategoryOptionsDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CategoryOptionsDto();
         if (\array_key_exists('advertisement', $data) && \is_int($data['advertisement'])) {
             $data['advertisement'] = (bool) $data['advertisement'];
         }
@@ -61,32 +64,33 @@ class CategoryOptionsDtoNormalizer implements DenormalizerInterface, NormalizerI
         if (\array_key_exists('sellerCanRequirePurchaseComments', $data) && \is_int($data['sellerCanRequirePurchaseComments'])) {
             $data['sellerCanRequirePurchaseComments'] = (bool) $data['sellerCanRequirePurchaseComments'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('advertisement', $data) && null !== $data['advertisement']) {
             $object->setAdvertisement($data['advertisement']);
             unset($data['advertisement']);
         } elseif (\array_key_exists('advertisement', $data) && null === $data['advertisement']) {
             $object->setAdvertisement(null);
+            unset($data['advertisement']);
         }
         if (\array_key_exists('offersWithProductPublicationEnabled', $data) && null !== $data['offersWithProductPublicationEnabled']) {
             $object->setOffersWithProductPublicationEnabled($data['offersWithProductPublicationEnabled']);
             unset($data['offersWithProductPublicationEnabled']);
         } elseif (\array_key_exists('offersWithProductPublicationEnabled', $data) && null === $data['offersWithProductPublicationEnabled']) {
             $object->setOffersWithProductPublicationEnabled(null);
+            unset($data['offersWithProductPublicationEnabled']);
         }
         if (\array_key_exists('productCreationEnabled', $data) && null !== $data['productCreationEnabled']) {
             $object->setProductCreationEnabled($data['productCreationEnabled']);
             unset($data['productCreationEnabled']);
         } elseif (\array_key_exists('productCreationEnabled', $data) && null === $data['productCreationEnabled']) {
             $object->setProductCreationEnabled(null);
+            unset($data['productCreationEnabled']);
         }
         if (\array_key_exists('sellerCanRequirePurchaseComments', $data) && null !== $data['sellerCanRequirePurchaseComments']) {
             $object->setSellerCanRequirePurchaseComments($data['sellerCanRequirePurchaseComments']);
             unset($data['sellerCanRequirePurchaseComments']);
         } elseif (\array_key_exists('sellerCanRequirePurchaseComments', $data) && null === $data['sellerCanRequirePurchaseComments']) {
             $object->setSellerCanRequirePurchaseComments(null);
+            unset($data['sellerCanRequirePurchaseComments']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -112,7 +116,7 @@ class CategoryOptionsDtoNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('sellerCanRequirePurchaseComments') && null !== $data->getSellerCanRequirePurchaseComments()) {
             $dataArray['sellerCanRequirePurchaseComments'] = $data->getSellerCanRequirePurchaseComments();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

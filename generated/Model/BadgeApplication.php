@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BadgeApplication extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BadgeApplication implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -224,5 +228,10 @@ class BadgeApplication extends \ArrayObject
         $this->purchaseConstraints = $purchaseConstraints;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'campaign' => ['campaign', 'getCampaign', 'setCampaign'], 'offer' => ['offer', 'getOffer', 'setOffer'], 'prices' => ['prices', 'getPrices', 'setPrices'], 'campaignStock' => ['campaignStock', 'getCampaignStock', 'setCampaignStock'], 'process' => ['process', 'getProcess', 'setProcess'], 'purchaseConstraints' => ['purchaseConstraints', 'getPurchaseConstraints', 'setPurchaseConstraints']];
     }
 }

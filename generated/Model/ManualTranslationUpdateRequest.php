@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ManualTranslationUpdateRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ManualTranslationUpdateRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class ManualTranslationUpdateRequest extends \ArrayObject
         $this->safetyInformation = $safetyInformation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['description' => ['description', 'getDescription', 'setDescription'], 'title' => ['title', 'getTitle', 'setTitle'], 'safetyInformation' => ['safetyInformation', 'getSafetyInformation', 'setSafetyInformation']];
     }
 }

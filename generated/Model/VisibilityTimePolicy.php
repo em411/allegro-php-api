@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class VisibilityTimePolicy extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class VisibilityTimePolicy implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -90,5 +94,10 @@ class VisibilityTimePolicy extends \ArrayObject
         $this->to = $to;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['type' => ['type', 'getType', 'setType'], 'from' => ['from', 'getFrom', 'setFrom'], 'to' => ['to', 'getTo', 'setTo']];
     }
 }

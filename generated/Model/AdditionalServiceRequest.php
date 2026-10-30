@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AdditionalServiceRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AdditionalServiceRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -80,5 +84,10 @@ class AdditionalServiceRequest extends \ArrayObject
         $this->configurations = $configurations;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['definition' => ['definition', 'getDefinition', 'setDefinition'], 'description' => ['description', 'getDescription', 'setDescription'], 'configurations' => ['configurations', 'getConfigurations', 'setConfigurations']];
     }
 }

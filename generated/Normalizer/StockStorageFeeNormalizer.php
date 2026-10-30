@@ -42,33 +42,36 @@ class StockStorageFeeNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\StockStorageFee();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\StockStorageFee();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('feeStatusAt', $data) && null !== $data['feeStatusAt']) {
             $object->setFeeStatusAt($data['feeStatusAt']);
             unset($data['feeStatusAt']);
         } elseif (\array_key_exists('feeStatusAt', $data) && null === $data['feeStatusAt']) {
             $object->setFeeStatusAt(null);
+            unset($data['feeStatusAt']);
         }
         if (\array_key_exists('details', $data) && null !== $data['details']) {
             $object->setDetails($this->denormalizer->denormalize($data['details'], \Em411\Allegro\Api\Model\StockStorageFeeDetails::class, 'json', $context));
             unset($data['details']);
         } elseif (\array_key_exists('details', $data) && null === $data['details']) {
             $object->setDetails(null);
+            unset($data['details']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,9 +92,9 @@ class StockStorageFeeNormalizer implements DenormalizerInterface, NormalizerInte
             $dataArray['feeStatusAt'] = $data->getFeeStatusAt();
         }
         if ($data->isInitialized('details') && null !== $data->getDetails()) {
-            $dataArray['details'] = $this->normalizer->normalize($data->getDetails(), 'json', $context);
+            $dataArray['details'] = null === $data->getDetails() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDetails(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

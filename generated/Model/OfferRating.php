@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferRating extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferRating implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -131,5 +135,10 @@ class OfferRating extends \ArrayObject
         $this->sizeFeedback = $sizeFeedback;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['averageScore' => ['averageScore', 'getAverageScore', 'setAverageScore'], 'scoreDistribution' => ['scoreDistribution', 'getScoreDistribution', 'setScoreDistribution'], 'totalResponses' => ['totalResponses', 'getTotalResponses', 'setTotalResponses'], 'sizeFeedback' => ['sizeFeedback', 'getSizeFeedback', 'setSizeFeedback']];
     }
 }

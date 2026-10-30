@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DepositTypeResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DepositTypeResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class DepositTypeResponse extends \ArrayObject
         $this->deposits = $deposits;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['deposits' => ['deposits', 'getDeposits', 'setDeposits']];
     }
 }

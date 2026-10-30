@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AiCoCreatedContent extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AiCoCreatedContent implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class AiCoCreatedContent extends \ArrayObject
         $this->images = $images;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['images' => ['images', 'getImages', 'setImages']];
     }
 }

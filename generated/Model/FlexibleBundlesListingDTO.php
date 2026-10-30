@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FlexibleBundlesListingDTO extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FlexibleBundlesListingDTO implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class FlexibleBundlesListingDTO extends \ArrayObject
         $this->nextPage = $nextPage;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['bundles' => ['bundles', 'getBundles', 'setBundles'], 'nextPage' => ['nextPage', 'getNextPage', 'setNextPage']];
     }
 }

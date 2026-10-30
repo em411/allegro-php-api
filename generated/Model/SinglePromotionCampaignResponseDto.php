@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SinglePromotionCampaignResponseDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SinglePromotionCampaignResponseDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -74,5 +78,10 @@ class SinglePromotionCampaignResponseDto extends \ArrayObject
         $this->status = $status;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['campaign' => ['campaign', 'getCampaign', 'setCampaign'], 'promotion' => ['promotion', 'getPromotion', 'setPromotion'], 'status' => ['status', 'getStatus', 'setStatus']];
     }
 }

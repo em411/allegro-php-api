@@ -42,57 +42,76 @@ class RefundDetailsNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\RefundDetails();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\RefundDetails();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('payment', $data) && null !== $data['payment']) {
             $object->setPayment($this->denormalizer->denormalize($data['payment'], \Em411\Allegro\Api\Model\RefundPayment::class, 'json', $context));
             unset($data['payment']);
         } elseif (\array_key_exists('payment', $data) && null === $data['payment']) {
             $object->setPayment(null);
+            unset($data['payment']);
         }
         if (\array_key_exists('order', $data) && null !== $data['order']) {
             $object->setOrder($this->denormalizer->denormalize($data['order'], \Em411\Allegro\Api\Model\RefundOrder::class, 'json', $context));
             unset($data['order']);
         } elseif (\array_key_exists('order', $data) && null === $data['order']) {
             $object->setOrder(null);
+            unset($data['order']);
         }
         if (\array_key_exists('reason', $data) && null !== $data['reason']) {
             $object->setReason($data['reason']);
             unset($data['reason']);
         } elseif (\array_key_exists('reason', $data) && null === $data['reason']) {
             $object->setReason(null);
+            unset($data['reason']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
-            $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']);
+            if (false === $date) {
+                if (\is_string($data['createdAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['createdAt'])) {
+                    try {
+                        $date = new \DateTime($data['createdAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setCreatedAt($date);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('totalValue', $data) && null !== $data['totalValue']) {
             $object->setTotalValue($this->denormalizer->denormalize($data['totalValue'], \Em411\Allegro\Api\Model\RefundTotalValue::class, 'json', $context));
             unset($data['totalValue']);
         } elseif (\array_key_exists('totalValue', $data) && null === $data['totalValue']) {
             $object->setTotalValue(null);
+            unset($data['totalValue']);
         }
         if (\array_key_exists('lineItems', $data) && null !== $data['lineItems']) {
             $values = [];
@@ -103,6 +122,7 @@ class RefundDetailsNormalizer implements DenormalizerInterface, NormalizerInterf
             unset($data['lineItems']);
         } elseif (\array_key_exists('lineItems', $data) && null === $data['lineItems']) {
             $object->setLineItems(null);
+            unset($data['lineItems']);
         }
         if (\array_key_exists('deposits', $data) && null !== $data['deposits']) {
             $values_1 = [];
@@ -113,18 +133,21 @@ class RefundDetailsNormalizer implements DenormalizerInterface, NormalizerInterf
             unset($data['deposits']);
         } elseif (\array_key_exists('deposits', $data) && null === $data['deposits']) {
             $object->setDeposits(null);
+            unset($data['deposits']);
         }
         if (\array_key_exists('delivery', $data) && null !== $data['delivery']) {
             $object->setDelivery($this->denormalizer->denormalize($data['delivery'], \Em411\Allegro\Api\Model\RefundDetailsDelivery::class, 'json', $context));
             unset($data['delivery']);
         } elseif (\array_key_exists('delivery', $data) && null === $data['delivery']) {
             $object->setDelivery(null);
+            unset($data['delivery']);
         }
         if (\array_key_exists('overpaid', $data) && null !== $data['overpaid']) {
             $object->setOverpaid($this->denormalizer->denormalize($data['overpaid'], \Em411\Allegro\Api\Model\RefundDetailsOverpaid::class, 'json', $context));
             unset($data['overpaid']);
         } elseif (\array_key_exists('overpaid', $data) && null === $data['overpaid']) {
             $object->setOverpaid(null);
+            unset($data['overpaid']);
         }
         if (\array_key_exists('surcharges', $data) && null !== $data['surcharges']) {
             $values_2 = [];
@@ -135,18 +158,21 @@ class RefundDetailsNormalizer implements DenormalizerInterface, NormalizerInterf
             unset($data['surcharges']);
         } elseif (\array_key_exists('surcharges', $data) && null === $data['surcharges']) {
             $object->setSurcharges(null);
+            unset($data['surcharges']);
         }
         if (\array_key_exists('additionalServices', $data) && null !== $data['additionalServices']) {
             $object->setAdditionalServices($this->denormalizer->denormalize($data['additionalServices'], \Em411\Allegro\Api\Model\RefundDetailsAdditionalServices::class, 'json', $context));
             unset($data['additionalServices']);
         } elseif (\array_key_exists('additionalServices', $data) && null === $data['additionalServices']) {
             $object->setAdditionalServices(null);
+            unset($data['additionalServices']);
         }
         if (\array_key_exists('sellerComment', $data) && null !== $data['sellerComment']) {
             $object->setSellerComment($data['sellerComment']);
             unset($data['sellerComment']);
         } elseif (\array_key_exists('sellerComment', $data) && null === $data['sellerComment']) {
             $object->setSellerComment(null);
+            unset($data['sellerComment']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -161,48 +187,48 @@ class RefundDetailsNormalizer implements DenormalizerInterface, NormalizerInterf
     {
         $dataArray = [];
         $dataArray['id'] = $data->getId();
-        $dataArray['payment'] = $this->normalizer->normalize($data->getPayment(), 'json', $context);
+        $dataArray['payment'] = null === $data->getPayment() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPayment(), 'json', $context));
         if ($data->isInitialized('order') && null !== $data->getOrder()) {
-            $dataArray['order'] = $this->normalizer->normalize($data->getOrder(), 'json', $context);
+            $dataArray['order'] = null === $data->getOrder() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOrder(), 'json', $context));
         }
         $dataArray['reason'] = $data->getReason();
         $dataArray['status'] = $data->getStatus();
         $dataArray['createdAt'] = $data->getCreatedAt()->format('Y-m-d\TH:i:sP');
-        $dataArray['totalValue'] = $this->normalizer->normalize($data->getTotalValue(), 'json', $context);
+        $dataArray['totalValue'] = null === $data->getTotalValue() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTotalValue(), 'json', $context));
         if ($data->isInitialized('lineItems') && null !== $data->getLineItems()) {
             $values = [];
             foreach ($data->getLineItems() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['lineItems'] = $values;
         }
         if ($data->isInitialized('deposits') && null !== $data->getDeposits()) {
             $values_1 = [];
             foreach ($data->getDeposits() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['deposits'] = $values_1;
         }
         if ($data->isInitialized('delivery') && null !== $data->getDelivery()) {
-            $dataArray['delivery'] = $this->normalizer->normalize($data->getDelivery(), 'json', $context);
+            $dataArray['delivery'] = null === $data->getDelivery() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDelivery(), 'json', $context));
         }
         if ($data->isInitialized('overpaid') && null !== $data->getOverpaid()) {
-            $dataArray['overpaid'] = $this->normalizer->normalize($data->getOverpaid(), 'json', $context);
+            $dataArray['overpaid'] = null === $data->getOverpaid() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOverpaid(), 'json', $context));
         }
         if ($data->isInitialized('surcharges') && null !== $data->getSurcharges()) {
             $values_2 = [];
             foreach ($data->getSurcharges() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = null === $value_2 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
             }
             $dataArray['surcharges'] = $values_2;
         }
         if ($data->isInitialized('additionalServices') && null !== $data->getAdditionalServices()) {
-            $dataArray['additionalServices'] = $this->normalizer->normalize($data->getAdditionalServices(), 'json', $context);
+            $dataArray['additionalServices'] = null === $data->getAdditionalServices() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAdditionalServices(), 'json', $context));
         }
         if ($data->isInitialized('sellerComment') && null !== $data->getSellerComment()) {
             $dataArray['sellerComment'] = $data->getSellerComment();
         }
-        foreach ($data as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_3;
             }

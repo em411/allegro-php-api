@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferPromoOption extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferPromoOption implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class OfferPromoOption extends \ArrayObject
         $this->nextCycleDate = $nextCycleDate;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'validFrom' => ['validFrom', 'getValidFrom', 'setValidFrom'], 'validTo' => ['validTo', 'getValidTo', 'setValidTo'], 'nextCycleDate' => ['nextCycleDate', 'getNextCycleDate', 'setNextCycleDate']];
     }
 }

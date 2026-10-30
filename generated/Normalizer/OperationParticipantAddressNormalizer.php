@@ -42,33 +42,36 @@ class OperationParticipantAddressNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OperationParticipantAddress();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OperationParticipantAddress();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('street', $data) && null !== $data['street']) {
             $object->setStreet($data['street']);
             unset($data['street']);
         } elseif (\array_key_exists('street', $data) && null === $data['street']) {
             $object->setStreet(null);
+            unset($data['street']);
         }
         if (\array_key_exists('city', $data) && null !== $data['city']) {
             $object->setCity($data['city']);
             unset($data['city']);
         } elseif (\array_key_exists('city', $data) && null === $data['city']) {
             $object->setCity(null);
+            unset($data['city']);
         }
         if (\array_key_exists('postCode', $data) && null !== $data['postCode']) {
             $object->setPostCode($data['postCode']);
             unset($data['postCode']);
         } elseif (\array_key_exists('postCode', $data) && null === $data['postCode']) {
             $object->setPostCode(null);
+            unset($data['postCode']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,7 +88,7 @@ class OperationParticipantAddressNormalizer implements DenormalizerInterface, No
         $dataArray['street'] = $data->getStreet();
         $dataArray['city'] = $data->getCity();
         $dataArray['postCode'] = $data->getPostCode();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

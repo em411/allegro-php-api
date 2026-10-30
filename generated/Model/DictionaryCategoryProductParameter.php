@@ -22,13 +22,13 @@ class DictionaryCategoryProductParameter extends CategoryProductParameter
     /**
      * The restrictions on values of this parameter.
      *
-     * @var DictionaryCategoryProductParameterrestrictions|null
+     * @var DictionaryCategoryProductParameterRestrictions|null
      */
     protected $restrictions;
     /**
      * Defines the values accepted for this parameter.
      *
-     * @var list<DictionaryCategoryProductParameterdictionaryItem>|null
+     * @var list<DictionaryCategoryProductParameterDictionaryItem>|null
      */
     protected $dictionary;
 
@@ -40,7 +40,7 @@ class DictionaryCategoryProductParameter extends CategoryProductParameter
     /**
      * The restrictions on values of this parameter.
      */
-    public function getRestrictions(): ?DictionaryCategoryProductParameterrestrictions
+    public function getRestrictions(): ?DictionaryCategoryProductParameterRestrictions
     {
         return $this->restrictions;
     }
@@ -48,7 +48,7 @@ class DictionaryCategoryProductParameter extends CategoryProductParameter
     /**
      * The restrictions on values of this parameter.
      */
-    public function setRestrictions(?DictionaryCategoryProductParameterrestrictions $restrictions): self
+    public function setRestrictions(?DictionaryCategoryProductParameterRestrictions $restrictions): self
     {
         $this->initialized['restrictions'] = true;
         $this->restrictions = $restrictions;
@@ -59,7 +59,7 @@ class DictionaryCategoryProductParameter extends CategoryProductParameter
     /**
      * Defines the values accepted for this parameter.
      *
-     * @return list<DictionaryCategoryProductParameterdictionaryItem>|null
+     * @return list<DictionaryCategoryProductParameterDictionaryItem>|null
      */
     public function getDictionary(): ?array
     {
@@ -69,7 +69,7 @@ class DictionaryCategoryProductParameter extends CategoryProductParameter
     /**
      * Defines the values accepted for this parameter.
      *
-     * @param list<DictionaryCategoryProductParameterdictionaryItem>|null $dictionary
+     * @param list<DictionaryCategoryProductParameterDictionaryItem>|null $dictionary
      */
     public function setDictionary(?array $dictionary): self
     {
@@ -77,5 +77,10 @@ class DictionaryCategoryProductParameter extends CategoryProductParameter
         $this->dictionary = $dictionary;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['restrictions' => ['restrictions', 'getRestrictions', 'setRestrictions'], 'dictionary' => ['dictionary', 'getDictionary', 'setDictionary']]);
     }
 }

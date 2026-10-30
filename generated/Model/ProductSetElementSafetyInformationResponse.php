@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductSetElementSafetyInformationResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductSetElementSafetyInformationResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -25,7 +29,7 @@ class ProductSetElementSafetyInformationResponse extends \ArrayObject
      *  - `TEXT` - when the product's safety information was provided as text description.
      *  - `NO_SAFETY_INFORMATION` - when no safety information was provided.
      *
-     * @var mixed|null
+     * @var TextSafetyInformation|AttachmentsSafetyInformation|NoSafetyInformation|null
      */
     protected $safetyInformation;
 
@@ -39,6 +43,8 @@ class ProductSetElementSafetyInformationResponse extends \ArrayObject
      *  - `ATTACHMENTS` - when it was provided as attachments.  Reference <a href="https://developer.allegro.pl/documentation#operation/createOfferAttachmentUsingPOST">Docs</a>
      *  - `TEXT` - when the product's safety information was provided as text description.
      *  - `NO_SAFETY_INFORMATION` - when no safety information was provided.
+     *
+     * @return TextSafetyInformation|AttachmentsSafetyInformation|NoSafetyInformation|null
      */
     public function getSafetyInformation()
     {
@@ -50,6 +56,8 @@ class ProductSetElementSafetyInformationResponse extends \ArrayObject
      * - `ATTACHMENTS` - when it was provided as attachments.  Reference <a href="https://developer.allegro.pl/documentation#operation/createOfferAttachmentUsingPOST">Docs</a>
      * - `TEXT` - when the product's safety information was provided as text description.
      * - `NO_SAFETY_INFORMATION` - when no safety information was provided.
+     *
+     * @param TextSafetyInformation|AttachmentsSafetyInformation|NoSafetyInformation|null $safetyInformation
      */
     public function setSafetyInformation($safetyInformation): self
     {
@@ -57,5 +65,10 @@ class ProductSetElementSafetyInformationResponse extends \ArrayObject
         $this->safetyInformation = $safetyInformation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['safetyInformation' => ['safetyInformation', 'getSafetyInformation', 'setSafetyInformation']];
     }
 }

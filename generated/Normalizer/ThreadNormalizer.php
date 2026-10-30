@@ -42,42 +42,58 @@ class ThreadNormalizer implements DenormalizerInterface, NormalizerInterface, De
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Thread();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\Thread();
         if (\array_key_exists('read', $data) && \is_int($data['read'])) {
             $data['read'] = (bool) $data['read'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('read', $data) && null !== $data['read']) {
             $object->setRead($data['read']);
             unset($data['read']);
         } elseif (\array_key_exists('read', $data) && null === $data['read']) {
             $object->setRead(null);
+            unset($data['read']);
         }
         if (\array_key_exists('lastMessageDateTime', $data) && null !== $data['lastMessageDateTime']) {
-            $object->setLastMessageDateTime(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['lastMessageDateTime']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['lastMessageDateTime']);
+            if (false === $date) {
+                if (\is_string($data['lastMessageDateTime']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['lastMessageDateTime'])) {
+                    try {
+                        $date = new \DateTime($data['lastMessageDateTime']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['lastMessageDateTime'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['lastMessageDateTime'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setLastMessageDateTime($date);
             unset($data['lastMessageDateTime']);
         } elseif (\array_key_exists('lastMessageDateTime', $data) && null === $data['lastMessageDateTime']) {
             $object->setLastMessageDateTime(null);
+            unset($data['lastMessageDateTime']);
         }
         if (\array_key_exists('interlocutor', $data) && null !== $data['interlocutor']) {
             $object->setInterlocutor($this->denormalizer->denormalize($data['interlocutor'], \Em411\Allegro\Api\Model\Interlocutor::class, 'json', $context));
             unset($data['interlocutor']);
         } elseif (\array_key_exists('interlocutor', $data) && null === $data['interlocutor']) {
             $object->setInterlocutor(null);
+            unset($data['interlocutor']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -93,13 +109,13 @@ class ThreadNormalizer implements DenormalizerInterface, NormalizerInterface, De
         $dataArray = [];
         $dataArray['id'] = $data->getId();
         $dataArray['read'] = $data->getRead();
-        if ($data->isInitialized('lastMessageDateTime')) {
+        if ($data->isInitialized('lastMessageDateTime') && null !== $data->getLastMessageDateTime()) {
             $dataArray['lastMessageDateTime'] = $data->getLastMessageDateTime()?->format('Y-m-d\TH:i:sP');
         }
-        if ($data->isInitialized('interlocutor')) {
-            $dataArray['interlocutor'] = $this->normalizer->normalize($data->getInterlocutor(), 'json', $context);
+        if ($data->isInitialized('interlocutor') && null !== $data->getInterlocutor()) {
+            $dataArray['interlocutor'] = null === $data->getInterlocutor() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getInterlocutor(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,39 +42,42 @@ class FlexibleBundleGetOfferDTONormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FlexibleBundleGetOfferDTO();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\FlexibleBundleGetOfferDTO();
         if (\array_key_exists('excludedFromDiscount', $data) && \is_int($data['excludedFromDiscount'])) {
             $data['excludedFromDiscount'] = (bool) $data['excludedFromDiscount'];
         }
         if (\array_key_exists('entryPoint', $data) && \is_int($data['entryPoint'])) {
             $data['entryPoint'] = (bool) $data['entryPoint'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('excludedFromDiscount', $data) && null !== $data['excludedFromDiscount']) {
             $object->setExcludedFromDiscount($data['excludedFromDiscount']);
             unset($data['excludedFromDiscount']);
         } elseif (\array_key_exists('excludedFromDiscount', $data) && null === $data['excludedFromDiscount']) {
             $object->setExcludedFromDiscount(null);
+            unset($data['excludedFromDiscount']);
         }
         if (\array_key_exists('entryPoint', $data) && null !== $data['entryPoint']) {
             $object->setEntryPoint($data['entryPoint']);
             unset($data['entryPoint']);
         } elseif (\array_key_exists('entryPoint', $data) && null === $data['entryPoint']) {
             $object->setEntryPoint(null);
+            unset($data['entryPoint']);
         }
         if (\array_key_exists('marketplaces', $data) && null !== $data['marketplaces']) {
             $values = [];
@@ -85,6 +88,7 @@ class FlexibleBundleGetOfferDTONormalizer implements DenormalizerInterface, Norm
             unset($data['marketplaces']);
         } elseif (\array_key_exists('marketplaces', $data) && null === $data['marketplaces']) {
             $object->setMarketplaces(null);
+            unset($data['marketplaces']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -103,10 +107,10 @@ class FlexibleBundleGetOfferDTONormalizer implements DenormalizerInterface, Norm
         $dataArray['entryPoint'] = $data->getEntryPoint();
         $values = [];
         foreach ($data->getMarketplaces() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['marketplaces'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

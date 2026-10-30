@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DeliveryOptionDtoLimits extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DeliveryOptionDtoLimits implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -107,5 +111,10 @@ class DeliveryOptionDtoLimits extends \ArrayObject
         $this->weight = $weight;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['cashOnDelivery' => ['cashOnDelivery', 'getCashOnDelivery', 'setCashOnDelivery'], 'insurance' => ['insurance', 'getInsurance', 'setInsurance'], 'dimensions' => ['dimensions', 'getDimensions', 'setDimensions'], 'weight' => ['weight', 'getWeight', 'setWeight']];
     }
 }

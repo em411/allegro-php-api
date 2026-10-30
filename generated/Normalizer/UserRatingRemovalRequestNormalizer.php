@@ -42,21 +42,22 @@ class UserRatingRemovalRequestNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UserRatingRemovalRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\UserRatingRemovalRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('request', $data) && null !== $data['request']) {
             $object->setRequest($this->denormalizer->denormalize($data['request'], \Em411\Allegro\Api\Model\UserRatingRemovalRequestRequest::class, 'json', $context));
             unset($data['request']);
         } elseif (\array_key_exists('request', $data) && null === $data['request']) {
             $object->setRequest(null);
+            unset($data['request']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,8 +71,8 @@ class UserRatingRemovalRequestNormalizer implements DenormalizerInterface, Norma
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['request'] = $this->normalizer->normalize($data->getRequest(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['request'] = null === $data->getRequest() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRequest(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

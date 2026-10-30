@@ -42,24 +42,25 @@ class MarketedBeforeGPSRObligationNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\MarketedBeforeGPSRObligation();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\MarketedBeforeGPSRObligation();
         if (\array_key_exists('marketedBeforeGPSRObligation', $data) && \is_int($data['marketedBeforeGPSRObligation'])) {
             $data['marketedBeforeGPSRObligation'] = (bool) $data['marketedBeforeGPSRObligation'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('marketedBeforeGPSRObligation', $data) && null !== $data['marketedBeforeGPSRObligation']) {
             $object->setMarketedBeforeGPSRObligation($data['marketedBeforeGPSRObligation']);
             unset($data['marketedBeforeGPSRObligation']);
         } elseif (\array_key_exists('marketedBeforeGPSRObligation', $data) && null === $data['marketedBeforeGPSRObligation']) {
             $object->setMarketedBeforeGPSRObligation(null);
+            unset($data['marketedBeforeGPSRObligation']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,10 +74,10 @@ class MarketedBeforeGPSRObligationNormalizer implements DenormalizerInterface, N
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('marketedBeforeGPSRObligation')) {
+        if ($data->isInitialized('marketedBeforeGPSRObligation') && null !== $data->getMarketedBeforeGPSRObligation()) {
             $dataArray['marketedBeforeGPSRObligation'] = $data->getMarketedBeforeGPSRObligation();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class WrapsListingAndCommissionsFees extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class WrapsListingAndCommissionsFees implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -69,5 +73,10 @@ class WrapsListingAndCommissionsFees extends \ArrayObject
         $this->quotes = $quotes;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['commissions' => ['commissions', 'getCommissions', 'setCommissions'], 'quotes' => ['quotes', 'getQuotes', 'setQuotes']];
     }
 }

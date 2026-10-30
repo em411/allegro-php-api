@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CustomerReturnReturnParcel extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CustomerReturnReturnParcel implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -141,5 +145,10 @@ class CustomerReturnReturnParcel extends \ArrayObject
         $this->sender = $sender;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'waybill' => ['waybill', 'getWaybill', 'setWaybill'], 'transportingWaybill' => ['transportingWaybill', 'getTransportingWaybill', 'setTransportingWaybill'], 'carrierId' => ['carrierId', 'getCarrierId', 'setCarrierId'], 'transportingCarrierId' => ['transportingCarrierId', 'getTransportingCarrierId', 'setTransportingCarrierId'], 'sender' => ['sender', 'getSender', 'setSender']];
     }
 }

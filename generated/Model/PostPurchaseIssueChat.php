@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PostPurchaseIssueChat extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PostPurchaseIssueChat implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -90,5 +94,10 @@ class PostPurchaseIssueChat extends \ArrayObject
         $this->initialMessage = $initialMessage;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['lastMessage' => ['lastMessage', 'getLastMessage', 'setLastMessage'], 'messagesCount' => ['messagesCount', 'getMessagesCount', 'setMessagesCount'], 'initialMessage' => ['initialMessage', 'getInitialMessage', 'setInitialMessage']];
     }
 }

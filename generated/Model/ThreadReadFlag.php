@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ThreadReadFlag extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ThreadReadFlag implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -40,5 +44,10 @@ class ThreadReadFlag extends \ArrayObject
         $this->read = $read;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['read' => ['read', 'getRead', 'setRead']];
     }
 }

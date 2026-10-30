@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class TaxRateValue extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class TaxRateValue implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class TaxRateValue extends \ArrayObject
         $this->exemptionRequired = $exemptionRequired;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['label' => ['label', 'getLabel', 'setLabel'], 'value' => ['value', 'getValue', 'setValue'], 'exemptionRequired' => ['exemptionRequired', 'getExemptionRequired', 'setExemptionRequired']];
     }
 }

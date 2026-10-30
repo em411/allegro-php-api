@@ -74,4 +74,9 @@ class RequirementChange extends CategoryParametersScheduledBaseChange
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['category' => ['category', 'getCategory', 'setCategory'], 'parameter' => ['parameter', 'getParameter', 'setParameter']]);
+    }
 }

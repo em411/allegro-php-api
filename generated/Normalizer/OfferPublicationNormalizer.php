@@ -42,21 +42,22 @@ class OfferPublicationNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferPublication();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferPublication();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('endingAt', $data) && null !== $data['endingAt']) {
             $object->setEndingAt($data['endingAt']);
             unset($data['endingAt']);
         } elseif (\array_key_exists('endingAt', $data) && null === $data['endingAt']) {
             $object->setEndingAt(null);
+            unset($data['endingAt']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +74,7 @@ class OfferPublicationNormalizer implements DenormalizerInterface, NormalizerInt
         if ($data->isInitialized('endingAt') && null !== $data->getEndingAt()) {
             $dataArray['endingAt'] = $data->getEndingAt();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

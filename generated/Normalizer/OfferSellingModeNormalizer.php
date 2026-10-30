@@ -42,51 +42,57 @@ class OfferSellingModeNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferSellingMode();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferSellingMode();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('format', $data) && null !== $data['format']) {
             $object->setFormat($data['format']);
             unset($data['format']);
         } elseif (\array_key_exists('format', $data) && null === $data['format']) {
             $object->setFormat(null);
+            unset($data['format']);
         }
         if (\array_key_exists('price', $data) && null !== $data['price']) {
             $object->setPrice($this->denormalizer->denormalize($data['price'], \Em411\Allegro\Api\Model\OfferPrice::class, 'json', $context));
             unset($data['price']);
         } elseif (\array_key_exists('price', $data) && null === $data['price']) {
             $object->setPrice(null);
+            unset($data['price']);
         }
         if (\array_key_exists('fixedPrice', $data) && null !== $data['fixedPrice']) {
             $object->setFixedPrice($this->denormalizer->denormalize($data['fixedPrice'], \Em411\Allegro\Api\Model\OfferFixedPrice::class, 'json', $context));
             unset($data['fixedPrice']);
         } elseif (\array_key_exists('fixedPrice', $data) && null === $data['fixedPrice']) {
             $object->setFixedPrice(null);
+            unset($data['fixedPrice']);
         }
         if (\array_key_exists('popularity', $data) && null !== $data['popularity']) {
             $object->setPopularity($data['popularity']);
             unset($data['popularity']);
         } elseif (\array_key_exists('popularity', $data) && null === $data['popularity']) {
             $object->setPopularity(null);
+            unset($data['popularity']);
         }
         if (\array_key_exists('popularityRange', $data) && null !== $data['popularityRange']) {
             $object->setPopularityRange($data['popularityRange']);
             unset($data['popularityRange']);
         } elseif (\array_key_exists('popularityRange', $data) && null === $data['popularityRange']) {
             $object->setPopularityRange(null);
+            unset($data['popularityRange']);
         }
         if (\array_key_exists('bidCount', $data) && null !== $data['bidCount']) {
             $object->setBidCount($data['bidCount']);
             unset($data['bidCount']);
         } elseif (\array_key_exists('bidCount', $data) && null === $data['bidCount']) {
             $object->setBidCount(null);
+            unset($data['bidCount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -104,10 +110,10 @@ class OfferSellingModeNormalizer implements DenormalizerInterface, NormalizerInt
             $dataArray['format'] = $data->getFormat();
         }
         if ($data->isInitialized('price') && null !== $data->getPrice()) {
-            $dataArray['price'] = $this->normalizer->normalize($data->getPrice(), 'json', $context);
+            $dataArray['price'] = null === $data->getPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPrice(), 'json', $context));
         }
         if ($data->isInitialized('fixedPrice') && null !== $data->getFixedPrice()) {
-            $dataArray['fixedPrice'] = $this->normalizer->normalize($data->getFixedPrice(), 'json', $context);
+            $dataArray['fixedPrice'] = null === $data->getFixedPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getFixedPrice(), 'json', $context));
         }
         if ($data->isInitialized('popularity') && null !== $data->getPopularity()) {
             $dataArray['popularity'] = $data->getPopularity();
@@ -118,7 +124,7 @@ class OfferSellingModeNormalizer implements DenormalizerInterface, NormalizerInt
         if ($data->isInitialized('bidCount') && null !== $data->getBidCount()) {
             $dataArray['bidCount'] = $data->getBidCount();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

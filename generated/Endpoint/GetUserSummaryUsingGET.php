@@ -22,12 +22,10 @@ class GetUserSummaryUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
     /**
      * Use this resource to receive feedback statistics. Read more: <a href="../../news/nowe-zasoby-ktorymi-pobierzesz-informacje-o-ocenach-ZM9L1WPBbUb" target="_blank">PL</a> / <a href="../../news/new-resources-to-download-sales-feedback-d2VYERBMRiz" target="_blank">EN</a>.
      *
-     * @param string $userId           the ID of the user
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param string $userId the ID of the user
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
     public function __construct(string $userId, array $headerParameters = [], array $accept = [])
@@ -44,7 +42,7 @@ class GetUserSummaryUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
 
     public function getUri(): string
     {
-        return str_replace(['{userId}'], [$this->userId], '/users/{userId}/ratings-summary');
+        return str_replace(['{userId}'], [rawurlencode($this->userId)], '/users/{userId}/ratings-summary');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -88,22 +86,22 @@ class GetUserSummaryUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\UserRatingSummaryResponseV2', 'json');
         }
         if (401 === $status) {
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
                 throw new \Em411\Allegro\Api\Exception\GetUserSummaryUsingGETUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
             }
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
                 throw new \Em411\Allegro\Api\Exception\GetUserSummaryUsingGETUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
             }
         }
         if (403 === $status) {
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
                 throw new \Em411\Allegro\Api\Exception\GetUserSummaryUsingGETForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
             }
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
                 throw new \Em411\Allegro\Api\Exception\GetUserSummaryUsingGETForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
             }
         }

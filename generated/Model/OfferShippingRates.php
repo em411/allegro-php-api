@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferShippingRates extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferShippingRates implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class OfferShippingRates extends \ArrayObject
         $this->rates = $rates;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['rates' => ['rates', 'getRates', 'setRates']];
     }
 }

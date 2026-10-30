@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductSetElementQuantity extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductSetElementQuantity implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class ProductSetElementQuantity extends \ArrayObject
         $this->quantity = $quantity;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['quantity' => ['quantity', 'getQuantity', 'setQuantity']];
     }
 }

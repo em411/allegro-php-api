@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferAutomaticPricingCommand extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferAutomaticPricingCommand implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -26,7 +30,7 @@ class OfferAutomaticPricingCommand extends \ArrayObject
      */
     protected $id;
     /**
-     * @var mixed|null
+     * @var OfferAutomaticPricingModificationSet|OfferAutomaticPricingModificationRemove|null
      */
     protected $modification;
     /**
@@ -60,11 +64,17 @@ class OfferAutomaticPricingCommand extends \ArrayObject
         return $this;
     }
 
+    /**
+     * @return OfferAutomaticPricingModificationSet|OfferAutomaticPricingModificationRemove|null
+     */
     public function getModification()
     {
         return $this->modification;
     }
 
+    /**
+     * @param OfferAutomaticPricingModificationSet|OfferAutomaticPricingModificationRemove|null $modification
+     */
     public function setModification($modification): self
     {
         $this->initialized['modification'] = true;
@@ -94,5 +104,10 @@ class OfferAutomaticPricingCommand extends \ArrayObject
         $this->offerCriteria = $offerCriteria;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'modification' => ['modification', 'getModification', 'setModification'], 'offerCriteria' => ['offerCriteria', 'getOfferCriteria', 'setOfferCriteria']];
     }
 }

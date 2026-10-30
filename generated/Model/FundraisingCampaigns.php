@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FundraisingCampaigns extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FundraisingCampaigns implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class FundraisingCampaigns extends \ArrayObject
         $this->campaigns = $campaigns;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['campaigns' => ['campaigns', 'getCampaigns', 'setCampaigns']];
     }
 }

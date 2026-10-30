@@ -42,21 +42,22 @@ class ExclusionNormalizer implements DenormalizerInterface, NormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Exclusion();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Exclusion();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('reason', $data) && null !== $data['reason']) {
             $object->setReason($data['reason']);
             unset($data['reason']);
         } elseif (\array_key_exists('reason', $data) && null === $data['reason']) {
             $object->setReason(null);
+            unset($data['reason']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +74,7 @@ class ExclusionNormalizer implements DenormalizerInterface, NormalizerInterface,
         if ($data->isInitialized('reason') && null !== $data->getReason()) {
             $dataArray['reason'] = $data->getReason();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

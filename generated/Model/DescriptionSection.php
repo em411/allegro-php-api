@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DescriptionSection extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DescriptionSection implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class DescriptionSection extends \ArrayObject
         $this->items = $items;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['items' => ['items', 'getItems', 'setItems']];
     }
 }

@@ -42,27 +42,29 @@ class BadgeSubsidyPricesNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BadgeSubsidyPrices();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BadgeSubsidyPrices();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('targetPrice', $data) && null !== $data['targetPrice']) {
             $object->setTargetPrice($this->denormalizer->denormalize($data['targetPrice'], \Em411\Allegro\Api\Model\BadgeApplicationSubsidyTargetPrice::class, 'json', $context));
             unset($data['targetPrice']);
         } elseif (\array_key_exists('targetPrice', $data) && null === $data['targetPrice']) {
             $object->setTargetPrice(null);
+            unset($data['targetPrice']);
         }
         if (\array_key_exists('sellerPrice', $data) && null !== $data['sellerPrice']) {
             $object->setSellerPrice($this->denormalizer->denormalize($data['sellerPrice'], \Em411\Allegro\Api\Model\BadgeApplicationSubsidySellerPrice::class, 'json', $context));
             unset($data['sellerPrice']);
         } elseif (\array_key_exists('sellerPrice', $data) && null === $data['sellerPrice']) {
             $object->setSellerPrice(null);
+            unset($data['sellerPrice']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,12 +79,12 @@ class BadgeSubsidyPricesNormalizer implements DenormalizerInterface, NormalizerI
     {
         $dataArray = [];
         if ($data->isInitialized('targetPrice') && null !== $data->getTargetPrice()) {
-            $dataArray['targetPrice'] = $this->normalizer->normalize($data->getTargetPrice(), 'json', $context);
+            $dataArray['targetPrice'] = null === $data->getTargetPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getTargetPrice(), 'json', $context));
         }
         if ($data->isInitialized('sellerPrice') && null !== $data->getSellerPrice()) {
-            $dataArray['sellerPrice'] = $this->normalizer->normalize($data->getSellerPrice(), 'json', $context);
+            $dataArray['sellerPrice'] = null === $data->getSellerPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSellerPrice(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

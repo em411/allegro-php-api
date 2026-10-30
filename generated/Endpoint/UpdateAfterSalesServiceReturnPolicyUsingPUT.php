@@ -21,11 +21,10 @@ class UpdateAfterSalesServiceReturnPolicyUsingPUT extends \Em411\Allegro\Api\Run
     /**
      * Use this resource to modify the return policy details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-edytowac-informacje-o-warunkach-zwrotu" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-update-return-policy-information" target="_blank">EN</a>.
      *
-     * @param string $returnPolicyId   the ID of the return policy
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $returnPolicyId the ID of the return policy
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $returnPolicyId, ?\Em411\Allegro\Api\Model\ReturnPolicyUpdateRequestV1 $requestBody = null, array $headerParameters = [])
     {
@@ -41,13 +40,13 @@ class UpdateAfterSalesServiceReturnPolicyUsingPUT extends \Em411\Allegro\Api\Run
 
     public function getUri(): string
     {
-        return str_replace(['{returnPolicyId}'], [$this->returnPolicyId], '/after-sales-service-conditions/return-policies/{returnPolicyId}');
+        return str_replace(['{returnPolicyId}'], [rawurlencode($this->returnPolicyId)], '/after-sales-service-conditions/return-policies/{returnPolicyId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Em411\Allegro\Api\Model\ReturnPolicyUpdateRequestV1) {
-            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], \Em411\Allegro\Api\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -87,7 +86,7 @@ class UpdateAfterSalesServiceReturnPolicyUsingPUT extends \Em411\Allegro\Api\Run
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ReturnPolicyResponseV1', 'json');
         }
         if (400 === $status) {

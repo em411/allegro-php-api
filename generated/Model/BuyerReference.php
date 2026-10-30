@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BuyerReference extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BuyerReference implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -124,5 +128,10 @@ class BuyerReference extends \ArrayObject
         $this->preferences = $preferences;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'email' => ['email', 'getEmail', 'setEmail'], 'login' => ['login', 'getLogin', 'setLogin'], 'guest' => ['guest', 'getGuest', 'setGuest'], 'preferences' => ['preferences', 'getPreferences', 'setPreferences']];
     }
 }

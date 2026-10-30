@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DeliveryServiceIdDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DeliveryServiceIdDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class DeliveryServiceIdDto extends \ArrayObject
         $this->credentialsId = $credentialsId;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['deliveryMethodId' => ['deliveryMethodId', 'getDeliveryMethodId', 'setDeliveryMethodId'], 'credentialsId' => ['credentialsId', 'getCredentialsId', 'setCredentialsId']];
     }
 }

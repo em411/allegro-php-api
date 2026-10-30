@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ModificationDelivery extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ModificationDelivery implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -65,5 +69,10 @@ class ModificationDelivery extends \ArrayObject
         $this->handlingTime = $handlingTime;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['shippingRates' => ['shippingRates', 'getShippingRates', 'setShippingRates'], 'handlingTime' => ['handlingTime', 'getHandlingTime', 'setHandlingTime']];
     }
 }

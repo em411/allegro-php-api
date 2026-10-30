@@ -22,13 +22,13 @@ class MultiPackBenefitSpecification extends BenefitSpecification
     /**
      * What rebate will be given.
      *
-     * @var MultiPackBenefitSpecificationconfiguration|null
+     * @var MultiPackBenefitSpecificationConfiguration|null
      */
     protected $configuration;
     /**
      * Describes what will cause the rebate.
      *
-     * @var MultiPackBenefitSpecificationtrigger|null
+     * @var MultiPackBenefitSpecificationTrigger|null
      */
     protected $trigger;
 
@@ -40,7 +40,7 @@ class MultiPackBenefitSpecification extends BenefitSpecification
     /**
      * What rebate will be given.
      */
-    public function getConfiguration(): ?MultiPackBenefitSpecificationconfiguration
+    public function getConfiguration(): ?MultiPackBenefitSpecificationConfiguration
     {
         return $this->configuration;
     }
@@ -48,7 +48,7 @@ class MultiPackBenefitSpecification extends BenefitSpecification
     /**
      * What rebate will be given.
      */
-    public function setConfiguration(?MultiPackBenefitSpecificationconfiguration $configuration): self
+    public function setConfiguration(?MultiPackBenefitSpecificationConfiguration $configuration): self
     {
         $this->initialized['configuration'] = true;
         $this->configuration = $configuration;
@@ -59,7 +59,7 @@ class MultiPackBenefitSpecification extends BenefitSpecification
     /**
      * Describes what will cause the rebate.
      */
-    public function getTrigger(): ?MultiPackBenefitSpecificationtrigger
+    public function getTrigger(): ?MultiPackBenefitSpecificationTrigger
     {
         return $this->trigger;
     }
@@ -67,11 +67,16 @@ class MultiPackBenefitSpecification extends BenefitSpecification
     /**
      * Describes what will cause the rebate.
      */
-    public function setTrigger(?MultiPackBenefitSpecificationtrigger $trigger): self
+    public function setTrigger(?MultiPackBenefitSpecificationTrigger $trigger): self
     {
         $this->initialized['trigger'] = true;
         $this->trigger = $trigger;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['configuration' => ['configuration', 'getConfiguration', 'setConfiguration'], 'trigger' => ['trigger', 'getTrigger', 'setTrigger']]);
     }
 }

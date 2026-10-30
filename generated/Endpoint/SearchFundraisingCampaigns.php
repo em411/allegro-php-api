@@ -20,16 +20,13 @@ class SearchFundraisingCampaigns extends \Em411\Allegro\Api\Runtime\Client\BaseE
     /**
      * Use this resource to search fundraising campaigns. Read more: <a href="../../news/wystaw-oferte-charytatywna-na-allegro-MR87PBxZySY" target="_blank">PL</a> / <a href="../../news/list-a-charity-offer-on-allegro-LRV0572GOhr" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int    $limit maximum number of returned results
-     * @var string $phrase Fundraising campaign name or it's Organization name prefix to search for.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "limit": int, //Maximum number of returned results.
+     *    "phrase": string, //Fundraising campaign name or it's Organization name prefix to search for.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -92,7 +89,7 @@ class SearchFundraisingCampaigns extends \Em411\Allegro\Api\Runtime\Client\BaseE
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\FundraisingCampaigns', 'json');
         }
         if (400 === $status) {

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CommentVBeta1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CommentVBeta1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class CommentVBeta1 extends \ArrayObject
         $this->language = $language;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['text' => ['text', 'getText', 'setText'], 'language' => ['language', 'getLanguage', 'setLanguage']];
     }
 }

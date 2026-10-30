@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DeliveryOptionDtoLimitsDimensions extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DeliveryOptionDtoLimitsDimensions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -74,5 +78,10 @@ class DeliveryOptionDtoLimitsDimensions extends \ArrayObject
         $this->height = $height;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['length' => ['length', 'getLength', 'setLength'], 'width' => ['width', 'getWidth', 'setWidth'], 'height' => ['height', 'getHeight', 'setHeight']];
     }
 }

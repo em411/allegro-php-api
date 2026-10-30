@@ -42,24 +42,25 @@ class AlleDiscountEligibleOfferDtoAlleDiscountCampaignConditionsNormalizer imple
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AlleDiscountEligibleOfferDtoAlleDiscountCampaignConditions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\AlleDiscountEligibleOfferDtoAlleDiscountCampaignConditions();
         if (\array_key_exists('meetsConditions', $data) && \is_int($data['meetsConditions'])) {
             $data['meetsConditions'] = (bool) $data['meetsConditions'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('meetsConditions', $data) && null !== $data['meetsConditions']) {
             $object->setMeetsConditions($data['meetsConditions']);
             unset($data['meetsConditions']);
         } elseif (\array_key_exists('meetsConditions', $data) && null === $data['meetsConditions']) {
             $object->setMeetsConditions(null);
+            unset($data['meetsConditions']);
         }
         if (\array_key_exists('violations', $data) && null !== $data['violations']) {
             $values = [];
@@ -70,6 +71,7 @@ class AlleDiscountEligibleOfferDtoAlleDiscountCampaignConditionsNormalizer imple
             unset($data['violations']);
         } elseif (\array_key_exists('violations', $data) && null === $data['violations']) {
             $object->setViolations(null);
+            unset($data['violations']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,11 +91,11 @@ class AlleDiscountEligibleOfferDtoAlleDiscountCampaignConditionsNormalizer imple
         if ($data->isInitialized('violations') && null !== $data->getViolations()) {
             $values = [];
             foreach ($data->getViolations() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['violations'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -42,27 +42,29 @@ class BillingEntryTaxNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BillingEntryTax();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BillingEntryTax();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('percentage', $data) && null !== $data['percentage']) {
             $object->setPercentage($data['percentage']);
             unset($data['percentage']);
         } elseif (\array_key_exists('percentage', $data) && null === $data['percentage']) {
             $object->setPercentage(null);
+            unset($data['percentage']);
         }
         if (\array_key_exists('annotation', $data) && null !== $data['annotation']) {
             $object->setAnnotation($data['annotation']);
             unset($data['annotation']);
         } elseif (\array_key_exists('annotation', $data) && null === $data['annotation']) {
             $object->setAnnotation(null);
+            unset($data['annotation']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,7 +84,7 @@ class BillingEntryTaxNormalizer implements DenormalizerInterface, NormalizerInte
         if ($data->isInitialized('annotation') && null !== $data->getAnnotation()) {
             $dataArray['annotation'] = $data->getAnnotation();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ShipmentIdsDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ShipmentIdsDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class ShipmentIdsDto extends \ArrayObject
         $this->shipmentIds = $shipmentIds;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['shipmentIds' => ['shipmentIds', 'getShipmentIds', 'setShipmentIds']];
     }
 }

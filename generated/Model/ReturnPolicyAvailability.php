@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReturnPolicyAvailability extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ReturnPolicyAvailability implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -65,5 +69,10 @@ class ReturnPolicyAvailability extends \ArrayObject
         $this->restrictionCause = $restrictionCause;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['range' => ['range', 'getRange', 'setRange'], 'restrictionCause' => ['restrictionCause', 'getRestrictionCause', 'setRestrictionCause']];
     }
 }

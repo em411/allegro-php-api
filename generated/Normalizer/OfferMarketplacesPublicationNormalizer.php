@@ -42,21 +42,22 @@ class OfferMarketplacesPublicationNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferMarketplacesPublication();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferMarketplacesPublication();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('marketplaces', $data) && null !== $data['marketplaces']) {
             $object->setMarketplaces($this->denormalizer->denormalize($data['marketplaces'], \Em411\Allegro\Api\Model\MarketplacesVisibility::class, 'json', $context));
             unset($data['marketplaces']);
         } elseif (\array_key_exists('marketplaces', $data) && null === $data['marketplaces']) {
             $object->setMarketplaces(null);
+            unset($data['marketplaces']);
         }
         if (\array_key_exists('updatedMarketplaces', $data) && null !== $data['updatedMarketplaces']) {
             $values = [];
@@ -67,6 +68,7 @@ class OfferMarketplacesPublicationNormalizer implements DenormalizerInterface, N
             unset($data['updatedMarketplaces']);
         } elseif (\array_key_exists('updatedMarketplaces', $data) && null === $data['updatedMarketplaces']) {
             $object->setUpdatedMarketplaces(null);
+            unset($data['updatedMarketplaces']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,13 +82,13 @@ class OfferMarketplacesPublicationNormalizer implements DenormalizerInterface, N
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['marketplaces'] = $this->normalizer->normalize($data->getMarketplaces(), 'json', $context);
+        $dataArray['marketplaces'] = null === $data->getMarketplaces() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMarketplaces(), 'json', $context));
         $values = [];
         foreach ($data->getUpdatedMarketplaces() as $value) {
             $values[] = $value;
         }
         $dataArray['updatedMarketplaces'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

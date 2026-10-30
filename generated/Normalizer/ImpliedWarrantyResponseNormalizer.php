@@ -42,57 +42,64 @@ class ImpliedWarrantyResponseNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ImpliedWarrantyResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ImpliedWarrantyResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('seller', $data) && null !== $data['seller']) {
             $object->setSeller($this->denormalizer->denormalize($data['seller'], \Em411\Allegro\Api\Model\Seller::class, 'json', $context));
             unset($data['seller']);
         } elseif (\array_key_exists('seller', $data) && null === $data['seller']) {
             $object->setSeller(null);
+            unset($data['seller']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('individual', $data) && null !== $data['individual']) {
             $object->setIndividual($this->denormalizer->denormalize($data['individual'], \Em411\Allegro\Api\Model\ImpliedWarrantyPeriod::class, 'json', $context));
             unset($data['individual']);
         } elseif (\array_key_exists('individual', $data) && null === $data['individual']) {
             $object->setIndividual(null);
+            unset($data['individual']);
         }
         if (\array_key_exists('corporate', $data) && null !== $data['corporate']) {
             $object->setCorporate($this->denormalizer->denormalize($data['corporate'], \Em411\Allegro\Api\Model\ImpliedWarrantyPeriod::class, 'json', $context));
             unset($data['corporate']);
         } elseif (\array_key_exists('corporate', $data) && null === $data['corporate']) {
             $object->setCorporate(null);
+            unset($data['corporate']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\AfterSalesServicesAddress::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($data['description']);
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -110,24 +117,24 @@ class ImpliedWarrantyResponseNormalizer implements DenormalizerInterface, Normal
             $dataArray['id'] = $data->getId();
         }
         if ($data->isInitialized('seller') && null !== $data->getSeller()) {
-            $dataArray['seller'] = $this->normalizer->normalize($data->getSeller(), 'json', $context);
+            $dataArray['seller'] = null === $data->getSeller() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSeller(), 'json', $context));
         }
         if ($data->isInitialized('name') && null !== $data->getName()) {
             $dataArray['name'] = $data->getName();
         }
         if ($data->isInitialized('individual') && null !== $data->getIndividual()) {
-            $dataArray['individual'] = $this->normalizer->normalize($data->getIndividual(), 'json', $context);
+            $dataArray['individual'] = null === $data->getIndividual() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getIndividual(), 'json', $context));
         }
         if ($data->isInitialized('corporate') && null !== $data->getCorporate()) {
-            $dataArray['corporate'] = $this->normalizer->normalize($data->getCorporate(), 'json', $context);
+            $dataArray['corporate'] = null === $data->getCorporate() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCorporate(), 'json', $context));
         }
         if ($data->isInitialized('address') && null !== $data->getAddress()) {
-            $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+            $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         }
         if ($data->isInitialized('description') && null !== $data->getDescription()) {
             $dataArray['description'] = $data->getDescription();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

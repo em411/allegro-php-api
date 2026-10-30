@@ -21,11 +21,10 @@ class DeleteAutomaticPricingRuleUsingDelete extends \Em411\Allegro\Api\Runtime\C
     /**
      * Use this resource to delete automatic pricing rule. This resource is rate limited to 5 requests per second. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-usunac-regule-cenowa" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-delete-a-pricing-rule" target="_blank">EN</a>.
      *
-     * @param string $ruleId           the rule identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $ruleId the rule identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $ruleId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class DeleteAutomaticPricingRuleUsingDelete extends \Em411\Allegro\Api\Runtime\C
 
     public function getUri(): string
     {
-        return str_replace(['{ruleId}'], [$this->ruleId], '/sale/price-automation/rules/{ruleId}');
+        return str_replace(['{ruleId}'], [rawurlencode($this->ruleId)], '/sale/price-automation/rules/{ruleId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

@@ -42,31 +42,33 @@ class ProductProposalsResponseCategoryNormalizer implements DenormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductProposalsResponseCategory();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductProposalsResponseCategory();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('similar', $data) && null !== $data['similar']) {
             $values = [];
             foreach ($data['similar'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\ProductProposalsResponseCategorysimilarItem::class, 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\ProductProposalsResponseCategorySimilarItem::class, 'json', $context);
             }
             $object->setSimilar($values);
             unset($data['similar']);
         } elseif (\array_key_exists('similar', $data) && null === $data['similar']) {
             $object->setSimilar(null);
+            unset($data['similar']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,11 +88,11 @@ class ProductProposalsResponseCategoryNormalizer implements DenormalizerInterfac
         if ($data->isInitialized('similar') && null !== $data->getSimilar()) {
             $values = [];
             foreach ($data->getSimilar() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['similar'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

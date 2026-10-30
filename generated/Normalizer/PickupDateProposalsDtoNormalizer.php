@@ -42,21 +42,22 @@ class PickupDateProposalsDtoNormalizer implements DenormalizerInterface, Normali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PickupDateProposalsDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PickupDateProposalsDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('shipmentId', $data) && null !== $data['shipmentId']) {
             $object->setShipmentId($data['shipmentId']);
             unset($data['shipmentId']);
         } elseif (\array_key_exists('shipmentId', $data) && null === $data['shipmentId']) {
             $object->setShipmentId(null);
+            unset($data['shipmentId']);
         }
         if (\array_key_exists('pickupTimes', $data) && null !== $data['pickupTimes']) {
             $values = [];
@@ -67,6 +68,7 @@ class PickupDateProposalsDtoNormalizer implements DenormalizerInterface, Normali
             unset($data['pickupTimes']);
         } elseif (\array_key_exists('pickupTimes', $data) && null === $data['pickupTimes']) {
             $object->setPickupTimes(null);
+            unset($data['pickupTimes']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,11 +88,11 @@ class PickupDateProposalsDtoNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('pickupTimes') && null !== $data->getPickupTimes()) {
             $values = [];
             foreach ($data->getPickupTimes() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['pickupTimes'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

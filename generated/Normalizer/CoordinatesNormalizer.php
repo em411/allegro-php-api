@@ -42,33 +42,35 @@ class CoordinatesNormalizer implements DenormalizerInterface, NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Coordinates();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\Coordinates();
         if (\array_key_exists('lat', $data) && \is_int($data['lat'])) {
             $data['lat'] = (float) $data['lat'];
         }
         if (\array_key_exists('lon', $data) && \is_int($data['lon'])) {
             $data['lon'] = (float) $data['lon'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('lat', $data) && null !== $data['lat']) {
             $object->setLat($data['lat']);
             unset($data['lat']);
         } elseif (\array_key_exists('lat', $data) && null === $data['lat']) {
             $object->setLat(null);
+            unset($data['lat']);
         }
         if (\array_key_exists('lon', $data) && null !== $data['lon']) {
             $object->setLon($data['lon']);
             unset($data['lon']);
         } elseif (\array_key_exists('lon', $data) && null === $data['lon']) {
             $object->setLon(null);
+            unset($data['lon']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -84,7 +86,7 @@ class CoordinatesNormalizer implements DenormalizerInterface, NormalizerInterfac
         $dataArray = [];
         $dataArray['lat'] = $data->getLat();
         $dataArray['lon'] = $data->getLon();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

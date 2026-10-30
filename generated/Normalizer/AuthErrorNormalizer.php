@@ -42,27 +42,29 @@ class AuthErrorNormalizer implements DenormalizerInterface, NormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AuthError();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AuthError();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('error', $data) && null !== $data['error']) {
             $object->setError($data['error']);
             unset($data['error']);
         } elseif (\array_key_exists('error', $data) && null === $data['error']) {
             $object->setError(null);
+            unset($data['error']);
         }
         if (\array_key_exists('error_description', $data) && null !== $data['error_description']) {
             $object->setErrorDescription($data['error_description']);
             unset($data['error_description']);
         } elseif (\array_key_exists('error_description', $data) && null === $data['error_description']) {
             $object->setErrorDescription(null);
+            unset($data['error_description']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -80,7 +82,7 @@ class AuthErrorNormalizer implements DenormalizerInterface, NormalizerInterface,
         if ($data->isInitialized('errorDescription') && null !== $data->getErrorDescription()) {
             $dataArray['error_description'] = $data->getErrorDescription();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

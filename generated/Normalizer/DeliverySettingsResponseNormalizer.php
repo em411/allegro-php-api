@@ -42,45 +42,50 @@ class DeliverySettingsResponseNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\DeliverySettingsResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\DeliverySettingsResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('marketplace', $data) && null !== $data['marketplace']) {
             $object->setMarketplace($this->denormalizer->denormalize($data['marketplace'], \Em411\Allegro\Api\Model\DeliverySettingsResponseMarketplace::class, 'json', $context));
             unset($data['marketplace']);
         } elseif (\array_key_exists('marketplace', $data) && null === $data['marketplace']) {
             $object->setMarketplace(null);
+            unset($data['marketplace']);
         }
         if (\array_key_exists('freeDelivery', $data) && null !== $data['freeDelivery']) {
             $object->setFreeDelivery($this->denormalizer->denormalize($data['freeDelivery'], \Em411\Allegro\Api\Model\DeliverySettingsResponseFreeDelivery::class, 'json', $context));
             unset($data['freeDelivery']);
         } elseif (\array_key_exists('freeDelivery', $data) && null === $data['freeDelivery']) {
             $object->setFreeDelivery(null);
+            unset($data['freeDelivery']);
         }
         if (\array_key_exists('abroadFreeDelivery', $data) && null !== $data['abroadFreeDelivery']) {
             $object->setAbroadFreeDelivery($this->denormalizer->denormalize($data['abroadFreeDelivery'], \Em411\Allegro\Api\Model\DeliverySettingsResponseAbroadFreeDelivery::class, 'json', $context));
             unset($data['abroadFreeDelivery']);
         } elseif (\array_key_exists('abroadFreeDelivery', $data) && null === $data['abroadFreeDelivery']) {
             $object->setAbroadFreeDelivery(null);
+            unset($data['abroadFreeDelivery']);
         }
         if (\array_key_exists('joinPolicy', $data) && null !== $data['joinPolicy']) {
             $object->setJoinPolicy($this->denormalizer->denormalize($data['joinPolicy'], \Em411\Allegro\Api\Model\DeliverySettingsResponseJoinPolicy::class, 'json', $context));
             unset($data['joinPolicy']);
         } elseif (\array_key_exists('joinPolicy', $data) && null === $data['joinPolicy']) {
             $object->setJoinPolicy(null);
+            unset($data['joinPolicy']);
         }
         if (\array_key_exists('updatedAt', $data) && null !== $data['updatedAt']) {
             $object->setUpdatedAt($data['updatedAt']);
             unset($data['updatedAt']);
         } elseif (\array_key_exists('updatedAt', $data) && null === $data['updatedAt']) {
             $object->setUpdatedAt(null);
+            unset($data['updatedAt']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -94,16 +99,16 @@ class DeliverySettingsResponseNormalizer implements DenormalizerInterface, Norma
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['marketplace'] = $this->normalizer->normalize($data->getMarketplace(), 'json', $context);
+        $dataArray['marketplace'] = null === $data->getMarketplace() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMarketplace(), 'json', $context));
         if ($data->isInitialized('freeDelivery') && null !== $data->getFreeDelivery()) {
-            $dataArray['freeDelivery'] = $this->normalizer->normalize($data->getFreeDelivery(), 'json', $context);
+            $dataArray['freeDelivery'] = null === $data->getFreeDelivery() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getFreeDelivery(), 'json', $context));
         }
         if ($data->isInitialized('abroadFreeDelivery') && null !== $data->getAbroadFreeDelivery()) {
-            $dataArray['abroadFreeDelivery'] = $this->normalizer->normalize($data->getAbroadFreeDelivery(), 'json', $context);
+            $dataArray['abroadFreeDelivery'] = null === $data->getAbroadFreeDelivery() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAbroadFreeDelivery(), 'json', $context));
         }
-        $dataArray['joinPolicy'] = $this->normalizer->normalize($data->getJoinPolicy(), 'json', $context);
+        $dataArray['joinPolicy'] = null === $data->getJoinPolicy() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getJoinPolicy(), 'json', $context));
         $dataArray['updatedAt'] = $data->getUpdatedAt();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

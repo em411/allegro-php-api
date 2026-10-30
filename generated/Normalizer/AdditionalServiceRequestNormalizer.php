@@ -42,27 +42,29 @@ class AdditionalServiceRequestNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AdditionalServiceRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AdditionalServiceRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('definition', $data) && null !== $data['definition']) {
             $object->setDefinition($this->denormalizer->denormalize($data['definition'], \Em411\Allegro\Api\Model\AdditionalServiceDefinitionRequest::class, 'json', $context));
             unset($data['definition']);
         } elseif (\array_key_exists('definition', $data) && null === $data['definition']) {
             $object->setDefinition(null);
+            unset($data['definition']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($data['description']);
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         if (\array_key_exists('configurations', $data) && null !== $data['configurations']) {
             $values = [];
@@ -73,6 +75,7 @@ class AdditionalServiceRequestNormalizer implements DenormalizerInterface, Norma
             unset($data['configurations']);
         } elseif (\array_key_exists('configurations', $data) && null === $data['configurations']) {
             $object->setConfigurations(null);
+            unset($data['configurations']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,14 +89,14 @@ class AdditionalServiceRequestNormalizer implements DenormalizerInterface, Norma
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['definition'] = $this->normalizer->normalize($data->getDefinition(), 'json', $context);
+        $dataArray['definition'] = null === $data->getDefinition() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDefinition(), 'json', $context));
         $dataArray['description'] = $data->getDescription();
         $values = [];
         foreach ($data->getConfigurations() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['configurations'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

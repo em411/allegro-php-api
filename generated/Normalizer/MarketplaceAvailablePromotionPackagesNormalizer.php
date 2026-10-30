@@ -42,21 +42,22 @@ class MarketplaceAvailablePromotionPackagesNormalizer implements DenormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\MarketplaceAvailablePromotionPackages();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\MarketplaceAvailablePromotionPackages();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
             $object->setMarketplaceId($data['marketplaceId']);
             unset($data['marketplaceId']);
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
+            unset($data['marketplaceId']);
         }
         if (\array_key_exists('basePackages', $data) && null !== $data['basePackages']) {
             $values = [];
@@ -67,6 +68,7 @@ class MarketplaceAvailablePromotionPackagesNormalizer implements DenormalizerInt
             unset($data['basePackages']);
         } elseif (\array_key_exists('basePackages', $data) && null === $data['basePackages']) {
             $object->setBasePackages(null);
+            unset($data['basePackages']);
         }
         if (\array_key_exists('extraPackages', $data) && null !== $data['extraPackages']) {
             $values_1 = [];
@@ -77,6 +79,7 @@ class MarketplaceAvailablePromotionPackagesNormalizer implements DenormalizerInt
             unset($data['extraPackages']);
         } elseif (\array_key_exists('extraPackages', $data) && null === $data['extraPackages']) {
             $object->setExtraPackages(null);
+            unset($data['extraPackages']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -96,18 +99,18 @@ class MarketplaceAvailablePromotionPackagesNormalizer implements DenormalizerInt
         if ($data->isInitialized('basePackages') && null !== $data->getBasePackages()) {
             $values = [];
             foreach ($data->getBasePackages() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['basePackages'] = $values;
         }
         if ($data->isInitialized('extraPackages') && null !== $data->getExtraPackages()) {
             $values_1 = [];
             foreach ($data->getExtraPackages() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['extraPackages'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

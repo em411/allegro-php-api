@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AdvanceShipNotice extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AdvanceShipNotice implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -139,5 +143,10 @@ class AdvanceShipNotice extends \ArrayObject
         $this->declaredVolumeInCc = $declaredVolumeInCc;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['items' => ['items', 'getItems', 'setItems'], 'handlingUnit' => ['handlingUnit', 'getHandlingUnit', 'setHandlingUnit'], 'shipping' => ['shipping', 'getShipping', 'setShipping'], 'declaredVolumeInCc' => ['declaredVolumeInCc', 'getDeclaredVolumeInCc', 'setDeclaredVolumeInCc']];
     }
 }

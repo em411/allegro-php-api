@@ -21,17 +21,14 @@ class GetChatFromIssueUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
     /**
      * Use this resource to get the list of messages and state changes within a dispute or claim. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#wiadomosci-z-dyskusji-i-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#disputes-and-claims-messages" target="_blank">EN</a>.
      *
-     * @param string $issueId         dispute or claim identifier
-     * @param array  $queryParameters {
-     *
-     * @var int $limit the maximum number of messages within issue returned in a response
-     * @var int $offset Index of first returned message within issue.
-     *          }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $issueId dispute or claim identifier
+     * @param array{
+     *    "limit"?: int, //The maximum number of messages within issue returned in a response.
+     *    "offset"?: int, //Index of first returned message within issue.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $issueId, array $queryParameters = [], array $headerParameters = [])
     {
@@ -47,7 +44,7 @@ class GetChatFromIssueUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
 
     public function getUri(): string
     {
-        return str_replace(['{issueId}'], [$this->issueId], '/sale/issues/{issueId}/chat');
+        return str_replace(['{issueId}'], [rawurlencode($this->issueId)], '/sale/issues/{issueId}/chat');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -99,7 +96,7 @@ class GetChatFromIssueUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PostPurchaseIssueChatResponse', 'json');
         }
         if (401 === $status) {

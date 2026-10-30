@@ -42,24 +42,25 @@ class OfferBulkModificationNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferBulkModification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferBulkModification();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('offerId', $data) && null !== $data['offerId']) {
             $object->setOfferId($data['offerId']);
             unset($data['offerId']);
         } elseif (\array_key_exists('offerId', $data) && null === $data['offerId']) {
             $object->setOfferId(null);
+            unset($data['offerId']);
         }
         if (\array_key_exists('prices', $data) && null !== $data['prices']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['prices'] as $key => $value) {
                 $values[$key] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\OfferBulkModificationPricesItem::class, 'json', $context);
             }
@@ -67,12 +68,14 @@ class OfferBulkModificationNormalizer implements DenormalizerInterface, Normaliz
             unset($data['prices']);
         } elseif (\array_key_exists('prices', $data) && null === $data['prices']) {
             $object->setPrices(null);
+            unset($data['prices']);
         }
         if (\array_key_exists('stock', $data) && null !== $data['stock']) {
             $object->setStock($this->denormalizer->denormalize($data['stock'], \Em411\Allegro\Api\Model\OfferBulkModificationStock::class, 'json', $context));
             unset($data['stock']);
         } elseif (\array_key_exists('stock', $data) && null === $data['stock']) {
             $object->setStock(null);
+            unset($data['stock']);
         }
         foreach ($data as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -88,16 +91,16 @@ class OfferBulkModificationNormalizer implements DenormalizerInterface, Normaliz
         $dataArray = [];
         $dataArray['offerId'] = $data->getOfferId();
         if ($data->isInitialized('prices') && null !== $data->getPrices()) {
-            $values = [];
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data->getPrices() as $key => $value) {
-                $values[$key] = $this->normalizer->normalize($value, 'json', $context);
+                $values[$key] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['prices'] = $values;
         }
         if ($data->isInitialized('stock') && null !== $data->getStock()) {
-            $dataArray['stock'] = $this->normalizer->normalize($data->getStock(), 'json', $context);
+            $dataArray['stock'] = null === $data->getStock() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getStock(), 'json', $context));
         }
-        foreach ($data as $key_1 => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_1) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_1;
             }

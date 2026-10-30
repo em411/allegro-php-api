@@ -42,45 +42,49 @@ class OfferSellerNormalizer implements DenormalizerInterface, NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferSeller();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\OfferSeller();
         if (\array_key_exists('company', $data) && \is_int($data['company'])) {
             $data['company'] = (bool) $data['company'];
         }
         if (\array_key_exists('superSeller', $data) && \is_int($data['superSeller'])) {
             $data['superSeller'] = (bool) $data['superSeller'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('login', $data) && null !== $data['login']) {
             $object->setLogin($data['login']);
             unset($data['login']);
         } elseif (\array_key_exists('login', $data) && null === $data['login']) {
             $object->setLogin(null);
+            unset($data['login']);
         }
         if (\array_key_exists('company', $data) && null !== $data['company']) {
             $object->setCompany($data['company']);
             unset($data['company']);
         } elseif (\array_key_exists('company', $data) && null === $data['company']) {
             $object->setCompany(null);
+            unset($data['company']);
         }
         if (\array_key_exists('superSeller', $data) && null !== $data['superSeller']) {
             $object->setSuperSeller($data['superSeller']);
             unset($data['superSeller']);
         } elseif (\array_key_exists('superSeller', $data) && null === $data['superSeller']) {
             $object->setSuperSeller(null);
+            unset($data['superSeller']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -106,7 +110,7 @@ class OfferSellerNormalizer implements DenormalizerInterface, NormalizerInterfac
         if ($data->isInitialized('superSeller') && null !== $data->getSuperSeller()) {
             $dataArray['superSeller'] = $data->getSuperSeller();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

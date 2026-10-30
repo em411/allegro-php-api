@@ -20,22 +20,19 @@ class GetRefundedPayments extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
     /**
      * Get a list of refunded payments. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-pobrac-liste-zwrotow-platnosci" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-retrieve-a-list-of-refunded-payment" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var int    $limit number of returned operations
-     * @var int    $offset index of the first returned payment operation from all search results
-     * @var string $id ID of the refund
-     * @var string $payment.id ID of the payment.
-     * @var string $order.id ID of the order.
-     * @var string $occurredAt.gte Minimum date and time when the refund occurred provided in ISO 8601 format.
-     * @var string $occurredAt.lte Maximum date and time when the refund occurred provided in ISO 8601 format.
-     * @var array  $status Current status of payment refund.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "limit"?: int, //Number of returned operations.
+     *    "offset"?: int, //Index of the first returned payment operation from all search results.
+     *    "id"?: string, //ID of the refund.
+     *    "payment.id"?: string, //ID of the payment.
+     *    "order.id"?: string, //ID of the order.
+     *    "occurredAt.gte"?: string, //Minimum date and time when the refund occurred provided in ISO 8601 format.
+     *    "occurredAt.lte"?: string, //Maximum date and time when the refund occurred provided in ISO 8601 format.
+     *    "status"?: array, //Current status of payment refund.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -97,6 +94,11 @@ class GetRefundedPayments extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['status' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\PaymentsRefundsGetResponse200|null
      *
@@ -108,16 +110,16 @@ class GetRefundedPayments extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PaymentsRefundsGetResponse200', 'json');
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetRefundedPaymentsUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (403 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetRefundedPaymentsForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\PaymentsRefundsGetResponse403', 'json'), $response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetRefundedPaymentsUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

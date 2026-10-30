@@ -42,33 +42,36 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsFirstItemRate();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsFirstItemRate();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('min', $data) && null !== $data['min']) {
             $object->setMin($data['min']);
             unset($data['min']);
         } elseif (\array_key_exists('min', $data) && null === $data['min']) {
             $object->setMin(null);
+            unset($data['min']);
         }
         if (\array_key_exists('max', $data) && null !== $data['max']) {
             $object->setMax($data['max']);
             unset($data['max']);
         } elseif (\array_key_exists('max', $data) && null === $data['max']) {
             $object->setMax(null);
+            unset($data['max']);
         }
         if (\array_key_exists('currency', $data) && null !== $data['currency']) {
             $object->setCurrency($data['currency']);
             unset($data['currency']);
         } elseif (\array_key_exists('currency', $data) && null === $data['currency']) {
             $object->setCurrency(null);
+            unset($data['currency']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -91,7 +94,7 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
         if ($data->isInitialized('currency') && null !== $data->getCurrency()) {
             $dataArray['currency'] = $data->getCurrency();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ClaimStatusChangeRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ClaimStatusChangeRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -82,5 +86,10 @@ class ClaimStatusChangeRequest extends \ArrayObject
         $this->partialRefund = $partialRefund;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['status' => ['status', 'getStatus', 'setStatus'], 'message' => ['message', 'getMessage', 'setMessage'], 'partialRefund' => ['partialRefund', 'getPartialRefund', 'setPartialRefund']];
     }
 }

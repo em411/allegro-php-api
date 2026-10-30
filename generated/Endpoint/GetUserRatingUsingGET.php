@@ -22,12 +22,10 @@ class GetUserRatingUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
     /**
      * Use this resource to receive your sales rating by given rating id. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-informacje-o-ocenie-sprzedazy" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-user-s-ratings-data" target="_blank">EN</a>.
      *
-     * @param string $ratingId         the ID of the rating
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
-     *             }
-     *
+     * @param string $ratingId the ID of the rating
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
     public function __construct(string $ratingId, array $headerParameters = [], array $accept = [])
@@ -44,7 +42,7 @@ class GetUserRatingUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
 
     public function getUri(): string
     {
-        return str_replace(['{ratingId}'], [$this->ratingId], '/sale/user-ratings/{ratingId}');
+        return str_replace(['{ratingId}'], [rawurlencode($this->ratingId)], '/sale/user-ratings/{ratingId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -89,10 +87,10 @@ class GetUserRatingUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoi
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
         if (200 === $status) {
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
                 return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\UserRating', 'json');
             }
-            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
                 return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\UserRatingVBeta1', 'json');
             }
         }

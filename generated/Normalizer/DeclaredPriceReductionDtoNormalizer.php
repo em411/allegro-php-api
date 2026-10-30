@@ -42,27 +42,29 @@ class DeclaredPriceReductionDtoNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\DeclaredPriceReductionDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\DeclaredPriceReductionDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('sellerMaxDeclaredPercentage', $data) && null !== $data['sellerMaxDeclaredPercentage']) {
             $object->setSellerMaxDeclaredPercentage($data['sellerMaxDeclaredPercentage']);
             unset($data['sellerMaxDeclaredPercentage']);
         } elseif (\array_key_exists('sellerMaxDeclaredPercentage', $data) && null === $data['sellerMaxDeclaredPercentage']) {
             $object->setSellerMaxDeclaredPercentage(null);
+            unset($data['sellerMaxDeclaredPercentage']);
         }
         if (\array_key_exists('sellerMaxDeclaredDiscount', $data) && null !== $data['sellerMaxDeclaredDiscount']) {
             $object->setSellerMaxDeclaredDiscount($this->denormalizer->denormalize($data['sellerMaxDeclaredDiscount'], \Em411\Allegro\Api\Model\DeclaredPriceReductionDtoSellerMaxDeclaredDiscount::class, 'json', $context));
             unset($data['sellerMaxDeclaredDiscount']);
         } elseif (\array_key_exists('sellerMaxDeclaredDiscount', $data) && null === $data['sellerMaxDeclaredDiscount']) {
             $object->setSellerMaxDeclaredDiscount(null);
+            unset($data['sellerMaxDeclaredDiscount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,8 +79,8 @@ class DeclaredPriceReductionDtoNormalizer implements DenormalizerInterface, Norm
     {
         $dataArray = [];
         $dataArray['sellerMaxDeclaredPercentage'] = $data->getSellerMaxDeclaredPercentage();
-        $dataArray['sellerMaxDeclaredDiscount'] = $this->normalizer->normalize($data->getSellerMaxDeclaredDiscount(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['sellerMaxDeclaredDiscount'] = null === $data->getSellerMaxDeclaredDiscount() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSellerMaxDeclaredDiscount(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

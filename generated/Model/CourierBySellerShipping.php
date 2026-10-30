@@ -99,4 +99,9 @@ class CourierBySellerShipping extends ShippingExtended
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['courier' => ['courier', 'getCourier', 'setCourier'], 'estimatedTimeOfArrival' => ['estimatedTimeOfArrival', 'getEstimatedTimeOfArrival', 'setEstimatedTimeOfArrival'], 'countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode']]);
+    }
 }

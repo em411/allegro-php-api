@@ -42,51 +42,57 @@ class OfferListingDtoV1PublicationNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1Publication();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferListingDtoV1Publication();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('startingAt', $data) && null !== $data['startingAt']) {
             $object->setStartingAt($data['startingAt']);
             unset($data['startingAt']);
         } elseif (\array_key_exists('startingAt', $data) && null === $data['startingAt']) {
             $object->setStartingAt(null);
+            unset($data['startingAt']);
         }
         if (\array_key_exists('startedAt', $data) && null !== $data['startedAt']) {
             $object->setStartedAt($data['startedAt']);
             unset($data['startedAt']);
         } elseif (\array_key_exists('startedAt', $data) && null === $data['startedAt']) {
             $object->setStartedAt(null);
+            unset($data['startedAt']);
         }
         if (\array_key_exists('endingAt', $data) && null !== $data['endingAt']) {
             $object->setEndingAt($data['endingAt']);
             unset($data['endingAt']);
         } elseif (\array_key_exists('endingAt', $data) && null === $data['endingAt']) {
             $object->setEndingAt(null);
+            unset($data['endingAt']);
         }
         if (\array_key_exists('endedAt', $data) && null !== $data['endedAt']) {
             $object->setEndedAt($data['endedAt']);
             unset($data['endedAt']);
         } elseif (\array_key_exists('endedAt', $data) && null === $data['endedAt']) {
             $object->setEndedAt(null);
+            unset($data['endedAt']);
         }
         if (\array_key_exists('marketplaces', $data) && null !== $data['marketplaces']) {
             $object->setMarketplaces($this->denormalizer->denormalize($data['marketplaces'], \Em411\Allegro\Api\Model\OfferListingDtoV1PublicationMarketplaces::class, 'json', $context));
             unset($data['marketplaces']);
         } elseif (\array_key_exists('marketplaces', $data) && null === $data['marketplaces']) {
             $object->setMarketplaces(null);
+            unset($data['marketplaces']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -116,9 +122,9 @@ class OfferListingDtoV1PublicationNormalizer implements DenormalizerInterface, N
             $dataArray['endedAt'] = $data->getEndedAt();
         }
         if ($data->isInitialized('marketplaces') && null !== $data->getMarketplaces()) {
-            $dataArray['marketplaces'] = $this->normalizer->normalize($data->getMarketplaces(), 'json', $context);
+            $dataArray['marketplaces'] = null === $data->getMarketplaces() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMarketplaces(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

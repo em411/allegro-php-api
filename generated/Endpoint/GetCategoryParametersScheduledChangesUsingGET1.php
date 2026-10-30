@@ -22,22 +22,18 @@ class GetCategoryParametersScheduledChangesUsingGET1 extends \Em411\Allegro\Api\
      * Use this resource to get information about planned changes in category parameters. Please note that in some cases, the returned events may finally not happen in the future.
      * At present we support the following changes: - REQUIREMENT_CHANGE - the parameter will be required in the category. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-sprawdzic-przyszle-zmiany-w-parametrach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-check-future-changes-in-parameters" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $scheduledFor.gte The minimum date and time from which the change will be effective from in ISO 8601 format. Should be greater than the current date time and less than 3 months from the current date.
-     * @var string $scheduledFor.lte The maximum date and time from which the change will be effective from in ISO 8601 format. Should be greater than the current date time and less than 3 months from the current date.
-     * @var string $scheduledAt.gte The minimum date and time at which the change was scheduled in ISO 8601 format.
-     * @var string $scheduledAt.lte The maximum date and time at which the change was scheduled in ISO 8601 format.
-     * @var array  $type The types of changes that will be returned in the response. All types of changes are returned by default.
-     * @var int    $offset the offset of elements in the response
-     * @var int    $limit The limit of elements in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "scheduledFor.gte"?: string, //The minimum date and time from which the change will be effective from in ISO 8601 format. Should be greater than the current date time and less than 3 months from the current date.
+     *    "scheduledFor.lte"?: string, //The maximum date and time from which the change will be effective from in ISO 8601 format. Should be greater than the current date time and less than 3 months from the current date.
+     *    "scheduledAt.gte"?: string, //The minimum date and time at which the change was scheduled in ISO 8601 format.
+     *    "scheduledAt.lte"?: string, //The maximum date and time at which the change was scheduled in ISO 8601 format.
+     *    "type"?: array, //The types of changes that will be returned in the response. All types of changes are returned by default.
+     *    "offset"?: int, //The offset of elements in the response.
+     *    "limit"?: int, //The limit of elements in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [], array $accept = [])
@@ -104,6 +100,11 @@ class GetCategoryParametersScheduledChangesUsingGET1 extends \Em411\Allegro\Api\
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['type' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\CategoryParametersScheduledChangesResponse|null
      *
@@ -114,13 +115,13 @@ class GetCategoryParametersScheduledChangesUsingGET1 extends \Em411\Allegro\Api\
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\CategoryParametersScheduledChangesResponse', 'json');
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCategoryParametersScheduledChangesUsingGET1BadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCategoryParametersScheduledChangesUsingGET1UnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
     }

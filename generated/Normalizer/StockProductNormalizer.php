@@ -42,27 +42,29 @@ class StockProductNormalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\StockProduct();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\StockProduct();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('gtins', $data) && null !== $data['gtins']) {
             $values = [];
@@ -73,12 +75,14 @@ class StockProductNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['gtins']);
         } elseif (\array_key_exists('gtins', $data) && null === $data['gtins']) {
             $object->setGtins(null);
+            unset($data['gtins']);
         }
         if (\array_key_exists('image', $data) && null !== $data['image']) {
             $object->setImage($data['image']);
             unset($data['image']);
         } elseif (\array_key_exists('image', $data) && null === $data['image']) {
             $object->setImage(null);
+            unset($data['image']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -108,7 +112,7 @@ class StockProductNormalizer implements DenormalizerInterface, NormalizerInterfa
         if ($data->isInitialized('image') && null !== $data->getImage()) {
             $dataArray['image'] = $data->getImage();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

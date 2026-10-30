@@ -42,21 +42,22 @@ class ClassifiedsPackagesNormalizer implements DenormalizerInterface, Normalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ClassifiedsPackages();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ClassifiedsPackages();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('basePackage', $data) && null !== $data['basePackage']) {
             $object->setBasePackage($this->denormalizer->denormalize($data['basePackage'], \Em411\Allegro\Api\Model\ClassifiedPackage::class, 'json', $context));
             unset($data['basePackage']);
         } elseif (\array_key_exists('basePackage', $data) && null === $data['basePackage']) {
             $object->setBasePackage(null);
+            unset($data['basePackage']);
         }
         if (\array_key_exists('extraPackages', $data) && null !== $data['extraPackages']) {
             $values = [];
@@ -67,6 +68,7 @@ class ClassifiedsPackagesNormalizer implements DenormalizerInterface, Normalizer
             unset($data['extraPackages']);
         } elseif (\array_key_exists('extraPackages', $data) && null === $data['extraPackages']) {
             $object->setExtraPackages(null);
+            unset($data['extraPackages']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -81,16 +83,16 @@ class ClassifiedsPackagesNormalizer implements DenormalizerInterface, Normalizer
     {
         $dataArray = [];
         if ($data->isInitialized('basePackage') && null !== $data->getBasePackage()) {
-            $dataArray['basePackage'] = $this->normalizer->normalize($data->getBasePackage(), 'json', $context);
+            $dataArray['basePackage'] = null === $data->getBasePackage() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBasePackage(), 'json', $context));
         }
         if ($data->isInitialized('extraPackages') && null !== $data->getExtraPackages()) {
             $values = [];
             foreach ($data->getExtraPackages() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['extraPackages'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

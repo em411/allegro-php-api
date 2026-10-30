@@ -42,15 +42,15 @@ class BillingEntriesNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BillingEntries();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BillingEntries();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('billingEntries', $data) && null !== $data['billingEntries']) {
             $values = [];
@@ -61,6 +61,7 @@ class BillingEntriesNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['billingEntries']);
         } elseif (\array_key_exists('billingEntries', $data) && null === $data['billingEntries']) {
             $object->setBillingEntries(null);
+            unset($data['billingEntries']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,11 +78,11 @@ class BillingEntriesNormalizer implements DenormalizerInterface, NormalizerInter
         if ($data->isInitialized('billingEntries') && null !== $data->getBillingEntries()) {
             $values = [];
             foreach ($data->getBillingEntries() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['billingEntries'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

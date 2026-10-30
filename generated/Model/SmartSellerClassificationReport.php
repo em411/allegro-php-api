@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SmartSellerClassificationReport extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SmartSellerClassificationReport implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -106,5 +110,10 @@ class SmartSellerClassificationReport extends \ArrayObject
         $this->excludedDeliveryMethods = $excludedDeliveryMethods;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['classification' => ['classification', 'getClassification', 'setClassification'], 'conditions' => ['conditions', 'getConditions', 'setConditions'], 'excludedDeliveryMethods' => ['excludedDeliveryMethods', 'getExcludedDeliveryMethods', 'setExcludedDeliveryMethods']];
     }
 }

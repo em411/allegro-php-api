@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PickupProposalsRequestDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PickupProposalsRequestDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class PickupProposalsRequestDto extends \ArrayObject
         $this->address = $address;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['shipmentIds' => ['shipmentIds', 'getShipmentIds', 'setShipmentIds'], 'readyDate' => ['readyDate', 'getReadyDate', 'setReadyDate'], 'address' => ['address', 'getAddress', 'setAddress']];
     }
 }

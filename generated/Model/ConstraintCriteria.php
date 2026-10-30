@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ConstraintCriteria extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ConstraintCriteria implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class ConstraintCriteria extends \ArrayObject
         $this->categories = $categories;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['country' => ['country', 'getCountry', 'setCountry'], 'type' => ['type', 'getType', 'setType'], 'deliveryMethods' => ['deliveryMethods', 'getDeliveryMethods', 'setDeliveryMethods'], 'categories' => ['categories', 'getCategories', 'setCategories']];
     }
 }

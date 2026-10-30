@@ -42,45 +42,50 @@ class CompatibilityListSupportedCategoriesDtoSupportedCategoriesItemNormalizer i
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CompatibilityListSupportedCategoriesDtoSupportedCategoriesItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CompatibilityListSupportedCategoriesDtoSupportedCategoriesItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('categoryId', $data) && null !== $data['categoryId']) {
             $object->setCategoryId($data['categoryId']);
             unset($data['categoryId']);
         } elseif (\array_key_exists('categoryId', $data) && null === $data['categoryId']) {
             $object->setCategoryId(null);
+            unset($data['categoryId']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('itemsType', $data) && null !== $data['itemsType']) {
             $object->setItemsType($data['itemsType']);
             unset($data['itemsType']);
         } elseif (\array_key_exists('itemsType', $data) && null === $data['itemsType']) {
             $object->setItemsType(null);
+            unset($data['itemsType']);
         }
         if (\array_key_exists('inputType', $data) && null !== $data['inputType']) {
             $object->setInputType($data['inputType']);
             unset($data['inputType']);
         } elseif (\array_key_exists('inputType', $data) && null === $data['inputType']) {
             $object->setInputType(null);
+            unset($data['inputType']);
         }
         if (\array_key_exists('validationRules', $data) && null !== $data['validationRules']) {
             $object->setValidationRules($this->denormalizer->denormalize($data['validationRules'], \Em411\Allegro\Api\Model\CompatibilityListSupportedCategoriesDtoSupportedCategoriesItemValidationRules::class, 'json', $context));
             unset($data['validationRules']);
         } elseif (\array_key_exists('validationRules', $data) && null === $data['validationRules']) {
             $object->setValidationRules(null);
+            unset($data['validationRules']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -107,9 +112,9 @@ class CompatibilityListSupportedCategoriesDtoSupportedCategoriesItemNormalizer i
             $dataArray['inputType'] = $data->getInputType();
         }
         if ($data->isInitialized('validationRules') && null !== $data->getValidationRules()) {
-            $dataArray['validationRules'] = $this->normalizer->normalize($data->getValidationRules(), 'json', $context);
+            $dataArray['validationRules'] = null === $data->getValidationRules() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getValidationRules(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

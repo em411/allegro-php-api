@@ -42,33 +42,36 @@ class PricingOfferNormalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PricingOffer();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PricingOffer();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('fundraisingCampaign', $data) && null !== $data['fundraisingCampaign']) {
             $object->setFundraisingCampaign($this->denormalizer->denormalize($data['fundraisingCampaign'], \Em411\Allegro\Api\Model\JustId::class, 'json', $context));
             unset($data['fundraisingCampaign']);
         } elseif (\array_key_exists('fundraisingCampaign', $data) && null === $data['fundraisingCampaign']) {
             $object->setFundraisingCampaign(null);
+            unset($data['fundraisingCampaign']);
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('category', $data) && null !== $data['category']) {
             $object->setCategory($this->denormalizer->denormalize($data['category'], \Em411\Allegro\Api\Model\Category::class, 'json', $context));
             unset($data['category']);
         } elseif (\array_key_exists('category', $data) && null === $data['category']) {
             $object->setCategory(null);
+            unset($data['category']);
         }
         if (\array_key_exists('parameters', $data) && null !== $data['parameters']) {
             $values = [];
@@ -79,24 +82,28 @@ class PricingOfferNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['parameters']);
         } elseif (\array_key_exists('parameters', $data) && null === $data['parameters']) {
             $object->setParameters(null);
+            unset($data['parameters']);
         }
         if (\array_key_exists('promotion', $data) && null !== $data['promotion']) {
             $object->setPromotion($this->denormalizer->denormalize($data['promotion'], \Em411\Allegro\Api\Model\Promotion::class, 'json', $context));
             unset($data['promotion']);
         } elseif (\array_key_exists('promotion', $data) && null === $data['promotion']) {
             $object->setPromotion(null);
+            unset($data['promotion']);
         }
         if (\array_key_exists('publication', $data) && null !== $data['publication']) {
             $object->setPublication($this->denormalizer->denormalize($data['publication'], \Em411\Allegro\Api\Model\PricingPublication::class, 'json', $context));
             unset($data['publication']);
         } elseif (\array_key_exists('publication', $data) && null === $data['publication']) {
             $object->setPublication(null);
+            unset($data['publication']);
         }
         if (\array_key_exists('sellingMode', $data) && null !== $data['sellingMode']) {
             $object->setSellingMode($this->denormalizer->denormalize($data['sellingMode'], \Em411\Allegro\Api\Model\SellingModeWithNetPrice::class, 'json', $context));
             unset($data['sellingMode']);
         } elseif (\array_key_exists('sellingMode', $data) && null === $data['sellingMode']) {
             $object->setSellingMode(null);
+            unset($data['sellingMode']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -111,31 +118,31 @@ class PricingOfferNormalizer implements DenormalizerInterface, NormalizerInterfa
     {
         $dataArray = [];
         if ($data->isInitialized('fundraisingCampaign') && null !== $data->getFundraisingCampaign()) {
-            $dataArray['fundraisingCampaign'] = $this->normalizer->normalize($data->getFundraisingCampaign(), 'json', $context);
+            $dataArray['fundraisingCampaign'] = null === $data->getFundraisingCampaign() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getFundraisingCampaign(), 'json', $context));
         }
         if ($data->isInitialized('id') && null !== $data->getId()) {
             $dataArray['id'] = $data->getId();
         }
         if ($data->isInitialized('category') && null !== $data->getCategory()) {
-            $dataArray['category'] = $this->normalizer->normalize($data->getCategory(), 'json', $context);
+            $dataArray['category'] = null === $data->getCategory() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCategory(), 'json', $context));
         }
         if ($data->isInitialized('parameters') && null !== $data->getParameters()) {
             $values = [];
             foreach ($data->getParameters() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['parameters'] = $values;
         }
         if ($data->isInitialized('promotion') && null !== $data->getPromotion()) {
-            $dataArray['promotion'] = $this->normalizer->normalize($data->getPromotion(), 'json', $context);
+            $dataArray['promotion'] = null === $data->getPromotion() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPromotion(), 'json', $context));
         }
         if ($data->isInitialized('publication') && null !== $data->getPublication()) {
-            $dataArray['publication'] = $this->normalizer->normalize($data->getPublication(), 'json', $context);
+            $dataArray['publication'] = null === $data->getPublication() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPublication(), 'json', $context));
         }
         if ($data->isInitialized('sellingMode') && null !== $data->getSellingMode()) {
-            $dataArray['sellingMode'] = $this->normalizer->normalize($data->getSellingMode(), 'json', $context);
+            $dataArray['sellingMode'] = null === $data->getSellingMode() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSellingMode(), 'json', $context));
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

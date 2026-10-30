@@ -42,45 +42,50 @@ class Error504Normalizer implements DenormalizerInterface, NormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Error504();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Error504();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('code', $data) && null !== $data['code']) {
             $object->setCode($data['code']);
             unset($data['code']);
         } elseif (\array_key_exists('code', $data) && null === $data['code']) {
             $object->setCode(null);
+            unset($data['code']);
         }
         if (\array_key_exists('details', $data) && null !== $data['details']) {
             $object->setDetails($data['details']);
             unset($data['details']);
         } elseif (\array_key_exists('details', $data) && null === $data['details']) {
             $object->setDetails(null);
+            unset($data['details']);
         }
         if (\array_key_exists('message', $data) && null !== $data['message']) {
             $object->setMessage($data['message']);
             unset($data['message']);
         } elseif (\array_key_exists('message', $data) && null === $data['message']) {
             $object->setMessage(null);
+            unset($data['message']);
         }
         if (\array_key_exists('path', $data) && null !== $data['path']) {
             $object->setPath($data['path']);
             unset($data['path']);
         } elseif (\array_key_exists('path', $data) && null === $data['path']) {
             $object->setPath(null);
+            unset($data['path']);
         }
         if (\array_key_exists('userMessage', $data) && null !== $data['userMessage']) {
             $object->setUserMessage($data['userMessage']);
             unset($data['userMessage']);
         } elseif (\array_key_exists('userMessage', $data) && null === $data['userMessage']) {
             $object->setUserMessage(null);
+            unset($data['userMessage']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -103,13 +108,13 @@ class Error504Normalizer implements DenormalizerInterface, NormalizerInterface, 
         if ($data->isInitialized('message') && null !== $data->getMessage()) {
             $dataArray['message'] = $data->getMessage();
         }
-        if ($data->isInitialized('path')) {
+        if ($data->isInitialized('path') && null !== $data->getPath()) {
             $dataArray['path'] = $data->getPath();
         }
         if ($data->isInitialized('userMessage') && null !== $data->getUserMessage()) {
             $dataArray['userMessage'] = $data->getUserMessage();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

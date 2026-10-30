@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class MessageRelatedObjectVBeta1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class MessageRelatedObjectVBeta1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -57,5 +61,10 @@ class MessageRelatedObjectVBeta1 extends \ArrayObject
         $this->order = $order;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['offer' => ['offer', 'getOffer', 'setOffer'], 'order' => ['order', 'getOrder', 'setOrder']];
     }
 }

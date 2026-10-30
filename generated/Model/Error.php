@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Error extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Error implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -177,5 +181,10 @@ class Error extends \ArrayObject
         $this->metadata = $metadata;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['code' => ['code', 'getCode', 'setCode'], 'details' => ['details', 'getDetails', 'setDetails'], 'message' => ['message', 'getMessage', 'setMessage'], 'path' => ['path', 'getPath', 'setPath'], 'userMessage' => ['userMessage', 'getUserMessage', 'setUserMessage'], 'metadata' => ['metadata', 'getMetadata', 'setMetadata']];
     }
 }

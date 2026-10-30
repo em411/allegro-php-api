@@ -42,13 +42,16 @@ class ParametersForPreviewPriceNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ParametersForPreviewPrice();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ParametersForPreviewPrice();
         if (\array_key_exists('unitPrice', $data) && \is_int($data['unitPrice'])) {
             $data['unitPrice'] = (float) $data['unitPrice'];
         }
@@ -76,110 +79,124 @@ class ParametersForPreviewPriceNormalizer implements DenormalizerInterface, Norm
         if (\array_key_exists('multiVariant', $data) && \is_int($data['multiVariant'])) {
             $data['multiVariant'] = (bool) $data['multiVariant'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('category', $data) && null !== $data['category']) {
             $object->setCategory($this->denormalizer->denormalize($data['category'], \Em411\Allegro\Api\Model\Category::class, 'json', $context));
             unset($data['category']);
         } elseif (\array_key_exists('category', $data) && null === $data['category']) {
             $object->setCategory(null);
+            unset($data['category']);
         }
         if (\array_key_exists('condition', $data) && null !== $data['condition']) {
             $object->setCondition($data['condition']);
             unset($data['condition']);
         } elseif (\array_key_exists('condition', $data) && null === $data['condition']) {
             $object->setCondition(null);
+            unset($data['condition']);
         }
         if (\array_key_exists('duration', $data) && null !== $data['duration']) {
             $object->setDuration($data['duration']);
             unset($data['duration']);
         } elseif (\array_key_exists('duration', $data) && null === $data['duration']) {
             $object->setDuration(null);
+            unset($data['duration']);
         }
         if (\array_key_exists('hasAnyQuantity', $data) && null !== $data['hasAnyQuantity']) {
             $object->setHasAnyQuantity($data['hasAnyQuantity']);
             unset($data['hasAnyQuantity']);
         } elseif (\array_key_exists('hasAnyQuantity', $data) && null === $data['hasAnyQuantity']) {
             $object->setHasAnyQuantity(null);
+            unset($data['hasAnyQuantity']);
         }
         if (\array_key_exists('numberOfBigPhotos', $data) && null !== $data['numberOfBigPhotos']) {
             $object->setNumberOfBigPhotos($data['numberOfBigPhotos']);
             unset($data['numberOfBigPhotos']);
         } elseif (\array_key_exists('numberOfBigPhotos', $data) && null === $data['numberOfBigPhotos']) {
             $object->setNumberOfBigPhotos(null);
+            unset($data['numberOfBigPhotos']);
         }
         if (\array_key_exists('numberOfPhotos', $data) && null !== $data['numberOfPhotos']) {
             $object->setNumberOfPhotos($data['numberOfPhotos']);
             unset($data['numberOfPhotos']);
         } elseif (\array_key_exists('numberOfPhotos', $data) && null === $data['numberOfPhotos']) {
             $object->setNumberOfPhotos(null);
+            unset($data['numberOfPhotos']);
         }
         if (\array_key_exists('quantity', $data) && null !== $data['quantity']) {
             $object->setQuantity($data['quantity']);
             unset($data['quantity']);
         } elseif (\array_key_exists('quantity', $data) && null === $data['quantity']) {
             $object->setQuantity(null);
+            unset($data['quantity']);
         }
         if (\array_key_exists('shop', $data) && null !== $data['shop']) {
             $object->setShop($data['shop']);
             unset($data['shop']);
         } elseif (\array_key_exists('shop', $data) && null === $data['shop']) {
             $object->setShop(null);
+            unset($data['shop']);
         }
         if (\array_key_exists('soldQuantity', $data) && null !== $data['soldQuantity']) {
             $object->setSoldQuantity($data['soldQuantity']);
             unset($data['soldQuantity']);
         } elseif (\array_key_exists('soldQuantity', $data) && null === $data['soldQuantity']) {
             $object->setSoldQuantity(null);
+            unset($data['soldQuantity']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('unitPrice', $data) && null !== $data['unitPrice']) {
             $object->setUnitPrice($data['unitPrice']);
             unset($data['unitPrice']);
         } elseif (\array_key_exists('unitPrice', $data) && null === $data['unitPrice']) {
             $object->setUnitPrice(null);
+            unset($data['unitPrice']);
         }
         if (\array_key_exists('bold', $data) && null !== $data['bold']) {
             $object->setBold($data['bold']);
             unset($data['bold']);
         } elseif (\array_key_exists('bold', $data) && null === $data['bold']) {
             $object->setBold(null);
+            unset($data['bold']);
         }
         if (\array_key_exists('highlight', $data) && null !== $data['highlight']) {
             $object->setHighlight($data['highlight']);
             unset($data['highlight']);
         } elseif (\array_key_exists('highlight', $data) && null === $data['highlight']) {
             $object->setHighlight(null);
+            unset($data['highlight']);
         }
         if (\array_key_exists('departmentPage', $data) && null !== $data['departmentPage']) {
             $object->setDepartmentPage($data['departmentPage']);
             unset($data['departmentPage']);
         } elseif (\array_key_exists('departmentPage', $data) && null === $data['departmentPage']) {
             $object->setDepartmentPage(null);
+            unset($data['departmentPage']);
         }
         if (\array_key_exists('emphasized', $data) && null !== $data['emphasized']) {
             $object->setEmphasized($data['emphasized']);
             unset($data['emphasized']);
         } elseif (\array_key_exists('emphasized', $data) && null === $data['emphasized']) {
             $object->setEmphasized(null);
+            unset($data['emphasized']);
         }
         if (\array_key_exists('emphasizedHighlightBoldPackage', $data) && null !== $data['emphasizedHighlightBoldPackage']) {
             $object->setEmphasizedHighlightBoldPackage($data['emphasizedHighlightBoldPackage']);
             unset($data['emphasizedHighlightBoldPackage']);
         } elseif (\array_key_exists('emphasizedHighlightBoldPackage', $data) && null === $data['emphasizedHighlightBoldPackage']) {
             $object->setEmphasizedHighlightBoldPackage(null);
+            unset($data['emphasizedHighlightBoldPackage']);
         }
         if (\array_key_exists('multiVariant', $data) && null !== $data['multiVariant']) {
             $object->setMultiVariant($data['multiVariant']);
             unset($data['multiVariant']);
         } elseif (\array_key_exists('multiVariant', $data) && null === $data['multiVariant']) {
             $object->setMultiVariant(null);
+            unset($data['multiVariant']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -193,7 +210,7 @@ class ParametersForPreviewPriceNormalizer implements DenormalizerInterface, Norm
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['category'] = $this->normalizer->normalize($data->getCategory(), 'json', $context);
+        $dataArray['category'] = null === $data->getCategory() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCategory(), 'json', $context));
         if ($data->isInitialized('condition') && null !== $data->getCondition()) {
             $dataArray['condition'] = $data->getCondition();
         }
@@ -240,7 +257,7 @@ class ParametersForPreviewPriceNormalizer implements DenormalizerInterface, Norm
         if ($data->isInitialized('multiVariant') && null !== $data->getMultiVariant()) {
             $dataArray['multiVariant'] = $data->getMultiVariant();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

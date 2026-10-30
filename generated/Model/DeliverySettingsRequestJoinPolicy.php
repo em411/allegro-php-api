@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class DeliverySettingsRequestJoinPolicy extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class DeliverySettingsRequestJoinPolicy implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -60,5 +64,10 @@ class DeliverySettingsRequestJoinPolicy extends \ArrayObject
         $this->strategy = $strategy;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['strategy' => ['strategy', 'getStrategy', 'setStrategy']];
     }
 }

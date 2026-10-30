@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleProductOfferStatusResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleProductOfferStatusResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -57,5 +61,10 @@ class SaleProductOfferStatusResponse extends \ArrayObject
         $this->operation = $operation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['offer' => ['offer', 'getOffer', 'setOffer'], 'operation' => ['operation', 'getOperation', 'setOperation']];
     }
 }

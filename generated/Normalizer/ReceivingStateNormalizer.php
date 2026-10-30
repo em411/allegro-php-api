@@ -42,33 +42,48 @@ class ReceivingStateNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ReceivingState();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ReceivingState();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('updatedAt', $data) && null !== $data['updatedAt']) {
-            $object->setUpdatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['updatedAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['updatedAt']);
+            if (false === $date) {
+                if (\is_string($data['updatedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['updatedAt'])) {
+                    try {
+                        $date = new \DateTime($data['updatedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['updatedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['updatedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setUpdatedAt($date);
             unset($data['updatedAt']);
         } elseif (\array_key_exists('updatedAt', $data) && null === $data['updatedAt']) {
             $object->setUpdatedAt(null);
+            unset($data['updatedAt']);
         }
         if (\array_key_exists('stage', $data) && null !== $data['stage']) {
             $object->setStage($data['stage']);
             unset($data['stage']);
         } elseif (\array_key_exists('stage', $data) && null === $data['stage']) {
             $object->setStage(null);
+            unset($data['stage']);
         }
         if (\array_key_exists('displayNumber', $data) && null !== $data['displayNumber']) {
             $object->setDisplayNumber($data['displayNumber']);
             unset($data['displayNumber']);
         } elseif (\array_key_exists('displayNumber', $data) && null === $data['displayNumber']) {
             $object->setDisplayNumber(null);
+            unset($data['displayNumber']);
         }
         if (\array_key_exists('content', $data) && null !== $data['content']) {
             $values = [];
@@ -79,6 +94,7 @@ class ReceivingStateNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['content']);
         } elseif (\array_key_exists('content', $data) && null === $data['content']) {
             $object->setContent(null);
+            unset($data['content']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -104,11 +120,11 @@ class ReceivingStateNormalizer implements DenormalizerInterface, NormalizerInter
         if ($data->isInitialized('content') && null !== $data->getContent()) {
             $values = [];
             foreach ($data->getContent() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['content'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

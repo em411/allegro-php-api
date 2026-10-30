@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferSeller extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferSeller implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class OfferSeller extends \ArrayObject
         $this->superSeller = $superSeller;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'login' => ['login', 'getLogin', 'setLogin'], 'company' => ['company', 'getCompany', 'setCompany'], 'superSeller' => ['superSeller', 'getSuperSeller', 'setSuperSeller']];
     }
 }

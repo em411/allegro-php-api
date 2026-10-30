@@ -42,21 +42,22 @@ class ProductParseResultNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductParseResult();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductParseResult();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('productId', $data) && null !== $data['productId']) {
             $object->setProductId($data['productId']);
             unset($data['productId']);
         } elseif (\array_key_exists('productId', $data) && null === $data['productId']) {
             $object->setProductId(null);
+            unset($data['productId']);
         }
         if (\array_key_exists('items', $data) && null !== $data['items']) {
             $values = [];
@@ -67,6 +68,7 @@ class ProductParseResultNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['items']);
         } elseif (\array_key_exists('items', $data) && null === $data['items']) {
             $object->setItems(null);
+            unset($data['items']);
         }
         if (\array_key_exists('errors', $data) && null !== $data['errors']) {
             $values_1 = [];
@@ -77,6 +79,7 @@ class ProductParseResultNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['errors']);
         } elseif (\array_key_exists('errors', $data) && null === $data['errors']) {
             $object->setErrors(null);
+            unset($data['errors']);
         }
         if (\array_key_exists('warnings', $data) && null !== $data['warnings']) {
             $values_2 = [];
@@ -87,6 +90,7 @@ class ProductParseResultNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['warnings']);
         } elseif (\array_key_exists('warnings', $data) && null === $data['warnings']) {
             $object->setWarnings(null);
+            unset($data['warnings']);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
@@ -106,25 +110,25 @@ class ProductParseResultNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('items') && null !== $data->getItems()) {
             $values = [];
             foreach ($data->getItems() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['items'] = $values;
         }
         if ($data->isInitialized('errors') && null !== $data->getErrors()) {
             $values_1 = [];
             foreach ($data->getErrors() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['errors'] = $values_1;
         }
         if ($data->isInitialized('warnings') && null !== $data->getWarnings()) {
             $values_2 = [];
             foreach ($data->getWarnings() as $value_2) {
-                $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
+                $values_2[] = null === $value_2 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_2, 'json', $context));
             }
             $dataArray['warnings'] = $values_2;
         }
-        foreach ($data as $key => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_3;
             }

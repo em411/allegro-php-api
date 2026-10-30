@@ -42,48 +42,53 @@ class ListingResponseFiltersValuesNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ListingResponseFiltersValues();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ListingResponseFiltersValues();
         if (\array_key_exists('selected', $data) && \is_int($data['selected'])) {
             $data['selected'] = (bool) $data['selected'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('value', $data) && null !== $data['value']) {
             $object->setValue($data['value']);
             unset($data['value']);
         } elseif (\array_key_exists('value', $data) && null === $data['value']) {
             $object->setValue(null);
+            unset($data['value']);
         }
         if (\array_key_exists('idSuffix', $data) && null !== $data['idSuffix']) {
             $object->setIdSuffix($data['idSuffix']);
             unset($data['idSuffix']);
         } elseif (\array_key_exists('idSuffix', $data) && null === $data['idSuffix']) {
             $object->setIdSuffix(null);
+            unset($data['idSuffix']);
         }
         if (\array_key_exists('count', $data) && null !== $data['count']) {
             $object->setCount($data['count']);
             unset($data['count']);
         } elseif (\array_key_exists('count', $data) && null === $data['count']) {
             $object->setCount(null);
+            unset($data['count']);
         }
         if (\array_key_exists('selected', $data) && null !== $data['selected']) {
             $object->setSelected($data['selected']);
             unset($data['selected']);
         } elseif (\array_key_exists('selected', $data) && null === $data['selected']) {
             $object->setSelected(null);
+            unset($data['selected']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -112,7 +117,7 @@ class ListingResponseFiltersValuesNormalizer implements DenormalizerInterface, N
         if ($data->isInitialized('selected') && null !== $data->getSelected()) {
             $dataArray['selected'] = $data->getSelected();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SubmitCommandInput extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SubmitCommandInput implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class SubmitCommandInput extends \ArrayObject
         $this->advanceShipNoticeId = $advanceShipNoticeId;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['advanceShipNoticeId' => ['advanceShipNoticeId', 'getAdvanceShipNoticeId', 'setAdvanceShipNoticeId']];
     }
 }

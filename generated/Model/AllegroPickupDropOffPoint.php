@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AllegroPickupDropOffPoint extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AllegroPickupDropOffPoint implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -285,5 +289,10 @@ class AllegroPickupDropOffPoint extends \ArrayObject
         $this->carriers = $carriers;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'type' => ['type', 'getType', 'setType'], 'services' => ['services', 'getServices', 'setServices'], 'restrictions' => ['restrictions', 'getRestrictions', 'setRestrictions'], 'description' => ['description', 'getDescription', 'setDescription'], 'payments' => ['payments', 'getPayments', 'setPayments'], 'address' => ['address', 'getAddress', 'setAddress'], 'opening' => ['opening', 'getOpening', 'setOpening'], 'carriers' => ['carriers', 'getCarriers', 'setCarriers']];
     }
 }

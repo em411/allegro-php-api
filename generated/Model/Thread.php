@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Thread extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Thread implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -91,5 +95,10 @@ class Thread extends \ArrayObject
         $this->interlocutor = $interlocutor;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'read' => ['read', 'getRead', 'setRead'], 'lastMessageDateTime' => ['lastMessageDateTime', 'getLastMessageDateTime', 'setLastMessageDateTime'], 'interlocutor' => ['interlocutor', 'getInterlocutor', 'setInterlocutor']];
     }
 }

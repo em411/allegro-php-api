@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class TaskWithSubjectReport extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class TaskWithSubjectReport implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -22,7 +26,7 @@ class TaskWithSubjectReport extends \ArrayObject
     /**
      * Results with a list of task with subject (offer+field).
      *
-     * @var list<mixed>|null
+     * @var list<CommandTaskWithPriceSubject>|list<CommandTaskWithStockSubject>|null
      */
     protected $tasks;
 
@@ -34,7 +38,7 @@ class TaskWithSubjectReport extends \ArrayObject
     /**
      * Results with a list of task with subject (offer+field).
      *
-     * @return list<mixed>|null
+     * @return list<CommandTaskWithPriceSubject>|list<CommandTaskWithStockSubject>|null
      */
     public function getTasks(): ?array
     {
@@ -44,7 +48,7 @@ class TaskWithSubjectReport extends \ArrayObject
     /**
      * Results with a list of task with subject (offer+field).
      *
-     * @param list<mixed>|null $tasks
+     * @param list<CommandTaskWithPriceSubject>|list<CommandTaskWithStockSubject>|null $tasks
      */
     public function setTasks(?array $tasks): self
     {
@@ -52,5 +56,10 @@ class TaskWithSubjectReport extends \ArrayObject
         $this->tasks = $tasks;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['tasks' => ['tasks', 'getTasks', 'setTasks']];
     }
 }

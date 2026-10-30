@@ -42,33 +42,36 @@ class MarketplaceItemNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\MarketplaceItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\MarketplaceItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('languages', $data) && null !== $data['languages']) {
             $object->setLanguages($this->denormalizer->denormalize($data['languages'], \Em411\Allegro\Api\Model\MarketplaceItemLanguages::class, 'json', $context));
             unset($data['languages']);
         } elseif (\array_key_exists('languages', $data) && null === $data['languages']) {
             $object->setLanguages(null);
+            unset($data['languages']);
         }
         if (\array_key_exists('currencies', $data) && null !== $data['currencies']) {
             $object->setCurrencies($this->denormalizer->denormalize($data['currencies'], \Em411\Allegro\Api\Model\MarketplaceItemCurrencies::class, 'json', $context));
             unset($data['currencies']);
         } elseif (\array_key_exists('currencies', $data) && null === $data['currencies']) {
             $object->setCurrencies(null);
+            unset($data['currencies']);
         }
         if (\array_key_exists('shippingCountries', $data) && null !== $data['shippingCountries']) {
             $values = [];
@@ -79,6 +82,7 @@ class MarketplaceItemNormalizer implements DenormalizerInterface, NormalizerInte
             unset($data['shippingCountries']);
         } elseif (\array_key_exists('shippingCountries', $data) && null === $data['shippingCountries']) {
             $object->setShippingCountries(null);
+            unset($data['shippingCountries']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -96,19 +100,19 @@ class MarketplaceItemNormalizer implements DenormalizerInterface, NormalizerInte
             $dataArray['id'] = $data->getId();
         }
         if ($data->isInitialized('languages') && null !== $data->getLanguages()) {
-            $dataArray['languages'] = $this->normalizer->normalize($data->getLanguages(), 'json', $context);
+            $dataArray['languages'] = null === $data->getLanguages() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getLanguages(), 'json', $context));
         }
         if ($data->isInitialized('currencies') && null !== $data->getCurrencies()) {
-            $dataArray['currencies'] = $this->normalizer->normalize($data->getCurrencies(), 'json', $context);
+            $dataArray['currencies'] = null === $data->getCurrencies() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCurrencies(), 'json', $context));
         }
         if ($data->isInitialized('shippingCountries') && null !== $data->getShippingCountries()) {
             $values = [];
             foreach ($data->getShippingCountries() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['shippingCountries'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

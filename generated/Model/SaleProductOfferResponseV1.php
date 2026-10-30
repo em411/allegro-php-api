@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleProductOfferResponseV1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleProductOfferResponseV1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
     protected $initialized = [];
     /**
-     * @var list<SaleProductOfferResponseV1productSetItem>|null
+     * @var list<SaleProductOfferResponseV1ProductSetItem>|null
      */
     protected $productSet;
     /**
@@ -48,11 +52,11 @@ class SaleProductOfferResponseV1 extends \ArrayObject
      */
     protected $attachments;
     /**
-     * @var SaleProductOfferResponseV1fundraisingCampaign|null
+     * @var SaleProductOfferResponseV1FundraisingCampaign|null
      */
     protected $fundraisingCampaign;
     /**
-     * @var SaleProductOfferResponseV1additionalServices|null
+     * @var SaleProductOfferResponseV1AdditionalServices|null
      */
     protected $additionalServices;
     /**
@@ -94,7 +98,7 @@ class SaleProductOfferResponseV1 extends \ArrayObject
      */
     protected $warnings;
     /**
-     * @var SaleProductOfferResponseV1afterSalesServices|null
+     * @var SaleProductOfferResponseV1AfterSalesServices|null
      */
     protected $afterSalesServices;
     /**
@@ -102,7 +106,7 @@ class SaleProductOfferResponseV1 extends \ArrayObject
      */
     protected $discounts;
     /**
-     * @var SaleProductOfferResponseV1stock|null
+     * @var SaleProductOfferResponseV1Stock|null
      */
     protected $stock;
     /**
@@ -114,7 +118,7 @@ class SaleProductOfferResponseV1 extends \ArrayObject
     /**
      * Identifier of contact data for sales format ADVERTISEMENT (classified ad); retrieve it via GET /sale/offer-contacts.
      *
-     * @var SaleProductOfferResponseV1contact|null
+     * @var SaleProductOfferResponseV1Contact|null
      */
     protected $contact;
     /**
@@ -186,7 +190,7 @@ class SaleProductOfferResponseV1 extends \ArrayObject
     }
 
     /**
-     * @return list<SaleProductOfferResponseV1productSetItem>|null
+     * @return list<SaleProductOfferResponseV1ProductSetItem>|null
      */
     public function getProductSet(): ?array
     {
@@ -194,7 +198,7 @@ class SaleProductOfferResponseV1 extends \ArrayObject
     }
 
     /**
-     * @param list<SaleProductOfferResponseV1productSetItem>|null $productSet
+     * @param list<SaleProductOfferResponseV1ProductSetItem>|null $productSet
      */
     public function setProductSet(?array $productSet): self
     {
@@ -286,12 +290,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    public function getFundraisingCampaign(): ?SaleProductOfferResponseV1fundraisingCampaign
+    public function getFundraisingCampaign(): ?SaleProductOfferResponseV1FundraisingCampaign
     {
         return $this->fundraisingCampaign;
     }
 
-    public function setFundraisingCampaign(?SaleProductOfferResponseV1fundraisingCampaign $fundraisingCampaign): self
+    public function setFundraisingCampaign(?SaleProductOfferResponseV1FundraisingCampaign $fundraisingCampaign): self
     {
         $this->initialized['fundraisingCampaign'] = true;
         $this->fundraisingCampaign = $fundraisingCampaign;
@@ -299,12 +303,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    public function getAdditionalServices(): ?SaleProductOfferResponseV1additionalServices
+    public function getAdditionalServices(): ?SaleProductOfferResponseV1AdditionalServices
     {
         return $this->additionalServices;
     }
 
-    public function setAdditionalServices(?SaleProductOfferResponseV1additionalServices $additionalServices): self
+    public function setAdditionalServices(?SaleProductOfferResponseV1AdditionalServices $additionalServices): self
     {
         $this->initialized['additionalServices'] = true;
         $this->additionalServices = $additionalServices;
@@ -450,12 +454,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    public function getAfterSalesServices(): ?SaleProductOfferResponseV1afterSalesServices
+    public function getAfterSalesServices(): ?SaleProductOfferResponseV1AfterSalesServices
     {
         return $this->afterSalesServices;
     }
 
-    public function setAfterSalesServices(?SaleProductOfferResponseV1afterSalesServices $afterSalesServices): self
+    public function setAfterSalesServices(?SaleProductOfferResponseV1AfterSalesServices $afterSalesServices): self
     {
         $this->initialized['afterSalesServices'] = true;
         $this->afterSalesServices = $afterSalesServices;
@@ -476,12 +480,12 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         return $this;
     }
 
-    public function getStock(): ?SaleProductOfferResponseV1stock
+    public function getStock(): ?SaleProductOfferResponseV1Stock
     {
         return $this->stock;
     }
 
-    public function setStock(?SaleProductOfferResponseV1stock $stock): self
+    public function setStock(?SaleProductOfferResponseV1Stock $stock): self
     {
         $this->initialized['stock'] = true;
         $this->stock = $stock;
@@ -515,7 +519,7 @@ class SaleProductOfferResponseV1 extends \ArrayObject
     /**
      * Identifier of contact data for sales format ADVERTISEMENT (classified ad); retrieve it via GET /sale/offer-contacts.
      */
-    public function getContact(): ?SaleProductOfferResponseV1contact
+    public function getContact(): ?SaleProductOfferResponseV1Contact
     {
         return $this->contact;
     }
@@ -523,7 +527,7 @@ class SaleProductOfferResponseV1 extends \ArrayObject
     /**
      * Identifier of contact data for sales format ADVERTISEMENT (classified ad); retrieve it via GET /sale/offer-contacts.
      */
-    public function setContact(?SaleProductOfferResponseV1contact $contact): self
+    public function setContact(?SaleProductOfferResponseV1Contact $contact): self
     {
         $this->initialized['contact'] = true;
         $this->contact = $contact;
@@ -733,5 +737,10 @@ class SaleProductOfferResponseV1 extends \ArrayObject
         $this->messageToSellerSettings = $messageToSellerSettings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['productSet' => ['productSet', 'getProductSet', 'setProductSet'], 'id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'category' => ['category', 'getCategory', 'setCategory'], 'attachments' => ['attachments', 'getAttachments', 'setAttachments'], 'fundraisingCampaign' => ['fundraisingCampaign', 'getFundraisingCampaign', 'setFundraisingCampaign'], 'additionalServices' => ['additionalServices', 'getAdditionalServices', 'setAdditionalServices'], 'delivery' => ['delivery', 'getDelivery', 'setDelivery'], 'publication' => ['publication', 'getPublication', 'setPublication'], 'additionalMarketplaces' => ['additionalMarketplaces', 'getAdditionalMarketplaces', 'setAdditionalMarketplaces'], 'b2b' => ['b2b', 'getB2b', 'setB2b'], 'compatibilityList' => ['compatibilityList', 'getCompatibilityList', 'setCompatibilityList'], 'language' => ['language', 'getLanguage', 'setLanguage'], 'validation' => ['validation', 'getValidation', 'setValidation'], 'warnings' => ['warnings', 'getWarnings', 'setWarnings'], 'afterSalesServices' => ['afterSalesServices', 'getAfterSalesServices', 'setAfterSalesServices'], 'discounts' => ['discounts', 'getDiscounts', 'setDiscounts'], 'stock' => ['stock', 'getStock', 'setStock'], 'parameters' => ['parameters', 'getParameters', 'setParameters'], 'contact' => ['contact', 'getContact', 'setContact'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'aiCoCreatedContent' => ['aiCoCreatedContent', 'getAiCoCreatedContent', 'setAiCoCreatedContent'], 'payments' => ['payments', 'getPayments', 'setPayments'], 'sellingMode' => ['sellingMode', 'getSellingMode', 'setSellingMode'], 'location' => ['location', 'getLocation', 'setLocation'], 'images' => ['images', 'getImages', 'setImages'], 'description' => ['description', 'getDescription', 'setDescription'], 'external' => ['external', 'getExternal', 'setExternal'], 'sizeTable' => ['sizeTable', 'getSizeTable', 'setSizeTable'], 'taxSettings' => ['taxSettings', 'getTaxSettings', 'setTaxSettings'], 'messageToSellerSettings' => ['messageToSellerSettings', 'getMessageToSellerSettings', 'setMessageToSellerSettings']];
     }
 }

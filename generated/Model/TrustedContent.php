@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class TrustedContent extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class TrustedContent implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -81,5 +85,10 @@ class TrustedContent extends \ArrayObject
         $this->productPaths = $productPaths;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['paths' => ['paths', 'getPaths', 'setPaths'], 'productPaths' => ['productPaths', 'getProductPaths', 'setProductPaths']];
     }
 }

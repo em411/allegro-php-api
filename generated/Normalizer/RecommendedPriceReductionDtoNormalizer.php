@@ -42,21 +42,22 @@ class RecommendedPriceReductionDtoNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\RecommendedPriceReductionDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\RecommendedPriceReductionDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('sellerMaxDeclaredPercentage', $data) && null !== $data['sellerMaxDeclaredPercentage']) {
             $object->setSellerMaxDeclaredPercentage($data['sellerMaxDeclaredPercentage']);
             unset($data['sellerMaxDeclaredPercentage']);
         } elseif (\array_key_exists('sellerMaxDeclaredPercentage', $data) && null === $data['sellerMaxDeclaredPercentage']) {
             $object->setSellerMaxDeclaredPercentage(null);
+            unset($data['sellerMaxDeclaredPercentage']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,7 +72,7 @@ class RecommendedPriceReductionDtoNormalizer implements DenormalizerInterface, N
     {
         $dataArray = [];
         $dataArray['sellerMaxDeclaredPercentage'] = $data->getSellerMaxDeclaredPercentage();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

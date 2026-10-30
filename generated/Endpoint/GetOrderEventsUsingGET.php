@@ -20,23 +20,20 @@ class GetOrderEventsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
     /**
      * Use this resource to return events that allow you to monitor actions which clients perform, i.e. making a purchase, filling in the checkout form (FOD), finishing payment process, making a surcharge. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#dziennik-zdarzen" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#event-log" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $from you can use the event ID to retrieve subsequent chunks of events
-     * @var array  $type Specify array of event types for filtering. Allowed values are:
-     *             `BOUGHT`: purchase without checkout form filled in
-     *             `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change
-     *             `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing
-     *             `BUYER_CANCELLED`: purchase was cancelled by buyer
-     *             `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed
-     *             `AUTO_CANCELLED`: purchase was cancelled automatically by Allegro.
-     * @var int    $limit The maximum number of events returned in the response.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "from"?: string, //You can use the event ID to retrieve subsequent chunks of events.
+     *    "type"?: array, //Specify array of event types for filtering. Allowed values are:
+     * `BOUGHT`: purchase without checkout form filled in
+     * `FILLED_IN`: checkout form filled in but payment is not completed yet so data could still change
+     * `READY_FOR_PROCESSING`: payment completed. Purchase is ready for processing
+     * `BUYER_CANCELLED`: purchase was cancelled by buyer
+     * `FULFILLMENT_STATUS_CHANGED`: fulfillment status changed
+     * `AUTO_CANCELLED`: purchase was cancelled automatically by Allegro.
+     *    "limit"?: int, //The maximum number of events returned in the response.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -93,6 +90,11 @@ class GetOrderEventsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['type' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\OrderEventsList|null
      *
@@ -104,7 +106,7 @@ class GetOrderEventsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\OrderEventsList', 'json');
         }
         if (401 === $status) {

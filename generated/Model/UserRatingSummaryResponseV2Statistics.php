@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class UserRatingSummaryResponseV2Statistics extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class UserRatingSummaryResponseV2Statistics implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class UserRatingSummaryResponseV2Statistics extends \ArrayObject
         $this->removed = $removed;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['received' => ['received', 'getReceived', 'setReceived'], 'excluded' => ['excluded', 'getExcluded', 'setExcluded'], 'removed' => ['removed', 'getRemoved', 'setRemoved']];
     }
 }

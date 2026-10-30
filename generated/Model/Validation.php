@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Validation extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Validation implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -86,5 +90,10 @@ class Validation extends \ArrayObject
         $this->validatedAt = $validatedAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['errors' => ['errors', 'getErrors', 'setErrors'], 'warnings' => ['warnings', 'getWarnings', 'setWarnings'], 'validatedAt' => ['validatedAt', 'getValidatedAt', 'setValidatedAt']];
     }
 }

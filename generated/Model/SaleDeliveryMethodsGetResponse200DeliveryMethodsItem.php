@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleDeliveryMethodsGetResponse200DeliveryMethodsItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleDeliveryMethodsGetResponse200DeliveryMethodsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -227,5 +231,10 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItem extends \ArrayObject
         $this->shippingRatesConstraints = $shippingRatesConstraints;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'marketplaces' => ['marketplaces', 'getMarketplaces', 'setMarketplaces'], 'paymentPolicy' => ['paymentPolicy', 'getPaymentPolicy', 'setPaymentPolicy'], 'allegroEndorsed' => ['allegroEndorsed', 'getAllegroEndorsed', 'setAllegroEndorsed'], 'dispatchCountry' => ['dispatchCountry', 'getDispatchCountry', 'setDispatchCountry'], 'destinationCountry' => ['destinationCountry', 'getDestinationCountry', 'setDestinationCountry'], 'shippingRatesConstraints' => ['shippingRatesConstraints', 'getShippingRatesConstraints', 'setShippingRatesConstraints']];
     }
 }

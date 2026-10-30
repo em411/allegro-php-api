@@ -42,27 +42,29 @@ class PhoneNumberWithCountryCodeNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PhoneNumberWithCountryCode();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PhoneNumberWithCountryCode();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('countryCode', $data) && null !== $data['countryCode']) {
             $object->setCountryCode($data['countryCode']);
             unset($data['countryCode']);
         } elseif (\array_key_exists('countryCode', $data) && null === $data['countryCode']) {
             $object->setCountryCode(null);
+            unset($data['countryCode']);
         }
         if (\array_key_exists('number', $data) && null !== $data['number']) {
             $object->setNumber($data['number']);
             unset($data['number']);
         } elseif (\array_key_exists('number', $data) && null === $data['number']) {
             $object->setNumber(null);
+            unset($data['number']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,7 +80,7 @@ class PhoneNumberWithCountryCodeNormalizer implements DenormalizerInterface, Nor
         $dataArray = [];
         $dataArray['countryCode'] = $data->getCountryCode();
         $dataArray['number'] = $data->getNumber();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

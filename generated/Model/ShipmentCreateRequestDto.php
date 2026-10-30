@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ShipmentCreateRequestDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ShipmentCreateRequestDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -300,5 +304,10 @@ class ShipmentCreateRequestDto extends \ArrayObject
         $this->additionalProperties = $additionalProperties;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['deliveryMethodId' => ['deliveryMethodId', 'getDeliveryMethodId', 'setDeliveryMethodId'], 'credentialsId' => ['credentialsId', 'getCredentialsId', 'setCredentialsId'], 'sender' => ['sender', 'getSender', 'setSender'], 'receiver' => ['receiver', 'getReceiver', 'setReceiver'], 'referenceNumber' => ['referenceNumber', 'getReferenceNumber', 'setReferenceNumber'], 'packages' => ['packages', 'getPackages', 'setPackages'], 'insurance' => ['insurance', 'getInsurance', 'setInsurance'], 'cashOnDelivery' => ['cashOnDelivery', 'getCashOnDelivery', 'setCashOnDelivery'], 'labelFormat' => ['labelFormat', 'getLabelFormat', 'setLabelFormat'], 'additionalServices' => ['additionalServices', 'getAdditionalServices', 'setAdditionalServices'], 'additionalProperties' => ['additionalProperties', 'getAdditionalProperties', 'setAdditionalProperties']];
     }
 }

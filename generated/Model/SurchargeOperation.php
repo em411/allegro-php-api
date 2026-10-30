@@ -99,4 +99,9 @@ class SurchargeOperation extends BaseOperation
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['payment' => ['payment', 'getPayment', 'setPayment'], 'surcharge' => ['surcharge', 'getSurcharge', 'setSurcharge'], 'participant' => ['participant', 'getParticipant', 'setParticipant']]);
+    }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormDeliveryAddress extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormDeliveryAddress implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -248,5 +252,10 @@ class CheckoutFormDeliveryAddress extends \ArrayObject
         $this->modifiedAt = $modifiedAt;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['firstName' => ['firstName', 'getFirstName', 'setFirstName'], 'lastName' => ['lastName', 'getLastName', 'setLastName'], 'street' => ['street', 'getStreet', 'setStreet'], 'city' => ['city', 'getCity', 'setCity'], 'zipCode' => ['zipCode', 'getZipCode', 'setZipCode'], 'countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode'], 'companyName' => ['companyName', 'getCompanyName', 'setCompanyName'], 'phoneNumber' => ['phoneNumber', 'getPhoneNumber', 'setPhoneNumber'], 'modifiedAt' => ['modifiedAt', 'getModifiedAt', 'setModifiedAt']];
     }
 }

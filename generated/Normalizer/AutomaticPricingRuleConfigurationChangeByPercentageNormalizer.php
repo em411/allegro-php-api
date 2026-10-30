@@ -42,21 +42,22 @@ class AutomaticPricingRuleConfigurationChangeByPercentageNormalizer implements D
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AutomaticPricingRuleConfigurationChangeByPercentage();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AutomaticPricingRuleConfigurationChangeByPercentage();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('changeByPercentage', $data) && null !== $data['changeByPercentage']) {
             $object->setChangeByPercentage($this->denormalizer->denormalize($data['changeByPercentage'], \Em411\Allegro\Api\Model\AutomaticPricingRuleConfigurationChangeByPercentageChangeByPercentage::class, 'json', $context));
             unset($data['changeByPercentage']);
         } elseif (\array_key_exists('changeByPercentage', $data) && null === $data['changeByPercentage']) {
             $object->setChangeByPercentage(null);
+            unset($data['changeByPercentage']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,8 +71,8 @@ class AutomaticPricingRuleConfigurationChangeByPercentageNormalizer implements D
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['changeByPercentage'] = $this->normalizer->normalize($data->getChangeByPercentage(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['changeByPercentage'] = null === $data->getChangeByPercentage() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getChangeByPercentage(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

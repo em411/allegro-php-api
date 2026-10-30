@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ClassifiedsPackages extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ClassifiedsPackages implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -69,5 +73,10 @@ class ClassifiedsPackages extends \ArrayObject
         $this->extraPackages = $extraPackages;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['basePackage' => ['basePackage', 'getBasePackage', 'setBasePackage'], 'extraPackages' => ['extraPackages', 'getExtraPackages', 'setExtraPackages']];
     }
 }

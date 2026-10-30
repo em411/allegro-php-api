@@ -42,33 +42,36 @@ class PublicOfferPreviewRequestNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PublicOfferPreviewRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PublicOfferPreviewRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('offer', $data) && null !== $data['offer']) {
             $object->setOffer($this->denormalizer->denormalize($data['offer'], \Em411\Allegro\Api\Model\PricingOffer::class, 'json', $context));
             unset($data['offer']);
         } elseif (\array_key_exists('offer', $data) && null === $data['offer']) {
             $object->setOffer(null);
+            unset($data['offer']);
         }
         if (\array_key_exists('classifiedsPackages', $data) && null !== $data['classifiedsPackages']) {
             $object->setClassifiedsPackages($this->denormalizer->denormalize($data['classifiedsPackages'], \Em411\Allegro\Api\Model\ClassifiedsPackages::class, 'json', $context));
             unset($data['classifiedsPackages']);
         } elseif (\array_key_exists('classifiedsPackages', $data) && null === $data['classifiedsPackages']) {
             $object->setClassifiedsPackages(null);
+            unset($data['classifiedsPackages']);
         }
         if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
             $object->setMarketplaceId($data['marketplaceId']);
             unset($data['marketplaceId']);
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
+            unset($data['marketplaceId']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,15 +86,15 @@ class PublicOfferPreviewRequestNormalizer implements DenormalizerInterface, Norm
     {
         $dataArray = [];
         if ($data->isInitialized('offer') && null !== $data->getOffer()) {
-            $dataArray['offer'] = $this->normalizer->normalize($data->getOffer(), 'json', $context);
+            $dataArray['offer'] = null === $data->getOffer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOffer(), 'json', $context));
         }
         if ($data->isInitialized('classifiedsPackages') && null !== $data->getClassifiedsPackages()) {
-            $dataArray['classifiedsPackages'] = $this->normalizer->normalize($data->getClassifiedsPackages(), 'json', $context);
+            $dataArray['classifiedsPackages'] = null === $data->getClassifiedsPackages() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getClassifiedsPackages(), 'json', $context));
         }
-        if ($data->isInitialized('marketplaceId')) {
+        if ($data->isInitialized('marketplaceId') && null !== $data->getMarketplaceId()) {
             $dataArray['marketplaceId'] = $data->getMarketplaceId();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

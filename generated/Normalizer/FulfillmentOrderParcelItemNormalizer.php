@@ -42,27 +42,29 @@ class FulfillmentOrderParcelItemNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FulfillmentOrderParcelItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FulfillmentOrderParcelItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('productId', $data) && null !== $data['productId']) {
             $object->setProductId($data['productId']);
             unset($data['productId']);
         } elseif (\array_key_exists('productId', $data) && null === $data['productId']) {
             $object->setProductId(null);
+            unset($data['productId']);
         }
         if (\array_key_exists('quantity', $data) && null !== $data['quantity']) {
             $object->setQuantity($data['quantity']);
             unset($data['quantity']);
         } elseif (\array_key_exists('quantity', $data) && null === $data['quantity']) {
             $object->setQuantity(null);
+            unset($data['quantity']);
         }
         if (\array_key_exists('serialNumbers', $data) && null !== $data['serialNumbers']) {
             $values = [];
@@ -73,18 +75,25 @@ class FulfillmentOrderParcelItemNormalizer implements DenormalizerInterface, Nor
             unset($data['serialNumbers']);
         } elseif (\array_key_exists('serialNumbers', $data) && null === $data['serialNumbers']) {
             $object->setSerialNumbers(null);
+            unset($data['serialNumbers']);
         }
         if (\array_key_exists('expirationDate', $data) && null !== $data['expirationDate']) {
-            $object->setExpirationDate(\DateTime::createFromFormat('Y-m-d', $data['expirationDate'])->setTime(0, 0, 0));
+            $date = \DateTime::createFromFormat('Y-m-d', $data['expirationDate']);
+            if (false === $date) {
+                throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['expirationDate'], 'Y-m-d');
+            }
+            $object->setExpirationDate($date->setTime(0, 0, 0));
             unset($data['expirationDate']);
         } elseif (\array_key_exists('expirationDate', $data) && null === $data['expirationDate']) {
             $object->setExpirationDate(null);
+            unset($data['expirationDate']);
         }
         if (\array_key_exists('offerId', $data) && null !== $data['offerId']) {
             $object->setOfferId($data['offerId']);
             unset($data['offerId']);
         } elseif (\array_key_exists('offerId', $data) && null === $data['offerId']) {
             $object->setOfferId(null);
+            unset($data['offerId']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -117,7 +126,7 @@ class FulfillmentOrderParcelItemNormalizer implements DenormalizerInterface, Nor
         if ($data->isInitialized('offerId') && null !== $data->getOfferId()) {
             $dataArray['offerId'] = $data->getOfferId();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

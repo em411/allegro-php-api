@@ -20,10 +20,9 @@ class GetDepositTypes extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
     /**
      * Use this resource to get enabled deposit types available when creating an offer. The pricing mode determines whether the deposit has a fixed catalog price (`FIXED`) or requires a seller-provided price in the configured currency (`CUSTOM`). Read more: <a href="../../news/1-pazdziernika-2025-dostosujemy-allegro-api-do-rozporzadzenia-o-systemie-kaucyjnym-m0mLB4XM9Ib" target="_blank">PL</a> / <a href="../../news/on-october-1-2025-we-will-adapt-Allegro-API-to-the-deposit-system-regulation-m0mLB4XM9Ib" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $headerParameters = [])
     {
@@ -77,7 +76,7 @@ class GetDepositTypes extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\DepositTypeResponse', 'json');
         }
         if (401 === $status) {

@@ -42,42 +42,46 @@ class ProductChangeProposalDtoNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ProductChangeProposalDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\ProductChangeProposalDto();
         if (\array_key_exists('notifyViaEmailAfterVerification', $data) && \is_int($data['notifyViaEmailAfterVerification'])) {
             $data['notifyViaEmailAfterVerification'] = (bool) $data['notifyViaEmailAfterVerification'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($this->denormalizer->denormalize($data['name'], \Em411\Allegro\Api\Model\ProductNameProposal::class, 'json', $context));
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('category', $data) && null !== $data['category']) {
             $object->setCategory($this->denormalizer->denormalize($data['category'], \Em411\Allegro\Api\Model\ProductCategoryProposal::class, 'json', $context));
             unset($data['category']);
         } elseif (\array_key_exists('category', $data) && null === $data['category']) {
             $object->setCategory(null);
+            unset($data['category']);
         }
         if (\array_key_exists('note', $data) && null !== $data['note']) {
             $object->setNote($data['note']);
             unset($data['note']);
         } elseif (\array_key_exists('note', $data) && null === $data['note']) {
             $object->setNote(null);
+            unset($data['note']);
         }
         if (\array_key_exists('images', $data) && null !== $data['images']) {
             $values = [];
@@ -88,6 +92,7 @@ class ProductChangeProposalDtoNormalizer implements DenormalizerInterface, Norma
             unset($data['images']);
         } elseif (\array_key_exists('images', $data) && null === $data['images']) {
             $object->setImages(null);
+            unset($data['images']);
         }
         if (\array_key_exists('parameters', $data) && null !== $data['parameters']) {
             $values_1 = [];
@@ -98,18 +103,21 @@ class ProductChangeProposalDtoNormalizer implements DenormalizerInterface, Norma
             unset($data['parameters']);
         } elseif (\array_key_exists('parameters', $data) && null === $data['parameters']) {
             $object->setParameters(null);
+            unset($data['parameters']);
         }
         if (\array_key_exists('notifyViaEmailAfterVerification', $data) && null !== $data['notifyViaEmailAfterVerification']) {
             $object->setNotifyViaEmailAfterVerification($data['notifyViaEmailAfterVerification']);
             unset($data['notifyViaEmailAfterVerification']);
         } elseif (\array_key_exists('notifyViaEmailAfterVerification', $data) && null === $data['notifyViaEmailAfterVerification']) {
             $object->setNotifyViaEmailAfterVerification(null);
+            unset($data['notifyViaEmailAfterVerification']);
         }
         if (\array_key_exists('language', $data) && null !== $data['language']) {
             $object->setLanguage($data['language']);
             unset($data['language']);
         } elseif (\array_key_exists('language', $data) && null === $data['language']) {
             $object->setLanguage(null);
+            unset($data['language']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -127,10 +135,10 @@ class ProductChangeProposalDtoNormalizer implements DenormalizerInterface, Norma
             $dataArray['id'] = $data->getId();
         }
         if ($data->isInitialized('name') && null !== $data->getName()) {
-            $dataArray['name'] = $this->normalizer->normalize($data->getName(), 'json', $context);
+            $dataArray['name'] = null === $data->getName() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getName(), 'json', $context));
         }
         if ($data->isInitialized('category') && null !== $data->getCategory()) {
-            $dataArray['category'] = $this->normalizer->normalize($data->getCategory(), 'json', $context);
+            $dataArray['category'] = null === $data->getCategory() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCategory(), 'json', $context));
         }
         if ($data->isInitialized('note') && null !== $data->getNote()) {
             $dataArray['note'] = $data->getNote();
@@ -138,14 +146,14 @@ class ProductChangeProposalDtoNormalizer implements DenormalizerInterface, Norma
         if ($data->isInitialized('images') && null !== $data->getImages()) {
             $values = [];
             foreach ($data->getImages() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['images'] = $values;
         }
         if ($data->isInitialized('parameters') && null !== $data->getParameters()) {
             $values_1 = [];
             foreach ($data->getParameters() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['parameters'] = $values_1;
         }
@@ -155,7 +163,7 @@ class ProductChangeProposalDtoNormalizer implements DenormalizerInterface, Norma
         if ($data->isInitialized('language') && null !== $data->getLanguage()) {
             $dataArray['language'] = $data->getLanguage();
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

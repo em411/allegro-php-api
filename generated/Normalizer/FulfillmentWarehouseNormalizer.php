@@ -42,33 +42,36 @@ class FulfillmentWarehouseNormalizer implements DenormalizerInterface, Normalize
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\FulfillmentWarehouse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\FulfillmentWarehouse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('location', $data) && null !== $data['location']) {
             $object->setLocation($this->denormalizer->denormalize($data['location'], \Em411\Allegro\Api\Model\FulfillmentWarehouseLocation::class, 'json', $context));
             unset($data['location']);
         } elseif (\array_key_exists('location', $data) && null === $data['location']) {
             $object->setLocation(null);
+            unset($data['location']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,9 +92,9 @@ class FulfillmentWarehouseNormalizer implements DenormalizerInterface, Normalize
             $dataArray['name'] = $data->getName();
         }
         if ($data->isInitialized('location') && null !== $data->getLocation()) {
-            $dataArray['location'] = $this->normalizer->normalize($data->getLocation(), 'json', $context);
+            $dataArray['location'] = null === $data->getLocation() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getLocation(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

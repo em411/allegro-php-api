@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ImpliedWarrantyRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ImpliedWarrantyRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -124,5 +128,10 @@ class ImpliedWarrantyRequest extends \ArrayObject
         $this->description = $description;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['name' => ['name', 'getName', 'setName'], 'individual' => ['individual', 'getIndividual', 'setIndividual'], 'corporate' => ['corporate', 'getCorporate', 'setCorporate'], 'address' => ['address', 'getAddress', 'setAddress'], 'description' => ['description', 'getDescription', 'setDescription']];
     }
 }

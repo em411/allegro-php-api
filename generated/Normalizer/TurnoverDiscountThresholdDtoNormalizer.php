@@ -42,27 +42,29 @@ class TurnoverDiscountThresholdDtoNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\TurnoverDiscountThresholdDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\TurnoverDiscountThresholdDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('minimumTurnover', $data) && null !== $data['minimumTurnover']) {
             $object->setMinimumTurnover($this->denormalizer->denormalize($data['minimumTurnover'], \Em411\Allegro\Api\Model\TurnoverDiscountThresholdDtoMinimumTurnover::class, 'json', $context));
             unset($data['minimumTurnover']);
         } elseif (\array_key_exists('minimumTurnover', $data) && null === $data['minimumTurnover']) {
             $object->setMinimumTurnover(null);
+            unset($data['minimumTurnover']);
         }
         if (\array_key_exists('discount', $data) && null !== $data['discount']) {
             $object->setDiscount($this->denormalizer->denormalize($data['discount'], \Em411\Allegro\Api\Model\TurnoverDiscountThresholdDtoDiscount::class, 'json', $context));
             unset($data['discount']);
         } elseif (\array_key_exists('discount', $data) && null === $data['discount']) {
             $object->setDiscount(null);
+            unset($data['discount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,12 +79,12 @@ class TurnoverDiscountThresholdDtoNormalizer implements DenormalizerInterface, N
     {
         $dataArray = [];
         if ($data->isInitialized('minimumTurnover') && null !== $data->getMinimumTurnover()) {
-            $dataArray['minimumTurnover'] = $this->normalizer->normalize($data->getMinimumTurnover(), 'json', $context);
+            $dataArray['minimumTurnover'] = null === $data->getMinimumTurnover() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMinimumTurnover(), 'json', $context));
         }
         if ($data->isInitialized('discount') && null !== $data->getDiscount()) {
-            $dataArray['discount'] = $this->normalizer->normalize($data->getDiscount(), 'json', $context);
+            $dataArray['discount'] = null === $data->getDiscount() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDiscount(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

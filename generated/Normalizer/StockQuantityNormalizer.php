@@ -42,13 +42,16 @@ class StockQuantityNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\StockQuantity();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\StockQuantity();
         if (\array_key_exists('available', $data) && \is_int($data['available'])) {
             $data['available'] = (float) $data['available'];
         }
@@ -58,26 +61,26 @@ class StockQuantityNormalizer implements DenormalizerInterface, NormalizerInterf
         if (\array_key_exists('onHold', $data) && \is_int($data['onHold'])) {
             $data['onHold'] = (float) $data['onHold'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('available', $data) && null !== $data['available']) {
             $object->setAvailable($data['available']);
             unset($data['available']);
         } elseif (\array_key_exists('available', $data) && null === $data['available']) {
             $object->setAvailable(null);
+            unset($data['available']);
         }
         if (\array_key_exists('onOrder', $data) && null !== $data['onOrder']) {
             $object->setOnOrder($data['onOrder']);
             unset($data['onOrder']);
         } elseif (\array_key_exists('onOrder', $data) && null === $data['onOrder']) {
             $object->setOnOrder(null);
+            unset($data['onOrder']);
         }
         if (\array_key_exists('onHold', $data) && null !== $data['onHold']) {
             $object->setOnHold($data['onHold']);
             unset($data['onHold']);
         } elseif (\array_key_exists('onHold', $data) && null === $data['onHold']) {
             $object->setOnHold(null);
+            unset($data['onHold']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,7 +103,7 @@ class StockQuantityNormalizer implements DenormalizerInterface, NormalizerInterf
         if ($data->isInitialized('onHold') && null !== $data->getOnHold()) {
             $dataArray['onHold'] = $data->getOnHold();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

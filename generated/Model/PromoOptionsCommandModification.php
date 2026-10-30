@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PromoOptionsCommandModification extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PromoOptionsCommandModification implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -102,5 +106,10 @@ class PromoOptionsCommandModification extends \ArrayObject
         $this->modificationTime = $modificationTime;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['basePackage' => ['basePackage', 'getBasePackage', 'setBasePackage'], 'extraPackages' => ['extraPackages', 'getExtraPackages', 'setExtraPackages'], 'modificationTime' => ['modificationTime', 'getModificationTime', 'setModificationTime']];
     }
 }

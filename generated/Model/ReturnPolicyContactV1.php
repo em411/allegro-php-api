@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReturnPolicyContactV1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ReturnPolicyContactV1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class ReturnPolicyContactV1 extends \ArrayObject
         $this->email = $email;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['phoneNumber' => ['phoneNumber', 'getPhoneNumber', 'setPhoneNumber'], 'email' => ['email', 'getEmail', 'setEmail']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ShippingExtended extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ShippingExtended implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class ShippingExtended extends \ArrayObject
     {
         $this->initialized['method'] = true;
         $this->method = $method;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['method' => ['method', 'getMethod', 'setMethod']];
     }
 }

@@ -42,33 +42,36 @@ class AlleDiscountEligibleOfferDtoAlleDiscountNormalizer implements Denormalizer
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AlleDiscountEligibleOfferDtoAlleDiscount();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\AlleDiscountEligibleOfferDtoAlleDiscount();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('campaignConditions', $data) && null !== $data['campaignConditions']) {
             $object->setCampaignConditions($this->denormalizer->denormalize($data['campaignConditions'], \Em411\Allegro\Api\Model\AlleDiscountEligibleOfferDtoAlleDiscountCampaignConditions::class, 'json', $context));
             unset($data['campaignConditions']);
         } elseif (\array_key_exists('campaignConditions', $data) && null === $data['campaignConditions']) {
             $object->setCampaignConditions(null);
+            unset($data['campaignConditions']);
         }
         if (\array_key_exists('requiredMerchantPrice', $data) && null !== $data['requiredMerchantPrice']) {
             $object->setRequiredMerchantPrice($this->denormalizer->denormalize($data['requiredMerchantPrice'], \Em411\Allegro\Api\Model\AlleDiscountRequiredMerchantPriceDto::class, 'json', $context));
             unset($data['requiredMerchantPrice']);
         } elseif (\array_key_exists('requiredMerchantPrice', $data) && null === $data['requiredMerchantPrice']) {
             $object->setRequiredMerchantPrice(null);
+            unset($data['requiredMerchantPrice']);
         }
         if (\array_key_exists('minimumGuaranteedDiscount', $data) && null !== $data['minimumGuaranteedDiscount']) {
             $object->setMinimumGuaranteedDiscount($this->denormalizer->denormalize($data['minimumGuaranteedDiscount'], \Em411\Allegro\Api\Model\AlleDiscountEligibleOfferDtoAlleDiscountMinimumGuaranteedDiscount::class, 'json', $context));
             unset($data['minimumGuaranteedDiscount']);
         } elseif (\array_key_exists('minimumGuaranteedDiscount', $data) && null === $data['minimumGuaranteedDiscount']) {
             $object->setMinimumGuaranteedDiscount(null);
+            unset($data['minimumGuaranteedDiscount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,15 +86,15 @@ class AlleDiscountEligibleOfferDtoAlleDiscountNormalizer implements Denormalizer
     {
         $dataArray = [];
         if ($data->isInitialized('campaignConditions') && null !== $data->getCampaignConditions()) {
-            $dataArray['campaignConditions'] = $this->normalizer->normalize($data->getCampaignConditions(), 'json', $context);
+            $dataArray['campaignConditions'] = null === $data->getCampaignConditions() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCampaignConditions(), 'json', $context));
         }
         if ($data->isInitialized('requiredMerchantPrice') && null !== $data->getRequiredMerchantPrice()) {
-            $dataArray['requiredMerchantPrice'] = $this->normalizer->normalize($data->getRequiredMerchantPrice(), 'json', $context);
+            $dataArray['requiredMerchantPrice'] = null === $data->getRequiredMerchantPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRequiredMerchantPrice(), 'json', $context));
         }
         if ($data->isInitialized('minimumGuaranteedDiscount') && null !== $data->getMinimumGuaranteedDiscount()) {
-            $dataArray['minimumGuaranteedDiscount'] = $this->normalizer->normalize($data->getMinimumGuaranteedDiscount(), 'json', $context);
+            $dataArray['minimumGuaranteedDiscount'] = null === $data->getMinimumGuaranteedDiscount() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMinimumGuaranteedDiscount(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class HandlingUnit extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class HandlingUnit implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class HandlingUnit extends \ArrayObject
         $this->labelsType = $labelsType;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['unitType' => ['unitType', 'getUnitType', 'setUnitType'], 'amount' => ['amount', 'getAmount', 'setAmount'], 'labelsType' => ['labelsType', 'getLabelsType', 'setLabelsType']];
     }
 }

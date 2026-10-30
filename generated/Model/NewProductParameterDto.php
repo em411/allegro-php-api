@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class NewProductParameterDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class NewProductParameterDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -111,5 +115,10 @@ class NewProductParameterDto extends \ArrayObject
         $this->valuesIds = $valuesIds;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'rangeValue' => ['rangeValue', 'getRangeValue', 'setRangeValue'], 'values' => ['values', 'getValues', 'setValues'], 'valuesIds' => ['valuesIds', 'getValuesIds', 'setValuesIds']];
     }
 }

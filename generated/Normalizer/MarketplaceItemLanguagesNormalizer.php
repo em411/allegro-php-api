@@ -42,15 +42,15 @@ class MarketplaceItemLanguagesNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\MarketplaceItemLanguages();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\MarketplaceItemLanguages();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('offerCreation', $data) && null !== $data['offerCreation']) {
             $values = [];
@@ -61,6 +61,7 @@ class MarketplaceItemLanguagesNormalizer implements DenormalizerInterface, Norma
             unset($data['offerCreation']);
         } elseif (\array_key_exists('offerCreation', $data) && null === $data['offerCreation']) {
             $object->setOfferCreation(null);
+            unset($data['offerCreation']);
         }
         if (\array_key_exists('offerDisplay', $data) && null !== $data['offerDisplay']) {
             $values_1 = [];
@@ -71,6 +72,7 @@ class MarketplaceItemLanguagesNormalizer implements DenormalizerInterface, Norma
             unset($data['offerDisplay']);
         } elseif (\array_key_exists('offerDisplay', $data) && null === $data['offerDisplay']) {
             $object->setOfferDisplay(null);
+            unset($data['offerDisplay']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -87,18 +89,18 @@ class MarketplaceItemLanguagesNormalizer implements DenormalizerInterface, Norma
         if ($data->isInitialized('offerCreation') && null !== $data->getOfferCreation()) {
             $values = [];
             foreach ($data->getOfferCreation() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['offerCreation'] = $values;
         }
         if ($data->isInitialized('offerDisplay') && null !== $data->getOfferDisplay()) {
             $values_1 = [];
             foreach ($data->getOfferDisplay() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['offerDisplay'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

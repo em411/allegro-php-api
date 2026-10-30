@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class Modification extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class Modification implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -249,5 +253,10 @@ class Modification extends \ArrayObject
         $this->safetyInformation = $safetyInformation;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['additionalServicesGroup' => ['additionalServicesGroup', 'getAdditionalServicesGroup', 'setAdditionalServicesGroup'], 'delivery' => ['delivery', 'getDelivery', 'setDelivery'], 'discounts' => ['discounts', 'getDiscounts', 'setDiscounts'], 'location' => ['location', 'getLocation', 'setLocation'], 'payments' => ['payments', 'getPayments', 'setPayments'], 'sizeTable' => ['sizeTable', 'getSizeTable', 'setSizeTable'], 'publication' => ['publication', 'getPublication', 'setPublication'], 'responsiblePerson' => ['responsiblePerson', 'getResponsiblePerson', 'setResponsiblePerson'], 'responsibleProducer' => ['responsibleProducer', 'getResponsibleProducer', 'setResponsibleProducer'], 'safetyInformation' => ['safetyInformation', 'getSafetyInformation', 'setSafetyInformation']];
     }
 }

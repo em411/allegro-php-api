@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ShipmentManagementDeliveryProposalsOrderIdGetResponse504 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ShipmentManagementDeliveryProposalsOrderIdGetResponse504 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class ShipmentManagementDeliveryProposalsOrderIdGetResponse504 extends \ArrayObj
         $this->errors = $errors;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['errors' => ['errors', 'getErrors', 'setErrors']];
     }
 }

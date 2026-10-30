@@ -42,24 +42,25 @@ class UserCampaignEligibilityNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\UserCampaignEligibility();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\UserCampaignEligibility();
         if (\array_key_exists('eligible', $data) && \is_int($data['eligible'])) {
             $data['eligible'] = (bool) $data['eligible'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('eligible', $data) && null !== $data['eligible']) {
             $object->setEligible($data['eligible']);
             unset($data['eligible']);
         } elseif (\array_key_exists('eligible', $data) && null === $data['eligible']) {
             $object->setEligible(null);
+            unset($data['eligible']);
         }
         if (\array_key_exists('refusalReasons', $data) && null !== $data['refusalReasons']) {
             $values = [];
@@ -70,6 +71,7 @@ class UserCampaignEligibilityNormalizer implements DenormalizerInterface, Normal
             unset($data['refusalReasons']);
         } elseif (\array_key_exists('refusalReasons', $data) && null === $data['refusalReasons']) {
             $object->setRefusalReasons(null);
+            unset($data['refusalReasons']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,10 +88,10 @@ class UserCampaignEligibilityNormalizer implements DenormalizerInterface, Normal
         $dataArray['eligible'] = $data->getEligible();
         $values = [];
         foreach ($data->getRefusalReasons() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['refusalReasons'] = $values;
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

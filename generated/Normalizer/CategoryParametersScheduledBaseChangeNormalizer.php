@@ -42,36 +42,63 @@ class CategoryParametersScheduledBaseChangeNormalizer implements DenormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (\array_key_exists('type', $data) && 'REQUIREMENT_CHANGE' === $data['type']) {
-            return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\RequirementChange', $format, $context);
+        $object = new \Em411\Allegro\Api\Model\CategoryParametersScheduledBaseChange();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
         }
-        if (isset($data['$ref'])) {
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CategoryParametersScheduledBaseChange();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
+        if (\array_key_exists('type', $data) && 'REQUIREMENT_CHANGE' === $data['type']) {
+            return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\RequirementChange', $format, $context);
         }
         if (\array_key_exists('scheduledAt', $data) && null !== $data['scheduledAt']) {
-            $object->setScheduledAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledAt']);
+            if (false === $date) {
+                if (\is_string($data['scheduledAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['scheduledAt'])) {
+                    try {
+                        $date = new \DateTime($data['scheduledAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setScheduledAt($date);
             unset($data['scheduledAt']);
         } elseif (\array_key_exists('scheduledAt', $data) && null === $data['scheduledAt']) {
             $object->setScheduledAt(null);
+            unset($data['scheduledAt']);
         }
         if (\array_key_exists('scheduledFor', $data) && null !== $data['scheduledFor']) {
-            $object->setScheduledFor(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledFor']));
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['scheduledFor']);
+            if (false === $date_1) {
+                if (\is_string($data['scheduledFor']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['scheduledFor'])) {
+                    try {
+                        $date_1 = new \DateTime($data['scheduledFor']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledFor'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['scheduledFor'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setScheduledFor($date_1);
             unset($data['scheduledFor']);
         } elseif (\array_key_exists('scheduledFor', $data) && null === $data['scheduledFor']) {
             $object->setScheduledFor(null);
+            unset($data['scheduledFor']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -91,7 +118,7 @@ class CategoryParametersScheduledBaseChangeNormalizer implements DenormalizerInt
         $dataArray['scheduledAt'] = $data->getScheduledAt()->format('Y-m-d\TH:i:sP');
         $dataArray['scheduledFor'] = $data->getScheduledFor()->format('Y-m-d\TH:i:sP');
         $dataArray['type'] = $data->getType();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

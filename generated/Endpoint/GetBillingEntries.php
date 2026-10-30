@@ -20,22 +20,19 @@ class GetBillingEntries extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint i
     /**
      * Use this resource to get a list of billing entries. The billing entries are sorted in descending order (newest first) by the date on which they occurred. Read more: <a href="../../tutorials/jak-sprawdzic-oplaty-nn9DOL5PASX#historia-operacji-billingowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-check-the-fees-3An6Wame3Um#billing-operations" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $marketplaceId The marketplace ID where the operation took place. By default, this is the marketplace ID where the user is registered. **Note:** The Business marketplace is not separate - it defaults to the main marketplace for the given country.
-     * @var string $occurredAt.gte Date from which billing entries are filtered. If occurredAt.lte is also set, occurredAt.gte cannot be later.
-     * @var string $occurredAt.lte Date to which billing entries are filtered. If occurredAt.gte is also set, occurredAt.lte cannot be earlier.
-     * @var array  $type.id List of billing types by which billing entries are filtered.
-     * @var string $offer.id Offer ID by which billing entries are filtered. Can be either a numeric ID or a UUID.
-     * @var string $order.id Order UUID by which billing entries are filtered.
-     * @var int    $limit number of returned operations
-     * @var int    $offset Index of the first returned payment operation from all search results.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "marketplaceId"?: string, //The marketplace ID where the operation took place. By default, this is the marketplace ID where the user is registered. **Note:** The Business marketplace is not separate - it defaults to the main marketplace for the given country.
+     *    "occurredAt.gte"?: string, //Date from which billing entries are filtered. If occurredAt.lte is also set, occurredAt.gte cannot be later.
+     *    "occurredAt.lte"?: string, //Date to which billing entries are filtered. If occurredAt.gte is also set, occurredAt.lte cannot be earlier.
+     *    "type.id"?: array, //List of billing types by which billing entries are filtered.
+     *    "offer.id"?: string, //Offer ID by which billing entries are filtered. Can be either a numeric ID or a UUID.
+     *    "order.id"?: string, //Order UUID by which billing entries are filtered.
+     *    "limit"?: int, //Number of returned operations.
+     *    "offset"?: int, //Index of the first returned payment operation from all search results.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -97,6 +94,11 @@ class GetBillingEntries extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint i
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['type.id' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\BillingEntries|null
      *
@@ -108,16 +110,16 @@ class GetBillingEntries extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint i
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\BillingEntries', 'json');
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetBillingEntriesUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (406 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (406 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetBillingEntriesNotAcceptableException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\GetBillingEntriesUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

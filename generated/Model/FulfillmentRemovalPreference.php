@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FulfillmentRemovalPreference extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FulfillmentRemovalPreference implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class FulfillmentRemovalPreference extends \ArrayObject
         $this->address = $address;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['operation' => ['operation', 'getOperation', 'setOperation'], 'address' => ['address', 'getAddress', 'setAddress']];
     }
 }

@@ -42,15 +42,15 @@ class CompatibilityListSupportedCategoriesDtoNormalizer implements DenormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CompatibilityListSupportedCategoriesDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CompatibilityListSupportedCategoriesDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('supportedCategories', $data) && null !== $data['supportedCategories']) {
             $values = [];
@@ -61,6 +61,7 @@ class CompatibilityListSupportedCategoriesDtoNormalizer implements DenormalizerI
             unset($data['supportedCategories']);
         } elseif (\array_key_exists('supportedCategories', $data) && null === $data['supportedCategories']) {
             $object->setSupportedCategories(null);
+            unset($data['supportedCategories']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,11 +78,11 @@ class CompatibilityListSupportedCategoriesDtoNormalizer implements DenormalizerI
         if ($data->isInitialized('supportedCategories') && null !== $data->getSupportedCategories()) {
             $values = [];
             foreach ($data->getSupportedCategories() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['supportedCategories'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

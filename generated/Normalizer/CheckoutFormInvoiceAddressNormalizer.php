@@ -42,51 +42,57 @@ class CheckoutFormInvoiceAddressNormalizer implements DenormalizerInterface, Nor
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormInvoiceAddress();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormInvoiceAddress();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('street', $data) && null !== $data['street']) {
             $object->setStreet($data['street']);
             unset($data['street']);
         } elseif (\array_key_exists('street', $data) && null === $data['street']) {
             $object->setStreet(null);
+            unset($data['street']);
         }
         if (\array_key_exists('city', $data) && null !== $data['city']) {
             $object->setCity($data['city']);
             unset($data['city']);
         } elseif (\array_key_exists('city', $data) && null === $data['city']) {
             $object->setCity(null);
+            unset($data['city']);
         }
         if (\array_key_exists('zipCode', $data) && null !== $data['zipCode']) {
             $object->setZipCode($data['zipCode']);
             unset($data['zipCode']);
         } elseif (\array_key_exists('zipCode', $data) && null === $data['zipCode']) {
             $object->setZipCode(null);
+            unset($data['zipCode']);
         }
         if (\array_key_exists('countryCode', $data) && null !== $data['countryCode']) {
             $object->setCountryCode($data['countryCode']);
             unset($data['countryCode']);
         } elseif (\array_key_exists('countryCode', $data) && null === $data['countryCode']) {
             $object->setCountryCode(null);
+            unset($data['countryCode']);
         }
         if (\array_key_exists('company', $data) && null !== $data['company']) {
             $object->setCompany($this->denormalizer->denormalize($data['company'], \Em411\Allegro\Api\Model\CheckoutFormInvoiceAddressCompany::class, 'json', $context));
             unset($data['company']);
         } elseif (\array_key_exists('company', $data) && null === $data['company']) {
             $object->setCompany(null);
+            unset($data['company']);
         }
         if (\array_key_exists('naturalPerson', $data) && null !== $data['naturalPerson']) {
             $object->setNaturalPerson($this->denormalizer->denormalize($data['naturalPerson'], \Em411\Allegro\Api\Model\CheckoutFormInvoiceAddressNaturalPerson::class, 'json', $context));
             unset($data['naturalPerson']);
         } elseif (\array_key_exists('naturalPerson', $data) && null === $data['naturalPerson']) {
             $object->setNaturalPerson(null);
+            unset($data['naturalPerson']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -105,12 +111,12 @@ class CheckoutFormInvoiceAddressNormalizer implements DenormalizerInterface, Nor
         $dataArray['zipCode'] = $data->getZipCode();
         $dataArray['countryCode'] = $data->getCountryCode();
         if ($data->isInitialized('company') && null !== $data->getCompany()) {
-            $dataArray['company'] = $this->normalizer->normalize($data->getCompany(), 'json', $context);
+            $dataArray['company'] = null === $data->getCompany() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCompany(), 'json', $context));
         }
         if ($data->isInitialized('naturalPerson') && null !== $data->getNaturalPerson()) {
-            $dataArray['naturalPerson'] = $this->normalizer->normalize($data->getNaturalPerson(), 'json', $context);
+            $dataArray['naturalPerson'] = null === $data->getNaturalPerson() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getNaturalPerson(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

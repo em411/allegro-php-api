@@ -42,45 +42,50 @@ class LineItemVoucherNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\LineItemVoucher();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\LineItemVoucher();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('code', $data) && null !== $data['code']) {
             $object->setCode($data['code']);
             unset($data['code']);
         } elseif (\array_key_exists('code', $data) && null === $data['code']) {
             $object->setCode(null);
+            unset($data['code']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('externalTransactionId', $data) && null !== $data['externalTransactionId']) {
             $object->setExternalTransactionId($data['externalTransactionId']);
             unset($data['externalTransactionId']);
         } elseif (\array_key_exists('externalTransactionId', $data) && null === $data['externalTransactionId']) {
             $object->setExternalTransactionId(null);
+            unset($data['externalTransactionId']);
         }
         if (\array_key_exists('value', $data) && null !== $data['value']) {
             $object->setValue($this->denormalizer->denormalize($data['value'], \Em411\Allegro\Api\Model\LineItemVoucherValue::class, 'json', $context));
             unset($data['value']);
         } elseif (\array_key_exists('value', $data) && null === $data['value']) {
             $object->setValue(null);
+            unset($data['value']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -105,9 +110,9 @@ class LineItemVoucherNormalizer implements DenormalizerInterface, NormalizerInte
             $dataArray['externalTransactionId'] = $data->getExternalTransactionId();
         }
         if ($data->isInitialized('value') && null !== $data->getValue()) {
-            $dataArray['value'] = $this->normalizer->normalize($data->getValue(), 'json', $context);
+            $dataArray['value'] = null === $data->getValue() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getValue(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

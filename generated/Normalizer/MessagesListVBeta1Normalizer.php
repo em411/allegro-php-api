@@ -42,15 +42,15 @@ class MessagesListVBeta1Normalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\MessagesListVBeta1();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\MessagesListVBeta1();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('messages', $data) && null !== $data['messages']) {
             $values = [];
@@ -61,12 +61,14 @@ class MessagesListVBeta1Normalizer implements DenormalizerInterface, NormalizerI
             unset($data['messages']);
         } elseif (\array_key_exists('messages', $data) && null === $data['messages']) {
             $object->setMessages(null);
+            unset($data['messages']);
         }
         if (\array_key_exists('nextPage', $data) && null !== $data['nextPage']) {
             $object->setNextPage($this->denormalizer->denormalize($data['nextPage'], \Em411\Allegro\Api\Model\MessagesListVBeta1NextPage::class, 'json', $context));
             unset($data['nextPage']);
         } elseif (\array_key_exists('nextPage', $data) && null === $data['nextPage']) {
             $object->setNextPage(null);
+            unset($data['nextPage']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -82,11 +84,11 @@ class MessagesListVBeta1Normalizer implements DenormalizerInterface, NormalizerI
         $dataArray = [];
         $values = [];
         foreach ($data->getMessages() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['messages'] = $values;
-        $dataArray['nextPage'] = $this->normalizer->normalize($data->getNextPage(), 'json', $context);
-        foreach ($data as $key => $value_1) {
+        $dataArray['nextPage'] = null === $data->getNextPage() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getNextPage(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ParameterProductOfferResponseRangeValue extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ParameterProductOfferResponseRangeValue implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -57,5 +61,10 @@ class ParameterProductOfferResponseRangeValue extends \ArrayObject
         $this->to = $to;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['from' => ['from', 'getFrom', 'setFrom'], 'to' => ['to', 'getTo', 'setTo']];
     }
 }

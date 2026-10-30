@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CpsConversionResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CpsConversionResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class CpsConversionResponse extends \ArrayObject
         $this->conversions = $conversions;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['conversions' => ['conversions', 'getConversions', 'setConversions']];
     }
 }

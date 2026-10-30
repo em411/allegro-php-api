@@ -42,24 +42,25 @@ class RelatedReasonNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\RelatedReason();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\RelatedReason();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('code', $data) && null !== $data['code']) {
             $object->setCode($data['code']);
             unset($data['code']);
         } elseif (\array_key_exists('code', $data) && null === $data['code']) {
             $object->setCode(null);
+            unset($data['code']);
         }
         if (\array_key_exists('parameters', $data) && null !== $data['parameters']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['parameters'] as $key => $value) {
                 $values_1 = [];
                 foreach ($value as $value_1) {
@@ -71,6 +72,7 @@ class RelatedReasonNormalizer implements DenormalizerInterface, NormalizerInterf
             unset($data['parameters']);
         } elseif (\array_key_exists('parameters', $data) && null === $data['parameters']) {
             $object->setParameters(null);
+            unset($data['parameters']);
         }
         foreach ($data as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -86,7 +88,7 @@ class RelatedReasonNormalizer implements DenormalizerInterface, NormalizerInterf
         $dataArray = [];
         $dataArray['code'] = $data->getCode();
         if ($data->isInitialized('parameters') && null !== $data->getParameters()) {
-            $values = [];
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data->getParameters() as $key => $value) {
                 $values_1 = [];
                 foreach ($value as $value_1) {
@@ -96,7 +98,7 @@ class RelatedReasonNormalizer implements DenormalizerInterface, NormalizerInterf
             }
             $dataArray['parameters'] = $values;
         }
-        foreach ($data as $key_1 => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_2) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_2;
             }

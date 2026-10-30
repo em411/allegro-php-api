@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CustomerReturnParcelSender extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CustomerReturnParcelSender implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -40,5 +44,10 @@ class CustomerReturnParcelSender extends \ArrayObject
         $this->phoneNumber = $phoneNumber;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['phoneNumber' => ['phoneNumber', 'getPhoneNumber', 'setPhoneNumber']];
     }
 }

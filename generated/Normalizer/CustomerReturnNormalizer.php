@@ -42,54 +42,72 @@ class CustomerReturnNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CustomerReturn();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CustomerReturn();
         if (\array_key_exists('isFulfillment', $data) && \is_int($data['isFulfillment'])) {
             $data['isFulfillment'] = (bool) $data['isFulfillment'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('isFulfillment', $data) && null !== $data['isFulfillment']) {
             $object->setIsFulfillment($data['isFulfillment']);
             unset($data['isFulfillment']);
         } elseif (\array_key_exists('isFulfillment', $data) && null === $data['isFulfillment']) {
             $object->setIsFulfillment(null);
+            unset($data['isFulfillment']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
-            $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']);
+            if (false === $date) {
+                if (\is_string($data['createdAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['createdAt'])) {
+                    try {
+                        $date = new \DateTime($data['createdAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setCreatedAt($date);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('referenceNumber', $data) && null !== $data['referenceNumber']) {
             $object->setReferenceNumber($data['referenceNumber']);
             unset($data['referenceNumber']);
         } elseif (\array_key_exists('referenceNumber', $data) && null === $data['referenceNumber']) {
             $object->setReferenceNumber(null);
+            unset($data['referenceNumber']);
         }
         if (\array_key_exists('orderId', $data) && null !== $data['orderId']) {
             $object->setOrderId($data['orderId']);
             unset($data['orderId']);
         } elseif (\array_key_exists('orderId', $data) && null === $data['orderId']) {
             $object->setOrderId(null);
+            unset($data['orderId']);
         }
         if (\array_key_exists('buyer', $data) && null !== $data['buyer']) {
             $object->setBuyer($this->denormalizer->denormalize($data['buyer'], \Em411\Allegro\Api\Model\CustomerReturnBuyer::class, 'json', $context));
             unset($data['buyer']);
         } elseif (\array_key_exists('buyer', $data) && null === $data['buyer']) {
             $object->setBuyer(null);
+            unset($data['buyer']);
         }
         if (\array_key_exists('items', $data) && null !== $data['items']) {
             $values = [];
@@ -100,12 +118,14 @@ class CustomerReturnNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['items']);
         } elseif (\array_key_exists('items', $data) && null === $data['items']) {
             $object->setItems(null);
+            unset($data['items']);
         }
         if (\array_key_exists('refund', $data) && null !== $data['refund']) {
             $object->setRefund($this->denormalizer->denormalize($data['refund'], \Em411\Allegro\Api\Model\CustomerReturnRefund::class, 'json', $context));
             unset($data['refund']);
         } elseif (\array_key_exists('refund', $data) && null === $data['refund']) {
             $object->setRefund(null);
+            unset($data['refund']);
         }
         if (\array_key_exists('parcels', $data) && null !== $data['parcels']) {
             $values_1 = [];
@@ -116,24 +136,28 @@ class CustomerReturnNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['parcels']);
         } elseif (\array_key_exists('parcels', $data) && null === $data['parcels']) {
             $object->setParcels(null);
+            unset($data['parcels']);
         }
         if (\array_key_exists('rejection', $data) && null !== $data['rejection']) {
             $object->setRejection($this->denormalizer->denormalize($data['rejection'], \Em411\Allegro\Api\Model\CustomerReturnRejection::class, 'json', $context));
             unset($data['rejection']);
         } elseif (\array_key_exists('rejection', $data) && null === $data['rejection']) {
             $object->setRejection(null);
+            unset($data['rejection']);
         }
         if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
             $object->setMarketplaceId($data['marketplaceId']);
             unset($data['marketplaceId']);
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
+            unset($data['marketplaceId']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -163,27 +187,27 @@ class CustomerReturnNormalizer implements DenormalizerInterface, NormalizerInter
             $dataArray['orderId'] = $data->getOrderId();
         }
         if ($data->isInitialized('buyer') && null !== $data->getBuyer()) {
-            $dataArray['buyer'] = $this->normalizer->normalize($data->getBuyer(), 'json', $context);
+            $dataArray['buyer'] = null === $data->getBuyer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBuyer(), 'json', $context));
         }
         if ($data->isInitialized('items') && null !== $data->getItems()) {
             $values = [];
             foreach ($data->getItems() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['items'] = $values;
         }
         if ($data->isInitialized('refund') && null !== $data->getRefund()) {
-            $dataArray['refund'] = $this->normalizer->normalize($data->getRefund(), 'json', $context);
+            $dataArray['refund'] = null === $data->getRefund() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRefund(), 'json', $context));
         }
         if ($data->isInitialized('parcels') && null !== $data->getParcels()) {
             $values_1 = [];
             foreach ($data->getParcels() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['parcels'] = $values_1;
         }
         if ($data->isInitialized('rejection') && null !== $data->getRejection()) {
-            $dataArray['rejection'] = $this->normalizer->normalize($data->getRejection(), 'json', $context);
+            $dataArray['rejection'] = null === $data->getRejection() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRejection(), 'json', $context));
         }
         if ($data->isInitialized('marketplaceId') && null !== $data->getMarketplaceId()) {
             $dataArray['marketplaceId'] = $data->getMarketplaceId();
@@ -191,7 +215,7 @@ class CustomerReturnNormalizer implements DenormalizerInterface, NormalizerInter
         if ($data->isInitialized('status') && null !== $data->getStatus()) {
             $dataArray['status'] = $data->getStatus();
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

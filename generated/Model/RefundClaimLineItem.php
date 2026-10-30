@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class RefundClaimLineItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class RefundClaimLineItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class RefundClaimLineItem extends \ArrayObject
         $this->offer = $offer;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'quantity' => ['quantity', 'getQuantity', 'setQuantity'], 'boughtAt' => ['boughtAt', 'getBoughtAt', 'setBoughtAt'], 'offer' => ['offer', 'getOffer', 'setOffer']];
     }
 }

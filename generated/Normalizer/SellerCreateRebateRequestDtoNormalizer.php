@@ -42,15 +42,15 @@ class SellerCreateRebateRequestDtoNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SellerCreateRebateRequestDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\SellerCreateRebateRequestDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('benefits', $data) && null !== $data['benefits']) {
             $values = [];
@@ -61,6 +61,7 @@ class SellerCreateRebateRequestDtoNormalizer implements DenormalizerInterface, N
             unset($data['benefits']);
         } elseif (\array_key_exists('benefits', $data) && null === $data['benefits']) {
             $object->setBenefits(null);
+            unset($data['benefits']);
         }
         if (\array_key_exists('offerCriteria', $data) && null !== $data['offerCriteria']) {
             $values_1 = [];
@@ -71,6 +72,7 @@ class SellerCreateRebateRequestDtoNormalizer implements DenormalizerInterface, N
             unset($data['offerCriteria']);
         } elseif (\array_key_exists('offerCriteria', $data) && null === $data['offerCriteria']) {
             $object->setOfferCriteria(null);
+            unset($data['offerCriteria']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,15 +88,15 @@ class SellerCreateRebateRequestDtoNormalizer implements DenormalizerInterface, N
         $dataArray = [];
         $values = [];
         foreach ($data->getBenefits() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['benefits'] = $values;
         $values_1 = [];
         foreach ($data->getOfferCriteria() as $value_1) {
-            $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
         }
         $dataArray['offerCriteria'] = $values_1;
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

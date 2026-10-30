@@ -42,45 +42,49 @@ class SalesQualityMetricNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SalesQualityMetric();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SalesQualityMetric();
         if (\array_key_exists('score', $data) && \is_int($data['score'])) {
             $data['score'] = (float) $data['score'];
         }
         if (\array_key_exists('maxScore', $data) && \is_int($data['maxScore'])) {
             $data['maxScore'] = (float) $data['maxScore'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('code', $data) && null !== $data['code']) {
             $object->setCode($data['code']);
             unset($data['code']);
         } elseif (\array_key_exists('code', $data) && null === $data['code']) {
             $object->setCode(null);
+            unset($data['code']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('score', $data) && null !== $data['score']) {
             $object->setScore($data['score']);
             unset($data['score']);
         } elseif (\array_key_exists('score', $data) && null === $data['score']) {
             $object->setScore(null);
+            unset($data['score']);
         }
         if (\array_key_exists('maxScore', $data) && null !== $data['maxScore']) {
             $object->setMaxScore($data['maxScore']);
             unset($data['maxScore']);
         } elseif (\array_key_exists('maxScore', $data) && null === $data['maxScore']) {
             $object->setMaxScore(null);
+            unset($data['maxScore']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,7 +104,7 @@ class SalesQualityMetricNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('maxScore') && null !== $data->getMaxScore()) {
             $dataArray['maxScore'] = $data->getMaxScore();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

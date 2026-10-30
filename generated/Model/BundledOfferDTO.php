@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BundledOfferDTO extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BundledOfferDTO implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class BundledOfferDTO extends \ArrayObject
         $this->entryPoint = $entryPoint;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'requiredQuantity' => ['requiredQuantity', 'getRequiredQuantity', 'setRequiredQuantity'], 'entryPoint' => ['entryPoint', 'getEntryPoint', 'setEntryPoint']];
     }
 }

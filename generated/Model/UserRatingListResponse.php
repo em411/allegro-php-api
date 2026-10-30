@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class UserRatingListResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class UserRatingListResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class UserRatingListResponse extends \ArrayObject
         $this->ratings = $ratings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['ratings' => ['ratings', 'getRatings', 'setRatings']];
     }
 }

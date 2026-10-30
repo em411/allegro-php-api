@@ -42,21 +42,22 @@ class BiddingOffersOfferIdBidPutBodyNormalizer implements DenormalizerInterface,
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\BiddingOffersOfferIdBidPutBody();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\BiddingOffersOfferIdBidPutBody();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('maxAmount', $data) && null !== $data['maxAmount']) {
             $object->setMaxAmount($this->denormalizer->denormalize($data['maxAmount'], \Em411\Allegro\Api\Model\MaxPrice::class, 'json', $context));
             unset($data['maxAmount']);
         } elseif (\array_key_exists('maxAmount', $data) && null === $data['maxAmount']) {
             $object->setMaxAmount(null);
+            unset($data['maxAmount']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,8 +71,8 @@ class BiddingOffersOfferIdBidPutBodyNormalizer implements DenormalizerInterface,
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['maxAmount'] = $this->normalizer->normalize($data->getMaxAmount(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['maxAmount'] = null === $data->getMaxAmount() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMaxAmount(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

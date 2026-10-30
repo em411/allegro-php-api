@@ -42,21 +42,22 @@ class PromoOptionsCommandModificationNormalizer implements DenormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PromoOptionsCommandModification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PromoOptionsCommandModification();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('basePackage', $data) && null !== $data['basePackage']) {
             $object->setBasePackage($this->denormalizer->denormalize($data['basePackage'], \Em411\Allegro\Api\Model\PromoOptionsCommandModificationBasePackage::class, 'json', $context));
             unset($data['basePackage']);
         } elseif (\array_key_exists('basePackage', $data) && null === $data['basePackage']) {
             $object->setBasePackage(null);
+            unset($data['basePackage']);
         }
         if (\array_key_exists('extraPackages', $data) && null !== $data['extraPackages']) {
             $values = [];
@@ -67,12 +68,14 @@ class PromoOptionsCommandModificationNormalizer implements DenormalizerInterface
             unset($data['extraPackages']);
         } elseif (\array_key_exists('extraPackages', $data) && null === $data['extraPackages']) {
             $object->setExtraPackages(null);
+            unset($data['extraPackages']);
         }
         if (\array_key_exists('modificationTime', $data) && null !== $data['modificationTime']) {
             $object->setModificationTime($data['modificationTime']);
             unset($data['modificationTime']);
         } elseif (\array_key_exists('modificationTime', $data) && null === $data['modificationTime']) {
             $object->setModificationTime(null);
+            unset($data['modificationTime']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -87,19 +90,19 @@ class PromoOptionsCommandModificationNormalizer implements DenormalizerInterface
     {
         $dataArray = [];
         if ($data->isInitialized('basePackage') && null !== $data->getBasePackage()) {
-            $dataArray['basePackage'] = $this->normalizer->normalize($data->getBasePackage(), 'json', $context);
+            $dataArray['basePackage'] = null === $data->getBasePackage() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBasePackage(), 'json', $context));
         }
         if ($data->isInitialized('extraPackages') && null !== $data->getExtraPackages()) {
             $values = [];
             foreach ($data->getExtraPackages() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['extraPackages'] = $values;
         }
         if ($data->isInitialized('modificationTime') && null !== $data->getModificationTime()) {
             $dataArray['modificationTime'] = $data->getModificationTime();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

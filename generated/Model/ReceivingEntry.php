@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReceivingEntry extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ReceivingEntry implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -96,5 +100,10 @@ class ReceivingEntry extends \ArrayObject
         $this->received = $received;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['expected' => ['expected', 'getExpected', 'setExpected'], 'product' => ['product', 'getProduct', 'setProduct'], 'received' => ['received', 'getReceived', 'setReceived']];
     }
 }

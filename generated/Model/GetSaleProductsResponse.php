@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class GetSaleProductsResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class GetSaleProductsResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -103,5 +107,10 @@ class GetSaleProductsResponse extends \ArrayObject
         $this->nextPage = $nextPage;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['products' => ['products', 'getProducts', 'setProducts'], 'categories' => ['categories', 'getCategories', 'setCategories'], 'filters' => ['filters', 'getFilters', 'setFilters'], 'nextPage' => ['nextPage', 'getNextPage', 'setNextPage']];
     }
 }

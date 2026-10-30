@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PublicTablesDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PublicTablesDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -46,5 +50,10 @@ class PublicTablesDto extends \ArrayObject
         $this->tables = $tables;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['tables' => ['tables', 'getTables', 'setTables']];
     }
 }

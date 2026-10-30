@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SizeTableTemplatesResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SizeTableTemplatesResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class SizeTableTemplatesResponse extends \ArrayObject
         $this->templates = $templates;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['templates' => ['templates', 'getTemplates', 'setTemplates']];
     }
 }

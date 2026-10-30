@@ -42,51 +42,57 @@ class StockProductItemNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\StockProductItem();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\StockProductItem();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('product', $data) && null !== $data['product']) {
             $object->setProduct($this->denormalizer->denormalize($data['product'], \Em411\Allegro\Api\Model\StockProduct::class, 'json', $context));
             unset($data['product']);
         } elseif (\array_key_exists('product', $data) && null === $data['product']) {
             $object->setProduct(null);
+            unset($data['product']);
         }
         if (\array_key_exists('quantity', $data) && null !== $data['quantity']) {
             $object->setQuantity($this->denormalizer->denormalize($data['quantity'], \Em411\Allegro\Api\Model\StockQuantity::class, 'json', $context));
             unset($data['quantity']);
         } elseif (\array_key_exists('quantity', $data) && null === $data['quantity']) {
             $object->setQuantity(null);
+            unset($data['quantity']);
         }
         if (\array_key_exists('sellingStats', $data) && null !== $data['sellingStats']) {
             $object->setSellingStats($this->denormalizer->denormalize($data['sellingStats'], \Em411\Allegro\Api\Model\StockSellingStats::class, 'json', $context));
             unset($data['sellingStats']);
         } elseif (\array_key_exists('sellingStats', $data) && null === $data['sellingStats']) {
             $object->setSellingStats(null);
+            unset($data['sellingStats']);
         }
         if (\array_key_exists('reserve', $data) && null !== $data['reserve']) {
             $object->setReserve($this->denormalizer->denormalize($data['reserve'], \Em411\Allegro\Api\Model\ReserveInfo::class, 'json', $context));
             unset($data['reserve']);
         } elseif (\array_key_exists('reserve', $data) && null === $data['reserve']) {
             $object->setReserve(null);
+            unset($data['reserve']);
         }
         if (\array_key_exists('storageFee', $data) && null !== $data['storageFee']) {
             $object->setStorageFee($this->denormalizer->denormalize($data['storageFee'], \Em411\Allegro\Api\Model\StockStorageFee::class, 'json', $context));
             unset($data['storageFee']);
         } elseif (\array_key_exists('storageFee', $data) && null === $data['storageFee']) {
             $object->setStorageFee(null);
+            unset($data['storageFee']);
         }
         if (\array_key_exists('offerId', $data) && null !== $data['offerId']) {
             $object->setOfferId($data['offerId']);
             unset($data['offerId']);
         } elseif (\array_key_exists('offerId', $data) && null === $data['offerId']) {
             $object->setOfferId(null);
+            unset($data['offerId']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -101,24 +107,24 @@ class StockProductItemNormalizer implements DenormalizerInterface, NormalizerInt
     {
         $dataArray = [];
         if ($data->isInitialized('product') && null !== $data->getProduct()) {
-            $dataArray['product'] = $this->normalizer->normalize($data->getProduct(), 'json', $context);
+            $dataArray['product'] = null === $data->getProduct() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getProduct(), 'json', $context));
         }
         if ($data->isInitialized('quantity') && null !== $data->getQuantity()) {
-            $dataArray['quantity'] = $this->normalizer->normalize($data->getQuantity(), 'json', $context);
+            $dataArray['quantity'] = null === $data->getQuantity() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getQuantity(), 'json', $context));
         }
         if ($data->isInitialized('sellingStats') && null !== $data->getSellingStats()) {
-            $dataArray['sellingStats'] = $this->normalizer->normalize($data->getSellingStats(), 'json', $context);
+            $dataArray['sellingStats'] = null === $data->getSellingStats() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSellingStats(), 'json', $context));
         }
         if ($data->isInitialized('reserve') && null !== $data->getReserve()) {
-            $dataArray['reserve'] = $this->normalizer->normalize($data->getReserve(), 'json', $context);
+            $dataArray['reserve'] = null === $data->getReserve() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getReserve(), 'json', $context));
         }
         if ($data->isInitialized('storageFee') && null !== $data->getStorageFee()) {
-            $dataArray['storageFee'] = $this->normalizer->normalize($data->getStorageFee(), 'json', $context);
+            $dataArray['storageFee'] = null === $data->getStorageFee() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getStorageFee(), 'json', $context));
         }
         if ($data->isInitialized('offerId') && null !== $data->getOfferId()) {
             $dataArray['offerId'] = $data->getOfferId();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

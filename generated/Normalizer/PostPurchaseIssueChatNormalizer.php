@@ -42,33 +42,36 @@ class PostPurchaseIssueChatNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PostPurchaseIssueChat();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PostPurchaseIssueChat();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('lastMessage', $data) && null !== $data['lastMessage']) {
             $object->setLastMessage($this->denormalizer->denormalize($data['lastMessage'], \Em411\Allegro\Api\Model\PostPurchaseIssueLastMessage::class, 'json', $context));
             unset($data['lastMessage']);
         } elseif (\array_key_exists('lastMessage', $data) && null === $data['lastMessage']) {
             $object->setLastMessage(null);
+            unset($data['lastMessage']);
         }
         if (\array_key_exists('messagesCount', $data) && null !== $data['messagesCount']) {
             $object->setMessagesCount($data['messagesCount']);
             unset($data['messagesCount']);
         } elseif (\array_key_exists('messagesCount', $data) && null === $data['messagesCount']) {
             $object->setMessagesCount(null);
+            unset($data['messagesCount']);
         }
         if (\array_key_exists('initialMessage', $data) && null !== $data['initialMessage']) {
             $object->setInitialMessage($this->denormalizer->denormalize($data['initialMessage'], \Em411\Allegro\Api\Model\PostPurchaseIssueFirstMessage::class, 'json', $context));
             unset($data['initialMessage']);
         } elseif (\array_key_exists('initialMessage', $data) && null === $data['initialMessage']) {
             $object->setInitialMessage(null);
+            unset($data['initialMessage']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,15 +86,15 @@ class PostPurchaseIssueChatNormalizer implements DenormalizerInterface, Normaliz
     {
         $dataArray = [];
         if ($data->isInitialized('lastMessage') && null !== $data->getLastMessage()) {
-            $dataArray['lastMessage'] = $this->normalizer->normalize($data->getLastMessage(), 'json', $context);
+            $dataArray['lastMessage'] = null === $data->getLastMessage() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getLastMessage(), 'json', $context));
         }
         if ($data->isInitialized('messagesCount') && null !== $data->getMessagesCount()) {
             $dataArray['messagesCount'] = $data->getMessagesCount();
         }
         if ($data->isInitialized('initialMessage') && null !== $data->getInitialMessage()) {
-            $dataArray['initialMessage'] = $this->normalizer->normalize($data->getInitialMessage(), 'json', $context);
+            $dataArray['initialMessage'] = null === $data->getInitialMessage() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getInitialMessage(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

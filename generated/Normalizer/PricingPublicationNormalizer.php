@@ -42,21 +42,22 @@ class PricingPublicationNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PricingPublication();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PricingPublication();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('duration', $data) && null !== $data['duration']) {
             $object->setDuration($data['duration']);
             unset($data['duration']);
         } elseif (\array_key_exists('duration', $data) && null === $data['duration']) {
             $object->setDuration(null);
+            unset($data['duration']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -73,7 +74,7 @@ class PricingPublicationNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('duration') && null !== $data->getDuration()) {
             $dataArray['duration'] = $data->getDuration();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

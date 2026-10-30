@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ProductChangeDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ProductChangeDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -69,5 +73,10 @@ class ProductChangeDto extends \ArrayObject
         $this->changedParameters = $changedParameters;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['product' => ['product', 'getProduct', 'setProduct'], 'changedParameters' => ['changedParameters', 'getChangedParameters', 'setChangedParameters']];
     }
 }

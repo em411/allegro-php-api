@@ -74,4 +74,9 @@ class AlreadyInWarehouseShipping extends ShippingExtended
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['estimatedTimeOfArrival' => ['estimatedTimeOfArrival', 'getEstimatedTimeOfArrival', 'setEstimatedTimeOfArrival'], 'countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode']]);
+    }
 }

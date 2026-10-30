@@ -42,27 +42,28 @@ class ProductSetElementResponsibleProducerRequestNormalizer implements Denormali
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
+        $object = new \Em411\Allegro\Api\Model\ProductSetElementResponsibleProducerRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
+        }
         if (\array_key_exists('type', $data) && 'ID' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\ProductSetElementResponsibleProducerIdRequest', $format, $context);
         }
         if (\array_key_exists('type', $data) && 'NAME' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\ProductSetElementResponsibleProducerNameRequest', $format, $context);
         }
-        if (isset($data['$ref'])) {
-            return new Reference($data['$ref'], $context['document-origin']);
-        }
-        if (isset($data['$recursiveRef'])) {
-            return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ProductSetElementResponsibleProducerRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,7 +84,7 @@ class ProductSetElementResponsibleProducerRequestNormalizer implements Denormali
             return $this->normalizer->normalize($data, $format, $context);
         }
         $dataArray['type'] = $data->getType();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

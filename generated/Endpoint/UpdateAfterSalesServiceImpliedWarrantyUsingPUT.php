@@ -22,10 +22,9 @@ class UpdateAfterSalesServiceImpliedWarrantyUsingPUT extends \Em411\Allegro\Api\
      * Use this resource to modify the implied warranty details. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-edytowac-informacje-o-warunkach-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-update-implied-warranty-information" target="_blank">EN</a>.
      *
      * @param string $impliedWarrantyId the ID of the implied warranty
-     * @param array  $headerParameters  {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $impliedWarrantyId, ?\Em411\Allegro\Api\Model\ImpliedWarrantyRequest $requestBody = null, array $headerParameters = [])
     {
@@ -41,13 +40,13 @@ class UpdateAfterSalesServiceImpliedWarrantyUsingPUT extends \Em411\Allegro\Api\
 
     public function getUri(): string
     {
-        return str_replace(['{impliedWarrantyId}'], [$this->impliedWarrantyId], '/after-sales-service-conditions/implied-warranties/{impliedWarrantyId}');
+        return str_replace(['{impliedWarrantyId}'], [rawurlencode($this->impliedWarrantyId)], '/after-sales-service-conditions/implied-warranties/{impliedWarrantyId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if ($this->body instanceof \Em411\Allegro\Api\Model\ImpliedWarrantyRequest) {
-            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
+            return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], \Em411\Allegro\Api\Runtime\Client\JsonPayload::encode($serializer, $this->body)];
         }
 
         return [[], null];
@@ -87,7 +86,7 @@ class UpdateAfterSalesServiceImpliedWarrantyUsingPUT extends \Em411\Allegro\Api\
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ImpliedWarrantyResponse', 'json');
         }
         if (400 === $status) {

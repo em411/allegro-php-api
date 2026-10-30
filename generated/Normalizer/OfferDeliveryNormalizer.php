@@ -42,30 +42,32 @@ class OfferDeliveryNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferDelivery();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\OfferDelivery();
         if (\array_key_exists('availableForFree', $data) && \is_int($data['availableForFree'])) {
             $data['availableForFree'] = (bool) $data['availableForFree'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('availableForFree', $data) && null !== $data['availableForFree']) {
             $object->setAvailableForFree($data['availableForFree']);
             unset($data['availableForFree']);
         } elseif (\array_key_exists('availableForFree', $data) && null === $data['availableForFree']) {
             $object->setAvailableForFree(null);
+            unset($data['availableForFree']);
         }
         if (\array_key_exists('lowestPrice', $data) && null !== $data['lowestPrice']) {
             $object->setLowestPrice($this->denormalizer->denormalize($data['lowestPrice'], \Em411\Allegro\Api\Model\OfferLowestPrice::class, 'json', $context));
             unset($data['lowestPrice']);
         } elseif (\array_key_exists('lowestPrice', $data) && null === $data['lowestPrice']) {
             $object->setLowestPrice(null);
+            unset($data['lowestPrice']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,9 +85,9 @@ class OfferDeliveryNormalizer implements DenormalizerInterface, NormalizerInterf
             $dataArray['availableForFree'] = $data->getAvailableForFree();
         }
         if ($data->isInitialized('lowestPrice') && null !== $data->getLowestPrice()) {
-            $dataArray['lowestPrice'] = $this->normalizer->normalize($data->getLowestPrice(), 'json', $context);
+            $dataArray['lowestPrice'] = null === $data->getLowestPrice() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getLowestPrice(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

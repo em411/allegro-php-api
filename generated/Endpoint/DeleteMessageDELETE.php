@@ -21,11 +21,10 @@ class DeleteMessageDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
     /**
      * Use this resource to delete message with provided identifier. This resource is deprecated and will be removed in the future. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#usuniecie-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#delete-a-message" target="_blank">EN</a>.
      *
-     * @param string $messageId        identifier of the message to delete
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $messageId identifier of the message to delete
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $messageId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class DeleteMessageDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
 
     public function getUri(): string
     {
-        return str_replace(['{messageId}'], [$this->messageId], '/messaging/messages/{messageId}');
+        return str_replace(['{messageId}'], [rawurlencode($this->messageId)], '/messaging/messages/{messageId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

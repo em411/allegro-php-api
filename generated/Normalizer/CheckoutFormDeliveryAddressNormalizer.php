@@ -42,69 +42,78 @@ class CheckoutFormDeliveryAddressNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormDeliveryAddress();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormDeliveryAddress();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('firstName', $data) && null !== $data['firstName']) {
             $object->setFirstName($data['firstName']);
             unset($data['firstName']);
         } elseif (\array_key_exists('firstName', $data) && null === $data['firstName']) {
             $object->setFirstName(null);
+            unset($data['firstName']);
         }
         if (\array_key_exists('lastName', $data) && null !== $data['lastName']) {
             $object->setLastName($data['lastName']);
             unset($data['lastName']);
         } elseif (\array_key_exists('lastName', $data) && null === $data['lastName']) {
             $object->setLastName(null);
+            unset($data['lastName']);
         }
         if (\array_key_exists('street', $data) && null !== $data['street']) {
             $object->setStreet($data['street']);
             unset($data['street']);
         } elseif (\array_key_exists('street', $data) && null === $data['street']) {
             $object->setStreet(null);
+            unset($data['street']);
         }
         if (\array_key_exists('city', $data) && null !== $data['city']) {
             $object->setCity($data['city']);
             unset($data['city']);
         } elseif (\array_key_exists('city', $data) && null === $data['city']) {
             $object->setCity(null);
+            unset($data['city']);
         }
         if (\array_key_exists('zipCode', $data) && null !== $data['zipCode']) {
             $object->setZipCode($data['zipCode']);
             unset($data['zipCode']);
         } elseif (\array_key_exists('zipCode', $data) && null === $data['zipCode']) {
             $object->setZipCode(null);
+            unset($data['zipCode']);
         }
         if (\array_key_exists('countryCode', $data) && null !== $data['countryCode']) {
             $object->setCountryCode($data['countryCode']);
             unset($data['countryCode']);
         } elseif (\array_key_exists('countryCode', $data) && null === $data['countryCode']) {
             $object->setCountryCode(null);
+            unset($data['countryCode']);
         }
         if (\array_key_exists('companyName', $data) && null !== $data['companyName']) {
             $object->setCompanyName($data['companyName']);
             unset($data['companyName']);
         } elseif (\array_key_exists('companyName', $data) && null === $data['companyName']) {
             $object->setCompanyName(null);
+            unset($data['companyName']);
         }
         if (\array_key_exists('phoneNumber', $data) && null !== $data['phoneNumber']) {
             $object->setPhoneNumber($data['phoneNumber']);
             unset($data['phoneNumber']);
         } elseif (\array_key_exists('phoneNumber', $data) && null === $data['phoneNumber']) {
             $object->setPhoneNumber(null);
+            unset($data['phoneNumber']);
         }
         if (\array_key_exists('modifiedAt', $data) && null !== $data['modifiedAt']) {
             $object->setModifiedAt($data['modifiedAt']);
             unset($data['modifiedAt']);
         } elseif (\array_key_exists('modifiedAt', $data) && null === $data['modifiedAt']) {
             $object->setModifiedAt(null);
+            unset($data['modifiedAt']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -133,7 +142,7 @@ class CheckoutFormDeliveryAddressNormalizer implements DenormalizerInterface, No
         if ($data->isInitialized('modifiedAt') && null !== $data->getModifiedAt()) {
             $dataArray['modifiedAt'] = $data->getModifiedAt();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,51 +42,57 @@ class DeliveryOptionDtoNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\DeliveryOptionDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\DeliveryOptionDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('deliveryType', $data) && null !== $data['deliveryType']) {
             $object->setDeliveryType($data['deliveryType']);
             unset($data['deliveryType']);
         } elseif (\array_key_exists('deliveryType', $data) && null === $data['deliveryType']) {
             $object->setDeliveryType(null);
+            unset($data['deliveryType']);
         }
         if (\array_key_exists('paymentType', $data) && null !== $data['paymentType']) {
             $object->setPaymentType($data['paymentType']);
             unset($data['paymentType']);
         } elseif (\array_key_exists('paymentType', $data) && null === $data['paymentType']) {
             $object->setPaymentType(null);
+            unset($data['paymentType']);
         }
         if (\array_key_exists('packageType', $data) && null !== $data['packageType']) {
             $object->setPackageType($data['packageType']);
             unset($data['packageType']);
         } elseif (\array_key_exists('packageType', $data) && null === $data['packageType']) {
             $object->setPackageType(null);
+            unset($data['packageType']);
         }
         if (\array_key_exists('originCountry', $data) && null !== $data['originCountry']) {
             $object->setOriginCountry($data['originCountry']);
             unset($data['originCountry']);
         } elseif (\array_key_exists('originCountry', $data) && null === $data['originCountry']) {
             $object->setOriginCountry(null);
+            unset($data['originCountry']);
         }
         if (\array_key_exists('destinationCountry', $data) && null !== $data['destinationCountry']) {
             $object->setDestinationCountry($data['destinationCountry']);
             unset($data['destinationCountry']);
         } elseif (\array_key_exists('destinationCountry', $data) && null === $data['destinationCountry']) {
             $object->setDestinationCountry(null);
+            unset($data['destinationCountry']);
         }
         if (\array_key_exists('limits', $data) && null !== $data['limits']) {
             $object->setLimits($this->denormalizer->denormalize($data['limits'], \Em411\Allegro\Api\Model\DeliveryOptionDtoLimits::class, 'json', $context));
             unset($data['limits']);
         } elseif (\array_key_exists('limits', $data) && null === $data['limits']) {
             $object->setLimits(null);
+            unset($data['limits']);
         }
         if (\array_key_exists('additionalServices', $data) && null !== $data['additionalServices']) {
             $values = [];
@@ -97,6 +103,7 @@ class DeliveryOptionDtoNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['additionalServices']);
         } elseif (\array_key_exists('additionalServices', $data) && null === $data['additionalServices']) {
             $object->setAdditionalServices(null);
+            unset($data['additionalServices']);
         }
         if (\array_key_exists('additionalProperties', $data) && null !== $data['additionalProperties']) {
             $values_1 = [];
@@ -107,6 +114,7 @@ class DeliveryOptionDtoNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['additionalProperties']);
         } elseif (\array_key_exists('additionalProperties', $data) && null === $data['additionalProperties']) {
             $object->setAdditionalProperties(null);
+            unset($data['additionalProperties']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -136,23 +144,23 @@ class DeliveryOptionDtoNormalizer implements DenormalizerInterface, NormalizerIn
             $dataArray['destinationCountry'] = $data->getDestinationCountry();
         }
         if ($data->isInitialized('limits') && null !== $data->getLimits()) {
-            $dataArray['limits'] = $this->normalizer->normalize($data->getLimits(), 'json', $context);
+            $dataArray['limits'] = null === $data->getLimits() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getLimits(), 'json', $context));
         }
         if ($data->isInitialized('additionalServices') && null !== $data->getAdditionalServices()) {
             $values = [];
             foreach ($data->getAdditionalServices() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['additionalServices'] = $values;
         }
         if ($data->isInitialized('additionalProperties') && null !== $data->getAdditionalProperties()) {
             $values_1 = [];
             foreach ($data->getAdditionalProperties() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['additionalProperties'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

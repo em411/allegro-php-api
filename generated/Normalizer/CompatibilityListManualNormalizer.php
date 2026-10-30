@@ -42,35 +42,43 @@ class CompatibilityListManualNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CompatibilityListManual();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CompatibilityListManual();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('items', $data) && null !== $data['items']) {
             $values = [];
             foreach ($data['items'] as $value) {
-                $values[] = $value;
+                $value_1 = $value;
+                if (\is_array($value) && (\array_key_exists('type', $value) && 'TEXT' == $value['type']) && \array_key_exists('text', $value) && (isset($value['type']) && 'TEXT' == $value['type'])) {
+                    $value_1 = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\CompatibilityListTextItem::class, 'json', $context);
+                } elseif (\is_array($value) && (\array_key_exists('type', $value) && 'ID' == $value['type']) && \array_key_exists('id', $value) && (isset($value['type']) && 'ID' == $value['type'])) {
+                    $value_1 = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\CompatibilityListIdItem::class, 'json', $context);
+                }
+                $values[] = $value_1;
             }
             $object->setItems($values);
             unset($data['items']);
         } elseif (\array_key_exists('items', $data) && null === $data['items']) {
             $object->setItems(null);
+            unset($data['items']);
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+                $object[$key] = $value_2;
             }
         }
 
@@ -86,13 +94,19 @@ class CompatibilityListManualNormalizer implements DenormalizerInterface, Normal
         if ($data->isInitialized('items') && null !== $data->getItems()) {
             $values = [];
             foreach ($data->getItems() as $value) {
-                $values[] = $value;
+                $value_1 = $value;
+                if (\is_object($value)) {
+                    $value_1 = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
+                } elseif (\is_object($value)) {
+                    $value_1 = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
+                }
+                $values[] = $value_1;
             }
             $dataArray['items'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+                $dataArray[$key] = $value_2;
             }
         }
 

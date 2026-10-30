@@ -42,18 +42,18 @@ class AdvanceShipNoticeNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\AdvanceShipNotice();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\AdvanceShipNotice();
         if (\array_key_exists('declaredVolumeInCc', $data) && \is_int($data['declaredVolumeInCc'])) {
             $data['declaredVolumeInCc'] = (float) $data['declaredVolumeInCc'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('items', $data) && null !== $data['items']) {
             $values = [];
@@ -64,24 +64,28 @@ class AdvanceShipNoticeNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['items']);
         } elseif (\array_key_exists('items', $data) && null === $data['items']) {
             $object->setItems(null);
+            unset($data['items']);
         }
         if (\array_key_exists('handlingUnit', $data) && null !== $data['handlingUnit']) {
             $object->setHandlingUnit($this->denormalizer->denormalize($data['handlingUnit'], \Em411\Allegro\Api\Model\HandlingUnit::class, 'json', $context));
             unset($data['handlingUnit']);
         } elseif (\array_key_exists('handlingUnit', $data) && null === $data['handlingUnit']) {
             $object->setHandlingUnit(null);
+            unset($data['handlingUnit']);
         }
         if (\array_key_exists('shipping', $data) && null !== $data['shipping']) {
             $object->setShipping($this->denormalizer->denormalize($data['shipping'], \Em411\Allegro\Api\Model\Shipping::class, 'json', $context));
             unset($data['shipping']);
         } elseif (\array_key_exists('shipping', $data) && null === $data['shipping']) {
             $object->setShipping(null);
+            unset($data['shipping']);
         }
         if (\array_key_exists('declaredVolumeInCc', $data) && null !== $data['declaredVolumeInCc']) {
             $object->setDeclaredVolumeInCc($data['declaredVolumeInCc']);
             unset($data['declaredVolumeInCc']);
         } elseif (\array_key_exists('declaredVolumeInCc', $data) && null === $data['declaredVolumeInCc']) {
             $object->setDeclaredVolumeInCc(null);
+            unset($data['declaredVolumeInCc']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -97,19 +101,19 @@ class AdvanceShipNoticeNormalizer implements DenormalizerInterface, NormalizerIn
         $dataArray = [];
         $values = [];
         foreach ($data->getItems() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['items'] = $values;
         if ($data->isInitialized('handlingUnit') && null !== $data->getHandlingUnit()) {
-            $dataArray['handlingUnit'] = $this->normalizer->normalize($data->getHandlingUnit(), 'json', $context);
+            $dataArray['handlingUnit'] = null === $data->getHandlingUnit() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getHandlingUnit(), 'json', $context));
         }
         if ($data->isInitialized('shipping') && null !== $data->getShipping()) {
-            $dataArray['shipping'] = $this->normalizer->normalize($data->getShipping(), 'json', $context);
+            $dataArray['shipping'] = null === $data->getShipping() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getShipping(), 'json', $context));
         }
         if ($data->isInitialized('declaredVolumeInCc') && null !== $data->getDeclaredVolumeInCc()) {
             $dataArray['declaredVolumeInCc'] = $data->getDeclaredVolumeInCc();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

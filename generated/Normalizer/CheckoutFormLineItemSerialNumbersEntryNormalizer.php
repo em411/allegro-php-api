@@ -42,30 +42,32 @@ class CheckoutFormLineItemSerialNumbersEntryNormalizer implements DenormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntry();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbersEntry();
         if (\array_key_exists('returned', $data) && \is_int($data['returned'])) {
             $data['returned'] = (bool) $data['returned'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('value', $data) && null !== $data['value']) {
             $object->setValue($data['value']);
             unset($data['value']);
         } elseif (\array_key_exists('value', $data) && null === $data['value']) {
             $object->setValue(null);
+            unset($data['value']);
         }
         if (\array_key_exists('returned', $data) && null !== $data['returned']) {
             $object->setReturned($data['returned']);
             unset($data['returned']);
         } elseif (\array_key_exists('returned', $data) && null === $data['returned']) {
             $object->setReturned(null);
+            unset($data['returned']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -83,7 +85,7 @@ class CheckoutFormLineItemSerialNumbersEntryNormalizer implements DenormalizerIn
         if ($data->isInitialized('returned') && null !== $data->getReturned()) {
             $dataArray['returned'] = $data->getReturned();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

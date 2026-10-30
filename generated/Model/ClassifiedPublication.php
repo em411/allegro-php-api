@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ClassifiedPublication extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ClassifiedPublication implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class ClassifiedPublication extends \ArrayObject
         $this->duration = $duration;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['duration' => ['duration', 'getDuration', 'setDuration']];
     }
 }

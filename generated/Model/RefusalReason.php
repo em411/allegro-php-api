@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class RefusalReason extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class RefusalReason implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -106,5 +110,10 @@ class RefusalReason extends \ArrayObject
         $this->relatedReasons = $relatedReasons;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['code' => ['code', 'getCode', 'setCode'], 'parameters' => ['parameters', 'getParameters', 'setParameters'], 'relatedReasons' => ['relatedReasons', 'getRelatedReasons', 'setRelatedReasons']];
     }
 }

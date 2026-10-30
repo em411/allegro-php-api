@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferTaxRate extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferTaxRate implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class OfferTaxRate extends \ArrayObject
         $this->countryCode = $countryCode;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['rate' => ['rate', 'getRate', 'setRate'], 'countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode']];
     }
 }

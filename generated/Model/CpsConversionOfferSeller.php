@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CpsConversionOfferSeller extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CpsConversionOfferSeller implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class CpsConversionOfferSeller extends \ArrayObject
         $this->login = $login;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['login' => ['login', 'getLogin', 'setLogin']];
     }
 }

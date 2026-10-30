@@ -42,63 +42,83 @@ class RefundClaimNormalizer implements DenormalizerInterface, NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\RefundClaim();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\RefundClaim();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('quantity', $data) && null !== $data['quantity']) {
             $object->setQuantity($data['quantity']);
             unset($data['quantity']);
         } elseif (\array_key_exists('quantity', $data) && null === $data['quantity']) {
             $object->setQuantity(null);
+            unset($data['quantity']);
         }
         if (\array_key_exists('commission', $data) && null !== $data['commission']) {
             $object->setCommission($this->denormalizer->denormalize($data['commission'], \Em411\Allegro\Api\Model\RefundClaimCommission::class, 'json', $context));
             unset($data['commission']);
         } elseif (\array_key_exists('commission', $data) && null === $data['commission']) {
             $object->setCommission(null);
+            unset($data['commission']);
         }
         if (\array_key_exists('buyer', $data) && null !== $data['buyer']) {
             $object->setBuyer($this->denormalizer->denormalize($data['buyer'], \Em411\Allegro\Api\Model\RefundClaimBuyer::class, 'json', $context));
             unset($data['buyer']);
         } elseif (\array_key_exists('buyer', $data) && null === $data['buyer']) {
             $object->setBuyer(null);
+            unset($data['buyer']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
-            $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']);
+            if (false === $date) {
+                if (\is_string($data['createdAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['createdAt'])) {
+                    try {
+                        $date = new \DateTime($data['createdAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setCreatedAt($date);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('lineItem', $data) && null !== $data['lineItem']) {
             $object->setLineItem($this->denormalizer->denormalize($data['lineItem'], \Em411\Allegro\Api\Model\RefundClaimLineItem::class, 'json', $context));
             unset($data['lineItem']);
         } elseif (\array_key_exists('lineItem', $data) && null === $data['lineItem']) {
             $object->setLineItem(null);
+            unset($data['lineItem']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -122,21 +142,21 @@ class RefundClaimNormalizer implements DenormalizerInterface, NormalizerInterfac
             $dataArray['quantity'] = $data->getQuantity();
         }
         if ($data->isInitialized('commission') && null !== $data->getCommission()) {
-            $dataArray['commission'] = $this->normalizer->normalize($data->getCommission(), 'json', $context);
+            $dataArray['commission'] = null === $data->getCommission() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCommission(), 'json', $context));
         }
         if ($data->isInitialized('buyer') && null !== $data->getBuyer()) {
-            $dataArray['buyer'] = $this->normalizer->normalize($data->getBuyer(), 'json', $context);
+            $dataArray['buyer'] = null === $data->getBuyer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBuyer(), 'json', $context));
         }
         if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
             $dataArray['createdAt'] = $data->getCreatedAt()->format('Y-m-d\TH:i:sP');
         }
         if ($data->isInitialized('lineItem') && null !== $data->getLineItem()) {
-            $dataArray['lineItem'] = $this->normalizer->normalize($data->getLineItem(), 'json', $context);
+            $dataArray['lineItem'] = null === $data->getLineItem() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getLineItem(), 'json', $context));
         }
         if ($data->isInitialized('type') && null !== $data->getType()) {
             $dataArray['type'] = $data->getType();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

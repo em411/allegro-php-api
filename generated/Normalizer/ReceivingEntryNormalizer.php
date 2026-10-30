@@ -42,27 +42,29 @@ class ReceivingEntryNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ReceivingEntry();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ReceivingEntry();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('expected', $data) && null !== $data['expected']) {
             $object->setExpected($data['expected']);
             unset($data['expected']);
         } elseif (\array_key_exists('expected', $data) && null === $data['expected']) {
             $object->setExpected(null);
+            unset($data['expected']);
         }
         if (\array_key_exists('product', $data) && null !== $data['product']) {
             $object->setProduct($this->denormalizer->denormalize($data['product'], \Em411\Allegro\Api\Model\Product::class, 'json', $context));
             unset($data['product']);
         } elseif (\array_key_exists('product', $data) && null === $data['product']) {
             $object->setProduct(null);
+            unset($data['product']);
         }
         if (\array_key_exists('received', $data) && null !== $data['received']) {
             $values = [];
@@ -73,6 +75,7 @@ class ReceivingEntryNormalizer implements DenormalizerInterface, NormalizerInter
             unset($data['received']);
         } elseif (\array_key_exists('received', $data) && null === $data['received']) {
             $object->setReceived(null);
+            unset($data['received']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -90,16 +93,16 @@ class ReceivingEntryNormalizer implements DenormalizerInterface, NormalizerInter
             $dataArray['expected'] = $data->getExpected();
         }
         if ($data->isInitialized('product') && null !== $data->getProduct()) {
-            $dataArray['product'] = $this->normalizer->normalize($data->getProduct(), 'json', $context);
+            $dataArray['product'] = null === $data->getProduct() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getProduct(), 'json', $context));
         }
         if ($data->isInitialized('received') && null !== $data->getReceived()) {
             $values = [];
             foreach ($data->getReceived() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['received'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

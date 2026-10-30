@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SellerCreateRebateRequestDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SellerCreateRebateRequestDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -81,5 +85,10 @@ class SellerCreateRebateRequestDto extends \ArrayObject
         $this->offerCriteria = $offerCriteria;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['benefits' => ['benefits', 'getBenefits', 'setBenefits'], 'offerCriteria' => ['offerCriteria', 'getOfferCriteria', 'setOfferCriteria']];
     }
 }

@@ -42,51 +42,57 @@ class CheckoutFormAddWaybillCreatedNormalizer implements DenormalizerInterface, 
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormAddWaybillCreated();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormAddWaybillCreated();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('waybill', $data) && null !== $data['waybill']) {
             $object->setWaybill($data['waybill']);
             unset($data['waybill']);
         } elseif (\array_key_exists('waybill', $data) && null === $data['waybill']) {
             $object->setWaybill(null);
+            unset($data['waybill']);
         }
         if (\array_key_exists('carrierId', $data) && null !== $data['carrierId']) {
             $object->setCarrierId($data['carrierId']);
             unset($data['carrierId']);
         } elseif (\array_key_exists('carrierId', $data) && null === $data['carrierId']) {
             $object->setCarrierId(null);
+            unset($data['carrierId']);
         }
         if (\array_key_exists('carrierName', $data) && null !== $data['carrierName']) {
             $object->setCarrierName($data['carrierName']);
             unset($data['carrierName']);
         } elseif (\array_key_exists('carrierName', $data) && null === $data['carrierName']) {
             $object->setCarrierName(null);
+            unset($data['carrierName']);
         }
         if (\array_key_exists('lineItems', $data) && null !== $data['lineItems']) {
             $object->setLineItems($data['lineItems']);
             unset($data['lineItems']);
         } elseif (\array_key_exists('lineItems', $data) && null === $data['lineItems']) {
             $object->setLineItems(null);
+            unset($data['lineItems']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
             $object->setCreatedAt($data['createdAt']);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -118,7 +124,7 @@ class CheckoutFormAddWaybillCreatedNormalizer implements DenormalizerInterface, 
         if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
             $dataArray['createdAt'] = $data->getCreatedAt();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

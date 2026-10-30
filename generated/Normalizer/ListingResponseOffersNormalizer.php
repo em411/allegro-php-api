@@ -42,15 +42,15 @@ class ListingResponseOffersNormalizer implements DenormalizerInterface, Normaliz
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ListingResponseOffers();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ListingResponseOffers();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('promoted', $data) && null !== $data['promoted']) {
             $values = [];
@@ -61,6 +61,7 @@ class ListingResponseOffersNormalizer implements DenormalizerInterface, Normaliz
             unset($data['promoted']);
         } elseif (\array_key_exists('promoted', $data) && null === $data['promoted']) {
             $object->setPromoted(null);
+            unset($data['promoted']);
         }
         if (\array_key_exists('regular', $data) && null !== $data['regular']) {
             $values_1 = [];
@@ -71,6 +72,7 @@ class ListingResponseOffersNormalizer implements DenormalizerInterface, Normaliz
             unset($data['regular']);
         } elseif (\array_key_exists('regular', $data) && null === $data['regular']) {
             $object->setRegular(null);
+            unset($data['regular']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -87,18 +89,18 @@ class ListingResponseOffersNormalizer implements DenormalizerInterface, Normaliz
         if ($data->isInitialized('promoted') && null !== $data->getPromoted()) {
             $values = [];
             foreach ($data->getPromoted() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['promoted'] = $values;
         }
         if ($data->isInitialized('regular') && null !== $data->getRegular()) {
             $values_1 = [];
             foreach ($data->getRegular() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['regular'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

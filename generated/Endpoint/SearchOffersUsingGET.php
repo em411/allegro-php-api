@@ -20,51 +20,48 @@ class SearchOffersUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     /**
      * Use this resource to get the list of the seller's offers. You can use different query parameters to filter the list. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-pobrac-moje-oferty-w-rest-api" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#list-of-offers" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var array  $offer.id Offer ID.
-     * @var string $name the text to search in the offer title
-     * @var float  $sellingMode.price.amount.gte The lower threshold of price.
-     *
-     * If additionally a `publication.marketplace` is provided, searches using the price on the given marketplace.
-     * @var float $sellingMode.price.amount.lte The upper threshold of price.
+     * @param array{
+     *    "offer.id"?: array, //Offer ID.
+     *    "name"?: string, //The text to search in the offer title.
+     *    "sellingMode.price.amount.gte"?: int, //The lower threshold of price.
      *
      * If additionally a `publication.marketplace` is provided, searches using the price on the given marketplace.
-     * @var string $sellingMode.priceAutomation.rule.id The ID of price automation rule. Returns offers with given price automation rule ID.
+     *    "sellingMode.price.amount.lte"?: int, //The upper threshold of price.
+     *
+     * If additionally a `publication.marketplace` is provided, searches using the price on the given marketplace.
+     *    "sellingMode.priceAutomation.rule.id"?: string, //The ID of price automation rule. Returns offers with given price automation rule ID.
      *
      * If additionally a `publication.marketplace` is provided, searches using the price automation rule on the given marketplace.
-     * @var bool $sellingMode.priceAutomation.rule.id.empty Allows to filter offers by existence of price automation rule ID. Passing 'false' will return offers with any price automation rule, passing 'true' will return offers without any price automation rules.
+     *    "sellingMode.priceAutomation.rule.id.empty"?: bool, //Allows to filter offers by existence of price automation rule ID. Passing 'false' will return offers with any price automation rule, passing 'true' will return offers without any price automation rules.
      *
      * If additionally a `publication.marketplace` is provided, searches using the price automation rule on the given marketplace.
-     * @var array  $publication.status The publication status of the offer. Passing more than one value will search for offers with any of the given statuses. By default all statuses are included. Example: `publication.status=INACTIVE&publication.status=ACTIVE` - returns offers with status `INACTIVE` or `ACTIVE`.
-     * @var string $publication.marketplace Either the base marketplace or an additional marketplace of the offer.
+     *    "publication.status"?: array, //The publication status of the offer. Passing more than one value will search for offers with any of the given statuses. By default all statuses are included. Example: `publication.status=INACTIVE&publication.status=ACTIVE` - returns offers with status `INACTIVE` or `ACTIVE`.
+     *    "publication.marketplace"?: string, //Either the base marketplace or an additional marketplace of the offer.
      *
      * When passing the parameter `publication.marketplace`, searches for offers with the given marketplace as either its base marketplace or one of its additional marketplaces. When the parameter is omitted, searches for offers with all marketplaces.
      *
      * In addition to searching, passing the parameter also influences the functionality of other query parameter by searching and sorting by data (e.g. price) on the given marketplace.
-     * @var array  $sellingMode.format The offer's selling format. Passing more than one value will search for offers with any of the given formats. By default all formats are included. Example: `sellingMode.format=BUY_NOW&sellingMode.format=ADVERTISEMENT` - returns offers with with format `BUY_NOW` or `ADVERTISEMENT`.
-     * @var array  $external.id The ID from the client's external system. Passing more than one value will search for offers with any of the given IDs. By default no ID is included. Example: `external.id=1233&external.id=1234` - returns offers with ID `1233` or `1234`. Single ID length shouldn't exceed 100 characters.
-     * @var string $delivery.shippingRates.id The ID of shipping rates. Returns offers with given shipping rates ID.
-     * @var bool   $delivery.shippingRates.id.empty Allows to filter offers by existence of shipping rates ID.
-     * @var string $sort The results' sorting order. No prefix in the value means ascending order. `-` prefix means descending order. If you don't provide the sort parameter, the list is sorted by offer creation time, descending.
+     *    "sellingMode.format"?: array, //The offer's selling format. Passing more than one value will search for offers with any of the given formats. By default all formats are included. Example: `sellingMode.format=BUY_NOW&sellingMode.format=ADVERTISEMENT` - returns offers with with format `BUY_NOW` or `ADVERTISEMENT`.
+     *    "external.id"?: array, //The ID from the client's external system. Passing more than one value will search for offers with any of the given IDs. By default no ID is included. Example: `external.id=1233&external.id=1234` - returns offers with ID `1233` or `1234`. Single ID length shouldn't exceed 100 characters.
+     *    "delivery.shippingRates.id"?: string, //The ID of shipping rates. Returns offers with given shipping rates ID.
+     *    "delivery.shippingRates.id.empty"?: bool, //Allows to filter offers by existence of shipping rates ID.
+     *    "sort"?: string, //The results' sorting order. No prefix in the value means ascending order. `-` prefix means descending order. If you don't provide the sort parameter, the list is sorted by offer creation time, descending.
      *
      * If additionally a `publication.marketplace` is provided, sorts by price and `stock.sold` using the data on the given marketplace.
-     * @var int    $limit the maximum number of offers returned in the response
-     * @var int    $offset Index of the first returned offer from all search results. Maximum sum of offset and limit is 10 000 000.
-     * @var string $category.id The identifier of the category, where you want to search for offers.
-     * @var bool   $product.id.empty Allows to filter offers by existence of product ID.
-     * @var bool   $productizationRequired allows to search for offers from categories where productization is required
-     * @var bool   $b2b.buyableOnlyByBusiness Allows to search for offers buyable only by businesses.
-     * @var string $fundraisingCampaign.id ID of the charity fundraising campaign that benefits from this offer.
-     * @var bool   $fundraisingCampaign.id.empty Allows to search for charity or commercial offers.
-     * @var string $afterSalesServices.returnPolicy.id The ID of return policy. Returns offers with given return policy ID.
-     * @var bool   $isFulfillment Allows to search for offers handled by the Allegro Warehouse (One Fulfillment).
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     *    "limit"?: int, //The maximum number of offers returned in the response.
+     *    "offset"?: int, //Index of the first returned offer from all search results. Maximum sum of offset and limit is 10 000 000.
+     *    "category.id"?: string, //The identifier of the category, where you want to search for offers.
+     *    "product.id.empty"?: bool, //Allows to filter offers by existence of product ID.
+     *    "productizationRequired"?: bool, //Allows to search for offers from categories where productization is required.
+     *    "b2b.buyableOnlyByBusiness"?: bool, //Allows to search for offers buyable only by businesses.
+     *    "fundraisingCampaign.id"?: string, //ID of the charity fundraising campaign that benefits from this offer.
+     *    "fundraisingCampaign.id.empty"?: bool, //Allows to search for charity or commercial offers.
+     *    "afterSalesServices.returnPolicy.id"?: string, //The ID of return policy. Returns offers with given return policy ID.
+     *    "isFulfillment"?: bool, //Allows to search for offers handled by the Allegro Warehouse (One Fulfillment).
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
@@ -105,8 +102,8 @@ class SearchOffersUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
         $optionsResolver->setDefaults(['limit' => 20]);
         $optionsResolver->addAllowedTypes('offer.id', ['array']);
         $optionsResolver->addAllowedTypes('name', ['string']);
-        $optionsResolver->addAllowedTypes('sellingMode.price.amount.gte', ['float']);
-        $optionsResolver->addAllowedTypes('sellingMode.price.amount.lte', ['float']);
+        $optionsResolver->addAllowedTypes('sellingMode.price.amount.gte', ['int']);
+        $optionsResolver->addAllowedTypes('sellingMode.price.amount.lte', ['int']);
         $optionsResolver->addAllowedTypes('sellingMode.priceAutomation.rule.id', ['string']);
         $optionsResolver->addAllowedTypes('sellingMode.priceAutomation.rule.id.empty', ['bool']);
         $optionsResolver->addAllowedTypes('publication.status', ['array']);
@@ -141,6 +138,11 @@ class SearchOffersUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['offer.id' => ['style' => 'form', 'explode' => true], 'publication.status' => ['style' => 'form', 'explode' => true], 'sellingMode.format' => ['style' => 'form', 'explode' => true], 'external.id' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\OffersSearchResultDto|null
      *
@@ -151,13 +153,13 @@ class SearchOffersUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\OffersSearchResultDto', 'json');
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\SearchOffersUsingGETBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (403 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\SearchOffersUsingGETForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

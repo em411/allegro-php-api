@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class MessagesList extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class MessagesList implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -80,5 +84,10 @@ class MessagesList extends \ArrayObject
         $this->limit = $limit;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['messages' => ['messages', 'getMessages', 'setMessages'], 'offset' => ['offset', 'getOffset', 'setOffset'], 'limit' => ['limit', 'getLimit', 'setLimit']];
     }
 }

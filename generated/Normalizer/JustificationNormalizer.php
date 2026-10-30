@@ -42,30 +42,32 @@ class JustificationNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Justification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\Justification();
         if (\array_key_exists('visibleForBuyer', $data) && \is_int($data['visibleForBuyer'])) {
             $data['visibleForBuyer'] = (bool) $data['visibleForBuyer'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('text', $data) && null !== $data['text']) {
             $object->setText($data['text']);
             unset($data['text']);
         } elseif (\array_key_exists('text', $data) && null === $data['text']) {
             $object->setText(null);
+            unset($data['text']);
         }
         if (\array_key_exists('visibleForBuyer', $data) && null !== $data['visibleForBuyer']) {
             $object->setVisibleForBuyer($data['visibleForBuyer']);
             unset($data['visibleForBuyer']);
         } elseif (\array_key_exists('visibleForBuyer', $data) && null === $data['visibleForBuyer']) {
             $object->setVisibleForBuyer(null);
+            unset($data['visibleForBuyer']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -85,7 +87,7 @@ class JustificationNormalizer implements DenormalizerInterface, NormalizerInterf
         if ($data->isInitialized('visibleForBuyer') && null !== $data->getVisibleForBuyer()) {
             $dataArray['visibleForBuyer'] = $data->getVisibleForBuyer();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

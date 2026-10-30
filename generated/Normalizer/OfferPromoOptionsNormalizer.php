@@ -42,33 +42,36 @@ class OfferPromoOptionsNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferPromoOptions();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferPromoOptions();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('offerId', $data) && null !== $data['offerId']) {
             $object->setOfferId($data['offerId']);
             unset($data['offerId']);
         } elseif (\array_key_exists('offerId', $data) && null === $data['offerId']) {
             $object->setOfferId(null);
+            unset($data['offerId']);
         }
         if (\array_key_exists('marketplaceId', $data) && null !== $data['marketplaceId']) {
             $object->setMarketplaceId($data['marketplaceId']);
             unset($data['marketplaceId']);
         } elseif (\array_key_exists('marketplaceId', $data) && null === $data['marketplaceId']) {
             $object->setMarketplaceId(null);
+            unset($data['marketplaceId']);
         }
         if (\array_key_exists('basePackage', $data) && null !== $data['basePackage']) {
             $object->setBasePackage($this->denormalizer->denormalize($data['basePackage'], \Em411\Allegro\Api\Model\OfferPromoOption::class, 'json', $context));
             unset($data['basePackage']);
         } elseif (\array_key_exists('basePackage', $data) && null === $data['basePackage']) {
             $object->setBasePackage(null);
+            unset($data['basePackage']);
         }
         if (\array_key_exists('extraPackages', $data) && null !== $data['extraPackages']) {
             $values = [];
@@ -79,12 +82,14 @@ class OfferPromoOptionsNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['extraPackages']);
         } elseif (\array_key_exists('extraPackages', $data) && null === $data['extraPackages']) {
             $object->setExtraPackages(null);
+            unset($data['extraPackages']);
         }
         if (\array_key_exists('pendingChanges', $data) && null !== $data['pendingChanges']) {
             $object->setPendingChanges($this->denormalizer->denormalize($data['pendingChanges'], \Em411\Allegro\Api\Model\OfferPromoOptionsPendingChanges::class, 'json', $context));
             unset($data['pendingChanges']);
         } elseif (\array_key_exists('pendingChanges', $data) && null === $data['pendingChanges']) {
             $object->setPendingChanges(null);
+            unset($data['pendingChanges']);
         }
         if (\array_key_exists('additionalMarketplaces', $data) && null !== $data['additionalMarketplaces']) {
             $values_1 = [];
@@ -95,6 +100,7 @@ class OfferPromoOptionsNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['additionalMarketplaces']);
         } elseif (\array_key_exists('additionalMarketplaces', $data) && null === $data['additionalMarketplaces']) {
             $object->setAdditionalMarketplaces(null);
+            unset($data['additionalMarketplaces']);
         }
         foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
@@ -115,26 +121,26 @@ class OfferPromoOptionsNormalizer implements DenormalizerInterface, NormalizerIn
             $dataArray['marketplaceId'] = $data->getMarketplaceId();
         }
         if ($data->isInitialized('basePackage') && null !== $data->getBasePackage()) {
-            $dataArray['basePackage'] = $this->normalizer->normalize($data->getBasePackage(), 'json', $context);
+            $dataArray['basePackage'] = null === $data->getBasePackage() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBasePackage(), 'json', $context));
         }
         if ($data->isInitialized('extraPackages') && null !== $data->getExtraPackages()) {
             $values = [];
             foreach ($data->getExtraPackages() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['extraPackages'] = $values;
         }
         if ($data->isInitialized('pendingChanges') && null !== $data->getPendingChanges()) {
-            $dataArray['pendingChanges'] = $this->normalizer->normalize($data->getPendingChanges(), 'json', $context);
+            $dataArray['pendingChanges'] = null === $data->getPendingChanges() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPendingChanges(), 'json', $context));
         }
         if ($data->isInitialized('additionalMarketplaces') && null !== $data->getAdditionalMarketplaces()) {
             $values_1 = [];
             foreach ($data->getAdditionalMarketplaces() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+                $values_1[] = null === $value_1 ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value_1, 'json', $context));
             }
             $dataArray['additionalMarketplaces'] = $values_1;
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_2;
             }

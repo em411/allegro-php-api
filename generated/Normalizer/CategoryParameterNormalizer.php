@@ -42,6 +42,16 @@ class CategoryParameterNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
+        $object = new \Em411\Allegro\Api\Model\CategoryParameter();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
+        }
         if (\array_key_exists('type', $data) && 'integer' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\IntegerCategoryParameter', $format, $context);
         }
@@ -54,81 +64,81 @@ class CategoryParameterNormalizer implements DenormalizerInterface, NormalizerIn
         if (\array_key_exists('type', $data) && 'dictionary' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\DictionaryCategoryParameter', $format, $context);
         }
-        if (isset($data['$ref'])) {
-            return new Reference($data['$ref'], $context['document-origin']);
-        }
-        if (isset($data['$recursiveRef'])) {
-            return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CategoryParameter();
         if (\array_key_exists('required', $data) && \is_int($data['required'])) {
             $data['required'] = (bool) $data['required'];
         }
         if (\array_key_exists('requiredForProduct', $data) && \is_int($data['requiredForProduct'])) {
             $data['requiredForProduct'] = (bool) $data['requiredForProduct'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('required', $data) && null !== $data['required']) {
             $object->setRequired($data['required']);
             unset($data['required']);
         } elseif (\array_key_exists('required', $data) && null === $data['required']) {
             $object->setRequired(null);
+            unset($data['required']);
         }
         if (\array_key_exists('requiredForProduct', $data) && null !== $data['requiredForProduct']) {
             $object->setRequiredForProduct($data['requiredForProduct']);
             unset($data['requiredForProduct']);
         } elseif (\array_key_exists('requiredForProduct', $data) && null === $data['requiredForProduct']) {
             $object->setRequiredForProduct(null);
+            unset($data['requiredForProduct']);
         }
         if (\array_key_exists('requiredIf', $data) && null !== $data['requiredIf']) {
             $object->setRequiredIf($this->denormalizer->denormalize($data['requiredIf'], \Em411\Allegro\Api\Model\CategoryParameterRequirementConditions::class, 'json', $context));
             unset($data['requiredIf']);
         } elseif (\array_key_exists('requiredIf', $data) && null === $data['requiredIf']) {
             $object->setRequiredIf(null);
+            unset($data['requiredIf']);
         }
         if (\array_key_exists('displayedIf', $data) && null !== $data['displayedIf']) {
             $object->setDisplayedIf($this->denormalizer->denormalize($data['displayedIf'], \Em411\Allegro\Api\Model\CategoryParameterDisplayConditions::class, 'json', $context));
             unset($data['displayedIf']);
         } elseif (\array_key_exists('displayedIf', $data) && null === $data['displayedIf']) {
             $object->setDisplayedIf(null);
+            unset($data['displayedIf']);
         }
         if (\array_key_exists('unit', $data) && null !== $data['unit']) {
             $object->setUnit($data['unit']);
             unset($data['unit']);
         } elseif (\array_key_exists('unit', $data) && null === $data['unit']) {
             $object->setUnit(null);
+            unset($data['unit']);
         }
         if (\array_key_exists('options', $data) && null !== $data['options']) {
             $object->setOptions($this->denormalizer->denormalize($data['options'], \Em411\Allegro\Api\Model\CategoryParameterOptions::class, 'json', $context));
             unset($data['options']);
         } elseif (\array_key_exists('options', $data) && null === $data['options']) {
             $object->setOptions(null);
+            unset($data['options']);
         }
         if (\array_key_exists('formerData', $data) && null !== $data['formerData']) {
             $object->setFormerData($this->denormalizer->denormalize($data['formerData'], \Em411\Allegro\Api\Model\FormerCategoryParameterData::class, 'json', $context));
             unset($data['formerData']);
         } elseif (\array_key_exists('formerData', $data) && null === $data['formerData']) {
             $object->setFormerData(null);
+            unset($data['formerData']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -168,21 +178,21 @@ class CategoryParameterNormalizer implements DenormalizerInterface, NormalizerIn
             $dataArray['requiredForProduct'] = $data->getRequiredForProduct();
         }
         if ($data->isInitialized('requiredIf') && null !== $data->getRequiredIf()) {
-            $dataArray['requiredIf'] = $this->normalizer->normalize($data->getRequiredIf(), 'json', $context);
+            $dataArray['requiredIf'] = null === $data->getRequiredIf() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRequiredIf(), 'json', $context));
         }
         if ($data->isInitialized('displayedIf') && null !== $data->getDisplayedIf()) {
-            $dataArray['displayedIf'] = $this->normalizer->normalize($data->getDisplayedIf(), 'json', $context);
+            $dataArray['displayedIf'] = null === $data->getDisplayedIf() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDisplayedIf(), 'json', $context));
         }
-        if ($data->isInitialized('unit')) {
+        if ($data->isInitialized('unit') && null !== $data->getUnit()) {
             $dataArray['unit'] = $data->getUnit();
         }
         if ($data->isInitialized('options') && null !== $data->getOptions()) {
-            $dataArray['options'] = $this->normalizer->normalize($data->getOptions(), 'json', $context);
+            $dataArray['options'] = null === $data->getOptions() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOptions(), 'json', $context));
         }
         if ($data->isInitialized('formerData') && null !== $data->getFormerData()) {
-            $dataArray['formerData'] = $this->normalizer->normalize($data->getFormerData(), 'json', $context);
+            $dataArray['formerData'] = null === $data->getFormerData() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getFormerData(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

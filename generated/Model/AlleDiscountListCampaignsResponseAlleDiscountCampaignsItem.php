@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AlleDiscountListCampaignsResponseAlleDiscountCampaignsItem extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AlleDiscountListCampaignsResponseAlleDiscountCampaignsItem implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -204,5 +208,10 @@ class AlleDiscountListCampaignsResponseAlleDiscountCampaignsItem extends \ArrayO
         $this->marketplace = $marketplace;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'name' => ['name', 'getName', 'setName'], 'type' => ['type', 'getType', 'setType'], 'visibility' => ['visibility', 'getVisibility', 'setVisibility'], 'application' => ['application', 'getApplication', 'setApplication'], 'publication' => ['publication', 'getPublication', 'setPublication'], 'marketplace' => ['marketplace', 'getMarketplace', 'setMarketplace']];
     }
 }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SmartSellerClassificationReportClassification extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SmartSellerClassificationReportClassification implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class SmartSellerClassificationReportClassification extends \ArrayObject
         $this->lastChanged = $lastChanged;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['fulfilled' => ['fulfilled', 'getFulfilled', 'setFulfilled'], 'lastChanged' => ['lastChanged', 'getLastChanged', 'setLastChanged']];
     }
 }

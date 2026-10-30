@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AutomaticPricingRuleConfigurationChangeByPercentageChangeByPercentage extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AutomaticPricingRuleConfigurationChangeByPercentageChangeByPercentage implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -57,5 +61,10 @@ class AutomaticPricingRuleConfigurationChangeByPercentageChangeByPercentage exte
         $this->value = $value;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['operation' => ['operation', 'getOperation', 'setOperation'], 'value' => ['value', 'getValue', 'setValue']];
     }
 }

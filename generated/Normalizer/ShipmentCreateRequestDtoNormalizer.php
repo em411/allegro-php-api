@@ -42,45 +42,50 @@ class ShipmentCreateRequestDtoNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ShipmentCreateRequestDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ShipmentCreateRequestDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('deliveryMethodId', $data) && null !== $data['deliveryMethodId']) {
             $object->setDeliveryMethodId($data['deliveryMethodId']);
             unset($data['deliveryMethodId']);
         } elseif (\array_key_exists('deliveryMethodId', $data) && null === $data['deliveryMethodId']) {
             $object->setDeliveryMethodId(null);
+            unset($data['deliveryMethodId']);
         }
         if (\array_key_exists('credentialsId', $data) && null !== $data['credentialsId']) {
             $object->setCredentialsId($data['credentialsId']);
             unset($data['credentialsId']);
         } elseif (\array_key_exists('credentialsId', $data) && null === $data['credentialsId']) {
             $object->setCredentialsId(null);
+            unset($data['credentialsId']);
         }
         if (\array_key_exists('sender', $data) && null !== $data['sender']) {
             $object->setSender($this->denormalizer->denormalize($data['sender'], \Em411\Allegro\Api\Model\SenderAddressDto::class, 'json', $context));
             unset($data['sender']);
         } elseif (\array_key_exists('sender', $data) && null === $data['sender']) {
             $object->setSender(null);
+            unset($data['sender']);
         }
         if (\array_key_exists('receiver', $data) && null !== $data['receiver']) {
             $object->setReceiver($this->denormalizer->denormalize($data['receiver'], \Em411\Allegro\Api\Model\ReceiverAddressDto::class, 'json', $context));
             unset($data['receiver']);
         } elseif (\array_key_exists('receiver', $data) && null === $data['receiver']) {
             $object->setReceiver(null);
+            unset($data['receiver']);
         }
         if (\array_key_exists('referenceNumber', $data) && null !== $data['referenceNumber']) {
             $object->setReferenceNumber($data['referenceNumber']);
             unset($data['referenceNumber']);
         } elseif (\array_key_exists('referenceNumber', $data) && null === $data['referenceNumber']) {
             $object->setReferenceNumber(null);
+            unset($data['referenceNumber']);
         }
         if (\array_key_exists('packages', $data) && null !== $data['packages']) {
             $values = [];
@@ -91,24 +96,28 @@ class ShipmentCreateRequestDtoNormalizer implements DenormalizerInterface, Norma
             unset($data['packages']);
         } elseif (\array_key_exists('packages', $data) && null === $data['packages']) {
             $object->setPackages(null);
+            unset($data['packages']);
         }
         if (\array_key_exists('insurance', $data) && null !== $data['insurance']) {
             $object->setInsurance($this->denormalizer->denormalize($data['insurance'], \Em411\Allegro\Api\Model\InsuranceDto::class, 'json', $context));
             unset($data['insurance']);
         } elseif (\array_key_exists('insurance', $data) && null === $data['insurance']) {
             $object->setInsurance(null);
+            unset($data['insurance']);
         }
         if (\array_key_exists('cashOnDelivery', $data) && null !== $data['cashOnDelivery']) {
             $object->setCashOnDelivery($this->denormalizer->denormalize($data['cashOnDelivery'], \Em411\Allegro\Api\Model\CashOnDeliveryDto::class, 'json', $context));
             unset($data['cashOnDelivery']);
         } elseif (\array_key_exists('cashOnDelivery', $data) && null === $data['cashOnDelivery']) {
             $object->setCashOnDelivery(null);
+            unset($data['cashOnDelivery']);
         }
         if (\array_key_exists('labelFormat', $data) && null !== $data['labelFormat']) {
             $object->setLabelFormat($data['labelFormat']);
             unset($data['labelFormat']);
         } elseif (\array_key_exists('labelFormat', $data) && null === $data['labelFormat']) {
             $object->setLabelFormat(null);
+            unset($data['labelFormat']);
         }
         if (\array_key_exists('additionalServices', $data) && null !== $data['additionalServices']) {
             $values_1 = [];
@@ -119,9 +128,10 @@ class ShipmentCreateRequestDtoNormalizer implements DenormalizerInterface, Norma
             unset($data['additionalServices']);
         } elseif (\array_key_exists('additionalServices', $data) && null === $data['additionalServices']) {
             $object->setAdditionalServices(null);
+            unset($data['additionalServices']);
         }
         if (\array_key_exists('additionalProperties', $data) && null !== $data['additionalProperties']) {
-            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values_2 = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['additionalProperties'] as $key => $value_2) {
                 $values_2[$key] = $value_2;
             }
@@ -129,6 +139,7 @@ class ShipmentCreateRequestDtoNormalizer implements DenormalizerInterface, Norma
             unset($data['additionalProperties']);
         } elseif (\array_key_exists('additionalProperties', $data) && null === $data['additionalProperties']) {
             $object->setAdditionalProperties(null);
+            unset($data['additionalProperties']);
         }
         foreach ($data as $key_1 => $value_3) {
             if (preg_match('/.*/', (string) $key_1)) {
@@ -148,21 +159,21 @@ class ShipmentCreateRequestDtoNormalizer implements DenormalizerInterface, Norma
         if ($data->isInitialized('credentialsId') && null !== $data->getCredentialsId()) {
             $dataArray['credentialsId'] = $data->getCredentialsId();
         }
-        $dataArray['sender'] = $this->normalizer->normalize($data->getSender(), 'json', $context);
-        $dataArray['receiver'] = $this->normalizer->normalize($data->getReceiver(), 'json', $context);
+        $dataArray['sender'] = null === $data->getSender() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSender(), 'json', $context));
+        $dataArray['receiver'] = null === $data->getReceiver() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getReceiver(), 'json', $context));
         if ($data->isInitialized('referenceNumber') && null !== $data->getReferenceNumber()) {
             $dataArray['referenceNumber'] = $data->getReferenceNumber();
         }
         $values = [];
         foreach ($data->getPackages() as $value) {
-            $values[] = $this->normalizer->normalize($value, 'json', $context);
+            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['packages'] = $values;
         if ($data->isInitialized('insurance') && null !== $data->getInsurance()) {
-            $dataArray['insurance'] = $this->normalizer->normalize($data->getInsurance(), 'json', $context);
+            $dataArray['insurance'] = null === $data->getInsurance() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getInsurance(), 'json', $context));
         }
         if ($data->isInitialized('cashOnDelivery') && null !== $data->getCashOnDelivery()) {
-            $dataArray['cashOnDelivery'] = $this->normalizer->normalize($data->getCashOnDelivery(), 'json', $context);
+            $dataArray['cashOnDelivery'] = null === $data->getCashOnDelivery() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCashOnDelivery(), 'json', $context));
         }
         if ($data->isInitialized('labelFormat') && null !== $data->getLabelFormat()) {
             $dataArray['labelFormat'] = $data->getLabelFormat();
@@ -175,13 +186,13 @@ class ShipmentCreateRequestDtoNormalizer implements DenormalizerInterface, Norma
             $dataArray['additionalServices'] = $values_1;
         }
         if ($data->isInitialized('additionalProperties') && null !== $data->getAdditionalProperties()) {
-            $values_2 = [];
+            $values_2 = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data->getAdditionalProperties() as $key => $value_2) {
                 $values_2[$key] = $value_2;
             }
             $dataArray['additionalProperties'] = $values_2;
         }
-        foreach ($data as $key_1 => $value_3) {
+        foreach ($data->additionalPropertyEntries() as $key_1 => $value_3) {
             if (preg_match('/.*/', (string) $key_1)) {
                 $dataArray[$key_1] = $value_3;
             }

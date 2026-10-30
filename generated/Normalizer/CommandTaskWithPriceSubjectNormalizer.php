@@ -42,33 +42,36 @@ class CommandTaskWithPriceSubjectNormalizer implements DenormalizerInterface, No
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CommandTaskWithPriceSubject();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CommandTaskWithPriceSubject();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('subject', $data) && null !== $data['subject']) {
             $object->setSubject($this->denormalizer->denormalize($data['subject'], \Em411\Allegro\Api\Model\CommandTaskWithPriceSubjectSubject::class, 'json', $context));
             unset($data['subject']);
         } elseif (\array_key_exists('subject', $data) && null === $data['subject']) {
             $object->setSubject(null);
+            unset($data['subject']);
         }
         if (\array_key_exists('message', $data) && null !== $data['message']) {
             $object->setMessage($data['message']);
             unset($data['message']);
         } elseif (\array_key_exists('message', $data) && null === $data['message']) {
             $object->setMessage(null);
+            unset($data['message']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('errors', $data) && null !== $data['errors']) {
             $values = [];
@@ -79,6 +82,7 @@ class CommandTaskWithPriceSubjectNormalizer implements DenormalizerInterface, No
             unset($data['errors']);
         } elseif (\array_key_exists('errors', $data) && null === $data['errors']) {
             $object->setErrors(null);
+            unset($data['errors']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -93,7 +97,7 @@ class CommandTaskWithPriceSubjectNormalizer implements DenormalizerInterface, No
     {
         $dataArray = [];
         if ($data->isInitialized('subject') && null !== $data->getSubject()) {
-            $dataArray['subject'] = $this->normalizer->normalize($data->getSubject(), 'json', $context);
+            $dataArray['subject'] = null === $data->getSubject() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSubject(), 'json', $context));
         }
         if ($data->isInitialized('message') && null !== $data->getMessage()) {
             $dataArray['message'] = $data->getMessage();
@@ -104,11 +108,11 @@ class CommandTaskWithPriceSubjectNormalizer implements DenormalizerInterface, No
         if ($data->isInitialized('errors') && null !== $data->getErrors()) {
             $values = [];
             foreach ($data->getErrors() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['errors'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

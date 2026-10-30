@@ -22,12 +22,11 @@ class DeleteAdditionalServiceGroupTranslation extends \Em411\Allegro\Api\Runtime
     /**
      * Use this resource to delete the translation for specified additional service group and language. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#tlumaczenia-uslug-dodatkowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#additional-services-translations" target="_blank">EN</a>.
      *
-     * @param string $groupId          additional service group ID
-     * @param string $language         IETF Language tag
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $groupId  additional service group ID
+     * @param string $language IETF Language tag
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $groupId, string $language, array $headerParameters = [])
     {
@@ -43,7 +42,7 @@ class DeleteAdditionalServiceGroupTranslation extends \Em411\Allegro\Api\Runtime
 
     public function getUri(): string
     {
-        return str_replace(['{groupId}', '{language}'], [$this->groupId, $this->language], '/sale/offer-additional-services/groups/{groupId}/translations/{language}');
+        return str_replace(['{groupId}', '{language}'], [rawurlencode($this->groupId), rawurlencode($this->language)], '/sale/offer-additional-services/groups/{groupId}/translations/{language}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

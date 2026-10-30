@@ -42,33 +42,36 @@ class ReceivingStatusNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ReceivingStatus();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ReceivingStatus();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('quantity', $data) && null !== $data['quantity']) {
             $object->setQuantity($data['quantity']);
             unset($data['quantity']);
         } elseif (\array_key_exists('quantity', $data) && null === $data['quantity']) {
             $object->setQuantity(null);
+            unset($data['quantity']);
         }
         if (\array_key_exists('receivedType', $data) && null !== $data['receivedType']) {
             $object->setReceivedType($data['receivedType']);
             unset($data['receivedType']);
         } elseif (\array_key_exists('receivedType', $data) && null === $data['receivedType']) {
             $object->setReceivedType(null);
+            unset($data['receivedType']);
         }
         if (\array_key_exists('reasonCode', $data) && null !== $data['reasonCode']) {
             $object->setReasonCode($data['reasonCode']);
             unset($data['reasonCode']);
         } elseif (\array_key_exists('reasonCode', $data) && null === $data['reasonCode']) {
             $object->setReasonCode(null);
+            unset($data['reasonCode']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -91,7 +94,7 @@ class ReceivingStatusNormalizer implements DenormalizerInterface, NormalizerInte
         if ($data->isInitialized('reasonCode') && null !== $data->getReasonCode()) {
             $dataArray['reasonCode'] = $data->getReasonCode();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

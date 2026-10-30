@@ -42,27 +42,29 @@ class OfferEventExternalOfferForPriceChangesNormalizer implements DenormalizerIn
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferEventExternalOfferForPriceChanges();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferEventExternalOfferForPriceChanges();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('external', $data) && null !== $data['external']) {
             $object->setExternal($this->denormalizer->denormalize($data['external'], \Em411\Allegro\Api\Model\ExternalId::class, 'json', $context));
             unset($data['external']);
         } elseif (\array_key_exists('external', $data) && null === $data['external']) {
             $object->setExternal(null);
+            unset($data['external']);
         }
         if (\array_key_exists('marketplaces', $data) && null !== $data['marketplaces']) {
             $values = [];
@@ -73,6 +75,7 @@ class OfferEventExternalOfferForPriceChangesNormalizer implements DenormalizerIn
             unset($data['marketplaces']);
         } elseif (\array_key_exists('marketplaces', $data) && null === $data['marketplaces']) {
             $object->setMarketplaces(null);
+            unset($data['marketplaces']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -87,15 +90,15 @@ class OfferEventExternalOfferForPriceChangesNormalizer implements DenormalizerIn
     {
         $dataArray = [];
         $dataArray['id'] = $data->getId();
-        $dataArray['external'] = $this->normalizer->normalize($data->getExternal(), 'json', $context);
+        $dataArray['external'] = null === $data->getExternal() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getExternal(), 'json', $context));
         if ($data->isInitialized('marketplaces') && null !== $data->getMarketplaces()) {
             $values = [];
             foreach ($data->getMarketplaces() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['marketplaces'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

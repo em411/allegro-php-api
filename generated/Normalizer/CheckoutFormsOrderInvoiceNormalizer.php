@@ -42,39 +42,55 @@ class CheckoutFormsOrderInvoiceNormalizer implements DenormalizerInterface, Norm
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoice();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoice();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('invoiceNumber', $data) && null !== $data['invoiceNumber']) {
             $object->setInvoiceNumber($data['invoiceNumber']);
             unset($data['invoiceNumber']);
         } elseif (\array_key_exists('invoiceNumber', $data) && null === $data['invoiceNumber']) {
             $object->setInvoiceNumber(null);
+            unset($data['invoiceNumber']);
         }
         if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
-            $object->setCreatedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['createdAt']);
+            if (false === $date) {
+                if (\is_string($data['createdAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['createdAt'])) {
+                    try {
+                        $date = new \DateTime($data['createdAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['createdAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setCreatedAt($date);
             unset($data['createdAt']);
         } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
             $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('file', $data) && null !== $data['file']) {
             $object->setFile($this->denormalizer->denormalize($data['file'], \Em411\Allegro\Api\Model\CheckoutFormsOrderInvoiceFile::class, 'json', $context));
             unset($data['file']);
         } elseif (\array_key_exists('file', $data) && null === $data['file']) {
             $object->setFile(null);
+            unset($data['file']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -98,9 +114,9 @@ class CheckoutFormsOrderInvoiceNormalizer implements DenormalizerInterface, Norm
             $dataArray['createdAt'] = $data->getCreatedAt()->format('Y-m-d\TH:i:sP');
         }
         if ($data->isInitialized('file') && null !== $data->getFile()) {
-            $dataArray['file'] = $this->normalizer->normalize($data->getFile(), 'json', $context);
+            $dataArray['file'] = null === $data->getFile() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getFile(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

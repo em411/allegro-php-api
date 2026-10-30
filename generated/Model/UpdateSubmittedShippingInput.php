@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class UpdateSubmittedShippingInput extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class UpdateSubmittedShippingInput implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class UpdateSubmittedShippingInput extends \ArrayObject
         $this->thirdParty = $thirdParty;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['estimatedTimeOfArrival' => ['estimatedTimeOfArrival', 'getEstimatedTimeOfArrival', 'setEstimatedTimeOfArrival'], 'truckLicencePlate' => ['truckLicencePlate', 'getTruckLicencePlate', 'setTruckLicencePlate'], 'courier' => ['courier', 'getCourier', 'setCourier'], 'thirdParty' => ['thirdParty', 'getThirdParty', 'setThirdParty']];
     }
 }

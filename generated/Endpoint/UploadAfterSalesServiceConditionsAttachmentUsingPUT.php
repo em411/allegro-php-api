@@ -23,12 +23,11 @@ class UploadAfterSalesServiceConditionsAttachmentUsingPUT extends \Em411\Allegro
      * This operation should be used after creating an offer attachment with *POST /sale/offer-attachments*
      * **Important!** You can find the URL address to upload the file to our server in the *Location* response header of *POST /after-sales-service-conditions/attachments*. The URL is unique and one-time. As its format may change in time, you should always use the address from the header. Do not compose the address on your own. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#jak-dodac-zalacznik-do-informacji-o-gwarancjach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#how-to-add-attachment-to-warranty-information" target="_blank">EN</a>.
      *
-     * @param string                                                 $attachmentId     the ID of the attachment
+     * @param string                                                 $attachmentId the ID of the attachment
      * @param string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $attachmentId, $requestBody = null, array $headerParameters = [])
     {
@@ -44,7 +43,7 @@ class UploadAfterSalesServiceConditionsAttachmentUsingPUT extends \Em411\Allegro
 
     public function getUri(): string
     {
-        return str_replace(['{attachmentId}'], [$this->attachmentId], '/after-sales-service-conditions/attachments/{attachmentId}');
+        return str_replace(['{attachmentId}'], [rawurlencode($this->attachmentId)], '/after-sales-service-conditions/attachments/{attachmentId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -91,7 +90,7 @@ class UploadAfterSalesServiceConditionsAttachmentUsingPUT extends \Em411\Allegro
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\AfterSalesServicesAttachment', 'json');
         }
         if (400 === $status) {

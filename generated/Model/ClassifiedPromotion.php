@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ClassifiedPromotion extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ClassifiedPromotion implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -73,5 +77,10 @@ class ClassifiedPromotion extends \ArrayObject
         $this->name = $name;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['duration' => ['duration', 'getDuration', 'setDuration'], 'name' => ['name', 'getName', 'setName']];
     }
 }

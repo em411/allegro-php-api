@@ -42,33 +42,36 @@ class PromoOptionsModificationNormalizer implements DenormalizerInterface, Norma
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PromoOptionsModification();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PromoOptionsModification();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('modificationType', $data) && null !== $data['modificationType']) {
             $object->setModificationType($data['modificationType']);
             unset($data['modificationType']);
         } elseif (\array_key_exists('modificationType', $data) && null === $data['modificationType']) {
             $object->setModificationType(null);
+            unset($data['modificationType']);
         }
         if (\array_key_exists('packageType', $data) && null !== $data['packageType']) {
             $object->setPackageType($data['packageType']);
             unset($data['packageType']);
         } elseif (\array_key_exists('packageType', $data) && null === $data['packageType']) {
             $object->setPackageType(null);
+            unset($data['packageType']);
         }
         if (\array_key_exists('packageId', $data) && null !== $data['packageId']) {
             $object->setPackageId($data['packageId']);
             unset($data['packageId']);
         } elseif (\array_key_exists('packageId', $data) && null === $data['packageId']) {
             $object->setPackageId(null);
+            unset($data['packageId']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -91,7 +94,7 @@ class PromoOptionsModificationNormalizer implements DenormalizerInterface, Norma
         if ($data->isInitialized('packageId') && null !== $data->getPackageId()) {
             $dataArray['packageId'] = $data->getPackageId();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

@@ -42,33 +42,36 @@ class PickupTimeDtoNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\PickupTimeDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\PickupTimeDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('date', $data) && null !== $data['date']) {
             $object->setDate($data['date']);
             unset($data['date']);
         } elseif (\array_key_exists('date', $data) && null === $data['date']) {
             $object->setDate(null);
+            unset($data['date']);
         }
         if (\array_key_exists('minTime', $data) && null !== $data['minTime']) {
             $object->setMinTime($data['minTime']);
             unset($data['minTime']);
         } elseif (\array_key_exists('minTime', $data) && null === $data['minTime']) {
             $object->setMinTime(null);
+            unset($data['minTime']);
         }
         if (\array_key_exists('maxTime', $data) && null !== $data['maxTime']) {
             $object->setMaxTime($data['maxTime']);
             unset($data['maxTime']);
         } elseif (\array_key_exists('maxTime', $data) && null === $data['maxTime']) {
             $object->setMaxTime(null);
+            unset($data['maxTime']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,7 +92,7 @@ class PickupTimeDtoNormalizer implements DenormalizerInterface, NormalizerInterf
         if ($data->isInitialized('maxTime') && null !== $data->getMaxTime()) {
             $dataArray['maxTime'] = $data->getMaxTime();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

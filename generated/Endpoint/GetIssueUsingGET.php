@@ -21,11 +21,10 @@ class GetIssueUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
     /**
      * Use this resource to get a single dispute or claim. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#szczegolowe-informacje-o-dyskusji-reklamacji" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#detailed-information-about-the-dispute-claim" target="_blank">EN</a>.
      *
-     * @param string $issueId          dispute or claim identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of subject field.
-     *             }
+     * @param string $issueId dispute or claim identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of subject field.
+     * } $headerParameters
      */
     public function __construct(string $issueId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetIssueUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
 
     public function getUri(): string
     {
-        return str_replace(['{issueId}'], [$this->issueId], '/sale/issues/{issueId}');
+        return str_replace(['{issueId}'], [rawurlencode($this->issueId)], '/sale/issues/{issueId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -80,7 +79,7 @@ class GetIssueUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint im
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\PostPurchaseIssue', 'json');
         }
         if (401 === $status) {

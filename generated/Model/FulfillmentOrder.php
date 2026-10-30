@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class FulfillmentOrder extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class FulfillmentOrder implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -71,5 +75,10 @@ class FulfillmentOrder extends \ArrayObject
         $this->parcels = $parcels;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['orderId' => ['orderId', 'getOrderId', 'setOrderId'], 'parcels' => ['parcels', 'getParcels', 'setParcels']];
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Exception;
 
-class GatewayTimeoutException extends \RuntimeException implements ServerException
+abstract class GatewayTimeoutException extends \RuntimeException implements ServerException, WithResponseInterface
 {
     public function __construct(string $message)
     {

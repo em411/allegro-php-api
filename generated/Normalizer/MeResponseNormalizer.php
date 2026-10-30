@@ -42,57 +42,64 @@ class MeResponseNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\MeResponse();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\MeResponse();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('login', $data) && null !== $data['login']) {
             $object->setLogin($data['login']);
             unset($data['login']);
         } elseif (\array_key_exists('login', $data) && null === $data['login']) {
             $object->setLogin(null);
+            unset($data['login']);
         }
         if (\array_key_exists('firstName', $data) && null !== $data['firstName']) {
             $object->setFirstName($data['firstName']);
             unset($data['firstName']);
         } elseif (\array_key_exists('firstName', $data) && null === $data['firstName']) {
             $object->setFirstName(null);
+            unset($data['firstName']);
         }
         if (\array_key_exists('lastName', $data) && null !== $data['lastName']) {
             $object->setLastName($data['lastName']);
             unset($data['lastName']);
         } elseif (\array_key_exists('lastName', $data) && null === $data['lastName']) {
             $object->setLastName(null);
+            unset($data['lastName']);
         }
         if (\array_key_exists('email', $data) && null !== $data['email']) {
             $object->setEmail($data['email']);
             unset($data['email']);
         } elseif (\array_key_exists('email', $data) && null === $data['email']) {
             $object->setEmail(null);
+            unset($data['email']);
         }
         if (\array_key_exists('baseMarketplace', $data) && null !== $data['baseMarketplace']) {
             $object->setBaseMarketplace($this->denormalizer->denormalize($data['baseMarketplace'], \Em411\Allegro\Api\Model\MeResponseBaseMarketplace::class, 'json', $context));
             unset($data['baseMarketplace']);
         } elseif (\array_key_exists('baseMarketplace', $data) && null === $data['baseMarketplace']) {
             $object->setBaseMarketplace(null);
+            unset($data['baseMarketplace']);
         }
         if (\array_key_exists('company', $data) && null !== $data['company']) {
             $object->setCompany($this->denormalizer->denormalize($data['company'], \Em411\Allegro\Api\Model\Company::class, 'json', $context));
             unset($data['company']);
         } elseif (\array_key_exists('company', $data) && null === $data['company']) {
             $object->setCompany(null);
+            unset($data['company']);
         }
         if (\array_key_exists('features', $data) && null !== $data['features']) {
             $values = [];
@@ -103,6 +110,7 @@ class MeResponseNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['features']);
         } elseif (\array_key_exists('features', $data) && null === $data['features']) {
             $object->setFeatures(null);
+            unset($data['features']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -132,10 +140,10 @@ class MeResponseNormalizer implements DenormalizerInterface, NormalizerInterface
             $dataArray['email'] = $data->getEmail();
         }
         if ($data->isInitialized('baseMarketplace') && null !== $data->getBaseMarketplace()) {
-            $dataArray['baseMarketplace'] = $this->normalizer->normalize($data->getBaseMarketplace(), 'json', $context);
+            $dataArray['baseMarketplace'] = null === $data->getBaseMarketplace() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBaseMarketplace(), 'json', $context));
         }
         if ($data->isInitialized('company') && null !== $data->getCompany()) {
-            $dataArray['company'] = $this->normalizer->normalize($data->getCompany(), 'json', $context);
+            $dataArray['company'] = null === $data->getCompany() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCompany(), 'json', $context));
         }
         if ($data->isInitialized('features') && null !== $data->getFeatures()) {
             $values = [];
@@ -144,7 +152,7 @@ class MeResponseNormalizer implements DenormalizerInterface, NormalizerInterface
             }
             $dataArray['features'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class ReturnPolicyOptions extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class ReturnPolicyOptions implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -148,5 +152,10 @@ class ReturnPolicyOptions extends \ArrayObject
         $this->collectBySellerOnly = $collectBySellerOnly;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['cashOnDeliveryNotAllowed' => ['cashOnDeliveryNotAllowed', 'getCashOnDeliveryNotAllowed', 'setCashOnDeliveryNotAllowed'], 'freeAccessoriesReturnRequired' => ['freeAccessoriesReturnRequired', 'getFreeAccessoriesReturnRequired', 'setFreeAccessoriesReturnRequired'], 'refundLoweredByReceivedDiscount' => ['refundLoweredByReceivedDiscount', 'getRefundLoweredByReceivedDiscount', 'setRefundLoweredByReceivedDiscount'], 'businessReturnAllowed' => ['businessReturnAllowed', 'getBusinessReturnAllowed', 'setBusinessReturnAllowed'], 'collectBySellerOnly' => ['collectBySellerOnly', 'getCollectBySellerOnly', 'setCollectBySellerOnly']];
     }
 }

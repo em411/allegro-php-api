@@ -42,51 +42,57 @@ class WarrantyRequestNormalizer implements DenormalizerInterface, NormalizerInte
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\WarrantyRequest();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\WarrantyRequest();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('type', $data) && null !== $data['type']) {
             $object->setType($data['type']);
             unset($data['type']);
         } elseif (\array_key_exists('type', $data) && null === $data['type']) {
             $object->setType(null);
+            unset($data['type']);
         }
         if (\array_key_exists('individual', $data) && null !== $data['individual']) {
             $object->setIndividual($this->denormalizer->denormalize($data['individual'], \Em411\Allegro\Api\Model\WarrantyPeriod::class, 'json', $context));
             unset($data['individual']);
         } elseif (\array_key_exists('individual', $data) && null === $data['individual']) {
             $object->setIndividual(null);
+            unset($data['individual']);
         }
         if (\array_key_exists('corporate', $data) && null !== $data['corporate']) {
             $object->setCorporate($this->denormalizer->denormalize($data['corporate'], \Em411\Allegro\Api\Model\WarrantyPeriod::class, 'json', $context));
             unset($data['corporate']);
         } elseif (\array_key_exists('corporate', $data) && null === $data['corporate']) {
             $object->setCorporate(null);
+            unset($data['corporate']);
         }
         if (\array_key_exists('attachment', $data) && null !== $data['attachment']) {
             $object->setAttachment($this->denormalizer->denormalize($data['attachment'], \Em411\Allegro\Api\Model\WarrantyAttachment::class, 'json', $context));
             unset($data['attachment']);
         } elseif (\array_key_exists('attachment', $data) && null === $data['attachment']) {
             $object->setAttachment(null);
+            unset($data['attachment']);
         }
         if (\array_key_exists('description', $data) && null !== $data['description']) {
             $object->setDescription($data['description']);
             unset($data['description']);
         } elseif (\array_key_exists('description', $data) && null === $data['description']) {
             $object->setDescription(null);
+            unset($data['description']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -107,18 +113,18 @@ class WarrantyRequestNormalizer implements DenormalizerInterface, NormalizerInte
             $dataArray['type'] = $data->getType();
         }
         if ($data->isInitialized('individual') && null !== $data->getIndividual()) {
-            $dataArray['individual'] = $this->normalizer->normalize($data->getIndividual(), 'json', $context);
+            $dataArray['individual'] = null === $data->getIndividual() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getIndividual(), 'json', $context));
         }
         if ($data->isInitialized('corporate') && null !== $data->getCorporate()) {
-            $dataArray['corporate'] = $this->normalizer->normalize($data->getCorporate(), 'json', $context);
+            $dataArray['corporate'] = null === $data->getCorporate() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getCorporate(), 'json', $context));
         }
         if ($data->isInitialized('attachment') && null !== $data->getAttachment()) {
-            $dataArray['attachment'] = $this->normalizer->normalize($data->getAttachment(), 'json', $context);
+            $dataArray['attachment'] = null === $data->getAttachment() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAttachment(), 'json', $context));
         }
         if ($data->isInitialized('description') && null !== $data->getDescription()) {
             $dataArray['description'] = $data->getDescription();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

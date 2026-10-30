@@ -42,24 +42,25 @@ class CheckoutFormLineItemSerialNumbersNormalizer implements DenormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbers();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\CheckoutFormLineItemSerialNumbers();
         if (\array_key_exists('expected', $data) && \is_int($data['expected'])) {
             $data['expected'] = (bool) $data['expected'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('expected', $data) && null !== $data['expected']) {
             $object->setExpected($data['expected']);
             unset($data['expected']);
         } elseif (\array_key_exists('expected', $data) && null === $data['expected']) {
             $object->setExpected(null);
+            unset($data['expected']);
         }
         if (\array_key_exists('entries', $data) && null !== $data['entries']) {
             $values = [];
@@ -70,6 +71,7 @@ class CheckoutFormLineItemSerialNumbersNormalizer implements DenormalizerInterfa
             unset($data['entries']);
         } elseif (\array_key_exists('entries', $data) && null === $data['entries']) {
             $object->setEntries(null);
+            unset($data['entries']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -89,11 +91,11 @@ class CheckoutFormLineItemSerialNumbersNormalizer implements DenormalizerInterfa
         if ($data->isInitialized('entries') && null !== $data->getEntries()) {
             $values = [];
             foreach ($data->getEntries() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['entries'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }

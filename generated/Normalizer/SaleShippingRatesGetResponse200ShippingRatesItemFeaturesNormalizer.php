@@ -42,33 +42,35 @@ class SaleShippingRatesGetResponse200ShippingRatesItemFeaturesNormalizer impleme
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\SaleShippingRatesGetResponse200ShippingRatesItemFeatures();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\SaleShippingRatesGetResponse200ShippingRatesItemFeatures();
         if (\array_key_exists('managedByAllegro', $data) && \is_int($data['managedByAllegro'])) {
             $data['managedByAllegro'] = (bool) $data['managedByAllegro'];
         }
         if (\array_key_exists('isFulfillment', $data) && \is_int($data['isFulfillment'])) {
             $data['isFulfillment'] = (bool) $data['isFulfillment'];
         }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
-        }
         if (\array_key_exists('managedByAllegro', $data) && null !== $data['managedByAllegro']) {
             $object->setManagedByAllegro($data['managedByAllegro']);
             unset($data['managedByAllegro']);
         } elseif (\array_key_exists('managedByAllegro', $data) && null === $data['managedByAllegro']) {
             $object->setManagedByAllegro(null);
+            unset($data['managedByAllegro']);
         }
         if (\array_key_exists('isFulfillment', $data) && null !== $data['isFulfillment']) {
             $object->setIsFulfillment($data['isFulfillment']);
             unset($data['isFulfillment']);
         } elseif (\array_key_exists('isFulfillment', $data) && null === $data['isFulfillment']) {
             $object->setIsFulfillment(null);
+            unset($data['isFulfillment']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -88,7 +90,7 @@ class SaleShippingRatesGetResponse200ShippingRatesItemFeaturesNormalizer impleme
         if ($data->isInitialized('isFulfillment') && null !== $data->getIsFulfillment()) {
             $dataArray['isFulfillment'] = $data->getIsFulfillment();
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

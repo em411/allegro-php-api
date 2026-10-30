@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OfferStatusItemDtoDiscount extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OfferStatusItemDtoDiscount implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class OfferStatusItemDtoDiscount extends \ArrayObject
         $this->opportunity = $opportunity;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['opportunity' => ['opportunity', 'getOpportunity', 'setOpportunity']];
     }
 }

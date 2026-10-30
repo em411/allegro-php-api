@@ -21,11 +21,10 @@ class GetIssueAttachmentUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseE
     /**
      * Use this resource to get an attachment. Read more: <a href="../../tutorials/jak-zarzadzac-dyskusjami-E7Zj6gK7ysE#pobranie-zalacznika" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-discussions-VL6Yr40e5t5#attachment-related-to-dispute-claim" target="_blank">EN</a>.
      *
-     * @param string $attachmentId     attachment identifier
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $attachmentId attachment identifier
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $attachmentId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class GetIssueAttachmentUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseE
 
     public function getUri(): string
     {
-        return str_replace(['{attachmentId}'], [$this->attachmentId], '/sale/issues/attachments/{attachmentId}');
+        return str_replace(['{attachmentId}'], [rawurlencode($this->attachmentId)], '/sale/issues/attachments/{attachmentId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

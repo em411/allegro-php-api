@@ -42,39 +42,79 @@ class OfferPromoOptionNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferPromoOption();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferPromoOption();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('validFrom', $data) && null !== $data['validFrom']) {
-            $object->setValidFrom(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['validFrom']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['validFrom']);
+            if (false === $date) {
+                if (\is_string($data['validFrom']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['validFrom'])) {
+                    try {
+                        $date = new \DateTime($data['validFrom']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['validFrom'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['validFrom'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setValidFrom($date);
             unset($data['validFrom']);
         } elseif (\array_key_exists('validFrom', $data) && null === $data['validFrom']) {
             $object->setValidFrom(null);
+            unset($data['validFrom']);
         }
         if (\array_key_exists('validTo', $data) && null !== $data['validTo']) {
-            $object->setValidTo(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['validTo']));
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['validTo']);
+            if (false === $date_1) {
+                if (\is_string($data['validTo']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['validTo'])) {
+                    try {
+                        $date_1 = new \DateTime($data['validTo']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['validTo'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['validTo'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setValidTo($date_1);
             unset($data['validTo']);
         } elseif (\array_key_exists('validTo', $data) && null === $data['validTo']) {
             $object->setValidTo(null);
+            unset($data['validTo']);
         }
         if (\array_key_exists('nextCycleDate', $data) && null !== $data['nextCycleDate']) {
-            $object->setNextCycleDate(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['nextCycleDate']));
+            $date_2 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['nextCycleDate']);
+            if (false === $date_2) {
+                if (\is_string($data['nextCycleDate']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['nextCycleDate'])) {
+                    try {
+                        $date_2 = new \DateTime($data['nextCycleDate']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['nextCycleDate'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['nextCycleDate'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setNextCycleDate($date_2);
             unset($data['nextCycleDate']);
         } elseif (\array_key_exists('nextCycleDate', $data) && null === $data['nextCycleDate']) {
             $object->setNextCycleDate(null);
+            unset($data['nextCycleDate']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -100,7 +140,7 @@ class OfferPromoOptionNormalizer implements DenormalizerInterface, NormalizerInt
         if ($data->isInitialized('nextCycleDate') && null !== $data->getNextCycleDate()) {
             $dataArray['nextCycleDate'] = $data->getNextCycleDate()->format('Y-m-d\TH:i:sP');
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

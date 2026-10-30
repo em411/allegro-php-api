@@ -42,36 +42,39 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\OfferStatusItemDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\OfferStatusItemDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
+            unset($data['id']);
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('marketplace', $data) && null !== $data['marketplace']) {
             $object->setMarketplace($this->denormalizer->denormalize($data['marketplace'], \Em411\Allegro\Api\Model\OfferStatusItemDtoMarketplace::class, 'json', $context));
             unset($data['marketplace']);
         } elseif (\array_key_exists('marketplace', $data) && null === $data['marketplace']) {
             $object->setMarketplace(null);
+            unset($data['marketplace']);
         }
         if (\array_key_exists('basePrice', $data) && null !== $data['basePrice']) {
-            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data['basePrice'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -79,19 +82,21 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['basePrice']);
         } elseif (\array_key_exists('basePrice', $data) && null === $data['basePrice']) {
             $object->setBasePrice(null);
+            unset($data['basePrice']);
         }
         if (\array_key_exists('discount', $data) && null !== $data['discount']) {
             $object->setDiscount($this->denormalizer->denormalize($data['discount'], \Em411\Allegro\Api\Model\OfferStatusItemDtoDiscount::class, 'json', $context));
             unset($data['discount']);
         } elseif (\array_key_exists('discount', $data) && null === $data['discount']) {
             $object->setDiscount(null);
+            unset($data['discount']);
         }
         if (\array_key_exists('recommendedPriceReduction', $data) && null !== $data['recommendedPriceReduction']) {
             $value_1 = $data['recommendedPriceReduction'];
-            if (\is_array($data['recommendedPriceReduction']) && isset($data['recommendedPriceReduction']['sellerMaxDeclaredPercentage'])) {
+            if (\is_array($data['recommendedPriceReduction']) && \array_key_exists('sellerMaxDeclaredPercentage', $data['recommendedPriceReduction'])) {
                 $value_1 = $this->denormalizer->denormalize($data['recommendedPriceReduction'], \Em411\Allegro\Api\Model\RecommendedPriceReductionDto::class, 'json', $context);
             } elseif (\is_array($data['recommendedPriceReduction']) && $this->isOnlyNumericKeys($data['recommendedPriceReduction'])) {
-                $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+                $values_1 = new \Em411\Allegro\Api\Runtime\JsonObject();
                 foreach ($data['recommendedPriceReduction'] as $key_1 => $value_2) {
                     $values_1[$key_1] = $value_2;
                 }
@@ -101,13 +106,14 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['recommendedPriceReduction']);
         } elseif (\array_key_exists('recommendedPriceReduction', $data) && null === $data['recommendedPriceReduction']) {
             $object->setRecommendedPriceReduction(null);
+            unset($data['recommendedPriceReduction']);
         }
         if (\array_key_exists('declaredPriceReduction', $data) && null !== $data['declaredPriceReduction']) {
             $value_3 = $data['declaredPriceReduction'];
-            if (\is_array($data['declaredPriceReduction']) && isset($data['declaredPriceReduction']['sellerMaxDeclaredPercentage']) && isset($data['declaredPriceReduction']['sellerMaxDeclaredDiscount'])) {
+            if (\is_array($data['declaredPriceReduction']) && \array_key_exists('sellerMaxDeclaredPercentage', $data['declaredPriceReduction']) && \array_key_exists('sellerMaxDeclaredDiscount', $data['declaredPriceReduction'])) {
                 $value_3 = $this->denormalizer->denormalize($data['declaredPriceReduction'], \Em411\Allegro\Api\Model\DeclaredPriceReductionDto::class, 'json', $context);
             } elseif (\is_array($data['declaredPriceReduction']) && $this->isOnlyNumericKeys($data['declaredPriceReduction'])) {
-                $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+                $values_2 = new \Em411\Allegro\Api\Runtime\JsonObject();
                 foreach ($data['declaredPriceReduction'] as $key_2 => $value_4) {
                     $values_2[$key_2] = $value_4;
                 }
@@ -117,13 +123,14 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['declaredPriceReduction']);
         } elseif (\array_key_exists('declaredPriceReduction', $data) && null === $data['declaredPriceReduction']) {
             $object->setDeclaredPriceReduction(null);
+            unset($data['declaredPriceReduction']);
         }
         if (\array_key_exists('actualPriceReduction', $data) && null !== $data['actualPriceReduction']) {
             $value_5 = $data['actualPriceReduction'];
-            if (\is_array($data['actualPriceReduction']) && isset($data['actualPriceReduction']['sellerMaxDeclaredPercentage']) && isset($data['actualPriceReduction']['sellerMaxDeclaredDiscount']) && isset($data['actualPriceReduction']['sellerDiscount']) && isset($data['actualPriceReduction']['allegroDiscount']) && isset($data['actualPriceReduction']['finalPriceForTheBuyer'])) {
+            if (\is_array($data['actualPriceReduction']) && \array_key_exists('sellerMaxDeclaredPercentage', $data['actualPriceReduction']) && \array_key_exists('sellerMaxDeclaredDiscount', $data['actualPriceReduction']) && \array_key_exists('sellerDiscount', $data['actualPriceReduction']) && \array_key_exists('allegroDiscount', $data['actualPriceReduction']) && \array_key_exists('finalPriceForTheBuyer', $data['actualPriceReduction'])) {
                 $value_5 = $this->denormalizer->denormalize($data['actualPriceReduction'], \Em411\Allegro\Api\Model\ActualPriceReductionDto::class, 'json', $context);
             } elseif (\is_array($data['actualPriceReduction']) && $this->isOnlyNumericKeys($data['actualPriceReduction'])) {
-                $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+                $values_3 = new \Em411\Allegro\Api\Runtime\JsonObject();
                 foreach ($data['actualPriceReduction'] as $key_3 => $value_6) {
                     $values_3[$key_3] = $value_6;
                 }
@@ -133,18 +140,45 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
             unset($data['actualPriceReduction']);
         } elseif (\array_key_exists('actualPriceReduction', $data) && null === $data['actualPriceReduction']) {
             $object->setActualPriceReduction(null);
+            unset($data['actualPriceReduction']);
         }
         if (\array_key_exists('discountedAt', $data) && null !== $data['discountedAt']) {
-            $object->setDiscountedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['discountedAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['discountedAt']);
+            if (false === $date) {
+                if (\is_string($data['discountedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['discountedAt'])) {
+                    try {
+                        $date = new \DateTime($data['discountedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['discountedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['discountedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setDiscountedAt($date);
             unset($data['discountedAt']);
         } elseif (\array_key_exists('discountedAt', $data) && null === $data['discountedAt']) {
             $object->setDiscountedAt(null);
+            unset($data['discountedAt']);
         }
         if (\array_key_exists('excludedAt', $data) && null !== $data['excludedAt']) {
-            $object->setExcludedAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['excludedAt']));
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['excludedAt']);
+            if (false === $date_1) {
+                if (\is_string($data['excludedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['excludedAt'])) {
+                    try {
+                        $date_1 = new \DateTime($data['excludedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['excludedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['excludedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setExcludedAt($date_1);
             unset($data['excludedAt']);
         } elseif (\array_key_exists('excludedAt', $data) && null === $data['excludedAt']) {
             $object->setExcludedAt(null);
+            unset($data['excludedAt']);
         }
         foreach ($data as $key_4 => $value_7) {
             if (preg_match('/.*/', (string) $key_4)) {
@@ -160,21 +194,21 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
         $dataArray = [];
         $dataArray['id'] = $data->getId();
         $dataArray['name'] = $data->getName();
-        $dataArray['marketplace'] = $this->normalizer->normalize($data->getMarketplace(), 'json', $context);
-        if ($data->isInitialized('basePrice')) {
-            $values = [];
+        $dataArray['marketplace'] = null === $data->getMarketplace() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getMarketplace(), 'json', $context));
+        if ($data->isInitialized('basePrice') && null !== $data->getBasePrice()) {
+            $values = new \Em411\Allegro\Api\Runtime\JsonObject();
             foreach ($data->getBasePrice() as $key => $value) {
                 $values[$key] = $value;
             }
             $dataArray['basePrice'] = $values;
         }
-        $dataArray['discount'] = $this->normalizer->normalize($data->getDiscount(), 'json', $context);
+        $dataArray['discount'] = null === $data->getDiscount() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDiscount(), 'json', $context));
         if ($data->isInitialized('recommendedPriceReduction') && null !== $data->getRecommendedPriceReduction()) {
             $value_1 = $data->getRecommendedPriceReduction();
             if (\is_object($data->getRecommendedPriceReduction())) {
-                $value_1 = $this->normalizer->normalize($data->getRecommendedPriceReduction(), 'json', $context);
+                $value_1 = null === $data->getRecommendedPriceReduction() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRecommendedPriceReduction(), 'json', $context));
             } elseif (\is_object($data->getRecommendedPriceReduction())) {
-                $values_1 = [];
+                $values_1 = new \Em411\Allegro\Api\Runtime\JsonObject();
                 foreach ($data->getRecommendedPriceReduction() as $key_1 => $value_2) {
                     $values_1[$key_1] = $value_2;
                 }
@@ -185,9 +219,9 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('declaredPriceReduction') && null !== $data->getDeclaredPriceReduction()) {
             $value_3 = $data->getDeclaredPriceReduction();
             if (\is_object($data->getDeclaredPriceReduction())) {
-                $value_3 = $this->normalizer->normalize($data->getDeclaredPriceReduction(), 'json', $context);
+                $value_3 = null === $data->getDeclaredPriceReduction() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getDeclaredPriceReduction(), 'json', $context));
             } elseif (\is_object($data->getDeclaredPriceReduction())) {
-                $values_2 = [];
+                $values_2 = new \Em411\Allegro\Api\Runtime\JsonObject();
                 foreach ($data->getDeclaredPriceReduction() as $key_2 => $value_4) {
                     $values_2[$key_2] = $value_4;
                 }
@@ -198,9 +232,9 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
         if ($data->isInitialized('actualPriceReduction') && null !== $data->getActualPriceReduction()) {
             $value_5 = $data->getActualPriceReduction();
             if (\is_object($data->getActualPriceReduction())) {
-                $value_5 = $this->normalizer->normalize($data->getActualPriceReduction(), 'json', $context);
+                $value_5 = null === $data->getActualPriceReduction() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getActualPriceReduction(), 'json', $context));
             } elseif (\is_object($data->getActualPriceReduction())) {
-                $values_3 = [];
+                $values_3 = new \Em411\Allegro\Api\Runtime\JsonObject();
                 foreach ($data->getActualPriceReduction() as $key_3 => $value_6) {
                     $values_3[$key_3] = $value_6;
                 }
@@ -208,13 +242,13 @@ class OfferStatusItemDtoNormalizer implements DenormalizerInterface, NormalizerI
             }
             $dataArray['actualPriceReduction'] = $value_5;
         }
-        if ($data->isInitialized('discountedAt')) {
+        if ($data->isInitialized('discountedAt') && null !== $data->getDiscountedAt()) {
             $dataArray['discountedAt'] = $data->getDiscountedAt()?->format('Y-m-d\TH:i:sP');
         }
-        if ($data->isInitialized('excludedAt')) {
+        if ($data->isInitialized('excludedAt') && null !== $data->getExcludedAt()) {
             $dataArray['excludedAt'] = $data->getExcludedAt()?->format('Y-m-d\TH:i:sP');
         }
-        foreach ($data as $key_4 => $value_7) {
+        foreach ($data->additionalPropertyEntries() as $key_4 => $value_7) {
             if (preg_match('/.*/', (string) $key_4)) {
                 $dataArray[$key_4] = $value_7;
             }

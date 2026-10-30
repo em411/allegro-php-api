@@ -99,4 +99,9 @@ class ThirdPartyDeliveryShipping extends ShippingExtended
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['thirdParty' => ['thirdParty', 'getThirdParty', 'setThirdParty'], 'estimatedTimeOfArrival' => ['estimatedTimeOfArrival', 'getEstimatedTimeOfArrival', 'setEstimatedTimeOfArrival'], 'countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode']]);
+    }
 }

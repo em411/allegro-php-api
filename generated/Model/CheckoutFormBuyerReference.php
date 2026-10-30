@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class CheckoutFormBuyerReference extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class CheckoutFormBuyerReference implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -274,5 +278,10 @@ class CheckoutFormBuyerReference extends \ArrayObject
         $this->address = $address;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['id' => ['id', 'getId', 'setId'], 'email' => ['email', 'getEmail', 'setEmail'], 'login' => ['login', 'getLogin', 'setLogin'], 'firstName' => ['firstName', 'getFirstName', 'setFirstName'], 'lastName' => ['lastName', 'getLastName', 'setLastName'], 'companyName' => ['companyName', 'getCompanyName', 'setCompanyName'], 'guest' => ['guest', 'getGuest', 'setGuest'], 'personalIdentity' => ['personalIdentity', 'getPersonalIdentity', 'setPersonalIdentity'], 'phoneNumber' => ['phoneNumber', 'getPhoneNumber', 'setPhoneNumber'], 'preferences' => ['preferences', 'getPreferences', 'setPreferences'], 'address' => ['address', 'getAddress', 'setAddress']];
     }
 }

@@ -42,33 +42,36 @@ class ResponsiblePersonResponsePersonalDataNormalizer implements DenormalizerInt
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\ResponsiblePersonResponsePersonalData();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\ResponsiblePersonResponsePersonalData();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('name', $data) && null !== $data['name']) {
             $object->setName($data['name']);
             unset($data['name']);
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
+            unset($data['name']);
         }
         if (\array_key_exists('address', $data) && null !== $data['address']) {
             $object->setAddress($this->denormalizer->denormalize($data['address'], \Em411\Allegro\Api\Model\ResponsiblePersonAddress::class, 'json', $context));
             unset($data['address']);
         } elseif (\array_key_exists('address', $data) && null === $data['address']) {
             $object->setAddress(null);
+            unset($data['address']);
         }
         if (\array_key_exists('contact', $data) && null !== $data['contact']) {
             $object->setContact($this->denormalizer->denormalize($data['contact'], \Em411\Allegro\Api\Model\ResponsiblePersonContact::class, 'json', $context));
             unset($data['contact']);
         } elseif (\array_key_exists('contact', $data) && null === $data['contact']) {
             $object->setContact(null);
+            unset($data['contact']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,12 +89,12 @@ class ResponsiblePersonResponsePersonalDataNormalizer implements DenormalizerInt
             $dataArray['name'] = $data->getName();
         }
         if ($data->isInitialized('address') && null !== $data->getAddress()) {
-            $dataArray['address'] = $this->normalizer->normalize($data->getAddress(), 'json', $context);
+            $dataArray['address'] = null === $data->getAddress() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAddress(), 'json', $context));
         }
         if ($data->isInitialized('contact') && null !== $data->getContact()) {
-            $dataArray['contact'] = $this->normalizer->normalize($data->getContact(), 'json', $context);
+            $dataArray['contact'] = null === $data->getContact() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getContact(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

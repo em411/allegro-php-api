@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class BillingEntries extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class BillingEntries implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -52,5 +56,10 @@ class BillingEntries extends \ArrayObject
         $this->billingEntries = $billingEntries;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['billingEntries' => ['billingEntries', 'getBillingEntries', 'setBillingEntries']];
     }
 }

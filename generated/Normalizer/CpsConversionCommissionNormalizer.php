@@ -42,27 +42,29 @@ class CpsConversionCommissionNormalizer implements DenormalizerInterface, Normal
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CpsConversionCommission();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CpsConversionCommission();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('publisher', $data) && null !== $data['publisher']) {
             $object->setPublisher($this->denormalizer->denormalize($data['publisher'], \Em411\Allegro\Api\Model\CpsConversionCommissionPublisher::class, 'json', $context));
             unset($data['publisher']);
         } elseif (\array_key_exists('publisher', $data) && null === $data['publisher']) {
             $object->setPublisher(null);
+            unset($data['publisher']);
         }
         if (\array_key_exists('allegro', $data) && null !== $data['allegro']) {
             $object->setAllegro($this->denormalizer->denormalize($data['allegro'], \Em411\Allegro\Api\Model\CpsConversionCommissionAllegro::class, 'json', $context));
             unset($data['allegro']);
         } elseif (\array_key_exists('allegro', $data) && null === $data['allegro']) {
             $object->setAllegro(null);
+            unset($data['allegro']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -77,12 +79,12 @@ class CpsConversionCommissionNormalizer implements DenormalizerInterface, Normal
     {
         $dataArray = [];
         if ($data->isInitialized('publisher') && null !== $data->getPublisher()) {
-            $dataArray['publisher'] = $this->normalizer->normalize($data->getPublisher(), 'json', $context);
+            $dataArray['publisher'] = null === $data->getPublisher() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getPublisher(), 'json', $context));
         }
         if ($data->isInitialized('allegro') && null !== $data->getAllegro()) {
-            $dataArray['allegro'] = $this->normalizer->normalize($data->getAllegro(), 'json', $context);
+            $dataArray['allegro'] = null === $data->getAllegro() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAllegro(), 'json', $context));
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

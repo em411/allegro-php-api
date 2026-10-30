@@ -42,54 +42,84 @@ class PublicationNormalizer implements DenormalizerInterface, NormalizerInterfac
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Publication();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        $object = new \Em411\Allegro\Api\Model\Publication();
         if (\array_key_exists('republish', $data) && \is_int($data['republish'])) {
             $data['republish'] = (bool) $data['republish'];
-        }
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('duration', $data) && null !== $data['duration']) {
             $object->setDuration($data['duration']);
             unset($data['duration']);
         } elseif (\array_key_exists('duration', $data) && null === $data['duration']) {
             $object->setDuration(null);
+            unset($data['duration']);
         }
         if (\array_key_exists('startingAt', $data) && null !== $data['startingAt']) {
-            $object->setStartingAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['startingAt']));
+            $date = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['startingAt']);
+            if (false === $date) {
+                if (\is_string($data['startingAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['startingAt'])) {
+                    try {
+                        $date = new \DateTime($data['startingAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['startingAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['startingAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setStartingAt($date);
             unset($data['startingAt']);
         } elseif (\array_key_exists('startingAt', $data) && null === $data['startingAt']) {
             $object->setStartingAt(null);
+            unset($data['startingAt']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('republish', $data) && null !== $data['republish']) {
             $object->setRepublish($data['republish']);
             unset($data['republish']);
         } elseif (\array_key_exists('republish', $data) && null === $data['republish']) {
             $object->setRepublish(null);
+            unset($data['republish']);
         }
         if (\array_key_exists('endingAt', $data) && null !== $data['endingAt']) {
-            $object->setEndingAt(\DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['endingAt']));
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['endingAt']);
+            if (false === $date_1) {
+                if (\is_string($data['endingAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['endingAt'])) {
+                    try {
+                        $date_1 = new \DateTime($data['endingAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['endingAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['endingAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setEndingAt($date_1);
             unset($data['endingAt']);
         } elseif (\array_key_exists('endingAt', $data) && null === $data['endingAt']) {
             $object->setEndingAt(null);
+            unset($data['endingAt']);
         }
         if (\array_key_exists('endedBy', $data) && null !== $data['endedBy']) {
             $object->setEndedBy($data['endedBy']);
             unset($data['endedBy']);
         } elseif (\array_key_exists('endedBy', $data) && null === $data['endedBy']) {
             $object->setEndedBy(null);
+            unset($data['endedBy']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -103,7 +133,7 @@ class PublicationNormalizer implements DenormalizerInterface, NormalizerInterfac
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('duration')) {
+        if ($data->isInitialized('duration') && null !== $data->getDuration()) {
             $dataArray['duration'] = $data->getDuration();
         }
         if ($data->isInitialized('startingAt') && null !== $data->getStartingAt()) {
@@ -115,10 +145,10 @@ class PublicationNormalizer implements DenormalizerInterface, NormalizerInterfac
         if ($data->isInitialized('republish') && null !== $data->getRepublish()) {
             $dataArray['republish'] = $data->getRepublish();
         }
-        if ($data->isInitialized('endingAt')) {
+        if ($data->isInitialized('endingAt') && null !== $data->getEndingAt()) {
             $dataArray['endingAt'] = $data->getEndingAt()->format('Y-m-d\TH:i:sP');
         }
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

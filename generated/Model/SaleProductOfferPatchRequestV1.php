@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleProductOfferPatchRequestV1 extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleProductOfferPatchRequestV1 implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
     protected $initialized = [];
     /**
-     * @var list<SaleProductOfferPatchRequestV1productSetItem>|null
+     * @var list<SaleProductOfferPatchRequestV1ProductSetItem>|null
      */
     protected $productSet;
     /**
@@ -48,11 +52,11 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
     /**
      * For the `/sale/product-offers` resources you can send only definition of the MANUAL compatibility list. If compatibility list is provided for the product assigned to the offer, it will be used automatically.
      *
-     * @var SaleProductOfferPatchRequestV1compatibilityList|null
+     * @var SaleProductOfferPatchRequestV1CompatibilityList|null
      */
     protected $compatibilityList;
     /**
-     * @var SaleProductOfferRequestBasedelivery|null
+     * @var SaleProductOfferRequestBaseDelivery|null
      */
     protected $delivery;
     /**
@@ -60,7 +64,7 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
      */
     protected $stock;
     /**
-     * @var SaleProductOfferRequestBasepublication|null
+     * @var SaleProductOfferRequestBasePublication|null
      */
     protected $publication;
     /**
@@ -110,7 +114,7 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
     /**
      * Identifier of contact data for sales format ADVERTISEMENT (classified ad). You can enter the contact identifier or name.
      *
-     * @var SaleProductOfferRequestBasecontact|null
+     * @var SaleProductOfferRequestBaseContact|null
      */
     protected $contact;
     /**
@@ -164,7 +168,7 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
     }
 
     /**
-     * @return list<SaleProductOfferPatchRequestV1productSetItem>|null
+     * @return list<SaleProductOfferPatchRequestV1ProductSetItem>|null
      */
     public function getProductSet(): ?array
     {
@@ -172,7 +176,7 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
     }
 
     /**
-     * @param list<SaleProductOfferPatchRequestV1productSetItem>|null $productSet
+     * @param list<SaleProductOfferPatchRequestV1ProductSetItem>|null $productSet
      */
     public function setProductSet(?array $productSet): self
     {
@@ -259,7 +263,7 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
     /**
      * For the `/sale/product-offers` resources you can send only definition of the MANUAL compatibility list. If compatibility list is provided for the product assigned to the offer, it will be used automatically.
      */
-    public function getCompatibilityList(): ?SaleProductOfferPatchRequestV1compatibilityList
+    public function getCompatibilityList(): ?SaleProductOfferPatchRequestV1CompatibilityList
     {
         return $this->compatibilityList;
     }
@@ -267,7 +271,7 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
     /**
      * For the `/sale/product-offers` resources you can send only definition of the MANUAL compatibility list. If compatibility list is provided for the product assigned to the offer, it will be used automatically.
      */
-    public function setCompatibilityList(?SaleProductOfferPatchRequestV1compatibilityList $compatibilityList): self
+    public function setCompatibilityList(?SaleProductOfferPatchRequestV1CompatibilityList $compatibilityList): self
     {
         $this->initialized['compatibilityList'] = true;
         $this->compatibilityList = $compatibilityList;
@@ -275,12 +279,12 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
         return $this;
     }
 
-    public function getDelivery(): ?SaleProductOfferRequestBasedelivery
+    public function getDelivery(): ?SaleProductOfferRequestBaseDelivery
     {
         return $this->delivery;
     }
 
-    public function setDelivery(?SaleProductOfferRequestBasedelivery $delivery): self
+    public function setDelivery(?SaleProductOfferRequestBaseDelivery $delivery): self
     {
         $this->initialized['delivery'] = true;
         $this->delivery = $delivery;
@@ -301,12 +305,12 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
         return $this;
     }
 
-    public function getPublication(): ?SaleProductOfferRequestBasepublication
+    public function getPublication(): ?SaleProductOfferRequestBasePublication
     {
         return $this->publication;
     }
 
-    public function setPublication(?SaleProductOfferRequestBasepublication $publication): self
+    public function setPublication(?SaleProductOfferRequestBasePublication $publication): self
     {
         $this->initialized['publication'] = true;
         $this->publication = $publication;
@@ -471,7 +475,7 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
     /**
      * Identifier of contact data for sales format ADVERTISEMENT (classified ad). You can enter the contact identifier or name.
      */
-    public function getContact(): ?SaleProductOfferRequestBasecontact
+    public function getContact(): ?SaleProductOfferRequestBaseContact
     {
         return $this->contact;
     }
@@ -479,7 +483,7 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
     /**
      * Identifier of contact data for sales format ADVERTISEMENT (classified ad). You can enter the contact identifier or name.
      */
-    public function setContact(?SaleProductOfferRequestBasecontact $contact): self
+    public function setContact(?SaleProductOfferRequestBaseContact $contact): self
     {
         $this->initialized['contact'] = true;
         $this->contact = $contact;
@@ -632,5 +636,10 @@ class SaleProductOfferPatchRequestV1 extends \ArrayObject
         $this->messageToSellerSettings = $messageToSellerSettings;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['productSet' => ['productSet', 'getProductSet', 'setProductSet'], 'b2b' => ['b2b', 'getB2b', 'setB2b'], 'attachments' => ['attachments', 'getAttachments', 'setAttachments'], 'fundraisingCampaign' => ['fundraisingCampaign', 'getFundraisingCampaign', 'setFundraisingCampaign'], 'additionalServices' => ['additionalServices', 'getAdditionalServices', 'setAdditionalServices'], 'compatibilityList' => ['compatibilityList', 'getCompatibilityList', 'setCompatibilityList'], 'delivery' => ['delivery', 'getDelivery', 'setDelivery'], 'stock' => ['stock', 'getStock', 'setStock'], 'publication' => ['publication', 'getPublication', 'setPublication'], 'additionalMarketplaces' => ['additionalMarketplaces', 'getAdditionalMarketplaces', 'setAdditionalMarketplaces'], 'language' => ['language', 'getLanguage', 'setLanguage'], 'aiCoCreatedContent' => ['aiCoCreatedContent', 'getAiCoCreatedContent', 'setAiCoCreatedContent'], 'category' => ['category', 'getCategory', 'setCategory'], 'name' => ['name', 'getName', 'setName'], 'parameters' => ['parameters', 'getParameters', 'setParameters'], 'afterSalesServices' => ['afterSalesServices', 'getAfterSalesServices', 'setAfterSalesServices'], 'sizeTable' => ['sizeTable', 'getSizeTable', 'setSizeTable'], 'contact' => ['contact', 'getContact', 'setContact'], 'discounts' => ['discounts', 'getDiscounts', 'setDiscounts'], 'payments' => ['payments', 'getPayments', 'setPayments'], 'sellingMode' => ['sellingMode', 'getSellingMode', 'setSellingMode'], 'location' => ['location', 'getLocation', 'setLocation'], 'images' => ['images', 'getImages', 'setImages'], 'description' => ['description', 'getDescription', 'setDescription'], 'external' => ['external', 'getExternal', 'setExternal'], 'taxSettings' => ['taxSettings', 'getTaxSettings', 'setTaxSettings'], 'messageToSellerSettings' => ['messageToSellerSettings', 'getMessageToSellerSettings', 'setMessageToSellerSettings']];
     }
 }

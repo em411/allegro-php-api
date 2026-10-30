@@ -42,21 +42,22 @@ class BenefitNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Benefit();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Benefit();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('specification', $data) && null !== $data['specification']) {
             $object->setSpecification($this->denormalizer->denormalize($data['specification'], \Em411\Allegro\Api\Model\BenefitSpecification::class, 'json', $context));
             unset($data['specification']);
         } elseif (\array_key_exists('specification', $data) && null === $data['specification']) {
             $object->setSpecification(null);
+            unset($data['specification']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -70,8 +71,8 @@ class BenefitNormalizer implements DenormalizerInterface, NormalizerInterface, D
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['specification'] = $this->normalizer->normalize($data->getSpecification(), 'json', $context);
-        foreach ($data as $key => $value) {
+        $dataArray['specification'] = null === $data->getSpecification() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getSpecification(), 'json', $context));
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

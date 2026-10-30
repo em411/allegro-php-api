@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class SaleProductOfferPublicationMarketplacesResponse extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class SaleProductOfferPublicationMarketplacesResponse implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -77,5 +81,10 @@ class SaleProductOfferPublicationMarketplacesResponse extends \ArrayObject
         $this->additional = $additional;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['base' => ['base', 'getBase', 'setBase'], 'additional' => ['additional', 'getAdditional', 'setAdditional']];
     }
 }

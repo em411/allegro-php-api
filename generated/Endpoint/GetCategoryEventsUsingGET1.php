@@ -28,18 +28,14 @@ class GetCategoryEventsUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\BaseE
      *
      *   Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#dziennik-zmian-w-kategoriach" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#event-journal-in-categories" target="_blank">EN</a>.
      *
-     * @param array $queryParameters {
-     *
-     * @var string $from The ID of the last seen event. Changes that occurred after the given event will be returned.
-     * @var int    $limit the number of events that will be returned in the response
-     * @var array  $type The types of events that will be returned in the response. All types of events are returned by default.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
+     * @param array{
+     *    "from"?: string, //The ID of the last seen event. Changes that occurred after the given event will be returned.
+     *    "limit"?: int, //The number of events that will be returned in the response.
+     *    "type"?: array, //The types of events that will be returned in the response. All types of events are returned by default.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/json
      */
     public function __construct(array $queryParameters = [], array $headerParameters = [], array $accept = [])
@@ -102,6 +98,11 @@ class GetCategoryEventsUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\BaseE
         return $optionsResolver;
     }
 
+    protected function getQueryStyles(): array
+    {
+        return ['type' => ['style' => 'form', 'explode' => true]];
+    }
+
     /**
      * @return \Em411\Allegro\Api\Model\CategoryEventsResponse|null
      *
@@ -112,13 +113,13 @@ class GetCategoryEventsUsingGET1 extends \Em411\Allegro\Api\Runtime\Client\BaseE
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\CategoryEventsResponse', 'json');
         }
-        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (400 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCategoryEventsUsingGET1BadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/json'))) {
             throw new \Em411\Allegro\Api\Exception\GetCategoryEventsUsingGET1UnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
     }

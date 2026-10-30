@@ -42,27 +42,29 @@ class InterlocutorNormalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\Interlocutor();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\Interlocutor();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('login', $data) && null !== $data['login']) {
             $object->setLogin($data['login']);
             unset($data['login']);
         } elseif (\array_key_exists('login', $data) && null === $data['login']) {
             $object->setLogin(null);
+            unset($data['login']);
         }
         if (\array_key_exists('avatarUrl', $data) && null !== $data['avatarUrl']) {
             $object->setAvatarUrl($data['avatarUrl']);
             unset($data['avatarUrl']);
         } elseif (\array_key_exists('avatarUrl', $data) && null === $data['avatarUrl']) {
             $object->setAvatarUrl(null);
+            unset($data['avatarUrl']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,7 +80,7 @@ class InterlocutorNormalizer implements DenormalizerInterface, NormalizerInterfa
         $dataArray = [];
         $dataArray['login'] = $data->getLogin();
         $dataArray['avatarUrl'] = $data->getAvatarUrl();
-        foreach ($data as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
             }

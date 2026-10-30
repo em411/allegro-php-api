@@ -22,18 +22,15 @@ class DeleteManualTranslationUsingDELETE extends \Em411\Allegro\Api\Runtime\Clie
     /**
      * Delete single element or entire manual translation. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#tlumaczenia-ofert" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#offer-translations" target="_blank">EN</a>.
      *
-     * @param string $language        language of the translation to delete
-     * @param string $offerId         offer identifier
-     * @param array  $queryParameters {
-     *
-     * @var string $element Offer element for which translation should be deleted. If not provided, translations for all elements will be deleted.
-     * @var string $products.id ProductId for which safety information translation should be deleted. If not provided, safety information translations for all products in offer will be deleted.
-     *             }
-     *
-     * @param array $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $language language of the translation to delete
+     * @param string $offerId  offer identifier
+     * @param array{
+     *    "element"?: string, //Offer element for which translation should be deleted. If not provided, translations for all elements will be deleted.
+     *    "products.id"?: string, //ProductId for which safety information translation should be deleted. If not provided, safety information translations for all products in offer will be deleted.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $language, string $offerId, array $queryParameters = [], array $headerParameters = [])
     {
@@ -50,7 +47,7 @@ class DeleteManualTranslationUsingDELETE extends \Em411\Allegro\Api\Runtime\Clie
 
     public function getUri(): string
     {
-        return str_replace(['{language}', '{offerId}'], [$this->language, $this->offerId], '/sale/offers/{offerId}/translations/{language}');
+        return str_replace(['{language}', '{offerId}'], [rawurlencode($this->language), rawurlencode($this->offerId)], '/sale/offers/{offerId}/translations/{language}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
@@ -105,10 +102,10 @@ class DeleteManualTranslationUsingDELETE extends \Em411\Allegro\Api\Runtime\Clie
         if (204 === $status) {
             return null;
         }
-        if ((null === $contentType) === false && (401 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (401 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeleteManualTranslationUsingDELETEUnauthorizedException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\AuthError', 'json'), $response);
         }
-        if ((null === $contentType) === false && (403 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+        if ((null === $contentType) === false && (403 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\DeleteManualTranslationUsingDELETEForbiddenException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }

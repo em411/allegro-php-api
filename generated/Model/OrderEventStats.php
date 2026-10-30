@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class OrderEventStats extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class OrderEventStats implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -48,5 +52,10 @@ class OrderEventStats extends \ArrayObject
         $this->latestEvent = $latestEvent;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['latestEvent' => ['latestEvent', 'getLatestEvent', 'setLatestEvent']];
     }
 }

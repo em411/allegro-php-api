@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class PackageDto extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class PackageDto implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -187,5 +191,10 @@ class PackageDto extends \ArrayObject
         $this->transportingInfo = $transportingInfo;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['waybill' => ['waybill', 'getWaybill', 'setWaybill'], 'type' => ['type', 'getType', 'setType'], 'length' => ['length', 'getLength', 'setLength'], 'width' => ['width', 'getWidth', 'setWidth'], 'height' => ['height', 'getHeight', 'setHeight'], 'weight' => ['weight', 'getWeight', 'setWeight'], 'textOnLabel' => ['textOnLabel', 'getTextOnLabel', 'setTextOnLabel'], 'transportingInfo' => ['transportingInfo', 'getTransportingInfo', 'setTransportingInfo']];
     }
 }

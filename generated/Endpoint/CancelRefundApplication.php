@@ -21,11 +21,10 @@ class CancelRefundApplication extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
     /**
      * Use this resource to cancel a refund application. This cannot be undone. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-anulowac-wniosek-o-rabat-transakcyjny" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-cancel-sale-commission-refund" target="_blank">EN</a>.
      *
-     * @param string $claimId          refund application ID
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
+     * @param string $claimId refund application ID
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
      */
     public function __construct(string $claimId, array $headerParameters = [])
     {
@@ -40,7 +39,7 @@ class CancelRefundApplication extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
 
     public function getUri(): string
     {
-        return str_replace(['{claimId}'], [$this->claimId], '/order/refund-claims/{claimId}');
+        return str_replace(['{claimId}'], [rawurlencode($this->claimId)], '/order/refund-claims/{claimId}');
     }
 
     public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array

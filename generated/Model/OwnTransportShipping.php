@@ -99,4 +99,9 @@ class OwnTransportShipping extends ShippingExtended
 
         return $this;
     }
+
+    public function definedProperties(): array
+    {
+        return array_merge(parent::definedProperties(), ['truckLicencePlate' => ['truckLicencePlate', 'getTruckLicencePlate', 'setTruckLicencePlate'], 'estimatedTimeOfArrival' => ['estimatedTimeOfArrival', 'getEstimatedTimeOfArrival', 'setEstimatedTimeOfArrival'], 'countryCode' => ['countryCode', 'getCountryCode', 'setCountryCode']]);
+    }
 }

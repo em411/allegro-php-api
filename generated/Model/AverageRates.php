@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class AverageRates extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class AverageRates implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -123,5 +127,10 @@ class AverageRates extends \ArrayObject
         $this->service = $service;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['delivery' => ['delivery', 'getDelivery', 'setDelivery'], 'deliveryCost' => ['deliveryCost', 'getDeliveryCost', 'setDeliveryCost'], 'description' => ['description', 'getDescription', 'setDescription'], 'service' => ['service', 'getService', 'setService']];
     }
 }

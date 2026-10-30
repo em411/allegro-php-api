@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class LineItemVoucher extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class LineItemVoucher implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -140,5 +144,10 @@ class LineItemVoucher extends \ArrayObject
         $this->value = $value;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['code' => ['code', 'getCode', 'setCode'], 'type' => ['type', 'getType', 'setType'], 'status' => ['status', 'getStatus', 'setStatus'], 'externalTransactionId' => ['externalTransactionId', 'getExternalTransactionId', 'setExternalTransactionId'], 'value' => ['value', 'getValue', 'setValue']];
     }
 }

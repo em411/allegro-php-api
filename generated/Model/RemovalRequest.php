@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Em411\Allegro\Api\Model;
 
-class RemovalRequest extends \ArrayObject
+use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
+use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
+
+class RemovalRequest implements AdditionalPropertiesInterface
 {
+    use AdditionalAndPatternProperties;
     /**
      * @var array
      */
@@ -98,5 +102,10 @@ class RemovalRequest extends \ArrayObject
         $this->source = $source;
 
         return $this;
+    }
+
+    public function definedProperties(): array
+    {
+        return ['createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'message' => ['message', 'getMessage', 'setMessage'], 'source' => ['source', 'getSource', 'setSource']];
     }
 }

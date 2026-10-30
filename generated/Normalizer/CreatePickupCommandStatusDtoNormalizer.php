@@ -42,27 +42,29 @@ class CreatePickupCommandStatusDtoNormalizer implements DenormalizerInterface, N
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        if (isset($data['$ref'])) {
+        $object = new \Em411\Allegro\Api\Model\CreatePickupCommandStatusDto();
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (isset($data['$ref']) && !isset($data['type']) && !isset($data['properties']) && !isset($data['allOf'])) {
             return new Reference($data['$ref'], $context['document-origin']);
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
-        }
-        $object = new \Em411\Allegro\Api\Model\CreatePickupCommandStatusDto();
-        if (null === $data || false === \is_array($data)) {
-            return $object;
         }
         if (\array_key_exists('commandId', $data) && null !== $data['commandId']) {
             $object->setCommandId($data['commandId']);
             unset($data['commandId']);
         } elseif (\array_key_exists('commandId', $data) && null === $data['commandId']) {
             $object->setCommandId(null);
+            unset($data['commandId']);
         }
         if (\array_key_exists('status', $data) && null !== $data['status']) {
             $object->setStatus($data['status']);
             unset($data['status']);
         } elseif (\array_key_exists('status', $data) && null === $data['status']) {
             $object->setStatus(null);
+            unset($data['status']);
         }
         if (\array_key_exists('errors', $data) && null !== $data['errors']) {
             $values = [];
@@ -73,18 +75,21 @@ class CreatePickupCommandStatusDtoNormalizer implements DenormalizerInterface, N
             unset($data['errors']);
         } elseif (\array_key_exists('errors', $data) && null === $data['errors']) {
             $object->setErrors(null);
+            unset($data['errors']);
         }
         if (\array_key_exists('pickupId', $data) && null !== $data['pickupId']) {
             $object->setPickupId($data['pickupId']);
             unset($data['pickupId']);
         } elseif (\array_key_exists('pickupId', $data) && null === $data['pickupId']) {
             $object->setPickupId(null);
+            unset($data['pickupId']);
         }
         if (\array_key_exists('carrierPickupId', $data) && null !== $data['carrierPickupId']) {
             $object->setCarrierPickupId($data['carrierPickupId']);
             unset($data['carrierPickupId']);
         } elseif (\array_key_exists('carrierPickupId', $data) && null === $data['carrierPickupId']) {
             $object->setCarrierPickupId(null);
+            unset($data['carrierPickupId']);
         }
         foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
@@ -107,7 +112,7 @@ class CreatePickupCommandStatusDtoNormalizer implements DenormalizerInterface, N
         if ($data->isInitialized('errors') && null !== $data->getErrors()) {
             $values = [];
             foreach ($data->getErrors() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
             }
             $dataArray['errors'] = $values;
         }
@@ -117,7 +122,7 @@ class CreatePickupCommandStatusDtoNormalizer implements DenormalizerInterface, N
         if ($data->isInitialized('carrierPickupId') && null !== $data->getCarrierPickupId()) {
             $dataArray['carrierPickupId'] = $data->getCarrierPickupId();
         }
-        foreach ($data as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;
             }
