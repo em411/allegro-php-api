@@ -127,6 +127,24 @@ jobs:
           BUMP_TYPE="patch"
           RELEASE_NOTES="$TEMP_DIR/release_notes.md"
 
+          # The tag action derives the bump from commit messages (Angular rules)
+          # and only falls back to default_bump when none match, so the commit
+          # message has to carry the bump: BREAKING CHANGE footer → major,
+          # feat → minor, fix → patch.
+          write_outputs() {
+            case "$BUMP_TYPE" in
+              major) MSG=$'feat: synchronize with remote API spec\n\nBREAKING CHANGE: breaking changes in the remote Allegro API definition' ;;
+              minor) MSG='feat: synchronize with remote API spec' ;;
+              *)     MSG='fix: synchronize with remote API spec' ;;
+            esac
+            {
+              echo "bump_type=$BUMP_TYPE"
+              echo "commit_message<<EOF_COMMIT_MESSAGE"
+              echo "$MSG"
+              echo "EOF_COMMIT_MESSAGE"
+            } >> "$GITHUB_OUTPUT"
+          }
+
           cat <<'EOF' > "$RELEASE_NOTES"
           Automatic update triggered by changes in the remote Allegro API definition.
 
@@ -135,7 +153,7 @@ jobs:
           if [ ! -f "resources/spec.yaml" ]; then
             echo "📄 Initial import — defaulting to **patch**."
             echo "### 📄 Initial Import" >> "$RELEASE_NOTES"
-            echo "bump_type=$BUMP_TYPE" >> "$GITHUB_OUTPUT"
+            write_outputs
             exit 0
           fi
 
@@ -193,7 +211,7 @@ jobs:
             } >> "$RELEASE_NOTES"
           fi
 
-          echo "bump_type=$BUMP_TYPE" >> "$GITHUB_OUTPUT"
+          write_outputs
 
           # Job summary
           {
@@ -219,7 +237,7 @@ jobs:
         if: steps.spec_check.outputs.changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          commit_message: "feat: synchronize with remote API spec"
+          commit_message: ${{ steps.versioning.outputs.commit_message }}
           file_pattern: 'generated/** resources/spec.yaml'
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
