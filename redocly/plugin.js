@@ -26,10 +26,12 @@ const SanitizePathParams = () => {
   };
 };
 
-module.exports = {
-  id: "sanitize",
-  decorators: {
-    oas2: { "path-params": SanitizePathParams },
-    oas3: { "path-params": SanitizePathParams },
-  },
+module.exports = function SanitizePlugin() {
+  return {
+    id: "sanitize",
+    decorators: {
+      oas2: { "path-params": SanitizePathParams },
+      oas3: { "path-params": SanitizePathParams },
+    },
+  };
 };
