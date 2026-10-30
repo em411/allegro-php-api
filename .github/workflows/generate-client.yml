@@ -21,7 +21,6 @@ env:
   REMOTE_API_URL: https://developer.allegro.pl/swagger.yaml
   OASDIFF_VERSION: v1.11.10
   PHP_VERSION: '8.5'
-  REDOCLY_VERSION: latest
   TEMP_DIR: .tmp            # keep throwaway files out of project root
 
 jobs:
@@ -74,30 +73,26 @@ jobs:
             exit 1
           fi
 
-          # Validate YAML structure and that it's actually an OpenAPI/Swagger doc
-          python3 -c "
-          import yaml, sys
-          with open('$FILE') as f:
-              doc = yaml.safe_load(f)
-          if not isinstance(doc, dict):
-              print('::error::Spec is not a YAML mapping', file=sys.stderr)
-              sys.exit(1)
-          if 'openapi' not in doc and 'swagger' not in doc:
-              print('::error::Missing openapi/swagger version key', file=sys.stderr)
-              sys.exit(1)
-          if 'paths' not in doc:
-              print('::error::Missing paths key', file=sys.stderr)
-              sys.exit(1)
-          print(f'✅ Valid spec — {len(doc.get(\"paths\", {}))} paths found')
-          "
+          # Same YAML parser Jane uses, so if this passes, generation can read it
+          vendor/bin/yaml-lint "$FILE"
+
+          if ! grep -qE '^(openapi|swagger):' "$FILE" || ! grep -q '^paths:' "$FILE"; then
+            echo "::error::Not an OpenAPI/Swagger spec (missing openapi/swagger or paths key)"
+            exit 1
+          fi
+          echo "✅ Valid spec — $(grep -cE '^  /' "$FILE") paths found"
 
       # ── Sanitize spec ─────────────────────────────────
+      # Jane turns path params into PHP properties, so {command-id} would
+      # produce invalid code like $this->command-id. Rename to camelCase.
       - name: Sanitize spec (fix hyphenated path params)
         run: |
-          npx -y @redocly/cli@${REDOCLY_VERSION} bundle \
-            "$TEMP_DIR/new_spec.yaml" \
-            -o "$TEMP_DIR/sanitized_spec.yaml"
-          mv "$TEMP_DIR/sanitized_spec.yaml" "$TEMP_DIR/new_spec.yaml"
+          FILE="$TEMP_DIR/new_spec.yaml"
+          for PARAM in $(grep -oE '^  /[^:]*' "$FILE" | grep -oE '\{[^}]*-[^}]*\}' | tr -d '{}' | sort -u); do
+            CAMEL=$(echo "$PARAM" | sed -E 's/-([a-z])/\U\1/g')
+            sed -i -E "s/\{$PARAM\}/{$CAMEL}/g; s/^( *(- )?name: *['\"]?)$PARAM(['\"]?) *\$/\1$CAMEL\3/" "$FILE"
+            echo "  {$PARAM} → {$CAMEL}"
+          done
           echo "✅ Spec sanitized"
 
       # ── Compare specs ──────────────────────────────────
@@ -156,8 +151,9 @@ jobs:
           echo "Running oasdiff breaking check..."
 
           set +e
+          # Without --fail-on, oasdiff exits 0 even when it finds breaking changes
           $OASDIFF breaking /work/resources/spec.yaml "/work/$TEMP_DIR/new_spec.yaml" \
-            > "$TEMP_DIR/breaking_diff.txt" 2>&1
+            --fail-on ERR > "$TEMP_DIR/breaking_diff.txt" 2>&1
           RC=$?
           set -e
 
@@ -184,8 +180,9 @@ jobs:
             $OASDIFF changelog /work/resources/spec.yaml "/work/$TEMP_DIR/new_spec.yaml" \
               > "$TEMP_DIR/changelog.txt"
 
-            # level 3 = INFO → new endpoints / features → MINOR
-            if jq -e 'if type == "array" then [.[] | select(.level == 3)] | length > 0 else false end' \
+            # oasdiff levels: 1 = INFO (new endpoints / features), 2 = WARN, 3 = ERR
+            # level 1 → MINOR
+            if jq -e 'if type == "array" then [.[] | select(.level == 1)] | length > 0 else false end' \
                 "$TEMP_DIR/changelog.json" >/dev/null 2>&1; then
               echo "✨ New features detected → MINOR"
               BUMP_TYPE="minor"
