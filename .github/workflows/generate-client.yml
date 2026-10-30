@@ -21,7 +21,6 @@ env:
   REMOTE_API_URL: https://developer.allegro.pl/swagger.yaml
   OASDIFF_VERSION: v1.11.10
   PHP_VERSION: '8.5'
-  REDOCLY_VERSION: 2.72.1   # pinned: output formatting changes between releases
   TEMP_DIR: .tmp            # keep throwaway files out of project root
 
 jobs:
@@ -74,16 +73,26 @@ jobs:
             exit 1
           fi
 
-          # Validate it's an OpenAPI/Swagger doc and re-serialize as JSON, so
-          # YAML that js-yaml (Redocly) rejects doesn't break the bundle step
-          python3 scripts/normalize-spec.py "$FILE" "$TEMP_DIR/new_spec.json"
+          # Same YAML parser Jane uses, so if this passes, generation can read it
+          vendor/bin/yaml-lint "$FILE"
+
+          if ! grep -qE '^(openapi|swagger):' "$FILE" || ! grep -q '^paths:' "$FILE"; then
+            echo "::error::Not an OpenAPI/Swagger spec (missing openapi/swagger or paths key)"
+            exit 1
+          fi
+          echo "✅ Valid spec — $(grep -cE '^  /' "$FILE") paths found"
 
       # ── Sanitize spec ─────────────────────────────────
+      # Jane turns path params into PHP properties, so {command-id} would
+      # produce invalid code like $this->command-id. Rename to camelCase.
       - name: Sanitize spec (fix hyphenated path params)
         run: |
-          npx -y @redocly/cli@${REDOCLY_VERSION} bundle \
-            "$TEMP_DIR/new_spec.json" \
-            -o "$TEMP_DIR/new_spec.yaml"
+          FILE="$TEMP_DIR/new_spec.yaml"
+          for PARAM in $(grep -oE '^  /[^:]*' "$FILE" | grep -oE '\{[^}]*-[^}]*\}' | tr -d '{}' | sort -u); do
+            CAMEL=$(echo "$PARAM" | sed -E 's/-([a-z])/\U\1/g')
+            sed -i -E "s/\{$PARAM\}/{$CAMEL}/g; s/^( *(- )?name: *['\"]?)$PARAM(['\"]?) *\$/\1$CAMEL\3/" "$FILE"
+            echo "  {$PARAM} → {$CAMEL}"
+          done
           echo "✅ Spec sanitized"
 
       # ── Compare specs ──────────────────────────────────
