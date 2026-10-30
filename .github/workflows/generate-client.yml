@@ -2,7 +2,7 @@ name: Update API Client
 
 on:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '23 * * * *'   # hourly; off the hour since :00 runs are often delayed
   workflow_dispatch:
     inputs:
       force:
@@ -35,24 +35,7 @@ jobs:
         with:
           fetch-depth: 0     # needed so the tag action can see history
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.PHP_VERSION }}
-          ini-values: zend.enable_gc=0
-          tools: composer, parallel-lint
-
-      - name: Cache Composer packages
-        uses: actions/cache@v5
-        with:
-          path: vendor
-          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
-          restore-keys: composer-${{ runner.os }}-
-
-      - name: Install Dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
-
-      # ── Download & validate spec ───────────────────────
+      # ── Download & check spec (cheap, runs every time) ─
       - name: Download Remote OpenAPI Spec
         run: |
           mkdir -p "$TEMP_DIR"
@@ -61,7 +44,7 @@ jobs:
             -A "GitHubActions-AllegroSDK/1.0 (+https://github.com/${{ github.repository }})" \
             -o "$TEMP_DIR/new_spec.yaml" "$REMOTE_API_URL"
 
-      - name: Validate downloaded spec
+      - name: Check downloaded spec
         run: |
           FILE="$TEMP_DIR/new_spec.yaml"
 
@@ -72,9 +55,6 @@ jobs:
             echo "::error::Downloaded file is suspiciously small (${FILE_SIZE} bytes)"
             exit 1
           fi
-
-          # Same YAML parser Jane uses, so if this passes, generation can read it
-          vendor/bin/yaml-lint "$FILE"
 
           if ! grep -qE '^(openapi|swagger):' "$FILE" || ! grep -q '^paths:' "$FILE"; then
             echo "::error::Not an OpenAPI/Swagger spec (missing openapi/swagger or paths key)"
@@ -120,6 +100,32 @@ jobs:
             echo "📄 No existing spec found — treating as initial import."
           fi
           echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # ── Everything below runs only when the spec changed ──
+      - name: Setup PHP
+        if: steps.spec_check.outputs.changed == 'true'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          ini-values: zend.enable_gc=0
+          tools: composer, parallel-lint
+
+      - name: Cache Composer packages
+        if: steps.spec_check.outputs.changed == 'true'
+        uses: actions/cache@v5
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install Dependencies
+        if: steps.spec_check.outputs.changed == 'true'
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      # Same YAML parser Jane uses, so if this passes, generation can read it
+      - name: Validate spec syntax
+        if: steps.spec_check.outputs.changed == 'true'
+        run: vendor/bin/yaml-lint "$TEMP_DIR/new_spec.yaml"
 
       # ── Pre-pull oasdiff image once ────────────────────
       - name: Pull oasdiff image
