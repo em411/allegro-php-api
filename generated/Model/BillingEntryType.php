@@ -26,11 +26,17 @@ class BillingEntryType extends \ArrayObject
      */
     protected $id;
     /**
-     * Billing type of the returned billing entry. This type is translated based on the value of the "Accept-Language" header. By default a message in English is returned.
+     * Billing type of the returned billing entry. This type is translated based on the value of the "Accept-Language" header. By default a message in Polish is returned.
      *
      * @var string|null
      */
     protected $name;
+    /**
+     * Group the billing type belongs to.
+     *
+     * @var BillingEntryTypeGroup|null
+     */
+    protected $group;
 
     public function isInitialized($property): bool
     {
@@ -57,7 +63,7 @@ class BillingEntryType extends \ArrayObject
     }
 
     /**
-     * Billing type of the returned billing entry. This type is translated based on the value of the "Accept-Language" header. By default a message in English is returned.
+     * Billing type of the returned billing entry. This type is translated based on the value of the "Accept-Language" header. By default a message in Polish is returned.
      */
     public function getName(): ?string
     {
@@ -65,12 +71,31 @@ class BillingEntryType extends \ArrayObject
     }
 
     /**
-     * Billing type of the returned billing entry. This type is translated based on the value of the "Accept-Language" header. By default a message in English is returned.
+     * Billing type of the returned billing entry. This type is translated based on the value of the "Accept-Language" header. By default a message in Polish is returned.
      */
     public function setName(?string $name): self
     {
         $this->initialized['name'] = true;
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Group the billing type belongs to.
+     */
+    public function getGroup(): ?BillingEntryTypeGroup
+    {
+        return $this->group;
+    }
+
+    /**
+     * Group the billing type belongs to.
+     */
+    public function setGroup(?BillingEntryTypeGroup $group): self
+    {
+        $this->initialized['group'] = true;
+        $this->group = $group;
 
         return $this;
     }

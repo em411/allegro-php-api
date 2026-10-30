@@ -67,29 +67,19 @@ class SmartOfferClassificationReportNormalizer implements DenormalizerInterface,
         } elseif (\array_key_exists('scheduledForReclassification', $data) && null === $data['scheduledForReclassification']) {
             $object->setScheduledForReclassification(null);
         }
-        if (\array_key_exists('smartDeliveryMethods', $data) && null !== $data['smartDeliveryMethods']) {
-            $values = [];
-            foreach ($data['smartDeliveryMethods'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\SmartDeliveryMethod::class, 'json', $context);
-            }
-            $object->setSmartDeliveryMethods($values);
-            unset($data['smartDeliveryMethods']);
-        } elseif (\array_key_exists('smartDeliveryMethods', $data) && null === $data['smartDeliveryMethods']) {
-            $object->setSmartDeliveryMethods(null);
-        }
         if (\array_key_exists('conditions', $data) && null !== $data['conditions']) {
-            $values_1 = [];
-            foreach ($data['conditions'] as $value_1) {
-                $values_1[] = $this->denormalizer->denormalize($value_1, \Em411\Allegro\Api\Model\SmartOfferClassificationReportConditionsItem::class, 'json', $context);
+            $values = [];
+            foreach ($data['conditions'] as $value) {
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\SmartOfferClassificationReportConditionsItem::class, 'json', $context);
             }
-            $object->setConditions($values_1);
+            $object->setConditions($values);
             unset($data['conditions']);
         } elseif (\array_key_exists('conditions', $data) && null === $data['conditions']) {
             $object->setConditions(null);
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_2;
+                $object[$key] = $value_1;
             }
         }
 
@@ -105,23 +95,16 @@ class SmartOfferClassificationReportNormalizer implements DenormalizerInterface,
         if ($data->isInitialized('scheduledForReclassification') && null !== $data->getScheduledForReclassification()) {
             $dataArray['scheduledForReclassification'] = $data->getScheduledForReclassification();
         }
-        if ($data->isInitialized('smartDeliveryMethods') && null !== $data->getSmartDeliveryMethods()) {
+        if ($data->isInitialized('conditions') && null !== $data->getConditions()) {
             $values = [];
-            foreach ($data->getSmartDeliveryMethods() as $value) {
+            foreach ($data->getConditions() as $value) {
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
-            $dataArray['smartDeliveryMethods'] = $values;
+            $dataArray['conditions'] = $values;
         }
-        if ($data->isInitialized('conditions') && null !== $data->getConditions()) {
-            $values_1 = [];
-            foreach ($data->getConditions() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
-            }
-            $dataArray['conditions'] = $values_1;
-        }
-        foreach ($data as $key => $value_2) {
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_2;
+                $dataArray[$key] = $value_1;
             }
         }
 

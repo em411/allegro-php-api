@@ -32,6 +32,18 @@ class ShippingRatesSet extends \ArrayObject
      */
     protected $name;
     /**
+     * Whether the shipping rates set is physical or electronic. Note that once a shipping rates set is created, it cannot be changed later.
+     *
+     * @var string|null
+     */
+    protected $type;
+    /**
+     * The dispatch country code in ISO 3166-1 alfa-2 format. It must be passed if the `PHYSICAL` type is provided. Note that once a shipping rates set is created, it cannot be changed later.
+     *
+     * @var string|null
+     */
+    protected $dispatchCountry;
+    /**
      * @var list<ShippingRate>|null
      */
     protected $rates;
@@ -81,6 +93,44 @@ class ShippingRatesSet extends \ArrayObject
     {
         $this->initialized['name'] = true;
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Whether the shipping rates set is physical or electronic. Note that once a shipping rates set is created, it cannot be changed later.
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * Whether the shipping rates set is physical or electronic. Note that once a shipping rates set is created, it cannot be changed later.
+     */
+    public function setType(?string $type): self
+    {
+        $this->initialized['type'] = true;
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * The dispatch country code in ISO 3166-1 alfa-2 format. It must be passed if the `PHYSICAL` type is provided. Note that once a shipping rates set is created, it cannot be changed later.
+     */
+    public function getDispatchCountry(): ?string
+    {
+        return $this->dispatchCountry;
+    }
+
+    /**
+     * The dispatch country code in ISO 3166-1 alfa-2 format. It must be passed if the `PHYSICAL` type is provided. Note that once a shipping rates set is created, it cannot be changed later.
+     */
+    public function setDispatchCountry(?string $dispatchCountry): self
+    {
+        $this->initialized['dispatchCountry'] = true;
+        $this->dispatchCountry = $dispatchCountry;
 
         return $this;
     }

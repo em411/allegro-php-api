@@ -58,29 +58,19 @@ class PickupDateProposalsDtoNormalizer implements DenormalizerInterface, Normali
         } elseif (\array_key_exists('shipmentId', $data) && null === $data['shipmentId']) {
             $object->setShipmentId(null);
         }
-        if (\array_key_exists('proposalItems', $data) && null !== $data['proposalItems']) {
-            $values = [];
-            foreach ($data['proposalItems'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\PickupDateProposalDto::class, 'json', $context);
-            }
-            $object->setProposalItems($values);
-            unset($data['proposalItems']);
-        } elseif (\array_key_exists('proposalItems', $data) && null === $data['proposalItems']) {
-            $object->setProposalItems(null);
-        }
         if (\array_key_exists('pickupTimes', $data) && null !== $data['pickupTimes']) {
-            $values_1 = [];
-            foreach ($data['pickupTimes'] as $value_1) {
-                $values_1[] = $this->denormalizer->denormalize($value_1, \Em411\Allegro\Api\Model\PickupTimeDto::class, 'json', $context);
+            $values = [];
+            foreach ($data['pickupTimes'] as $value) {
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\PickupTimeDto::class, 'json', $context);
             }
-            $object->setPickupTimes($values_1);
+            $object->setPickupTimes($values);
             unset($data['pickupTimes']);
         } elseif (\array_key_exists('pickupTimes', $data) && null === $data['pickupTimes']) {
             $object->setPickupTimes(null);
         }
-        foreach ($data as $key => $value_2) {
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_2;
+                $object[$key] = $value_1;
             }
         }
 
@@ -93,23 +83,16 @@ class PickupDateProposalsDtoNormalizer implements DenormalizerInterface, Normali
         if ($data->isInitialized('shipmentId') && null !== $data->getShipmentId()) {
             $dataArray['shipmentId'] = $data->getShipmentId();
         }
-        if ($data->isInitialized('proposalItems') && null !== $data->getProposalItems()) {
+        if ($data->isInitialized('pickupTimes') && null !== $data->getPickupTimes()) {
             $values = [];
-            foreach ($data->getProposalItems() as $value) {
+            foreach ($data->getPickupTimes() as $value) {
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
-            $dataArray['proposalItems'] = $values;
+            $dataArray['pickupTimes'] = $values;
         }
-        if ($data->isInitialized('pickupTimes') && null !== $data->getPickupTimes()) {
-            $values_1 = [];
-            foreach ($data->getPickupTimes() as $value_1) {
-                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
-            }
-            $dataArray['pickupTimes'] = $values_1;
-        }
-        foreach ($data as $key => $value_2) {
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_2;
+                $dataArray[$key] = $value_1;
             }
         }
 

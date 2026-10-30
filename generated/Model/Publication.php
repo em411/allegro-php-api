@@ -55,6 +55,7 @@ class Publication extends \ArrayObject
      *   if the base marketplace of offer requires full productization.
      * - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with
      *   success status, but further processing failed.
+     * - `VISIBILITY` - offer ended because it doesn't qualify for visibility in any marketplace.
      *
      * @var string|null
      */
@@ -163,6 +164,7 @@ class Publication extends \ArrayObject
      *   if the base marketplace of offer requires full productization.
      * - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with
      *   success status, but further processing failed.
+     * - `VISIBILITY` - offer ended because it doesn't qualify for visibility in any marketplace.
      */
     public function getEndedBy(): ?string
     {
@@ -174,6 +176,7 @@ class Publication extends \ArrayObject
      * if the base marketplace of offer requires full productization.
      * - `ERROR` - offer ended due to internal problem with offer publication. The publication command responded with
      * success status, but further processing failed.
+     * - `VISIBILITY` - offer ended because it doesn't qualify for visibility in any marketplace.
      */
     public function setEndedBy(?string $endedBy): self
     {

@@ -79,12 +79,6 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
         } elseif (\array_key_exists('firstItemRate', $data) && null === $data['firstItemRate']) {
             $object->setFirstItemRate(null);
         }
-        if (\array_key_exists('nextItemRate', $data) && null !== $data['nextItemRate']) {
-            $object->setNextItemRate($this->denormalizer->denormalize($data['nextItemRate'], \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsNextItemRate::class, 'json', $context));
-            unset($data['nextItemRate']);
-        } elseif (\array_key_exists('nextItemRate', $data) && null === $data['nextItemRate']) {
-            $object->setNextItemRate(null);
-        }
         if (\array_key_exists('shippingTime', $data) && null !== $data['shippingTime']) {
             $object->setShippingTime($this->denormalizer->denormalize($data['shippingTime'], \Em411\Allegro\Api\Model\SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstraintsShippingTime::class, 'json', $context));
             unset($data['shippingTime']);
@@ -114,9 +108,6 @@ class SaleDeliveryMethodsGetResponse200DeliveryMethodsItemShippingRatesConstrain
         }
         if ($data->isInitialized('firstItemRate') && null !== $data->getFirstItemRate()) {
             $dataArray['firstItemRate'] = $this->normalizer->normalize($data->getFirstItemRate(), 'json', $context);
-        }
-        if ($data->isInitialized('nextItemRate') && null !== $data->getNextItemRate()) {
-            $dataArray['nextItemRate'] = $this->normalizer->normalize($data->getNextItemRate(), 'json', $context);
         }
         if ($data->isInitialized('shippingTime') && null !== $data->getShippingTime()) {
             $dataArray['shippingTime'] = $this->normalizer->normalize($data->getShippingTime(), 'json', $context);

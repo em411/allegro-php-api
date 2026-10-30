@@ -17,6 +17,7 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
     protected $threadId;
+    protected $accept;
 
     /**
      * Use this resource to write new message in existing thread. This resource is rate limited to 1 request per second for a user. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#nowa-wiadomosc" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#add-a-new-message" target="_blank">EN</a>.
@@ -26,12 +27,15 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
+     *
+     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
-    public function __construct(string $threadId, ?\Em411\Allegro\Api\Model\NewMessageInThread $requestBody = null, array $headerParameters = [])
+    public function __construct(string $threadId, ?\Em411\Allegro\Api\Model\NewMessageInThread $requestBody = null, array $headerParameters = [], array $accept = [])
     {
         $this->threadId = $threadId;
         $this->body = $requestBody;
         $this->headerParameters = $headerParameters;
+        $this->accept = $accept;
     }
 
     public function getMethod(): string
@@ -49,13 +53,20 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
         if ($this->body instanceof \Em411\Allegro\Api\Model\NewMessageInThread) {
             return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
         }
+        if ($this->body instanceof \Em411\Allegro\Api\Model\NewMessageInThread) {
+            return [['Content-Type' => ['application/vnd.allegro.beta.v1+json']], $serializer->serialize($this->body, 'json')];
+        }
 
         return [[], null];
     }
 
     public function getExtraHeaders(): array
     {
-        return ['Accept' => ['application/vnd.allegro.public.v1+json']];
+        if (empty($this->accept)) {
+            return ['Accept' => ['application/vnd.allegro.public.v1+json', 'application/vnd.allegro.beta.v1+json']];
+        }
+
+        return $this->accept;
     }
 
     public function getAuthenticationScopes(): array
@@ -75,7 +86,7 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\Message|null
+     * @return \Em411\Allegro\Api\Model\Message|\Em411\Allegro\Api\Model\MessageVBeta1|null
      *
      * @throws \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTForbiddenException
@@ -86,8 +97,13 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (201 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\Message', 'json');
+        if (201 === $status) {
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\Message', 'json');
+            }
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessageVBeta1', 'json');
+            }
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTUnauthorizedException($response);
@@ -98,8 +114,8 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
         if (404 === $status) {
             throw new \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTNotFoundException($response);
         }
-        if (422 === $status) {
-            throw new \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTUnprocessableEntityException($response);
+        if ((null === $contentType) === false && (422 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
     }
 }

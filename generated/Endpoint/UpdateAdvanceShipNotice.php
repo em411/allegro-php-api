@@ -20,7 +20,7 @@ class UpdateAdvanceShipNotice extends \Em411\Allegro\Api\Runtime\Client\BaseEndp
     protected $accept;
 
     /**
-     * Use this resource to update an Advance Ship Notice. Any content property update will clear labels property. Use Create labels command to create new labels for provided content.
+     * Use this resource to update an Advance Ship Notice.
      * If a client wants to update read-only property, an error is returned (only in cases when sent value will be different than actual on the server). Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#uzupelnij-dane-o-awizo" target="_blank">PL</a> / <a href="../../one-fulfillment-by-allegro-4R9dXyMPlc9#complete-the-data-of-advance-ship-notice" target="_blank">EN</a>.
      *
      * @param string $id               an identifier of Advance Ship Notice

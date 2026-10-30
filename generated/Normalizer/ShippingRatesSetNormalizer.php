@@ -64,6 +64,18 @@ class ShippingRatesSetNormalizer implements DenormalizerInterface, NormalizerInt
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
         }
+        if (\array_key_exists('type', $data) && null !== $data['type']) {
+            $object->setType($data['type']);
+            unset($data['type']);
+        } elseif (\array_key_exists('type', $data) && null === $data['type']) {
+            $object->setType(null);
+        }
+        if (\array_key_exists('dispatchCountry', $data) && null !== $data['dispatchCountry']) {
+            $object->setDispatchCountry($data['dispatchCountry']);
+            unset($data['dispatchCountry']);
+        } elseif (\array_key_exists('dispatchCountry', $data) && null === $data['dispatchCountry']) {
+            $object->setDispatchCountry(null);
+        }
         if (\array_key_exists('rates', $data) && null !== $data['rates']) {
             $values = [];
             foreach ($data['rates'] as $value) {
@@ -95,8 +107,10 @@ class ShippingRatesSetNormalizer implements DenormalizerInterface, NormalizerInt
         if ($data->isInitialized('id') && null !== $data->getId()) {
             $dataArray['id'] = $data->getId();
         }
-        if ($data->isInitialized('name') && null !== $data->getName()) {
-            $dataArray['name'] = $data->getName();
+        $dataArray['name'] = $data->getName();
+        $dataArray['type'] = $data->getType();
+        if ($data->isInitialized('dispatchCountry')) {
+            $dataArray['dispatchCountry'] = $data->getDispatchCountry();
         }
         $values = [];
         foreach ($data->getRates() as $value) {

@@ -26,7 +26,7 @@ class BillingEntryAdditionalInfoItem extends \ArrayObject
      */
     protected $type;
     /**
-     * The display name for the additional information type. This value is translated based on the "Accept-Language" header. By default a message in English is returned.
+     * The display name for the additional information type. This value is translated based on the "Accept-Language" header. By default a message in Polish is returned.
      *
      * @var string|null
      */
@@ -63,7 +63,7 @@ class BillingEntryAdditionalInfoItem extends \ArrayObject
     }
 
     /**
-     * The display name for the additional information type. This value is translated based on the "Accept-Language" header. By default a message in English is returned.
+     * The display name for the additional information type. This value is translated based on the "Accept-Language" header. By default a message in Polish is returned.
      */
     public function getName(): ?string
     {
@@ -71,7 +71,7 @@ class BillingEntryAdditionalInfoItem extends \ArrayObject
     }
 
     /**
-     * The display name for the additional information type. This value is translated based on the "Accept-Language" header. By default a message in English is returned.
+     * The display name for the additional information type. This value is translated based on the "Accept-Language" header. By default a message in Polish is returned.
      */
     public function setName(?string $name): self
     {

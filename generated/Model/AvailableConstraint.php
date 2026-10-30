@@ -20,7 +20,7 @@ class AvailableConstraint extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * One of the type COUNTRY_SAME_QUANTITY or COUNTRY_DELIVERY_SAME_QUANTITY.
+     * One of the types COUNTRY_SAME_QUANTITY, COUNTRY_DELIVERY_SAME_QUANTITY or COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY.
      *
      * @var string|null
      */
@@ -38,7 +38,7 @@ class AvailableConstraint extends \ArrayObject
     }
 
     /**
-     * One of the type COUNTRY_SAME_QUANTITY or COUNTRY_DELIVERY_SAME_QUANTITY.
+     * One of the types COUNTRY_SAME_QUANTITY, COUNTRY_DELIVERY_SAME_QUANTITY or COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY.
      */
     public function getType(): ?string
     {
@@ -46,7 +46,7 @@ class AvailableConstraint extends \ArrayObject
     }
 
     /**
-     * One of the type COUNTRY_SAME_QUANTITY or COUNTRY_DELIVERY_SAME_QUANTITY.
+     * One of the types COUNTRY_SAME_QUANTITY, COUNTRY_DELIVERY_SAME_QUANTITY or COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY.
      */
     public function setType(?string $type): self
     {

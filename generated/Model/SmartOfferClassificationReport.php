@@ -32,14 +32,6 @@ class SmartOfferClassificationReport extends \ArrayObject
      */
     protected $scheduledForReclassification;
     /**
-     * Delivery methods marked with Smart! label.
-     *
-     * @deprecated
-     *
-     * @var list<SmartDeliveryMethod>|null
-     */
-    protected $smartDeliveryMethods;
-    /**
      * Set of conditions to be met in order for that particular offer to be Smart!. Each condition filters out improperly configured delivery methods or checks some offer attributes. Order of conditions matters. Please keep in mind that this is a **PREVIEW** of an offer classification if being conducted right now - actual classification is triggered only by attribute changes and as of now it cannot be manually done on demand.
      *
      * @var list<SmartOfferClassificationReportConditionsItem>|null
@@ -85,33 +77,6 @@ class SmartOfferClassificationReport extends \ArrayObject
     {
         $this->initialized['scheduledForReclassification'] = true;
         $this->scheduledForReclassification = $scheduledForReclassification;
-
-        return $this;
-    }
-
-    /**
-     * Delivery methods marked with Smart! label.
-     *
-     * @deprecated
-     *
-     * @return list<SmartDeliveryMethod>|null
-     */
-    public function getSmartDeliveryMethods(): ?array
-    {
-        return $this->smartDeliveryMethods;
-    }
-
-    /**
-     * Delivery methods marked with Smart! label.
-     *
-     * @param list<SmartDeliveryMethod>|null $smartDeliveryMethods
-     *
-     * @deprecated
-     */
-    public function setSmartDeliveryMethods(?array $smartDeliveryMethods): self
-    {
-        $this->initialized['smartDeliveryMethods'] = true;
-        $this->smartDeliveryMethods = $smartDeliveryMethods;
 
         return $this;
     }

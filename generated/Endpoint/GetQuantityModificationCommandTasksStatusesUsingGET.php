@@ -91,6 +91,7 @@ class GetQuantityModificationCommandTasksStatusesUsingGET extends \Em411\Allegro
     /**
      * @return \Em411\Allegro\Api\Model\TaskReport|null
      *
+     * @throws \Em411\Allegro\Api\Exception\GetQuantityModificationCommandTasksStatusesUsingGETBadRequestException
      * @throws \Em411\Allegro\Api\Exception\GetQuantityModificationCommandTasksStatusesUsingGETUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\GetQuantityModificationCommandTasksStatusesUsingGETNotFoundException
      * @throws \Em411\Allegro\Api\Exception\GetQuantityModificationCommandTasksStatusesUsingGETUnprocessableEntityException
@@ -101,6 +102,9 @@ class GetQuantityModificationCommandTasksStatusesUsingGET extends \Em411\Allegro
         $body = (string) $response->getBody();
         if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
             return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\TaskReport', 'json');
+        }
+        if ((null === $contentType) === false && (400 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\GetQuantityModificationCommandTasksStatusesUsingGETBadRequestException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetQuantityModificationCommandTasksStatusesUsingGETUnauthorizedException($response);

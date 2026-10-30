@@ -17,6 +17,7 @@ class GetMessageGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imple
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
     protected $messageId;
+    protected $accept;
 
     /**
      * Use this resource to get message with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#szczegolowe-informacje-o-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#information-about-a-particular-message" target="_blank">EN</a>.
@@ -26,11 +27,14 @@ class GetMessageGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imple
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
+     *
+     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
-    public function __construct(string $messageId, array $headerParameters = [])
+    public function __construct(string $messageId, array $headerParameters = [], array $accept = [])
     {
         $this->messageId = $messageId;
         $this->headerParameters = $headerParameters;
+        $this->accept = $accept;
     }
 
     public function getMethod(): string
@@ -50,7 +54,11 @@ class GetMessageGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imple
 
     public function getExtraHeaders(): array
     {
-        return ['Accept' => ['application/vnd.allegro.public.v1+json']];
+        if (empty($this->accept)) {
+            return ['Accept' => ['application/vnd.allegro.public.v1+json', 'application/vnd.allegro.beta.v1+json']];
+        }
+
+        return $this->accept;
     }
 
     public function getAuthenticationScopes(): array
@@ -70,7 +78,7 @@ class GetMessageGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imple
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\Message|null
+     * @return \Em411\Allegro\Api\Model\Message|\Em411\Allegro\Api\Model\MessageVBeta1|null
      *
      * @throws \Em411\Allegro\Api\Exception\GetMessageGETUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\GetMessageGETNotFoundException
@@ -79,8 +87,13 @@ class GetMessageGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imple
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\Message', 'json');
+        if (200 === $status) {
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\Message', 'json');
+            }
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\MessageVBeta1', 'json');
+            }
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetMessageGETUnauthorizedException($response);

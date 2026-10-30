@@ -17,21 +17,26 @@ class ChangeReadFlagOnThreadPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEn
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
     protected $threadId;
+    protected $accept;
 
     /**
      * Use this resource to mark thread with provided identifier as read. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#szczegolowe-informacje-o-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#information-about-a-particular-message" target="_blank">EN</a>.
      *
-     * @param string $threadId         identifier of thread to be marked
-     * @param array  $headerParameters {
+     * @param string                                                                                     $threadId         identifier of thread to be marked
+     * @param \Em411\Allegro\Api\Model\ThreadReadFlag|\Em411\Allegro\Api\Model\ThreadReadFlagVBeta1|null $requestBody
+     * @param array                                                                                      $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
+     *
+     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
-    public function __construct(string $threadId, ?\Em411\Allegro\Api\Model\ThreadReadFlag $requestBody = null, array $headerParameters = [])
+    public function __construct(string $threadId, $requestBody = null, array $headerParameters = [], array $accept = [])
     {
         $this->threadId = $threadId;
         $this->body = $requestBody;
         $this->headerParameters = $headerParameters;
+        $this->accept = $accept;
     }
 
     public function getMethod(): string
@@ -49,13 +54,20 @@ class ChangeReadFlagOnThreadPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEn
         if ($this->body instanceof \Em411\Allegro\Api\Model\ThreadReadFlag) {
             return [['Content-Type' => ['application/vnd.allegro.public.v1+json']], $serializer->serialize($this->body, 'json')];
         }
+        if ($this->body instanceof \Em411\Allegro\Api\Model\ThreadReadFlagVBeta1) {
+            return [['Content-Type' => ['application/vnd.allegro.beta.v1+json']], $serializer->serialize($this->body, 'json')];
+        }
 
         return [[], null];
     }
 
     public function getExtraHeaders(): array
     {
-        return ['Accept' => ['application/vnd.allegro.public.v1+json']];
+        if (empty($this->accept)) {
+            return ['Accept' => ['application/vnd.allegro.public.v1+json', 'application/vnd.allegro.beta.v1+json']];
+        }
+
+        return $this->accept;
     }
 
     public function getAuthenticationScopes(): array
@@ -75,7 +87,7 @@ class ChangeReadFlagOnThreadPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEn
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\Thread|null
+     * @return \Em411\Allegro\Api\Model\Thread|\Em411\Allegro\Api\Model\ThreadReadFlagVBeta1|null
      *
      * @throws \Em411\Allegro\Api\Exception\ChangeReadFlagOnThreadPUTUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\ChangeReadFlagOnThreadPUTForbiddenException
@@ -86,8 +98,13 @@ class ChangeReadFlagOnThreadPUT extends \Em411\Allegro\Api\Runtime\Client\BaseEn
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if ((null === $contentType) === false && (200 === $status && false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
-            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\Thread', 'json');
+        if (200 === $status) {
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\Thread', 'json');
+            }
+            if (false !== mb_strpos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
+                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\ThreadReadFlagVBeta1', 'json');
+            }
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\ChangeReadFlagOnThreadPUTUnauthorizedException($response);

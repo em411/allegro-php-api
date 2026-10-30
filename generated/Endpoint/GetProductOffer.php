@@ -19,7 +19,7 @@ class GetProductOffer extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint imp
     protected $offerId;
 
     /**
-     * Use this resource to retrieve all data of the particular product-offer. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#asynchroniczne-procesowanie" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#asynchronous-processing" target="_blank">EN</a>.
+     * Use this resource to retrieve all data of the particular product-offer. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#procesowanie-oferty" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#offer-processing" target="_blank">EN</a>.
      *
      * @param string $offerId          offer identifier
      * @param array  $headerParameters {

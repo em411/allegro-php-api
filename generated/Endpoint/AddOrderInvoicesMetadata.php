@@ -19,7 +19,7 @@ class AddOrderInvoicesMetadata extends \Em411\Allegro\Api\Runtime\Client\BaseEnd
     protected $id;
 
     /**
-     * Use to add new invoice metadata. Before you send an invoice file, you need to initialize the invoice instance with the required parameters. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-dodac-fakture-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#add-an-invoice-to-the-order" target="_blank">EN</a>.
+     * Use to add new invoice metadata. Before you send an invoice file, you need to initialize the invoice instance with the required parameters. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-dodac-fakture-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-add-an-invoice-to-orders" target="_blank">EN</a>.
      *
      * @param string $id               order identifier
      * @param array  $headerParameters {

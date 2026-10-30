@@ -145,6 +145,12 @@ class CheckoutFormLineItemNormalizer implements DenormalizerInterface, Normalize
         } elseif (\array_key_exists('serialNumbers', $data) && null === $data['serialNumbers']) {
             $object->setSerialNumbers(null);
         }
+        if (\array_key_exists('allegroAds', $data) && null !== $data['allegroAds']) {
+            $object->setAllegroAds($this->denormalizer->denormalize($data['allegroAds'], \Em411\Allegro\Api\Model\LineItemAllegroAds::class, 'json', $context));
+            unset($data['allegroAds']);
+        } elseif (\array_key_exists('allegroAds', $data) && null === $data['allegroAds']) {
+            $object->setAllegroAds(null);
+        }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {
                 $object[$key] = $value_3;
@@ -197,6 +203,9 @@ class CheckoutFormLineItemNormalizer implements DenormalizerInterface, Normalize
         }
         if ($data->isInitialized('serialNumbers') && null !== $data->getSerialNumbers()) {
             $dataArray['serialNumbers'] = $this->normalizer->normalize($data->getSerialNumbers(), 'json', $context);
+        }
+        if ($data->isInitialized('allegroAds')) {
+            $dataArray['allegroAds'] = $this->normalizer->normalize($data->getAllegroAds(), 'json', $context);
         }
         foreach ($data as $key => $value_3) {
             if (preg_match('/.*/', (string) $key)) {

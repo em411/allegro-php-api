@@ -62,12 +62,6 @@ class PickupCreateRequestDtoNormalizer implements DenormalizerInterface, Normali
         } elseif (\array_key_exists('shipmentIds', $data) && null === $data['shipmentIds']) {
             $object->setShipmentIds(null);
         }
-        if (\array_key_exists('pickupDateProposalId', $data) && null !== $data['pickupDateProposalId']) {
-            $object->setPickupDateProposalId($data['pickupDateProposalId']);
-            unset($data['pickupDateProposalId']);
-        } elseif (\array_key_exists('pickupDateProposalId', $data) && null === $data['pickupDateProposalId']) {
-            $object->setPickupDateProposalId(null);
-        }
         if (\array_key_exists('pickupTime', $data) && null !== $data['pickupTime']) {
             $object->setPickupTime($this->denormalizer->denormalize($data['pickupTime'], \Em411\Allegro\Api\Model\PickupTimeDto::class, 'json', $context));
             unset($data['pickupTime']);
@@ -97,7 +91,6 @@ class PickupCreateRequestDtoNormalizer implements DenormalizerInterface, Normali
             $values[] = $value;
         }
         $dataArray['shipmentIds'] = $values;
-        $dataArray['pickupDateProposalId'] = $data->getPickupDateProposalId();
         if ($data->isInitialized('pickupTime') && null !== $data->getPickupTime()) {
             $dataArray['pickupTime'] = $this->normalizer->normalize($data->getPickupTime(), 'json', $context);
         }

@@ -26,6 +26,13 @@ class PostPurchaseIssueMessageAuthor extends \ArrayObject
      */
     protected $login;
     /**
+     * Role of the message author in the post purchase issue:
+     * - `BUYER` - the buyer involved in the dispute or claim.
+     * - `SELLER` - the seller involved in the dispute or claim.
+     * - `ADMIN` - an Allegro employee or bot providing support in the dispute or claim.
+     * - `SYSTEM` - a system-generated entry, for example about resolving or reopening a dispute.
+     * - `FULFILLMENT` - an Allegro Fulfillment administrator working for the Allegro warehouse.
+     *
      * @var string|null
      */
     protected $role;
@@ -54,11 +61,27 @@ class PostPurchaseIssueMessageAuthor extends \ArrayObject
         return $this;
     }
 
+    /**
+     * Role of the message author in the post purchase issue:
+     * - `BUYER` - the buyer involved in the dispute or claim.
+     * - `SELLER` - the seller involved in the dispute or claim.
+     * - `ADMIN` - an Allegro employee or bot providing support in the dispute or claim.
+     * - `SYSTEM` - a system-generated entry, for example about resolving or reopening a dispute.
+     * - `FULFILLMENT` - an Allegro Fulfillment administrator working for the Allegro warehouse.
+     */
     public function getRole(): ?string
     {
         return $this->role;
     }
 
+    /**
+     * Role of the message author in the post purchase issue:
+     * - `BUYER` - the buyer involved in the dispute or claim.
+     * - `SELLER` - the seller involved in the dispute or claim.
+     * - `ADMIN` - an Allegro employee or bot providing support in the dispute or claim.
+     * - `SYSTEM` - a system-generated entry, for example about resolving or reopening a dispute.
+     * - `FULFILLMENT` - an Allegro Fulfillment administrator working for the Allegro warehouse.
+     */
     public function setRole(?string $role): self
     {
         $this->initialized['role'] = true;

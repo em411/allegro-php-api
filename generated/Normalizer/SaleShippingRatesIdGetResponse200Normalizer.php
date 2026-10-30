@@ -64,6 +64,18 @@ class SaleShippingRatesIdGetResponse200Normalizer implements DenormalizerInterfa
         } elseif (\array_key_exists('name', $data) && null === $data['name']) {
             $object->setName(null);
         }
+        if (\array_key_exists('type', $data) && null !== $data['type']) {
+            $object->setType($data['type']);
+            unset($data['type']);
+        } elseif (\array_key_exists('type', $data) && null === $data['type']) {
+            $object->setType(null);
+        }
+        if (\array_key_exists('dispatchCountry', $data) && null !== $data['dispatchCountry']) {
+            $object->setDispatchCountry($data['dispatchCountry']);
+            unset($data['dispatchCountry']);
+        } elseif (\array_key_exists('dispatchCountry', $data) && null === $data['dispatchCountry']) {
+            $object->setDispatchCountry(null);
+        }
         if (\array_key_exists('rates', $data) && null !== $data['rates']) {
             $values = [];
             foreach ($data['rates'] as $value) {
@@ -79,18 +91,6 @@ class SaleShippingRatesIdGetResponse200Normalizer implements DenormalizerInterfa
             unset($data['lastModified']);
         } elseif (\array_key_exists('lastModified', $data) && null === $data['lastModified']) {
             $object->setLastModified(null);
-        }
-        if (\array_key_exists('type', $data) && null !== $data['type']) {
-            $object->setType($data['type']);
-            unset($data['type']);
-        } elseif (\array_key_exists('type', $data) && null === $data['type']) {
-            $object->setType(null);
-        }
-        if (\array_key_exists('dispatchCountry', $data) && null !== $data['dispatchCountry']) {
-            $object->setDispatchCountry($data['dispatchCountry']);
-            unset($data['dispatchCountry']);
-        } elseif (\array_key_exists('dispatchCountry', $data) && null === $data['dispatchCountry']) {
-            $object->setDispatchCountry(null);
         }
         if (\array_key_exists('features', $data) && null !== $data['features']) {
             $object->setFeatures($this->denormalizer->denormalize($data['features'], \Em411\Allegro\Api\Model\SaleShippingRatesIdGetResponse200features::class, 'json', $context));
@@ -113,8 +113,10 @@ class SaleShippingRatesIdGetResponse200Normalizer implements DenormalizerInterfa
         if ($data->isInitialized('id') && null !== $data->getId()) {
             $dataArray['id'] = $data->getId();
         }
-        if ($data->isInitialized('name') && null !== $data->getName()) {
-            $dataArray['name'] = $data->getName();
+        $dataArray['name'] = $data->getName();
+        $dataArray['type'] = $data->getType();
+        if ($data->isInitialized('dispatchCountry')) {
+            $dataArray['dispatchCountry'] = $data->getDispatchCountry();
         }
         $values = [];
         foreach ($data->getRates() as $value) {
@@ -123,12 +125,6 @@ class SaleShippingRatesIdGetResponse200Normalizer implements DenormalizerInterfa
         $dataArray['rates'] = $values;
         if ($data->isInitialized('lastModified') && null !== $data->getLastModified()) {
             $dataArray['lastModified'] = $data->getLastModified();
-        }
-        if ($data->isInitialized('type')) {
-            $dataArray['type'] = $data->getType();
-        }
-        if ($data->isInitialized('dispatchCountry')) {
-            $dataArray['dispatchCountry'] = $data->getDispatchCountry();
         }
         if ($data->isInitialized('features') && null !== $data->getFeatures()) {
             $dataArray['features'] = $this->normalizer->normalize($data->getFeatures(), 'json', $context);

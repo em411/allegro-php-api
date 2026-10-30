@@ -20,7 +20,7 @@ class BillingEntryOffer extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * ID of the offer associated with the billing entry.
+     * ID of the offer associated with the billing entry. Can be either a numeric ID or a UUID.
      *
      * @var string|null
      */
@@ -38,7 +38,7 @@ class BillingEntryOffer extends \ArrayObject
     }
 
     /**
-     * ID of the offer associated with the billing entry.
+     * ID of the offer associated with the billing entry. Can be either a numeric ID or a UUID.
      */
     public function getId(): ?string
     {
@@ -46,7 +46,7 @@ class BillingEntryOffer extends \ArrayObject
     }
 
     /**
-     * ID of the offer associated with the billing entry.
+     * ID of the offer associated with the billing entry. Can be either a numeric ID or a UUID.
      */
     public function setId(?string $id): self
     {

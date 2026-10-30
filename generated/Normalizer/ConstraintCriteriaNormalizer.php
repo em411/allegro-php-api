@@ -74,9 +74,19 @@ class ConstraintCriteriaNormalizer implements DenormalizerInterface, NormalizerI
         } elseif (\array_key_exists('deliveryMethods', $data) && null === $data['deliveryMethods']) {
             $object->setDeliveryMethods(null);
         }
-        foreach ($data as $key => $value_1) {
+        if (\array_key_exists('categories', $data) && null !== $data['categories']) {
+            $values_1 = [];
+            foreach ($data['categories'] as $value_1) {
+                $values_1[] = $this->denormalizer->denormalize($value_1, \Em411\Allegro\Api\Model\JustId::class, 'json', $context);
+            }
+            $object->setCategories($values_1);
+            unset($data['categories']);
+        } elseif (\array_key_exists('categories', $data) && null === $data['categories']) {
+            $object->setCategories(null);
+        }
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+                $object[$key] = $value_2;
             }
         }
 
@@ -99,9 +109,16 @@ class ConstraintCriteriaNormalizer implements DenormalizerInterface, NormalizerI
             }
             $dataArray['deliveryMethods'] = $values;
         }
-        foreach ($data as $key => $value_1) {
+        if ($data->isInitialized('categories') && null !== $data->getCategories()) {
+            $values_1 = [];
+            foreach ($data->getCategories() as $value_1) {
+                $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
+            }
+            $dataArray['categories'] = $values_1;
+        }
+        foreach ($data as $key => $value_2) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+                $dataArray[$key] = $value_2;
             }
         }
 

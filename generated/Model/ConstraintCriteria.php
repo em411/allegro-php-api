@@ -24,17 +24,23 @@ class ConstraintCriteria extends \ArrayObject
      */
     protected $country;
     /**
-     * Constraint type. COUNTRY_SAME_QUANTITY is used by additional services that are realised before shipping (e.g. GIFT_WRAP), while COUNTRY_DELIVERY_SAME_QUANTITY is for additional services that are realised in delivery (e.g. CARRY_IN).
+     * Constraint type. COUNTRY_SAME_QUANTITY is used by additional services that are realised before shipping (e.g. GIFT_WRAP), while COUNTRY_DELIVERY_SAME_QUANTITY is for additional services that are realised in delivery (e.g. CARRY_IN). COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY additionally restricts the service to specific offer categories (e.g. ALLEGRO_TV_CARRY_IN).
      *
      * @var string|null
      */
     protected $type;
     /**
-     * This is used by additional services that are realised in transport (e.g. CARRY_IN), and this field exists together with COUNTRY_DELIVERY_SAME_QUANTITY constraint type. It describes which delivery methods can realise particular service.
+     * This is used by additional services that are realised in transport (e.g. CARRY_IN), and this field exists together with COUNTRY_DELIVERY_SAME_QUANTITY or COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY constraint type. It describes which delivery methods can realise particular service.
      *
      * @var list<JustId>|null
      */
     protected $deliveryMethods;
+    /**
+     * Offer categories for which the additional service is available. This field exists only for the COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY constraint type.
+     *
+     * @var list<JustId>|null
+     */
+    protected $categories;
 
     public function isInitialized($property): bool
     {
@@ -55,7 +61,7 @@ class ConstraintCriteria extends \ArrayObject
     }
 
     /**
-     * Constraint type. COUNTRY_SAME_QUANTITY is used by additional services that are realised before shipping (e.g. GIFT_WRAP), while COUNTRY_DELIVERY_SAME_QUANTITY is for additional services that are realised in delivery (e.g. CARRY_IN).
+     * Constraint type. COUNTRY_SAME_QUANTITY is used by additional services that are realised before shipping (e.g. GIFT_WRAP), while COUNTRY_DELIVERY_SAME_QUANTITY is for additional services that are realised in delivery (e.g. CARRY_IN). COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY additionally restricts the service to specific offer categories (e.g. ALLEGRO_TV_CARRY_IN).
      */
     public function getType(): ?string
     {
@@ -63,7 +69,7 @@ class ConstraintCriteria extends \ArrayObject
     }
 
     /**
-     * Constraint type. COUNTRY_SAME_QUANTITY is used by additional services that are realised before shipping (e.g. GIFT_WRAP), while COUNTRY_DELIVERY_SAME_QUANTITY is for additional services that are realised in delivery (e.g. CARRY_IN).
+     * Constraint type. COUNTRY_SAME_QUANTITY is used by additional services that are realised before shipping (e.g. GIFT_WRAP), while COUNTRY_DELIVERY_SAME_QUANTITY is for additional services that are realised in delivery (e.g. CARRY_IN). COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY additionally restricts the service to specific offer categories (e.g. ALLEGRO_TV_CARRY_IN).
      */
     public function setType(?string $type): self
     {
@@ -74,7 +80,7 @@ class ConstraintCriteria extends \ArrayObject
     }
 
     /**
-     * This is used by additional services that are realised in transport (e.g. CARRY_IN), and this field exists together with COUNTRY_DELIVERY_SAME_QUANTITY constraint type. It describes which delivery methods can realise particular service.
+     * This is used by additional services that are realised in transport (e.g. CARRY_IN), and this field exists together with COUNTRY_DELIVERY_SAME_QUANTITY or COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY constraint type. It describes which delivery methods can realise particular service.
      *
      * @return list<JustId>|null
      */
@@ -84,7 +90,7 @@ class ConstraintCriteria extends \ArrayObject
     }
 
     /**
-     * This is used by additional services that are realised in transport (e.g. CARRY_IN), and this field exists together with COUNTRY_DELIVERY_SAME_QUANTITY constraint type. It describes which delivery methods can realise particular service.
+     * This is used by additional services that are realised in transport (e.g. CARRY_IN), and this field exists together with COUNTRY_DELIVERY_SAME_QUANTITY or COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY constraint type. It describes which delivery methods can realise particular service.
      *
      * @param list<JustId>|null $deliveryMethods
      */
@@ -92,6 +98,29 @@ class ConstraintCriteria extends \ArrayObject
     {
         $this->initialized['deliveryMethods'] = true;
         $this->deliveryMethods = $deliveryMethods;
+
+        return $this;
+    }
+
+    /**
+     * Offer categories for which the additional service is available. This field exists only for the COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY constraint type.
+     *
+     * @return list<JustId>|null
+     */
+    public function getCategories(): ?array
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Offer categories for which the additional service is available. This field exists only for the COUNTRY_DELIVERY_CATEGORY_SAME_QUANTITY constraint type.
+     *
+     * @param list<JustId>|null $categories
+     */
+    public function setCategories(?array $categories): self
+    {
+        $this->initialized['categories'] = true;
+        $this->categories = $categories;
 
         return $this;
     }

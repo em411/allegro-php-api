@@ -20,7 +20,7 @@ class ProductAiCoCreatedContent extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * List of images declared as generated using artificial intelligence. If an image is not present in this list, it was not declared as AI-generated.
+     * List of images to be labeled as "AI" during the initial upload.  If an image is not present in this list, it will not be labeled as "AI".
      *
      * @var list<AiCoCreatedImage>|null
      */
@@ -38,7 +38,7 @@ class ProductAiCoCreatedContent extends \ArrayObject
     }
 
     /**
-     * List of images declared as generated using artificial intelligence. If an image is not present in this list, it was not declared as AI-generated.
+     * List of images to be labeled as "AI" during the initial upload.  If an image is not present in this list, it will not be labeled as "AI".
      *
      * @return list<AiCoCreatedImage>|null
      */
@@ -48,7 +48,7 @@ class ProductAiCoCreatedContent extends \ArrayObject
     }
 
     /**
-     * List of images declared as generated using artificial intelligence. If an image is not present in this list, it was not declared as AI-generated.
+     * List of images to be labeled as "AI" during the initial upload.  If an image is not present in this list, it will not be labeled as "AI".
      *
      * @param list<AiCoCreatedImage>|null $images
      */

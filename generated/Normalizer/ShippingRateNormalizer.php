@@ -76,12 +76,6 @@ class ShippingRateNormalizer implements DenormalizerInterface, NormalizerInterfa
         } elseif (\array_key_exists('firstItemRate', $data) && null === $data['firstItemRate']) {
             $object->setFirstItemRate(null);
         }
-        if (\array_key_exists('nextItemRate', $data) && null !== $data['nextItemRate']) {
-            $object->setNextItemRate($this->denormalizer->denormalize($data['nextItemRate'], \Em411\Allegro\Api\Model\ShippingRateNextItemRate::class, 'json', $context));
-            unset($data['nextItemRate']);
-        } elseif (\array_key_exists('nextItemRate', $data) && null === $data['nextItemRate']) {
-            $object->setNextItemRate(null);
-        }
         if (\array_key_exists('shippingTime', $data) && null !== $data['shippingTime']) {
             $object->setShippingTime($this->denormalizer->denormalize($data['shippingTime'], \Em411\Allegro\Api\Model\ShippingRateShippingTime::class, 'json', $context));
             unset($data['shippingTime']);
@@ -106,7 +100,6 @@ class ShippingRateNormalizer implements DenormalizerInterface, NormalizerInterfa
             $dataArray['maxPackageWeight'] = $this->normalizer->normalize($data->getMaxPackageWeight(), 'json', $context);
         }
         $dataArray['firstItemRate'] = $this->normalizer->normalize($data->getFirstItemRate(), 'json', $context);
-        $dataArray['nextItemRate'] = $this->normalizer->normalize($data->getNextItemRate(), 'json', $context);
         if ($data->isInitialized('shippingTime') && null !== $data->getShippingTime()) {
             $dataArray['shippingTime'] = $this->normalizer->normalize($data->getShippingTime(), 'json', $context);
         }

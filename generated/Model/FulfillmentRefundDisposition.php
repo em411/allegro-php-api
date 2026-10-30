@@ -20,7 +20,7 @@ class FulfillmentRefundDisposition extends \ArrayObject
      */
     protected $initialized = [];
     /**
-     * Type of the refund disposition. - `RETURN` - buyer return, - `BOUNCE` - operational return.
+     * Type of the refund disposition. - `RETURN` - buyer return, - `BOUNCE` - operational return, - `REPLACEMENT` - fewer items shipped than ordered.
      *
      * @var string|null
      */
@@ -30,7 +30,7 @@ class FulfillmentRefundDisposition extends \ArrayObject
      */
     protected $refund;
     /**
-     * Status describing whether the item returns to sellable stock. - `SELLABLE` - item returns to sellable stock, - `NON_SELLABLE` - item designated for removal process or disposal, - `MISSING` - expected item was not found in parcel, - `ITEM_MISMATCH` - same product but different serial numbers.
+     * Status describing whether the item returns to sellable stock. - `SELLABLE` - item returns to sellable stock, - `NON_SELLABLE` - item designated for removal process or disposal, - `MISSING` - expected item was not found in parcel, - `ITEM_MISMATCH` - same product but different serial numbers, - `NOT_APPLICABLE` - used for REPLACEMENT type.
      *
      * @var string|null
      */
@@ -80,7 +80,7 @@ class FulfillmentRefundDisposition extends \ArrayObject
     }
 
     /**
-     * Type of the refund disposition. - `RETURN` - buyer return, - `BOUNCE` - operational return.
+     * Type of the refund disposition. - `RETURN` - buyer return, - `BOUNCE` - operational return, - `REPLACEMENT` - fewer items shipped than ordered.
      */
     public function getType(): ?string
     {
@@ -88,7 +88,7 @@ class FulfillmentRefundDisposition extends \ArrayObject
     }
 
     /**
-     * Type of the refund disposition. - `RETURN` - buyer return, - `BOUNCE` - operational return.
+     * Type of the refund disposition. - `RETURN` - buyer return, - `BOUNCE` - operational return, - `REPLACEMENT` - fewer items shipped than ordered.
      */
     public function setType(?string $type): self
     {
@@ -112,7 +112,7 @@ class FulfillmentRefundDisposition extends \ArrayObject
     }
 
     /**
-     * Status describing whether the item returns to sellable stock. - `SELLABLE` - item returns to sellable stock, - `NON_SELLABLE` - item designated for removal process or disposal, - `MISSING` - expected item was not found in parcel, - `ITEM_MISMATCH` - same product but different serial numbers.
+     * Status describing whether the item returns to sellable stock. - `SELLABLE` - item returns to sellable stock, - `NON_SELLABLE` - item designated for removal process or disposal, - `MISSING` - expected item was not found in parcel, - `ITEM_MISMATCH` - same product but different serial numbers, - `NOT_APPLICABLE` - used for REPLACEMENT type.
      */
     public function getStockStatus(): ?string
     {
@@ -120,7 +120,7 @@ class FulfillmentRefundDisposition extends \ArrayObject
     }
 
     /**
-     * Status describing whether the item returns to sellable stock. - `SELLABLE` - item returns to sellable stock, - `NON_SELLABLE` - item designated for removal process or disposal, - `MISSING` - expected item was not found in parcel, - `ITEM_MISMATCH` - same product but different serial numbers.
+     * Status describing whether the item returns to sellable stock. - `SELLABLE` - item returns to sellable stock, - `NON_SELLABLE` - item designated for removal process or disposal, - `MISSING` - expected item was not found in parcel, - `ITEM_MISMATCH` - same product but different serial numbers, - `NOT_APPLICABLE` - used for REPLACEMENT type.
      */
     public function setStockStatus(?string $stockStatus): self
     {

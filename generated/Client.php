@@ -38,7 +38,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to retrieve all data of the particular product-offer. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#asynchroniczne-procesowanie" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#asynchronous-processing" target="_blank">EN</a>.
+     * Use this resource to retrieve all data of the particular product-offer. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#procesowanie-oferty" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#offer-processing" target="_blank">EN</a>.
      *
      * @param string $offerId          offer identifier
      * @param array  $headerParameters {
@@ -114,7 +114,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * The URI for the resource given by Location header of POST /sale/product-offers and PATCH /sale/product-offers/{offerId}. Use this resource to check processing status of a POST or PATCH request. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#publikacja-oferty-w-asynchronicznym-api" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#offer-publication-in-asynchronous-api" target="_blank">EN</a>.
+     * The URI for the resource given by Location header of POST /sale/product-offers and PATCH /sale/product-offers/{offerId}. Use this resource to check processing status of a POST or PATCH request. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#procesowanie-oferty" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#offer-processing" target="_blank">EN</a>.
      *
      * @param string $offerId          offer identifier
      * @param string $operationId      operation identifier provided in location header of POST or PATCH request
@@ -443,6 +443,7 @@ class Client extends Runtime\Client\Client
      *
      * @return Model\TaskReport|\Psr\Http\Message\ResponseInterface|null
      *
+     * @throws Exception\GetPublicationTasksUsingGETBadRequestException
      * @throws Exception\GetPublicationTasksUsingGETUnauthorizedException
      * @throws Exception\GetPublicationTasksUsingGETForbiddenException
      * @throws Exception\GetPublicationTasksUsingGETNotFoundException
@@ -1073,7 +1074,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Create or modify the turnover discount for the specified marketplace. Currently, the only supported marketplace is `allegro-business-cz`. <br/> Turnover discount is assigned to all offers available on the given marketplace. Only B2B users will see and be eligible for this discount. In order to create a turnover discount definition, you also have to be a B2B user. <br/> Created turnover discount becomes visible for B2B users with the first day of the next month. Since that day, B2B users begin cumulating their spending on your offers they purchased. Turnover cumulated within the month translate into appropriate percentage of the discount for all orders of your offers in the following month. <br/> Turnover discount created in a given month is susceptible for change only until the end of that month. After that, as mentioned before, turnover discount becomes available for the users and can no longer be modified instantly. Modifying turnover discount in such case will result in creation of the new definition of the discount. This new definition will become available for the users on the same basis that the previously created one, with the start of the next month. Also, similarly, newly created definition can be modified only until the the end of the month. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#utworz-lub-edytuj-rabat-obrotowy" target="_blank">PL</a> / <a href="../..//tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#create-or-edit-turnover-discount" target="_blank">EN</a>.
+     * You cannot create or modify a turnover-based discount. Turnover-based discounts are about to be withdrawn from the platform. Any existing discounts will be removed automatically. This resource is deprecated and will be removed on November 2, 2026.
      *
      * @param string $marketplaceId    marketplace identifier
      * @param array  $headerParameters {
@@ -1097,7 +1098,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Get a list of turnover discounts for all supported marketplaces. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-liste-rabatow-obrotowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#retrieve-the-list-of-turnover-discounts" target="_blank">EN</a>. Currently, the only supported marketplace is `allegro-business-cz`. <br/> Turnover discount for the marketplace can have one of the three statuses:
+     * Get a list of turnover discounts for all supported marketplaces. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#pobierz-liste-rabatow-obrotowych" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#retrieve-the-list-of-turnover-discounts" target="_blank">EN</a>. Currently, the only supported marketplace is `allegro-business-cz`. This resource is deprecated and will be removed on November 2, 2026. <br/> Turnover discount for the marketplace can have one of the three statuses:
      * 1. `ACTIVATING` - neither accumulation of the turnover, nor applying of the discount has started yet. Turnover will be being accumulated from the beginning of the next month.
      * 2. `ACTIVE` - there is ongoing accumulation of the turnover and/or applying of the discount. The latest discount definition does not have fields `cumulatingToDate` and `spendingToDate` set to a specific date. There may be multiple (up to 3) definitions of the discount returned for each marketplace. Only one definition can be accumulated against, and only one definition can be applied at the same time - appropriate periods from different definitions will not overlap.
      * 3. `DEACTIVATING` - there is ongoing accumulation of the turnover and/or applying of the discount. Accumulation of the turnover will be continued until `cumulatingToDate` of the last definition. Applying of the discount will be continued until `spendingToDate` of the last definition.
@@ -1125,7 +1126,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Deactivate turnover discount for a given marketplace. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#deaktywuj-rabat-obrotowy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#deactivate-turnover-discount" target="_blank">EN</a>. Currently, the only supported marketplace is `allegro-business-cz`. <br/> Turnover discount will stop being cumulated with the end of the current month. Discount based on cumulated turnover will stop being applied with the end of the next month. After that, the discount will be completely deactivated. <br/> When deactivating the discount that still has `ACTIVATING` status, turnover discount is deactivated immediately. In that case, no turnover discount will start being cumulated with the new month.
+     * Deactivate turnover discount for a given marketplace. Read more: <a href="../../tutorials/jak-zarzadzac-rabatami-promocjami-yPya2mj6zUP#deaktywuj-rabat-obrotowy" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-rebates-and-promotions-g05avdL0vT4#deactivate-turnover-discount" target="_blank">EN</a>. Currently, the only supported marketplace is `allegro-business-cz`. This resource is deprecated and will be removed on November 2, 2026. <br/> Turnover discount will stop being cumulated with the end of the current month. Discount based on cumulated turnover will stop being applied with the end of the next month. After that, the discount will be completely deactivated. <br/> When deactivating the discount that still has `ACTIVATING` status, turnover discount is deactivated immediately. In that case, no turnover discount will start being cumulated with the new month.
      *
      * @param string $marketplaceId    marketplace identifier
      * @param array  $headerParameters {
@@ -1233,6 +1234,7 @@ class Client extends Runtime\Client\Client
      *
      * @return Model\TaskReport|\Psr\Http\Message\ResponseInterface|null
      *
+     * @throws Exception\GetTasksUsingGETBadRequestException
      * @throws Exception\GetTasksUsingGETUnauthorizedException
      * @throws Exception\GetTasksUsingGETForbiddenException
      * @throws Exception\GetTasksUsingGETNotFoundException
@@ -1306,6 +1308,7 @@ class Client extends Runtime\Client\Client
      *
      * @return Model\TaskReport|\Psr\Http\Message\ResponseInterface|null
      *
+     * @throws Exception\GetPriceModificationCommandTasksStatusesUsingGETBadRequestException
      * @throws Exception\GetPriceModificationCommandTasksStatusesUsingGETUnauthorizedException
      * @throws Exception\GetPriceModificationCommandTasksStatusesUsingGETNotFoundException
      * @throws Exception\GetPriceModificationCommandTasksStatusesUsingGETUnprocessableEntityException
@@ -1377,6 +1380,7 @@ class Client extends Runtime\Client\Client
      *
      * @return Model\TaskWithSubjectReport|\Psr\Http\Message\ResponseInterface|null
      *
+     * @throws Exception\BatchOfferModificationCommandTaskStatusesUsingGETBadRequestException
      * @throws Exception\BatchOfferModificationCommandTaskStatusesUsingGETUnauthorizedException
      * @throws Exception\BatchOfferModificationCommandTaskStatusesUsingGETNotFoundException
      * @throws Exception\BatchOfferModificationCommandTaskStatusesUsingGETUnprocessableEntityException
@@ -1449,6 +1453,7 @@ class Client extends Runtime\Client\Client
      *
      * @return Model\TaskReport|\Psr\Http\Message\ResponseInterface|null
      *
+     * @throws Exception\GetQuantityModificationCommandTasksStatusesUsingGETBadRequestException
      * @throws Exception\GetQuantityModificationCommandTasksStatusesUsingGETUnauthorizedException
      * @throws Exception\GetQuantityModificationCommandTasksStatusesUsingGETNotFoundException
      * @throws Exception\GetQuantityModificationCommandTasksStatusesUsingGETUnprocessableEntityException
@@ -1522,6 +1527,7 @@ class Client extends Runtime\Client\Client
      *
      * @return Model\TaskReport|\Psr\Http\Message\ResponseInterface|null
      *
+     * @throws Exception\GetofferAutomaticPricingModificationCommandTasksStatusesUsingGETBadRequestException
      * @throws Exception\GetofferAutomaticPricingModificationCommandTasksStatusesUsingGETUnauthorizedException
      * @throws Exception\GetofferAutomaticPricingModificationCommandTasksStatusesUsingGETForbiddenException
      * @throws Exception\GetofferAutomaticPricingModificationCommandTasksStatusesUsingGETNotFoundException
@@ -1871,13 +1877,13 @@ class Client extends Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleShippingRatesPostResponse201|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ShippingRatesSet|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\CreateShippingRatesSetUsingPOSTBadRequestException
      * @throws Exception\CreateShippingRatesSetUsingPOSTUnauthorizedException
      * @throws Exception\CreateShippingRatesSetUsingPOSTUnprocessableEntityException
      */
-    public function createShippingRatesSetUsingPOST(?Model\SaleShippingRatesPostBody $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function createShippingRatesSetUsingPOST(?Model\ShippingRatesSet $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\CreateShippingRatesSetUsingPOST($requestBody, $headerParameters), $fetch);
     }
@@ -1915,7 +1921,7 @@ class Client extends Runtime\Client\Client
      *
      * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SaleShippingRatesIdPutResponse200|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ShippingRatesSet|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\ModifyShippingRatesSetUsingPUTBadRequestException
      * @throws Exception\ModifyShippingRatesSetUsingPUTUnauthorizedException
@@ -1923,7 +1929,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\ModifyShippingRatesSetUsingPUTNotFoundException
      * @throws Exception\ModifyShippingRatesSetUsingPUTUnprocessableEntityException
      */
-    public function modifyShippingRatesSetUsingPUT(string $id, ?Model\SaleShippingRatesIdPutBody $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function modifyShippingRatesSetUsingPUT(string $id, ?Model\ShippingRatesSet $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\ModifyShippingRatesSetUsingPUT($id, $requestBody, $headerParameters), $fetch);
     }
@@ -2240,6 +2246,31 @@ class Client extends Runtime\Client\Client
     }
 
     /**
+     * Use this resource to get a responsible person for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#osoba-odpowiedzialna-za-zgodnosc-produktu-z-przepisami-unijnymi" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-persons-for-the-compliance-of-the-product-with-eu-regulations" target="_blank">EN</a>.
+     *
+     * @param string $id               responsible person ID
+     * @param array  $headerParameters {
+     *
+     * @var string $Accept acceptable representation of the response
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\ResponsiblePersonResponse|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\ResponsiblePersonGETUnauthorizedException
+     * @throws Exception\ResponsiblePersonGETForbiddenException
+     * @throws Exception\ResponsiblePersonGETNotFoundException
+     * @throws Exception\ResponsiblePersonGETUnprocessableEntityException
+     */
+    public function responsiblePersonGET(string $id, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    {
+        return $this->executeEndpoint(new Endpoint\ResponsiblePersonGET($id, $headerParameters, $accept), $fetch);
+    }
+
+    /**
      * Use this resource to update the responsible person for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#osoba-odpowiedzialna-za-zgodnosc-produktu-z-przepisami-unijnymi" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-persons-for-the-compliance-of-the-product-with-eu-regulations" target="_blank">EN</a>.
      *
      * @param string $id               responsible person ID
@@ -2318,6 +2349,31 @@ class Client extends Runtime\Client\Client
     public function responsibleProducersPOST(?Model\CreateResponsibleProducerRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new Endpoint\ResponsibleProducersPOST($requestBody, $headerParameters, $accept), $fetch);
+    }
+
+    /**
+     * Use this resource to delete a responsible producer created by you. The responsible producer can be deleted only if it is not assigned to any offer, otherwise the request is rejected and the responsible producer is not deleted. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#dane-teleadresowe-producenta" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-producers-contact-information" target="_blank">EN</a>.
+     *
+     * @param string $id               responsible producer ID
+     * @param array  $headerParameters {
+     *
+     * @var string $Accept acceptable representation of the response
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return \Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\ResponsibleProducerDELETEUnauthorizedException
+     * @throws Exception\ResponsibleProducerDELETEForbiddenException
+     * @throws Exception\ResponsibleProducerDELETENotFoundException
+     * @throws Exception\ResponsibleProducerDELETEConflictException
+     * @throws Exception\ResponsibleProducerDELETEUnprocessableEntityException
+     */
+    public function responsibleProducerDELETE(string $id, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\ResponsibleProducerDELETE($id, $headerParameters), $fetch);
     }
 
     /**
@@ -3010,16 +3066,19 @@ class Client extends Runtime\Client\Client
      * Upload image to our servers.
      * You can choose from two upload options:
      *   * \- provide a link and we will download an image for you
-     *   * \- send an image as binary data.
-     *
+     *   * \- send an image as binary data
      * **Important!** Remember to use dedicated domain for upload, i.e.
      *   * \- https://upload.allegro.pl for Production
      *   * \- https://upload.allegro.pl.allegrosandbox.pl for Sandbox
-     *
      * Read more about the rules for photos in an offer's gallery and description: <a href="https://help.allegro.com/pl/sell/a/zasady-dla-zdjec-w-galerii-i-w-opisie-8dvWz3eo4T5?marketplaceId=allegro-pl" target="_blank">PL</a> / <a href="https://help.allegro.com/en/sell/a/rules-for-images-in-the-gallery-and-in-descriptions-8dvWB8Y2PIq" target="_blank">EN</a>.
      *
      * @param Model\OfferImageLinkUploadRequest|string|resource|\Psr\Http\Message\StreamInterface|null $requestBody
-     * @param array                                                                                    $headerParameters {
+     * @param array                                                                                    $queryParameters {
+     *
+     * @var bool $isAiCoCreated Sets the uploaded image to be marked as "AI". For a JSON request body (`application/vnd.allegro.public.v1+json`), this flag can also be provided in the request body. If both the query parameter and the request body are provided, their values must not conflict, otherwise a `400` response is returned.
+     *           }
+     *
+     * @param array $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
@@ -3035,9 +3094,9 @@ class Client extends Runtime\Client\Client
      * @throws Exception\UploadOfferImageUsingPOSTUnsupportedMediaTypeException
      * @throws Exception\UploadOfferImageUsingPOSTUnprocessableEntityException
      */
-    public function uploadOfferImageUsingPOST($requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function uploadOfferImageUsingPOST($requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new Endpoint\UploadOfferImageUsingPOST($requestBody, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\UploadOfferImageUsingPOST($requestBody, $queryParameters, $headerParameters), $fetch);
     }
 
     /**
@@ -3055,16 +3114,13 @@ class Client extends Runtime\Client\Client
      *   * Tire label (TIRE_LABEL). Allowed media types: JPEG, JPG, PNG
      *   * Data processing sheet - software (SOFTWARE_DATA_PROCESSING). Allowed media types: PDF
      *   * Data processing sheet - device (HARDWARE_DATA_PROCESSING). Allowed media types: PDF
-     *   * Plant Protection Products (PPPs) license (PLANT_PROTECTION_PRODUCTS_AUTHORIZATION). Allowed media types: PDF.
-     *
+     *   * Plant Protection Products (PPPs) license (PLANT_PROTECTION_PRODUCTS_AUTHORIZATION). Allowed media types: PDF
      * You can attach up to 20 files to one product for:
      *   * Safety information manual (SAFETY_INFORMATION_MANUAL). Allowed media types: PDF, JPEG, JPG, PNG
-     *
      * Uploading attachments flow:
      *   1. Create an attachment object to receive an upload URL (*POST /sale/offer-attachments*),
      *   2. Use the upload URL to submit the file (*PUT /sale/offer-attachments/{attachmentId}*),
      *   3. Add attachments to the offer (*PATCH /sale/product-offers/{offerId}*).
-     *
      * Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#zalaczniki" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#attachments" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
@@ -3414,7 +3470,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use to add new invoice metadata. Before you send an invoice file, you need to initialize the invoice instance with the required parameters. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-dodac-fakture-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#add-an-invoice-to-the-order" target="_blank">EN</a>.
+     * Use to add new invoice metadata. Before you send an invoice file, you need to initialize the invoice instance with the required parameters. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-dodac-fakture-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-add-an-invoice-to-orders" target="_blank">EN</a>.
      *
      * @param string $id               order identifier
      * @param array  $headerParameters {
@@ -3461,6 +3517,32 @@ class Client extends Runtime\Client\Client
     public function uploadOrderInvoiceFile(string $id, string $invoiceId, $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\UploadOrderInvoiceFile($id, $invoiceId, $requestBody, $headerParameters), $fetch);
+    }
+
+    /**
+     * Use to add an invoice to the order in a single request - the invoice file together with its metadata are sent together, instead of the two-step flow (add invoice metadata, then upload invoice file). Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-dodac-fakture-do-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-add-an-invoice-to-orders" target="_blank">EN</a>.
+     *
+     * @param string $orderId          order identifier
+     * @param array  $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\CheckFormsNewOrderInvoiceId|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\UploadOrderInvoiceFileWithMetadataBadRequestException
+     * @throws Exception\UploadOrderInvoiceFileWithMetadataForbiddenException
+     * @throws Exception\UploadOrderInvoiceFileWithMetadataNotFoundException
+     * @throws Exception\UploadOrderInvoiceFileWithMetadataConflictException
+     * @throws Exception\UploadOrderInvoiceFileWithMetadataRequestEntityTooLargeException
+     * @throws Exception\UploadOrderInvoiceFileWithMetadataUnprocessableEntityException
+     * @throws Exception\UploadOrderInvoiceFileWithMetadataTooManyRequestsException
+     */
+    public function uploadOrderInvoiceFileWithMetadata(string $orderId, ?Model\NewOrderInvoiceFileWithMetadata $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\UploadOrderInvoiceFileWithMetadata($orderId, $requestBody, $headerParameters), $fetch);
     }
 
     /**
@@ -3774,9 +3856,9 @@ class Client extends Runtime\Client\Client
      * @return Model\TagId|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\CreateTagPOST1BadRequestException
+     * @throws Exception\CreateTagPOST1UnprocessableEntityException
      * @throws Exception\CreateTagPOST1UnauthorizedException
      * @throws Exception\CreateTagPOST1ForbiddenException
-     * @throws Exception\CreateTagPOST1UnprocessableEntityException
      */
     public function createTagPOST1(?Model\TagRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -3792,7 +3874,7 @@ class Client extends Runtime\Client\Client
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|*\/*
+     * @param array  $accept Accept content header *\/*|application/vnd.allegro.public.v1+json
      * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
      * @return \Psr\Http\Message\ResponseInterface|null
@@ -3818,10 +3900,10 @@ class Client extends Runtime\Client\Client
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      *
+     * @throws Exception\UpdateTagPUTUnprocessableEntityException
      * @throws Exception\UpdateTagPUTUnauthorizedException
      * @throws Exception\UpdateTagPUTForbiddenException
      * @throws Exception\UpdateTagPUTNotFoundException
-     * @throws Exception\UpdateTagPUTUnprocessableEntityException
      */
     public function updateTagPUT(string $tagId, ?Model\TagRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -3864,10 +3946,10 @@ class Client extends Runtime\Client\Client
      * @return \Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\AssignTagToOfferPOSTBadRequestException
-     * @throws Exception\AssignTagToOfferPOSTUnauthorizedException
      * @throws Exception\AssignTagToOfferPOSTForbiddenException
-     * @throws Exception\AssignTagToOfferPOSTNotFoundException
      * @throws Exception\AssignTagToOfferPOSTUnprocessableEntityException
+     * @throws Exception\AssignTagToOfferPOSTUnauthorizedException
+     * @throws Exception\AssignTagToOfferPOSTNotFoundException
      */
     public function assignTagToOfferPOST(string $offerId, ?Model\TagIdsRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -3887,9 +3969,9 @@ class Client extends Runtime\Client\Client
      *
      * @return Model\OfferRating|\Psr\Http\Message\ResponseInterface|null
      *
-     * @throws Exception\OfferRatingGETUnauthorizedException
      * @throws Exception\OfferRatingGETForbiddenException
      * @throws Exception\OfferRatingGETNotFoundException
+     * @throws Exception\OfferRatingGETUnauthorizedException
      */
     public function offerRatingGET(string $offerId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -4546,7 +4628,6 @@ class Client extends Runtime\Client\Client
      *   - OFFER_TRANSLATION_UPDATED - translation of offer was updated.
      *   - OFFER_VISIBILITY_CHANGED - visibility of offer was changed on marketplaces.
      *   - OFFER_DELIVERY_COUNTRIES_BLOCKED - the offer has been blocked in selected countries.
-     *
      * Returned events may occur by actions made via browser or API. The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status (the exception is OFFER_ARCHIVED event). External id is returned for all event types except OFFER_BID_PLACED and OFFER_BID_CANCELED. Please note that one change may result in more than one event. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#dziennik-zdarzen-w-ofertach-sprzedawcy" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#event-journal-concerning-changes-in-seller-s-offers" target="_blank">EN</a>.
      *
      * @param array $queryParameters {
@@ -4633,16 +4714,6 @@ class Client extends Runtime\Client\Client
     /**
      * This resource allows you to apply for a badge. Most badges involve additional fee charged.
      * Your badge application will be verified and you will be notified about the verification status via e-mail. You can use *Location* provided in header of the response to track your application status. Application will be removed after 30 days when status of the application was changed form PROCESSED or DECLINED.
-     * Fees will be charged in accordance with Annex No. 1 to the
-     *   <a href="https://allegro.pl/regulaminy/regulamin-strefy-okazji-9dGVAPB69In"
-     *     target="_blank">Daily deals zone terms and conditions</a>.
-     *
-     * By using this resource you agree to the
-     *   <a href="https://allegro.pl/regulaminy/regulamin-strefy-okazji-9dGVAPB69In"
-     *     target="_blank">Daily deals zone terms and conditions</a>
-     * or
-     *   <a href="https://allegro.pl/regulaminy/regulamin-programu-bonusowego-prowizja-nawet-0-5-0KPkAE7wkcv"
-     *     target="_blank">Commission discount terms and conditions</a>.
      * Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#zglos-oferte-do-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#submit-offer-to-a-campaign" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
@@ -4812,9 +4883,9 @@ class Client extends Runtime\Client\Client
      *
      * @throws Exception\InitiateRefundBadRequestException
      * @throws Exception\InitiateRefundUnauthorizedException
+     * @throws Exception\InitiateRefundUnprocessableEntityException
      * @throws Exception\InitiateRefundForbiddenException
      * @throws Exception\InitiateRefundNotFoundException
-     * @throws Exception\InitiateRefundUnprocessableEntityException
      */
     public function initiateRefund(?Model\InitializeRefund $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -4826,11 +4897,11 @@ class Client extends Runtime\Client\Client
      *
      * @param array $queryParameters {
      *
-     * @var string $marketplaceId The marketplace ID where operation was made. By default the marketplace ID where the user is registered. **Note:** Business marketplace is not a separate user's billing and defaults back to the main marketplace for given country.
+     * @var string $marketplaceId The marketplace ID where the operation took place. By default, this is the marketplace ID where the user is registered. **Note:** The Business marketplace is not separate - it defaults to the main marketplace for the given country.
      * @var string $occurredAt.gte Date from which billing entries are filtered. If occurredAt.lte is also set, occurredAt.gte cannot be later.
      * @var string $occurredAt.lte Date to which billing entries are filtered. If occurredAt.gte is also set, occurredAt.lte cannot be earlier.
      * @var array  $type.id List of billing types by which billing entries are filtered.
-     * @var string $offer.id Offer ID by which billing entries are filtered.
+     * @var string $offer.id Offer ID by which billing entries are filtered. Can be either a numeric ID or a UUID.
      * @var string $order.id Order UUID by which billing entries are filtered.
      * @var int    $limit number of returned operations
      * @var int    $offset Index of the first returned payment operation from all search results.
@@ -5002,7 +5073,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to retrieve two order characteristics. The first is a pre-populated request body for creating a shipment in SwA. The second is a list of possible delivery types for processing the order, including their limits.
+     * Use this resource to retrieve two order characteristics. The first is a pre-populated request body for creating a shipment in SwA. The second is a list of possible delivery types for processing the order, including their limits. Read more: <a href="../../tutorials/jak-zarzadzac-przesylkami-przez-wysylam-z-allegro-LRVjK7K21sY#jak-pobrac-proponowane-dane-i-ustawienia-dostawy-dla-zamowienia" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-parcels-via-ship-with-allegro-ZM9YAyGKWTV#how-to-retrieve-the-proposed-delivery-details-and-settings-for-an-order" target="_blank">EN</a>.
      *
      * @param string $orderId order ID
      * @param string $fetch   Fetch mode to use (can be OBJECT or RESPONSE)
@@ -5191,8 +5262,8 @@ class Client extends Runtime\Client\Client
      *
      * @return \Psr\Http\Message\ResponseInterface|null
      *
-     * @throws Exception\GetShipmentProtocolBadRequestException
      * @throws Exception\GetShipmentProtocolUnauthorizedException
+     * @throws Exception\GetShipmentProtocolBadRequestException
      * @throws Exception\GetShipmentProtocolForbiddenException
      * @throws Exception\GetShipmentProtocolNotFoundException
      * @throws Exception\GetShipmentProtocolGatewayTimeoutException
@@ -5321,11 +5392,11 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to receive tax settings for given category. Based on received settings you may set VAT tax settings for your offers. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#opcje-faktury-i-stawki-vat" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#invoice-and-vat-settings" target="_blank">EN</a>.
+     * Use this resource to receive tax settings for a given leaf category. Based on received settings you may set VAT tax settings for your offers. Read more: <a href="../../tutorials/jak-jednym-requestem-wystawic-oferte-powiazana-z-produktem-D7Kj9gw4xFA#opcje-faktury-i-stawki-vat" target="_blank">PL</a> / <a href="../../tutorials/list-offer-assigned-product-one-request-D7Kj9M71Bu6#invoice-and-vat-settings" target="_blank">EN</a>.
      *
      * @param array $queryParameters {
      *
-     * @var string $category.id An identifier of a category for which all available tax settings will be returned.
+     * @var string $category.id An identifier of a leaf category for which all available tax settings will be returned.
      * @var array  $countryCode Country code for which tax settings will be returned. If not provided settings for all countries will be returned.
      *             }
      *
@@ -5662,9 +5733,9 @@ class Client extends Runtime\Client\Client
      *
      * @return Model\AlleDiscountListCampaignsResponse|\Psr\Http\Message\ResponseInterface|null
      *
+     * @throws Exception\GetAlleDiscountCampaignsNotFoundException
      * @throws Exception\GetAlleDiscountCampaignsBadRequestException
      * @throws Exception\GetAlleDiscountCampaignsUnauthorizedException
-     * @throws Exception\GetAlleDiscountCampaignsNotFoundException
      */
     public function getAlleDiscountCampaigns(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -5719,25 +5790,31 @@ class Client extends Runtime\Client\Client
      *
      * @param array $queryParameters {
      *
-     * @var int $limit the maximum number of threads returned in the response
-     * @var int $offset Index of the first returned thread from all results.
-     *          }
+     * @var int    $limit the maximum number of threads returned in the response
+     * @var int    $offset Index of the first returned thread from all results. Available only for content version 'application/vnd.allegro.public.v1+json'.
+     * @var string $page.id ID of the page of threads to retrieve. Available only for content version 'application/vnd.allegro.beta.v1+json'.
+     * @var bool   $read Filters threads by read status. Available only for content version 'application/vnd.allegro.beta.v1+json'.
+     * @var string $status Filters threads by status. Available only for content version 'application/vnd.allegro.beta.v1+json'.
+     * @var array  $type Filters threads by their type. Available only for content version 'application/vnd.allegro.beta.v1+json'. If omitted, threads of all types are returned. If you pass multiple values, the response includes threads whose type matches any of them.
+     * @var string $orderId Filters POST_PURCHASE_ISSUE threads by order identifier. Available only for content version 'application/vnd.allegro.beta.v1+json'.
+     *             }
      *
      * @param array $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\ThreadsList|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ThreadsList|Model\ThreadsListVBeta1|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\ListThreadsGETUnauthorizedException
      * @throws Exception\ListThreadsGETUnprocessableEntityException
      */
-    public function listThreadsGET(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function listThreadsGET(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\ListThreadsGET($queryParameters, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ListThreadsGET($queryParameters, $headerParameters, $accept), $fetch);
     }
 
     /**
@@ -5749,59 +5826,64 @@ class Client extends Runtime\Client\Client
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Thread|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Thread|Model\ThreadVBeta1|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\GetThreadGETUnauthorizedException
      * @throws Exception\GetThreadGETNotFoundException
      */
-    public function getThreadGET(string $threadId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function getThreadGET(string $threadId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\GetThreadGET($threadId, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\GetThreadGET($threadId, $headerParameters, $accept), $fetch);
     }
 
     /**
      * Use this resource to mark thread with provided identifier as read. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#szczegolowe-informacje-o-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#information-about-a-particular-message" target="_blank">EN</a>.
      *
-     * @param string $threadId         identifier of thread to be marked
-     * @param array  $headerParameters {
+     * @param string                                               $threadId         identifier of thread to be marked
+     * @param Model\ThreadReadFlag|Model\ThreadReadFlagVBeta1|null $requestBody
+     * @param array                                                $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Thread|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Thread|Model\ThreadReadFlagVBeta1|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\ChangeReadFlagOnThreadPUTUnauthorizedException
      * @throws Exception\ChangeReadFlagOnThreadPUTForbiddenException
      * @throws Exception\ChangeReadFlagOnThreadPUTNotFoundException
      * @throws Exception\ChangeReadFlagOnThreadPUTUnprocessableEntityException
      */
-    public function changeReadFlagOnThreadPUT(string $threadId, ?Model\ThreadReadFlag $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function changeReadFlagOnThreadPUT(string $threadId, $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\ChangeReadFlagOnThreadPUT($threadId, $requestBody, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ChangeReadFlagOnThreadPUT($threadId, $requestBody, $headerParameters, $accept), $fetch);
     }
 
     /**
      * Use this resource to write new message to recipient. This resource is rate limited to 1 request per second for a user. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#nowa-wiadomosc" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#add-a-new-message" target="_blank">EN</a>.
      *
-     * @param array $headerParameters {
+     * @param Model\NewMessage|Model\NewMessageVBeta1|null $requestBody
+     * @param array                                        $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Message|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Message|Model\MessageVBeta1|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\NewMessagePOSTUnauthorizedException
      * @throws Exception\NewMessagePOSTUnprocessableEntityException
      */
-    public function newMessagePOST(?Model\NewMessage $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function newMessagePOST($requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\NewMessagePOST($requestBody, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\NewMessagePOST($requestBody, $headerParameters, $accept), $fetch);
     }
 
     /**
@@ -5811,9 +5893,10 @@ class Client extends Runtime\Client\Client
      * @param array  $queryParameters {
      *
      * @var int    $limit the maximum number of messages returned in the response
-     * @var int    $offset index of the first returned message from all results
-     * @var string $before message creation date before filter parameter (exclusive) - cannot be used with offset
-     * @var string $after Message creation date after filter parameter (exclusive).
+     * @var int    $offset Index of the first returned message from all results. Available only for content version 'application/vnd.allegro.public.v1+json'.
+     * @var string $before Message creation date before filter parameter (exclusive) - cannot be used with offset. Available only for content version 'application/vnd.allegro.public.v1+json'.
+     * @var string $after Message creation date after filter parameter (exclusive). Available only for content version 'application/vnd.allegro.public.v1+json'.
+     * @var string $page.id ID of the page of messages to retrieve. Available only for content version 'application/vnd.allegro.beta.v1+json'.
      *             }
      *
      * @param array $headerParameters {
@@ -5821,18 +5904,19 @@ class Client extends Runtime\Client\Client
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\MessagesList|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\MessagesList|Model\MessagesListVBeta1|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\ListMessagesGETUnauthorizedException
      * @throws Exception\ListMessagesGETForbiddenException
      * @throws Exception\ListMessagesGETNotFoundException
      * @throws Exception\ListMessagesGETUnprocessableEntityException
      */
-    public function listMessagesGET(string $threadId, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function listMessagesGET(string $threadId, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\ListMessagesGET($threadId, $queryParameters, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\ListMessagesGET($threadId, $queryParameters, $headerParameters, $accept), $fetch);
     }
 
     /**
@@ -5844,22 +5928,23 @@ class Client extends Runtime\Client\Client
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Message|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Message|Model\MessageVBeta1|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\NewMessageInThreadPOSTUnauthorizedException
      * @throws Exception\NewMessageInThreadPOSTForbiddenException
      * @throws Exception\NewMessageInThreadPOSTNotFoundException
      * @throws Exception\NewMessageInThreadPOSTUnprocessableEntityException
      */
-    public function newMessageInThreadPOST(string $threadId, ?Model\NewMessageInThread $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function newMessageInThreadPOST(string $threadId, ?Model\NewMessageInThread $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\NewMessageInThreadPOST($threadId, $requestBody, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\NewMessageInThreadPOST($threadId, $requestBody, $headerParameters, $accept), $fetch);
     }
 
     /**
-     * Use this resource to delete message with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#usuniecie-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#delete-a-message" target="_blank">EN</a>.
+     * Use this resource to delete message with provided identifier. This resource is deprecated and will be removed in the future. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#usuniecie-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#delete-a-message" target="_blank">EN</a>.
      *
      * @param string $messageId        identifier of the message to delete
      * @param array  $headerParameters {
@@ -5889,16 +5974,17 @@ class Client extends Runtime\Client\Client
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\Message|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\Message|Model\MessageVBeta1|\Psr\Http\Message\ResponseInterface|null
      *
      * @throws Exception\GetMessageGETUnauthorizedException
      * @throws Exception\GetMessageGETNotFoundException
      */
-    public function getMessageGET(string $messageId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function getMessageGET(string $messageId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\GetMessageGET($messageId, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\GetMessageGET($messageId, $headerParameters, $accept), $fetch);
     }
 
     /**
@@ -5909,7 +5995,8 @@ class Client extends Runtime\Client\Client
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
      * @return Model\MessageAttachmentId|\Psr\Http\Message\ResponseInterface|null
      *
@@ -5917,9 +6004,9 @@ class Client extends Runtime\Client\Client
      * @throws Exception\NewAttachmentDeclarationPOSTUnsupportedMediaTypeException
      * @throws Exception\NewAttachmentDeclarationPOSTUnprocessableEntityException
      */
-    public function newAttachmentDeclarationPOST(?Model\NewAttachmentDeclaration $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function newAttachmentDeclarationPOST(?Model\NewAttachmentDeclaration $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\NewAttachmentDeclarationPOST($requestBody, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\NewAttachmentDeclarationPOST($requestBody, $headerParameters, $accept), $fetch);
     }
 
     /**
@@ -5953,7 +6040,8 @@ class Client extends Runtime\Client\Client
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
      *
      * @return Model\MessageAttachmentId|\Psr\Http\Message\ResponseInterface|null
      *
@@ -5963,9 +6051,9 @@ class Client extends Runtime\Client\Client
      * @throws Exception\UploadAttachmentPUTRequestEntityTooLargeException
      * @throws Exception\UploadAttachmentPUTUnsupportedMediaTypeException
      */
-    public function uploadAttachmentPUT(string $attachmentId, $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function uploadAttachmentPUT(string $attachmentId, $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
-        return $this->executeEndpoint(new Endpoint\UploadAttachmentPUT($attachmentId, $requestBody, $headerParameters), $fetch);
+        return $this->executeEndpoint(new Endpoint\UploadAttachmentPUT($attachmentId, $requestBody, $headerParameters, $accept), $fetch);
     }
 
     /**
@@ -6200,7 +6288,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to update an Advance Ship Notice. Any content property update will clear labels property. Use Create labels command to create new labels for provided content.
+     * Use this resource to update an Advance Ship Notice.
      * If a client wants to update read-only property, an error is returned (only in cases when sent value will be different than actual on the server). Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#uzupelnij-dane-o-awizo" target="_blank">PL</a> / <a href="../../one-fulfillment-by-allegro-4R9dXyMPlc9#complete-the-data-of-advance-ship-notice" target="_blank">EN</a>.
      *
      * @param string $id               an identifier of Advance Ship Notice
@@ -6250,7 +6338,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to get labels for Advance Ship Notice after being created with "create labels command". Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#wygeneruj-oznaczenia-na-kartony" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#create-labels-for-boxes" target="_blank">EN</a>.
+     * Use this resource to get labels for Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#pobierz-oznaczenia-na-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#download-labels-for-asn" target="_blank">EN</a>.
      *
      * @param string $id               an identifier of the Advance Ship Notice
      * @param array  $headerParameters {
@@ -6274,7 +6362,52 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to update already submitted Advance Ship Notice. Update is allowed only when Advance Ship Notice is in "IN_TRANSIT" status. Handling unit's amount property update clears labels property. Use Create labels command to create new labels for provided content. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#edytuj-zakonczone-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#edit-advance-ship-notice" target="_blank">EN</a>.
+     * Use this resource to get submit status of the Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#zakoncz-edycje-i-wyslij-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#finish-editing-and-submit-the-advance-ship-notice" target="_blank">EN</a>.
+     *
+     * @param string $commandId        an identifier of the command
+     * @param array  $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\SubmitCommand|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\GetSubmitCommandUnauthorizedException
+     * @throws Exception\GetSubmitCommandForbiddenException
+     * @throws Exception\GetSubmitCommandUnprocessableEntityException
+     */
+    public function getSubmitCommand(string $commandId = '882202c8-15ab-4a83-aeef-29ea505bf0d0', array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    {
+        return $this->executeEndpoint(new Endpoint\GetSubmitCommand($commandId, $headerParameters, $accept), $fetch);
+    }
+
+    /**
+     * Use this resource to submit the Advance Ship Notice. After this operation, updates of the Advance Ship Notice are limited to selected properties only. See <a href="../../documentation#operation/updateSubmittedAdvanceShipNotice">PUT /fulfillment/advance-ship-notices/{id}/submitted</a>. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#zakoncz-edycje-i-wyslij-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#finish-editing-and-submit-the-advance-ship-notice" target="_blank">EN</a>.
+     *
+     * @param string $commandId        the identifier of the command
+     * @param array  $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\SubmitCommand|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\SubmitCommandUnauthorizedException
+     * @throws Exception\SubmitCommandUnprocessableEntityException
+     */
+    public function submitCommand(string $commandId = '725432a9-ae9e-43de-b8c5-7430606a81a4', ?Model\SubmitCommand $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    {
+        return $this->executeEndpoint(new Endpoint\SubmitCommand($commandId, $requestBody, $headerParameters, $accept), $fetch);
+    }
+
+    /**
+     * Use this resource to update already submitted Advance Ship Notice. Update is allowed only when Advance Ship Notice is in "IN_TRANSIT" status. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#edytuj-zakonczone-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#edit-advance-ship-notice" target="_blank">EN</a>.
      *
      * @param string $id               an identifier of Advance Ship Notice
      * @param array  $headerParameters {
@@ -6363,8 +6496,8 @@ class Client extends Runtime\Client\Client
      *
      * @return Model\FulfillmentOrder|\Psr\Http\Message\ResponseInterface|null
      *
-     * @throws Exception\GetFulfillmentOrderParcelsUnauthorizedException
      * @throws Exception\GetFulfillmentOrderParcelsNotFoundException
+     * @throws Exception\GetFulfillmentOrderParcelsUnauthorizedException
      */
     public function getFulfillmentOrderParcels(string $orderId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -6419,6 +6552,27 @@ class Client extends Runtime\Client\Client
     public function getAdvanceShipNoticeReceivingState(string $id = '712fa46c-7d4a-4ba0-b094-b5d1d4f6155d', array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new Endpoint\GetAdvanceShipNoticeReceivingState($id, $headerParameters), $fetch);
+    }
+
+    /**
+     * Use this resource to get the warehouse assigned to the seller.
+     *
+     * @param array $headerParameters {
+     *
+     * @var string $Accept-Language Expected language of messages.
+     *             }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return Model\FulfillmentWarehouse|\Psr\Http\Message\ResponseInterface|null
+     *
+     * @throws Exception\GetFulfillmentWarehouseUnauthorizedException
+     * @throws Exception\GetFulfillmentWarehouseForbiddenException
+     * @throws Exception\GetFulfillmentWarehouseNotFoundException
+     */
+    public function getFulfillmentWarehouse(array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\GetFulfillmentWarehouse($headerParameters), $fetch);
     }
 
     /**
@@ -6478,8 +6632,8 @@ class Client extends Runtime\Client\Client
      *
      * @throws Exception\UpdateTaxIdUnauthorizedException
      * @throws Exception\UpdateTaxIdForbiddenException
-     * @throws Exception\UpdateTaxIdNotFoundException
      * @throws Exception\UpdateTaxIdUnprocessableEntityException
+     * @throws Exception\UpdateTaxIdNotFoundException
      */
     public function updateTaxId(?Model\TaxIdRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
@@ -6567,7 +6721,7 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to get deposit types available when creating an offer. Read more: <a href="../../news/1-pazdziernika-2025-dostosujemy-allegro-api-do-rozporzadzenia-o-systemie-kaucyjnym-m0mLB4XM9Ib" target="_blank">PL</a> / <a href="../../news/on-october-1-2025-we-will-adapt-Allegro-API-to-the-deposit-system-regulation-m0mLB4XM9Ib" target="_blank">EN</a>.
+     * Use this resource to get enabled deposit types available when creating an offer. The pricing mode determines whether the deposit has a fixed catalog price (`FIXED`) or requires a seller-provided price in the configured currency (`CUSTOM`). Read more: <a href="../../news/1-pazdziernika-2025-dostosujemy-allegro-api-do-rozporzadzenia-o-systemie-kaucyjnym-m0mLB4XM9Ib" target="_blank">PL</a> / <a href="../../news/on-october-1-2025-we-will-adapt-Allegro-API-to-the-deposit-system-regulation-m0mLB4XM9Ib" target="_blank">EN</a>.
      *
      * @param array $headerParameters {
      *
@@ -6588,48 +6742,24 @@ class Client extends Runtime\Client\Client
     }
 
     /**
-     * Use this resource to get submit status of the Advance Ship Notice. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#zakoncz-edycje-i-wyslij-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#finish-editing-and-submit-the-advance-ship-notice" target="_blank">EN</a>.
+     * Use this resource to parse raw, free-text ingredients declarations into structured ingredient lists for one or more products. Every submitted product text is parsed independently. The response contains parsed items together with errors and warnings detected for each product.
      *
-     * @param string $commandId        an identifier of the command
-     * @param array  $headerParameters {
-     *
-     * @var string $Accept-Language Expected language of messages.
-     *             }
-     *
-     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
-     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
-     *
-     * @return Model\SubmitCommand|\Psr\Http\Message\ResponseInterface|null
-     *
-     * @throws Exception\GetSubmitCommandUnauthorizedException
-     * @throws Exception\GetSubmitCommandForbiddenException
-     * @throws Exception\GetSubmitCommandUnprocessableEntityException
-     */
-    public function getSubmitCommand(string $commandId = '882202c8-15ab-4a83-aeef-29ea505bf0d0', array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
-    {
-        return $this->executeEndpoint(new Endpoint\GetSubmitCommand($commandId, $headerParameters, $accept), $fetch);
-    }
-
-    /**
-     * Use this resource to submit the Advance Ship Notice. After this operation, updates of the Advance Ship Notice are limited to selected properties only. See <a href="../../documentation#operation/updateSubmittedAdvanceShipNotice">PUT /fulfillment/advance-ship-notices/{id}/submitted</a>. Read more: <a href="../../tutorials/one-fulfillment-by-allegro-0ADwgOLqWSw#zakoncz-edycje-i-wyslij-awizo" target="_blank">PL</a> / <a href="../../tutorials/one-fulfillment-by-allegro-4R9dXyMPlc9#finish-editing-and-submit-the-advance-ship-notice" target="_blank">EN</a>.
-     *
-     * @param string $commandId        the identifier of the command
-     * @param array  $headerParameters {
+     * @param array $headerParameters {
      *
      * @var string $Accept-Language Expected language of messages.
      *             }
      *
-     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/json
-     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return Model\SubmitCommand|\Psr\Http\Message\ResponseInterface|null
+     * @return Model\ParseIngredientsResponse|\Psr\Http\Message\ResponseInterface|null
      *
-     * @throws Exception\SubmitCommandUnauthorizedException
-     * @throws Exception\SubmitCommandUnprocessableEntityException
+     * @throws Exception\ParseIngredientsBadRequestException
+     * @throws Exception\ParseIngredientsUnauthorizedException
+     * @throws Exception\ParseIngredientsForbiddenException
      */
-    public function submitCommand(string $commandId = '725432a9-ae9e-43de-b8c5-7430606a81a4', ?Model\SubmitCommand $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function parseIngredients(?Model\ParseIngredientsRequest $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new Endpoint\SubmitCommand($commandId, $requestBody, $headerParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\ParseIngredients($requestBody, $headerParameters), $fetch);
     }
 
     public static function create($httpClient = null, array $additionalPlugins = [], array $additionalNormalizers = [])

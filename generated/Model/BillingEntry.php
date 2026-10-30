@@ -36,6 +36,18 @@ class BillingEntry extends \ArrayObject
      */
     protected $type;
     /**
+     * Type of the recorded billing operation: debit or credit.
+     *
+     * @var string|null
+     */
+    protected $asset;
+    /**
+     * The marketplace ID where operation was made.
+     *
+     * @var string|null
+     */
+    protected $marketplaceId;
+    /**
      * Offer associated with the returned billing entry.
      *
      * @var BillingEntryOffer|null
@@ -124,6 +136,44 @@ class BillingEntry extends \ArrayObject
     {
         $this->initialized['type'] = true;
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Type of the recorded billing operation: debit or credit.
+     */
+    public function getAsset(): ?string
+    {
+        return $this->asset;
+    }
+
+    /**
+     * Type of the recorded billing operation: debit or credit.
+     */
+    public function setAsset(?string $asset): self
+    {
+        $this->initialized['asset'] = true;
+        $this->asset = $asset;
+
+        return $this;
+    }
+
+    /**
+     * The marketplace ID where operation was made.
+     */
+    public function getMarketplaceId(): ?string
+    {
+        return $this->marketplaceId;
+    }
+
+    /**
+     * The marketplace ID where operation was made.
+     */
+    public function setMarketplaceId(?string $marketplaceId): self
+    {
+        $this->initialized['marketplaceId'] = true;
+        $this->marketplaceId = $marketplaceId;
 
         return $this;
     }

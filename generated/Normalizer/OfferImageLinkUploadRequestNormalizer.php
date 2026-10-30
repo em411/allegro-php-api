@@ -49,6 +49,9 @@ class OfferImageLinkUploadRequestNormalizer implements DenormalizerInterface, No
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Em411\Allegro\Api\Model\OfferImageLinkUploadRequest();
+        if (\array_key_exists('isAiCoCreated', $data) && \is_int($data['isAiCoCreated'])) {
+            $data['isAiCoCreated'] = (bool) $data['isAiCoCreated'];
+        }
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -57,6 +60,12 @@ class OfferImageLinkUploadRequestNormalizer implements DenormalizerInterface, No
             unset($data['url']);
         } elseif (\array_key_exists('url', $data) && null === $data['url']) {
             $object->setUrl(null);
+        }
+        if (\array_key_exists('isAiCoCreated', $data) && null !== $data['isAiCoCreated']) {
+            $object->setIsAiCoCreated($data['isAiCoCreated']);
+            unset($data['isAiCoCreated']);
+        } elseif (\array_key_exists('isAiCoCreated', $data) && null === $data['isAiCoCreated']) {
+            $object->setIsAiCoCreated(null);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -71,6 +80,9 @@ class OfferImageLinkUploadRequestNormalizer implements DenormalizerInterface, No
     {
         $dataArray = [];
         $dataArray['url'] = $data->getUrl();
+        if ($data->isInitialized('isAiCoCreated')) {
+            $dataArray['isAiCoCreated'] = $data->getIsAiCoCreated();
+        }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;

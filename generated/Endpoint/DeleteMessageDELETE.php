@@ -19,7 +19,7 @@ class DeleteMessageDELETE extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint
     protected $messageId;
 
     /**
-     * Use this resource to delete message with provided identifier. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#usuniecie-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#delete-a-message" target="_blank">EN</a>.
+     * Use this resource to delete message with provided identifier. This resource is deprecated and will be removed in the future. Read more: <a href="../../tutorials/jak-zarzadzac-centrum-wiadomosci-XxWm2K890Fk#usuniecie-wiadomosci" target="_blank">PL</a> / <a href="../../tutorials/how-to-manage-the-message-center-g05avyGlZUW#delete-a-message" target="_blank">EN</a>.
      *
      * @param string $messageId        identifier of the message to delete
      * @param array  $headerParameters {

@@ -79,7 +79,7 @@ class AlleDiscountGetWithdrawCommandResponseOutputNormalizer implements Denormal
         if (\array_key_exists('errors', $data) && null !== $data['errors']) {
             $values = [];
             foreach ($data['errors'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\ErrorsHolder::class, 'json', $context);
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\Error::class, 'json', $context);
             }
             $object->setErrors($values);
             unset($data['errors']);
