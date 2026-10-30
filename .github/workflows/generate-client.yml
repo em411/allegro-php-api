@@ -151,8 +151,9 @@ jobs:
           echo "Running oasdiff breaking check..."
 
           set +e
+          # Without --fail-on, oasdiff exits 0 even when it finds breaking changes
           $OASDIFF breaking /work/resources/spec.yaml "/work/$TEMP_DIR/new_spec.yaml" \
-            > "$TEMP_DIR/breaking_diff.txt" 2>&1
+            --fail-on ERR > "$TEMP_DIR/breaking_diff.txt" 2>&1
           RC=$?
           set -e
 
@@ -179,8 +180,9 @@ jobs:
             $OASDIFF changelog /work/resources/spec.yaml "/work/$TEMP_DIR/new_spec.yaml" \
               > "$TEMP_DIR/changelog.txt"
 
-            # level 3 = INFO → new endpoints / features → MINOR
-            if jq -e 'if type == "array" then [.[] | select(.level == 3)] | length > 0 else false end' \
+            # oasdiff levels: 1 = INFO (new endpoints / features), 2 = WARN, 3 = ERR
+            # level 1 → MINOR
+            if jq -e 'if type == "array" then [.[] | select(.level == 1)] | length > 0 else false end' \
                 "$TEMP_DIR/changelog.json" >/dev/null 2>&1; then
               echo "✨ New features detected → MINOR"
               BUMP_TYPE="minor"
