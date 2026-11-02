@@ -20893,6 +20893,86 @@ paths:
       security:
         - bearer-token-for-user:
             - allegro:api:orders:read
+  /order/customer-returns/{customerReturnId}/files:
+    get:
+      tags:
+        - Customer returns
+      summary: 'Get customer return form document'
+      description: >-
+        Use this resource to download a PDF document containing details of a customer return. If buyer data is
+        unavailable, the document is generated without it.
+      operationId: getCustomerReturnFormDocument
+      parameters:
+        - name: customerReturnId
+          in: path
+          description: Id of the customer return.
+          required: true
+          schema:
+            type: string
+        - name: Accept-Language
+          in: header
+          required: false
+          description: Expected language of messages.
+          example: en-US
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      responses:
+        '200':
+          description: Customer return form document returned successfully.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Unauthorized.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Customer return with the given customerReturnId was not found.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              example:
+                errors:
+                  - code: NO_RESCISSION
+                    message: Customer return with given customerReturnId was not found
+        '406':
+          description: Not Acceptable.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '422':
+          description: The form document cannot be downloaded because the customer return contains a complaint.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+              example:
+                errors:
+                  - code: RESCISSION_FORM_FILE_NOT_AVAILABLE
+                    message: The document cannot be downloaded because the customer return contains a complaint.
+      security:
+        - bearer-token-for-user:
+            - allegro:api:orders:read
   /order/customer-returns/{customerReturnId}/rejection:
     post:
       tags:

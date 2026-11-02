@@ -5515,6 +5515,29 @@ class Client extends Runtime\Client\Client
     }
 
     /**
+     * Use this resource to download a PDF document containing details of a customer return. If buyer data is unavailable, the document is generated without it.
+     *
+     * @param string $customerReturnId id of the customer return
+     * @param array{
+     *    "Accept-Language"?: string, //Expected language of messages.
+     * } $headerParameters
+     * @param array  $accept Accept content header application/pdf|application/vnd.allegro.public.v1+json
+     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return ($fetch is 'object' ? null : \Psr\Http\Message\ResponseInterface)
+     *
+     * @throws Exception\GetCustomerReturnFormDocumentUnauthorizedException
+     * @throws Exception\GetCustomerReturnFormDocumentForbiddenException
+     * @throws Exception\GetCustomerReturnFormDocumentNotFoundException
+     * @throws Exception\GetCustomerReturnFormDocumentNotAcceptableException
+     * @throws Exception\GetCustomerReturnFormDocumentUnprocessableEntityException
+     */
+    public function getCustomerReturnFormDocument(string $customerReturnId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    {
+        return $this->executeEndpoint(new Endpoint\GetCustomerReturnFormDocument($customerReturnId, $headerParameters, $accept), $fetch);
+    }
+
+    /**
      * Use this resource to reject customer return refund with provided reason. Read more: <a href="../../tutorials/jak-obslugiwac-zamowienia-GRaj0qyvwtR#jak-odmowic-zwrotu-wplaty" target="_blank">PL</a> / <a href="../../tutorials/process-orders-PgPMlWDr8Cv#how-to-reject-customer-return-refund" target="_blank">EN</a>.
      *
      * @param string $customerReturnId id of the customer return
