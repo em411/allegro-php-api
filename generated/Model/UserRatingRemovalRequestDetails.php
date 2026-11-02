@@ -16,7 +16,7 @@ namespace Em411\Allegro\Api\Model;
 use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
 use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
 
-class RemovalRequestVBeta1 implements AdditionalPropertiesInterface
+class UserRatingRemovalRequestDetails implements AdditionalPropertiesInterface
 {
     use AdditionalAndPatternProperties;
     /**

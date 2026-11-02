@@ -16,7 +16,7 @@ namespace Em411\Allegro\Api\Model;
 use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
 use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
 
-class CommentVBeta1 implements AdditionalPropertiesInterface
+class UserRatingAnswer implements AdditionalPropertiesInterface
 {
     use AdditionalAndPatternProperties;
     /**
@@ -24,7 +24,13 @@ class CommentVBeta1 implements AdditionalPropertiesInterface
      */
     protected $initialized = [];
     /**
-     * Text of user's comment.
+     * Answer creation datetime in ISO 8601 format.
+     *
+     * @var string|null
+     */
+    protected $createdAt;
+    /**
+     * Answer message.
      *
      * @var string|null
      */
@@ -42,7 +48,26 @@ class CommentVBeta1 implements AdditionalPropertiesInterface
     }
 
     /**
-     * Text of user's comment.
+     * Answer creation datetime in ISO 8601 format.
+     */
+    public function getCreatedAt(): ?string
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Answer creation datetime in ISO 8601 format.
+     */
+    public function setCreatedAt(?string $createdAt): self
+    {
+        $this->initialized['createdAt'] = true;
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Answer message.
      */
     public function getText(): ?string
     {
@@ -50,7 +75,7 @@ class CommentVBeta1 implements AdditionalPropertiesInterface
     }
 
     /**
-     * Text of user's comment.
+     * Answer message.
      */
     public function setText(?string $text): self
     {
@@ -81,6 +106,6 @@ class CommentVBeta1 implements AdditionalPropertiesInterface
 
     public function definedProperties(): array
     {
-        return ['text' => ['text', 'getText', 'setText'], 'language' => ['language', 'getLanguage', 'setLanguage']];
+        return ['createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'text' => ['text', 'getText', 'setText'], 'language' => ['language', 'getLanguage', 'setLanguage']];
     }
 }

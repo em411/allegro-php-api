@@ -16,7 +16,6 @@ namespace Em411\Allegro\Api\Endpoint;
 class GetUserRatingsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint implements \Em411\Allegro\Api\Runtime\Client\Endpoint
 {
     use \Em411\Allegro\Api\Runtime\Client\EndpointTrait;
-    protected $accept;
 
     /**
      * Use this resource to receive your sales ratings sorted by last change date, starting from the latest. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-informacje-o-ocenie-sprzedazy" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-user-s-ratings-data" target="_blank">EN</a>.
@@ -29,15 +28,13 @@ class GetUserRatingsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
      *    "limit"?: int, //The limit of elements in the response.
      * } $queryParameters
      * @param array{
-     *    "Accept-Language"?: string, //Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
+     *    "Accept-Language"?: string, //Expected language of messages.
      * } $headerParameters
-     * @param array $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
      */
-    public function __construct(array $queryParameters = [], array $headerParameters = [], array $accept = [])
+    public function __construct(array $queryParameters = [], array $headerParameters = [])
     {
         $this->queryParameters = $queryParameters;
         $this->headerParameters = $headerParameters;
-        $this->accept = $accept;
     }
 
     public function getMethod(): string
@@ -57,11 +54,7 @@ class GetUserRatingsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
 
     public function getExtraHeaders(): array
     {
-        if (empty($this->accept)) {
-            return ['Accept' => ['application/vnd.allegro.public.v1+json', 'application/vnd.allegro.beta.v1+json']];
-        }
-
-        return $this->accept;
+        return ['Accept' => ['application/vnd.allegro.public.v1+json']];
     }
 
     public function getAuthenticationScopes(): array
@@ -96,7 +89,7 @@ class GetUserRatingsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
     }
 
     /**
-     * @return \Em411\Allegro\Api\Model\UserRatingListResponse|\Em411\Allegro\Api\Model\UserRatingListResponseVBeta1|null
+     * @return \Em411\Allegro\Api\Model\UserRatingListResponse|null
      *
      * @throws \Em411\Allegro\Api\Exception\GetUserRatingsUsingGETUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\GetUserRatingsUsingGETForbiddenException
@@ -106,13 +99,8 @@ class GetUserRatingsUsingGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (200 === $status) {
-            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json')) {
-                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\UserRatingListResponse', 'json');
-            }
-            if (false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json')) {
-                return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\UserRatingListResponseVBeta1', 'json');
-            }
+        if ((null === $contentType) === false && (200 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.public.v1+json'))) {
+            return $serializer->deserialize($body, 'Em411\Allegro\Api\Model\UserRatingListResponse', 'json');
         }
         if (401 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetUserRatingsUsingGETUnauthorizedException($response);

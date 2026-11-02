@@ -223,7 +223,7 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\Answer::class => AnswerNormalizer::class,
 
-        \Em411\Allegro\Api\Model\AnswerVBeta1::class => AnswerVBeta1Normalizer::class,
+        \Em411\Allegro\Api\Model\UserRatingAnswer::class => UserRatingAnswerNormalizer::class,
 
         \Em411\Allegro\Api\Model\AvailableConstraint::class => AvailableConstraintNormalizer::class,
 
@@ -685,7 +685,7 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\CategoryProductParameterList::class => CategoryProductParameterListNormalizer::class,
 
-        \Em411\Allegro\Api\Model\CommentVBeta1::class => CommentVBeta1Normalizer::class,
+        \Em411\Allegro\Api\Model\UserRatingComment::class => UserRatingCommentNormalizer::class,
 
         \Em411\Allegro\Api\Model\Exclusion::class => ExclusionNormalizer::class,
 
@@ -729,8 +729,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\PublicationChangeCommandDto::class => PublicationChangeCommandDtoNormalizer::class,
 
-        \Em411\Allegro\Api\Model\Rates::class => RatesNormalizer::class,
-
         \Em411\Allegro\Api\Model\Reference::class => ReferenceNormalizer::class,
 
         \Em411\Allegro\Api\Model\SalesQualityHistoryResponse::class => SalesQualityHistoryResponseNormalizer::class,
@@ -743,9 +741,9 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\RemovalRequest::class => RemovalRequestNormalizer::class,
 
-        \Em411\Allegro\Api\Model\RemovalVBeta1::class => RemovalVBeta1Normalizer::class,
+        \Em411\Allegro\Api\Model\UserRatingRemoval::class => UserRatingRemovalNormalizer::class,
 
-        \Em411\Allegro\Api\Model\RemovalRequestVBeta1::class => RemovalRequestVBeta1Normalizer::class,
+        \Em411\Allegro\Api\Model\UserRatingRemovalRequestDetails::class => UserRatingRemovalRequestDetailsNormalizer::class,
 
         \Em411\Allegro\Api\Model\UserRatingRemovalRequest::class => UserRatingRemovalRequestNormalizer::class,
 
@@ -880,10 +878,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\UserRating::class => UserRatingNormalizer::class,
 
         \Em411\Allegro\Api\Model\UserRatingListResponse::class => UserRatingListResponseNormalizer::class,
-
-        \Em411\Allegro\Api\Model\UserRatingVBeta1::class => UserRatingVBeta1Normalizer::class,
-
-        \Em411\Allegro\Api\Model\UserRatingListResponseVBeta1::class => UserRatingListResponseVBeta1Normalizer::class,
 
         \Em411\Allegro\Api\Model\UserRatingSummaryResponse::class => UserRatingSummaryResponseNormalizer::class,
 

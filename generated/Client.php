@@ -524,20 +524,19 @@ class Client extends Runtime\Client\Client
      *    "limit"?: int, //The limit of elements in the response.
      * } $queryParameters
      * @param array{
-     *    "Accept-Language"?: string, //Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
+     *    "Accept-Language"?: string, //Expected language of messages.
      * } $headerParameters
-     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
-     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return ($fetch is 'object' ? Model\UserRatingListResponse|Model\UserRatingListResponseVBeta1|null : \Psr\Http\Message\ResponseInterface)
+     * @return ($fetch is 'object' ? Model\UserRatingListResponse|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetUserRatingsUsingGETUnauthorizedException
      * @throws Exception\GetUserRatingsUsingGETForbiddenException
      * @throws Exception\GetUserRatingsUsingGETNotFoundException
      */
-    public function getUserRatingsUsingGET(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function getUserRatingsUsingGET(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new Endpoint\GetUserRatingsUsingGET($queryParameters, $headerParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\GetUserRatingsUsingGET($queryParameters, $headerParameters), $fetch);
     }
 
     /**
@@ -545,20 +544,19 @@ class Client extends Runtime\Client\Client
      *
      * @param string $ratingId the ID of the rating
      * @param array{
-     *    "Accept-Language"?: string, //Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
+     *    "Accept-Language"?: string, //Expected language of messages.
      * } $headerParameters
-     * @param array  $accept Accept content header application/vnd.allegro.public.v1+json|application/vnd.allegro.beta.v1+json
-     * @param string $fetch  Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      *
-     * @return ($fetch is 'object' ? Model\UserRating|Model\UserRatingVBeta1|null : \Psr\Http\Message\ResponseInterface)
+     * @return ($fetch is 'object' ? Model\UserRating|null : \Psr\Http\Message\ResponseInterface)
      *
      * @throws Exception\GetUserRatingUsingGETUnauthorizedException
      * @throws Exception\GetUserRatingUsingGETForbiddenException
      * @throws Exception\GetUserRatingUsingGETNotFoundException
      */
-    public function getUserRatingUsingGET(string $ratingId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
+    public function getUserRatingUsingGET(string $ratingId, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
-        return $this->executeEndpoint(new Endpoint\GetUserRatingUsingGET($ratingId, $headerParameters, $accept), $fetch);
+        return $this->executeEndpoint(new Endpoint\GetUserRatingUsingGET($ratingId, $headerParameters), $fetch);
     }
 
     /**

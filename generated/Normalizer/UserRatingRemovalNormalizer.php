@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class UserRatingListResponseVBeta1Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class UserRatingRemovalNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,17 +32,17 @@ class UserRatingListResponseVBeta1Normalizer implements DenormalizerInterface, N
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\UserRatingListResponseVBeta1::class === $type;
+        return \Em411\Allegro\Api\Model\UserRatingRemoval::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\UserRatingListResponseVBeta1::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\UserRatingRemoval::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        $object = new \Em411\Allegro\Api\Model\UserRatingListResponseVBeta1();
+        $object = new \Em411\Allegro\Api\Model\UserRatingRemoval();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -52,20 +52,23 @@ class UserRatingListResponseVBeta1Normalizer implements DenormalizerInterface, N
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        if (\array_key_exists('ratings', $data) && null !== $data['ratings']) {
-            $values = [];
-            foreach ($data['ratings'] as $value) {
-                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\UserRatingVBeta1::class, 'json', $context);
-            }
-            $object->setRatings($values);
-            unset($data['ratings']);
-        } elseif (\array_key_exists('ratings', $data) && null === $data['ratings']) {
-            $object->setRatings(null);
-            unset($data['ratings']);
+        if (\array_key_exists('possibleTo', $data) && null !== $data['possibleTo']) {
+            $object->setPossibleTo($data['possibleTo']);
+            unset($data['possibleTo']);
+        } elseif (\array_key_exists('possibleTo', $data) && null === $data['possibleTo']) {
+            $object->setPossibleTo(null);
+            unset($data['possibleTo']);
         }
-        foreach ($data as $key => $value_1) {
+        if (\array_key_exists('request', $data) && null !== $data['request']) {
+            $object->setRequest($this->denormalizer->denormalize($data['request'], \Em411\Allegro\Api\Model\UserRatingRemovalRequestDetails::class, 'json', $context));
+            unset($data['request']);
+        } elseif (\array_key_exists('request', $data) && null === $data['request']) {
+            $object->setRequest(null);
+            unset($data['request']);
+        }
+        foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value_1;
+                $object[$key] = $value;
             }
         }
 
@@ -75,14 +78,13 @@ class UserRatingListResponseVBeta1Normalizer implements DenormalizerInterface, N
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $values = [];
-        foreach ($data->getRatings() as $value) {
-            $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
+        $dataArray['possibleTo'] = $data->getPossibleTo();
+        if ($data->isInitialized('request') && null !== $data->getRequest()) {
+            $dataArray['request'] = null === $data->getRequest() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRequest(), 'json', $context));
         }
-        $dataArray['ratings'] = $values;
-        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
+        foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value_1;
+                $dataArray[$key] = $value;
             }
         }
 
@@ -91,6 +93,6 @@ class UserRatingListResponseVBeta1Normalizer implements DenormalizerInterface, N
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\UserRatingListResponseVBeta1::class => false];
+        return [\Em411\Allegro\Api\Model\UserRatingRemoval::class => false];
     }
 }

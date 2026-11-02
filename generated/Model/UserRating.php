@@ -26,7 +26,7 @@ class UserRating implements AdditionalPropertiesInterface
     /**
      * Seller's answer, if null seller did not publish answer.
      *
-     * @var Answer|null
+     * @var UserRatingAnswer|null
      */
     protected $answer;
     /**
@@ -34,9 +34,7 @@ class UserRating implements AdditionalPropertiesInterface
      */
     protected $buyer;
     /**
-     * Buyer's text comment.
-     *
-     * @var string|null
+     * @var UserRatingComment|null
      */
     protected $comment;
     /**
@@ -52,23 +50,21 @@ class UserRating implements AdditionalPropertiesInterface
      */
     protected $editedAt;
     /**
-     * If true this rating was not included in calculating average user rates.
-     *
-     * @var bool|null
+     * @var Exclusion|null
      */
-    protected $excludedFromAverageRates;
-    /**
-     * The reason why the rating was excluded from calculating average user rates. The message is translated based on the value of the "Accept-Language" header and exists only when the rating was excluded.
-     *
-     * @var string|null
-     */
-    protected $excludedFromAverageRatesReason;
+    protected $exclusion;
     /**
      * Rating id.
      *
      * @var string|null
      */
     protected $id;
+    /**
+     * List of the justifications chosen by the buyer while creating rating.
+     *
+     * @var list<Justification>|null
+     */
+    protected $justifications;
     /**
      * Last change (creation or latest edition) datetime in ISO 8601 format.
      *
@@ -80,19 +76,23 @@ class UserRating implements AdditionalPropertiesInterface
      */
     protected $order;
     /**
-     * @var Rates|null
-     */
-    protected $rates;
-    /**
      * Whether buyer recommends the order.
      *
      * @var bool|null
      */
     protected $recommended;
     /**
-     * @var Removal|null
+     * @var UserRatingRemoval|null
      */
     protected $removal;
+    /**
+     * Whether the rating is the first negative in the last 30 days. Will be null for ratings created after 26.08.2026 Deprecated: this field will be removed in Q3 2027.
+     *
+     * @deprecated
+     *
+     * @var bool|null
+     */
+    protected $firstNegativeReviewInLast30Days;
 
     public function isInitialized($property): bool
     {
@@ -102,7 +102,7 @@ class UserRating implements AdditionalPropertiesInterface
     /**
      * Seller's answer, if null seller did not publish answer.
      */
-    public function getAnswer(): ?Answer
+    public function getAnswer(): ?UserRatingAnswer
     {
         return $this->answer;
     }
@@ -110,7 +110,7 @@ class UserRating implements AdditionalPropertiesInterface
     /**
      * Seller's answer, if null seller did not publish answer.
      */
-    public function setAnswer(?Answer $answer): self
+    public function setAnswer(?UserRatingAnswer $answer): self
     {
         $this->initialized['answer'] = true;
         $this->answer = $answer;
@@ -131,18 +131,12 @@ class UserRating implements AdditionalPropertiesInterface
         return $this;
     }
 
-    /**
-     * Buyer's text comment.
-     */
-    public function getComment(): ?string
+    public function getComment(): ?UserRatingComment
     {
         return $this->comment;
     }
 
-    /**
-     * Buyer's text comment.
-     */
-    public function setComment(?string $comment): self
+    public function setComment(?UserRatingComment $comment): self
     {
         $this->initialized['comment'] = true;
         $this->comment = $comment;
@@ -188,40 +182,15 @@ class UserRating implements AdditionalPropertiesInterface
         return $this;
     }
 
-    /**
-     * If true this rating was not included in calculating average user rates.
-     */
-    public function getExcludedFromAverageRates(): ?bool
+    public function getExclusion(): ?Exclusion
     {
-        return $this->excludedFromAverageRates;
+        return $this->exclusion;
     }
 
-    /**
-     * If true this rating was not included in calculating average user rates.
-     */
-    public function setExcludedFromAverageRates(?bool $excludedFromAverageRates): self
+    public function setExclusion(?Exclusion $exclusion): self
     {
-        $this->initialized['excludedFromAverageRates'] = true;
-        $this->excludedFromAverageRates = $excludedFromAverageRates;
-
-        return $this;
-    }
-
-    /**
-     * The reason why the rating was excluded from calculating average user rates. The message is translated based on the value of the "Accept-Language" header and exists only when the rating was excluded.
-     */
-    public function getExcludedFromAverageRatesReason(): ?string
-    {
-        return $this->excludedFromAverageRatesReason;
-    }
-
-    /**
-     * The reason why the rating was excluded from calculating average user rates. The message is translated based on the value of the "Accept-Language" header and exists only when the rating was excluded.
-     */
-    public function setExcludedFromAverageRatesReason(?string $excludedFromAverageRatesReason): self
-    {
-        $this->initialized['excludedFromAverageRatesReason'] = true;
-        $this->excludedFromAverageRatesReason = $excludedFromAverageRatesReason;
+        $this->initialized['exclusion'] = true;
+        $this->exclusion = $exclusion;
 
         return $this;
     }
@@ -241,6 +210,29 @@ class UserRating implements AdditionalPropertiesInterface
     {
         $this->initialized['id'] = true;
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * List of the justifications chosen by the buyer while creating rating.
+     *
+     * @return list<Justification>|null
+     */
+    public function getJustifications(): ?array
+    {
+        return $this->justifications;
+    }
+
+    /**
+     * List of the justifications chosen by the buyer while creating rating.
+     *
+     * @param list<Justification>|null $justifications
+     */
+    public function setJustifications(?array $justifications): self
+    {
+        $this->initialized['justifications'] = true;
+        $this->justifications = $justifications;
 
         return $this;
     }
@@ -277,19 +269,6 @@ class UserRating implements AdditionalPropertiesInterface
         return $this;
     }
 
-    public function getRates(): ?Rates
-    {
-        return $this->rates;
-    }
-
-    public function setRates(?Rates $rates): self
-    {
-        $this->initialized['rates'] = true;
-        $this->rates = $rates;
-
-        return $this;
-    }
-
     /**
      * Whether buyer recommends the order.
      */
@@ -309,12 +288,12 @@ class UserRating implements AdditionalPropertiesInterface
         return $this;
     }
 
-    public function getRemoval(): ?Removal
+    public function getRemoval(): ?UserRatingRemoval
     {
         return $this->removal;
     }
 
-    public function setRemoval(?Removal $removal): self
+    public function setRemoval(?UserRatingRemoval $removal): self
     {
         $this->initialized['removal'] = true;
         $this->removal = $removal;
@@ -322,8 +301,31 @@ class UserRating implements AdditionalPropertiesInterface
         return $this;
     }
 
+    /**
+     * Whether the rating is the first negative in the last 30 days. Will be null for ratings created after 26.08.2026 Deprecated: this field will be removed in Q3 2027.
+     *
+     * @deprecated
+     */
+    public function getFirstNegativeReviewInLast30Days(): ?bool
+    {
+        return $this->firstNegativeReviewInLast30Days;
+    }
+
+    /**
+     * Whether the rating is the first negative in the last 30 days. Will be null for ratings created after 26.08.2026 Deprecated: this field will be removed in Q3 2027.
+     *
+     * @deprecated
+     */
+    public function setFirstNegativeReviewInLast30Days(?bool $firstNegativeReviewInLast30Days): self
+    {
+        $this->initialized['firstNegativeReviewInLast30Days'] = true;
+        $this->firstNegativeReviewInLast30Days = $firstNegativeReviewInLast30Days;
+
+        return $this;
+    }
+
     public function definedProperties(): array
     {
-        return ['answer' => ['answer', 'getAnswer', 'setAnswer'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'comment' => ['comment', 'getComment', 'setComment'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'editedAt' => ['editedAt', 'getEditedAt', 'setEditedAt'], 'excludedFromAverageRates' => ['excludedFromAverageRates', 'getExcludedFromAverageRates', 'setExcludedFromAverageRates'], 'excludedFromAverageRatesReason' => ['excludedFromAverageRatesReason', 'getExcludedFromAverageRatesReason', 'setExcludedFromAverageRatesReason'], 'id' => ['id', 'getId', 'setId'], 'lastChangedAt' => ['lastChangedAt', 'getLastChangedAt', 'setLastChangedAt'], 'order' => ['order', 'getOrder', 'setOrder'], 'rates' => ['rates', 'getRates', 'setRates'], 'recommended' => ['recommended', 'getRecommended', 'setRecommended'], 'removal' => ['removal', 'getRemoval', 'setRemoval']];
+        return ['answer' => ['answer', 'getAnswer', 'setAnswer'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'comment' => ['comment', 'getComment', 'setComment'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'editedAt' => ['editedAt', 'getEditedAt', 'setEditedAt'], 'exclusion' => ['exclusion', 'getExclusion', 'setExclusion'], 'id' => ['id', 'getId', 'setId'], 'justifications' => ['justifications', 'getJustifications', 'setJustifications'], 'lastChangedAt' => ['lastChangedAt', 'getLastChangedAt', 'setLastChangedAt'], 'order' => ['order', 'getOrder', 'setOrder'], 'recommended' => ['recommended', 'getRecommended', 'setRecommended'], 'removal' => ['removal', 'getRemoval', 'setRemoval'], 'firstNegativeReviewInLast30Days' => ['firstNegativeReviewInLast30Days', 'getFirstNegativeReviewInLast30Days', 'setFirstNegativeReviewInLast30Days']];
     }
 }

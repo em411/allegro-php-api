@@ -16,7 +16,7 @@ namespace Em411\Allegro\Api\Model;
 use Em411\Allegro\Api\Runtime\AdditionalAndPatternProperties;
 use Em411\Allegro\Api\Runtime\AdditionalPropertiesInterface;
 
-class RemovalVBeta1 implements AdditionalPropertiesInterface
+class UserRatingRemoval implements AdditionalPropertiesInterface
 {
     use AdditionalAndPatternProperties;
     /**
@@ -32,7 +32,7 @@ class RemovalVBeta1 implements AdditionalPropertiesInterface
     /**
      * Submitted removal request, null if removal was not requested.
      *
-     * @var RemovalRequestVBeta1|null
+     * @var UserRatingRemovalRequestDetails|null
      */
     protected $request;
 
@@ -63,7 +63,7 @@ class RemovalVBeta1 implements AdditionalPropertiesInterface
     /**
      * Submitted removal request, null if removal was not requested.
      */
-    public function getRequest(): ?RemovalRequestVBeta1
+    public function getRequest(): ?UserRatingRemovalRequestDetails
     {
         return $this->request;
     }
@@ -71,7 +71,7 @@ class RemovalVBeta1 implements AdditionalPropertiesInterface
     /**
      * Submitted removal request, null if removal was not requested.
      */
-    public function setRequest(?RemovalRequestVBeta1 $request): self
+    public function setRequest(?UserRatingRemovalRequestDetails $request): self
     {
         $this->initialized['request'] = true;
         $this->request = $request;

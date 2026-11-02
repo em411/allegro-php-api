@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class CommentVBeta1Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class UserRatingAnswerNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,17 +32,17 @@ class CommentVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\CommentVBeta1::class === $type;
+        return \Em411\Allegro\Api\Model\UserRatingAnswer::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\CommentVBeta1::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\UserRatingAnswer::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        $object = new \Em411\Allegro\Api\Model\CommentVBeta1();
+        $object = new \Em411\Allegro\Api\Model\UserRatingAnswer();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -51,6 +51,13 @@ class CommentVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
         }
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
+        }
+        if (\array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
+            $object->setCreatedAt($data['createdAt']);
+            unset($data['createdAt']);
+        } elseif (\array_key_exists('createdAt', $data) && null === $data['createdAt']) {
+            $object->setCreatedAt(null);
+            unset($data['createdAt']);
         }
         if (\array_key_exists('text', $data) && null !== $data['text']) {
             $object->setText($data['text']);
@@ -78,12 +85,9 @@ class CommentVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        if ($data->isInitialized('text') && null !== $data->getText()) {
-            $dataArray['text'] = $data->getText();
-        }
-        if ($data->isInitialized('language') && null !== $data->getLanguage()) {
-            $dataArray['language'] = $data->getLanguage();
-        }
+        $dataArray['createdAt'] = $data->getCreatedAt();
+        $dataArray['text'] = $data->getText();
+        $dataArray['language'] = $data->getLanguage();
         foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
@@ -95,6 +99,6 @@ class CommentVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\CommentVBeta1::class => false];
+        return [\Em411\Allegro\Api\Model\UserRatingAnswer::class => false];
     }
 }

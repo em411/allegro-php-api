@@ -2589,7 +2589,7 @@ paths:
         - name: Accept-Language
           in: header
           required: false
-          description: Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
+          description: Expected language of messages.
           example: pl-PL
           schema:
             type: string
@@ -2661,9 +2661,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/UserRatingListResponse'
-            application/vnd.allegro.beta.v1+json:
-              schema:
-                $ref: '#/components/schemas/UserRatingListResponseVBeta1'
         '401':
           description: Unauthorized
         '403':
@@ -2685,7 +2682,7 @@ paths:
         - name: Accept-Language
           in: header
           required: false
-          description: Expected language of messages. The header is available only for content version 'application/vnd.allegro.beta.v1+json'.
+          description: Expected language of messages.
           example: pl-PL
           schema:
             type: string
@@ -2712,9 +2709,6 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/UserRating'
-            application/vnd.allegro.beta.v1+json:
-              schema:
-                $ref: '#/components/schemas/UserRatingVBeta1'
         '401':
           description: Unauthorized
         '403':
@@ -24384,7 +24378,7 @@ components:
           type: string
           description: Answer message
           example: 'That is not our fault'
-    AnswerVBeta1:
+    UserRatingAnswer:
       type: object
       description: "Seller's answer, if null seller did not publish answer"
       required:
@@ -27657,7 +27651,7 @@ components:
           description: The list of product parameters supported by the category.
           items:
             $ref: '#/components/schemas/CategoryProductParameter'
-    CommentVBeta1:
+    UserRatingComment:
       type: object
       properties:
         text:
@@ -28071,57 +28065,6 @@ components:
         publication:
           $ref: '#/components/schemas/Publication_modification'
       description: Publication modification command payload
-    Rates:
-      type: object
-      properties:
-        delivery:
-          type: integer
-          format: int32
-          minimum: 0
-          example: 5
-          description: Delivery rate value
-          enum:
-            - 1
-            - 2
-            - 3
-            - 4
-            - 5
-        deliveryCost:
-          type: integer
-          format: int32
-          minimum: 0
-          example: 5
-          description: Delivery cost rate value
-          enum:
-            - 1
-            - 2
-            - 3
-            - 4
-            - 5
-        description:
-          type: integer
-          format: int32
-          minimum: 0
-          example: 5
-          description: Description rate value
-          enum:
-            - 1
-            - 2
-            - 3
-            - 4
-            - 5
-        service:
-          type: integer
-          format: int32
-          minimum: 0
-          example: 5
-          description: Service rate value
-          enum:
-            - 1
-            - 2
-            - 3
-            - 4
-            - 5
     Reference:
       type: object
       properties:
@@ -28227,7 +28170,7 @@ components:
             - ADMIN
           description: Message containing information who requested removing of a rating
           example: "SELLER"
-    RemovalVBeta1:
+    UserRatingRemoval:
       type: object
       required:
         - possibleTo
@@ -28237,8 +28180,8 @@ components:
           example: '2025-05-17T08:36:57.292Z'
           description: Date until a removal request can be submitted in ISO 8601 format
         request:
-          $ref: '#/components/schemas/RemovalRequestVBeta1'
-    RemovalRequestVBeta1:
+          $ref: '#/components/schemas/UserRatingRemovalRequestDetails'
+    UserRatingRemovalRequestDetails:
       type: object
       description: 'Submitted removal request, null if removal was not requested'
       required:
@@ -29223,79 +29166,15 @@ components:
         - buyer
         - createdAt
         - id
-        - recommended
-      properties:
-        answer:
-          $ref: '#/components/schemas/Answer'
-        buyer:
-          $ref: '#/components/schemas/User'
-        comment:
-          type: string
-          description: Buyer's text comment
-        createdAt:
-          type: string
-          example: '2017-05-17T08:36:57.292Z'
-          description: Creation datetime in ISO 8601 format
-        editedAt:
-          type: string
-          example: '2017-05-19T08:36:57.292Z'
-          description: Edition datetime in ISO 8601 format
-        excludedFromAverageRates:
-          type: boolean
-          example: false
-          description: >-
-            If true this rating was not included in calculating average user
-            rates
-        excludedFromAverageRatesReason:
-          type: string
-          example: 'Rating not unique'
-          description: >-
-            The reason why the rating was excluded from calculating average user rates.
-            The message is translated based on the value of the "Accept-Language" header and exists only when the rating was excluded.
-        id:
-          type: string
-          description: Rating id
-        lastChangedAt:
-          type: string
-          example: '2017-05-19T08:36:57.292Z'
-          description: Last change (creation or latest edition) datetime in ISO 8601 format
-        order:
-          $ref: '#/components/schemas/Order'
-        rates:
-          $ref: '#/components/schemas/Rates'
-        recommended:
-          type: boolean
-          example: false
-          description: Whether buyer recommends the order
-        removal:
-          $ref: '#/components/schemas/Removal'
-    UserRatingListResponse:
-      type: object
-      required:
-        - ratings
-      properties:
-        ratings:
-          type: array
-          description: >-
-            List of ratings that match requested filter. Empty when no rating
-            matched.
-          items:
-            $ref: '#/components/schemas/UserRating'
-    UserRatingVBeta1:
-      type: object
-      required:
-        - buyer
-        - createdAt
-        - id
         - order
         - recommended
       properties:
         answer:
-          $ref: '#/components/schemas/AnswerVBeta1'
+          $ref: '#/components/schemas/UserRatingAnswer'
         buyer:
           $ref: '#/components/schemas/User'
         comment:
-          $ref: '#/components/schemas/CommentVBeta1'
+          $ref: '#/components/schemas/UserRatingComment'
         createdAt:
           type: string
           example: '2025-05-17T08:36:57.292Z'
@@ -29326,12 +29205,17 @@ components:
           example: false
           description: Whether buyer recommends the order
         removal:
-          $ref: '#/components/schemas/RemovalVBeta1'
+          $ref: '#/components/schemas/UserRatingRemoval'
         firstNegativeReviewInLast30Days:
           type: boolean
+          nullable: true
           example: false
-          description: Whether the rating is the first negative in the last 30 days
-    UserRatingListResponseVBeta1:
+          deprecated: true
+          description: >-
+            Whether the rating is the first negative in the last 30 days.
+            Will be null for ratings created after 26.08.2026
+            Deprecated: this field will be removed in Q3 2027
+    UserRatingListResponse:
       type: object
       required:
         - ratings
@@ -29342,7 +29226,7 @@ components:
             List of ratings that match requested filter. Empty when no rating
             matched.
           items:
-            $ref: '#/components/schemas/UserRatingVBeta1'
+            $ref: '#/components/schemas/UserRating'
     UserRatingSummaryResponse:
       type: object
       required:

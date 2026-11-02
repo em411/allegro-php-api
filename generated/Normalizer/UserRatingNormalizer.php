@@ -52,14 +52,14 @@ class UserRatingNormalizer implements DenormalizerInterface, NormalizerInterface
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        if (\array_key_exists('excludedFromAverageRates', $data) && \is_int($data['excludedFromAverageRates'])) {
-            $data['excludedFromAverageRates'] = (bool) $data['excludedFromAverageRates'];
-        }
         if (\array_key_exists('recommended', $data) && \is_int($data['recommended'])) {
             $data['recommended'] = (bool) $data['recommended'];
         }
+        if (\array_key_exists('firstNegativeReviewInLast30Days', $data) && \is_int($data['firstNegativeReviewInLast30Days'])) {
+            $data['firstNegativeReviewInLast30Days'] = (bool) $data['firstNegativeReviewInLast30Days'];
+        }
         if (\array_key_exists('answer', $data) && null !== $data['answer']) {
-            $object->setAnswer($this->denormalizer->denormalize($data['answer'], \Em411\Allegro\Api\Model\Answer::class, 'json', $context));
+            $object->setAnswer($this->denormalizer->denormalize($data['answer'], \Em411\Allegro\Api\Model\UserRatingAnswer::class, 'json', $context));
             unset($data['answer']);
         } elseif (\array_key_exists('answer', $data) && null === $data['answer']) {
             $object->setAnswer(null);
@@ -73,7 +73,7 @@ class UserRatingNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['buyer']);
         }
         if (\array_key_exists('comment', $data) && null !== $data['comment']) {
-            $object->setComment($data['comment']);
+            $object->setComment($this->denormalizer->denormalize($data['comment'], \Em411\Allegro\Api\Model\UserRatingComment::class, 'json', $context));
             unset($data['comment']);
         } elseif (\array_key_exists('comment', $data) && null === $data['comment']) {
             $object->setComment(null);
@@ -93,19 +93,12 @@ class UserRatingNormalizer implements DenormalizerInterface, NormalizerInterface
             $object->setEditedAt(null);
             unset($data['editedAt']);
         }
-        if (\array_key_exists('excludedFromAverageRates', $data) && null !== $data['excludedFromAverageRates']) {
-            $object->setExcludedFromAverageRates($data['excludedFromAverageRates']);
-            unset($data['excludedFromAverageRates']);
-        } elseif (\array_key_exists('excludedFromAverageRates', $data) && null === $data['excludedFromAverageRates']) {
-            $object->setExcludedFromAverageRates(null);
-            unset($data['excludedFromAverageRates']);
-        }
-        if (\array_key_exists('excludedFromAverageRatesReason', $data) && null !== $data['excludedFromAverageRatesReason']) {
-            $object->setExcludedFromAverageRatesReason($data['excludedFromAverageRatesReason']);
-            unset($data['excludedFromAverageRatesReason']);
-        } elseif (\array_key_exists('excludedFromAverageRatesReason', $data) && null === $data['excludedFromAverageRatesReason']) {
-            $object->setExcludedFromAverageRatesReason(null);
-            unset($data['excludedFromAverageRatesReason']);
+        if (\array_key_exists('exclusion', $data) && null !== $data['exclusion']) {
+            $object->setExclusion($this->denormalizer->denormalize($data['exclusion'], \Em411\Allegro\Api\Model\Exclusion::class, 'json', $context));
+            unset($data['exclusion']);
+        } elseif (\array_key_exists('exclusion', $data) && null === $data['exclusion']) {
+            $object->setExclusion(null);
+            unset($data['exclusion']);
         }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
@@ -113,6 +106,17 @@ class UserRatingNormalizer implements DenormalizerInterface, NormalizerInterface
         } elseif (\array_key_exists('id', $data) && null === $data['id']) {
             $object->setId(null);
             unset($data['id']);
+        }
+        if (\array_key_exists('justifications', $data) && null !== $data['justifications']) {
+            $values = [];
+            foreach ($data['justifications'] as $value) {
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\Justification::class, 'json', $context);
+            }
+            $object->setJustifications($values);
+            unset($data['justifications']);
+        } elseif (\array_key_exists('justifications', $data) && null === $data['justifications']) {
+            $object->setJustifications(null);
+            unset($data['justifications']);
         }
         if (\array_key_exists('lastChangedAt', $data) && null !== $data['lastChangedAt']) {
             $object->setLastChangedAt($data['lastChangedAt']);
@@ -128,13 +132,6 @@ class UserRatingNormalizer implements DenormalizerInterface, NormalizerInterface
             $object->setOrder(null);
             unset($data['order']);
         }
-        if (\array_key_exists('rates', $data) && null !== $data['rates']) {
-            $object->setRates($this->denormalizer->denormalize($data['rates'], \Em411\Allegro\Api\Model\Rates::class, 'json', $context));
-            unset($data['rates']);
-        } elseif (\array_key_exists('rates', $data) && null === $data['rates']) {
-            $object->setRates(null);
-            unset($data['rates']);
-        }
         if (\array_key_exists('recommended', $data) && null !== $data['recommended']) {
             $object->setRecommended($data['recommended']);
             unset($data['recommended']);
@@ -143,15 +140,22 @@ class UserRatingNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['recommended']);
         }
         if (\array_key_exists('removal', $data) && null !== $data['removal']) {
-            $object->setRemoval($this->denormalizer->denormalize($data['removal'], \Em411\Allegro\Api\Model\Removal::class, 'json', $context));
+            $object->setRemoval($this->denormalizer->denormalize($data['removal'], \Em411\Allegro\Api\Model\UserRatingRemoval::class, 'json', $context));
             unset($data['removal']);
         } elseif (\array_key_exists('removal', $data) && null === $data['removal']) {
             $object->setRemoval(null);
             unset($data['removal']);
         }
-        foreach ($data as $key => $value) {
+        if (\array_key_exists('firstNegativeReviewInLast30Days', $data) && null !== $data['firstNegativeReviewInLast30Days']) {
+            $object->setFirstNegativeReviewInLast30Days($data['firstNegativeReviewInLast30Days']);
+            unset($data['firstNegativeReviewInLast30Days']);
+        } elseif (\array_key_exists('firstNegativeReviewInLast30Days', $data) && null === $data['firstNegativeReviewInLast30Days']) {
+            $object->setFirstNegativeReviewInLast30Days(null);
+            unset($data['firstNegativeReviewInLast30Days']);
+        }
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
+                $object[$key] = $value_1;
             }
         }
 
@@ -166,35 +170,37 @@ class UserRatingNormalizer implements DenormalizerInterface, NormalizerInterface
         }
         $dataArray['buyer'] = null === $data->getBuyer() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getBuyer(), 'json', $context));
         if ($data->isInitialized('comment') && null !== $data->getComment()) {
-            $dataArray['comment'] = $data->getComment();
+            $dataArray['comment'] = null === $data->getComment() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getComment(), 'json', $context));
         }
         $dataArray['createdAt'] = $data->getCreatedAt();
         if ($data->isInitialized('editedAt') && null !== $data->getEditedAt()) {
             $dataArray['editedAt'] = $data->getEditedAt();
         }
-        if ($data->isInitialized('excludedFromAverageRates') && null !== $data->getExcludedFromAverageRates()) {
-            $dataArray['excludedFromAverageRates'] = $data->getExcludedFromAverageRates();
-        }
-        if ($data->isInitialized('excludedFromAverageRatesReason') && null !== $data->getExcludedFromAverageRatesReason()) {
-            $dataArray['excludedFromAverageRatesReason'] = $data->getExcludedFromAverageRatesReason();
+        if ($data->isInitialized('exclusion') && null !== $data->getExclusion()) {
+            $dataArray['exclusion'] = null === $data->getExclusion() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getExclusion(), 'json', $context));
         }
         $dataArray['id'] = $data->getId();
+        if ($data->isInitialized('justifications') && null !== $data->getJustifications()) {
+            $values = [];
+            foreach ($data->getJustifications() as $value) {
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
+            }
+            $dataArray['justifications'] = $values;
+        }
         if ($data->isInitialized('lastChangedAt') && null !== $data->getLastChangedAt()) {
             $dataArray['lastChangedAt'] = $data->getLastChangedAt();
         }
-        if ($data->isInitialized('order') && null !== $data->getOrder()) {
-            $dataArray['order'] = null === $data->getOrder() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOrder(), 'json', $context));
-        }
-        if ($data->isInitialized('rates') && null !== $data->getRates()) {
-            $dataArray['rates'] = null === $data->getRates() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRates(), 'json', $context));
-        }
+        $dataArray['order'] = null === $data->getOrder() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getOrder(), 'json', $context));
         $dataArray['recommended'] = $data->getRecommended();
         if ($data->isInitialized('removal') && null !== $data->getRemoval()) {
             $dataArray['removal'] = null === $data->getRemoval() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRemoval(), 'json', $context));
         }
-        foreach ($data->additionalPropertyEntries() as $key => $value) {
+        if ($data->isInitialized('firstNegativeReviewInLast30Days') && null !== $data->getFirstNegativeReviewInLast30Days()) {
+            $dataArray['firstNegativeReviewInLast30Days'] = $data->getFirstNegativeReviewInLast30Days();
+        }
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
+                $dataArray[$key] = $value_1;
             }
         }
 

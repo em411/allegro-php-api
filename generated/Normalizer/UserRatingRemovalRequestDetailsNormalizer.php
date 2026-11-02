@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class AnswerVBeta1Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class UserRatingRemovalRequestDetailsNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,17 +32,17 @@ class AnswerVBeta1Normalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\AnswerVBeta1::class === $type;
+        return \Em411\Allegro\Api\Model\UserRatingRemovalRequestDetails::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\AnswerVBeta1::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\UserRatingRemovalRequestDetails::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        $object = new \Em411\Allegro\Api\Model\AnswerVBeta1();
+        $object = new \Em411\Allegro\Api\Model\UserRatingRemovalRequestDetails();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -59,12 +59,12 @@ class AnswerVBeta1Normalizer implements DenormalizerInterface, NormalizerInterfa
             $object->setCreatedAt(null);
             unset($data['createdAt']);
         }
-        if (\array_key_exists('text', $data) && null !== $data['text']) {
-            $object->setText($data['text']);
-            unset($data['text']);
-        } elseif (\array_key_exists('text', $data) && null === $data['text']) {
-            $object->setText(null);
-            unset($data['text']);
+        if (\array_key_exists('message', $data) && null !== $data['message']) {
+            $object->setMessage($data['message']);
+            unset($data['message']);
+        } elseif (\array_key_exists('message', $data) && null === $data['message']) {
+            $object->setMessage(null);
+            unset($data['message']);
         }
         if (\array_key_exists('language', $data) && null !== $data['language']) {
             $object->setLanguage($data['language']);
@@ -72,6 +72,13 @@ class AnswerVBeta1Normalizer implements DenormalizerInterface, NormalizerInterfa
         } elseif (\array_key_exists('language', $data) && null === $data['language']) {
             $object->setLanguage(null);
             unset($data['language']);
+        }
+        if (\array_key_exists('source', $data) && null !== $data['source']) {
+            $object->setSource($data['source']);
+            unset($data['source']);
+        } elseif (\array_key_exists('source', $data) && null === $data['source']) {
+            $object->setSource(null);
+            unset($data['source']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -86,8 +93,13 @@ class AnswerVBeta1Normalizer implements DenormalizerInterface, NormalizerInterfa
     {
         $dataArray = [];
         $dataArray['createdAt'] = $data->getCreatedAt();
-        $dataArray['text'] = $data->getText();
-        $dataArray['language'] = $data->getLanguage();
+        $dataArray['message'] = $data->getMessage();
+        if ($data->isInitialized('language') && null !== $data->getLanguage()) {
+            $dataArray['language'] = $data->getLanguage();
+        }
+        if ($data->isInitialized('source') && null !== $data->getSource()) {
+            $dataArray['source'] = $data->getSource();
+        }
         foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value;
@@ -99,6 +111,6 @@ class AnswerVBeta1Normalizer implements DenormalizerInterface, NormalizerInterfa
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\AnswerVBeta1::class => false];
+        return [\Em411\Allegro\Api\Model\UserRatingRemovalRequestDetails::class => false];
     }
 }

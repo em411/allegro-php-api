@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class RemovalVBeta1Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+class UserRatingCommentNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
 {
     use CheckArray;
     use DenormalizerAwareTrait;
@@ -32,17 +32,17 @@ class RemovalVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \Em411\Allegro\Api\Model\RemovalVBeta1::class === $type;
+        return \Em411\Allegro\Api\Model\UserRatingComment::class === $type;
     }
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return \is_object($data) && \Em411\Allegro\Api\Model\RemovalVBeta1::class === \get_class($data);
+        return \is_object($data) && \Em411\Allegro\Api\Model\UserRatingComment::class === \get_class($data);
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
-        $object = new \Em411\Allegro\Api\Model\RemovalVBeta1();
+        $object = new \Em411\Allegro\Api\Model\UserRatingComment();
         if (null === $data || false === \is_array($data)) {
             return $object;
         }
@@ -52,19 +52,19 @@ class RemovalVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
         if (isset($data['$recursiveRef'])) {
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
-        if (\array_key_exists('possibleTo', $data) && null !== $data['possibleTo']) {
-            $object->setPossibleTo($data['possibleTo']);
-            unset($data['possibleTo']);
-        } elseif (\array_key_exists('possibleTo', $data) && null === $data['possibleTo']) {
-            $object->setPossibleTo(null);
-            unset($data['possibleTo']);
+        if (\array_key_exists('text', $data) && null !== $data['text']) {
+            $object->setText($data['text']);
+            unset($data['text']);
+        } elseif (\array_key_exists('text', $data) && null === $data['text']) {
+            $object->setText(null);
+            unset($data['text']);
         }
-        if (\array_key_exists('request', $data) && null !== $data['request']) {
-            $object->setRequest($this->denormalizer->denormalize($data['request'], \Em411\Allegro\Api\Model\RemovalRequestVBeta1::class, 'json', $context));
-            unset($data['request']);
-        } elseif (\array_key_exists('request', $data) && null === $data['request']) {
-            $object->setRequest(null);
-            unset($data['request']);
+        if (\array_key_exists('language', $data) && null !== $data['language']) {
+            $object->setLanguage($data['language']);
+            unset($data['language']);
+        } elseif (\array_key_exists('language', $data) && null === $data['language']) {
+            $object->setLanguage(null);
+            unset($data['language']);
         }
         foreach ($data as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -78,9 +78,11 @@ class RemovalVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $dataArray = [];
-        $dataArray['possibleTo'] = $data->getPossibleTo();
-        if ($data->isInitialized('request') && null !== $data->getRequest()) {
-            $dataArray['request'] = null === $data->getRequest() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getRequest(), 'json', $context));
+        if ($data->isInitialized('text') && null !== $data->getText()) {
+            $dataArray['text'] = $data->getText();
+        }
+        if ($data->isInitialized('language') && null !== $data->getLanguage()) {
+            $dataArray['language'] = $data->getLanguage();
         }
         foreach ($data->additionalPropertyEntries() as $key => $value) {
             if (preg_match('/.*/', (string) $key)) {
@@ -93,6 +95,6 @@ class RemovalVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
 
     public function getSupportedTypes(?string $format = null): array
     {
-        return [\Em411\Allegro\Api\Model\RemovalVBeta1::class => false];
+        return [\Em411\Allegro\Api\Model\UserRatingComment::class => false];
     }
 }
