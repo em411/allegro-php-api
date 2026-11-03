@@ -2359,20 +2359,6 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\ResponsibleProducerContact::class => ResponsibleProducerContactNormalizer::class,
 
-        \Em411\Allegro\Api\Model\TurnoverDiscountRequest::class => TurnoverDiscountRequestNormalizer::class,
-
-        \Em411\Allegro\Api\Model\NullableTurnoverDiscountDto::class => NullableTurnoverDiscountDtoNormalizer::class,
-
-        \Em411\Allegro\Api\Model\TurnoverDiscountDto::class => TurnoverDiscountDtoNormalizer::class,
-
-        \Em411\Allegro\Api\Model\TurnoverDiscountDefinitionDto::class => TurnoverDiscountDefinitionDtoNormalizer::class,
-
-        \Em411\Allegro\Api\Model\TurnoverDiscountThresholdDto::class => TurnoverDiscountThresholdDtoNormalizer::class,
-
-        \Em411\Allegro\Api\Model\TurnoverDiscountThresholdDtoMinimumTurnover::class => TurnoverDiscountThresholdDtoMinimumTurnoverNormalizer::class,
-
-        \Em411\Allegro\Api\Model\TurnoverDiscountThresholdDtoDiscount::class => TurnoverDiscountThresholdDtoDiscountNormalizer::class,
-
         \Em411\Allegro\Api\Model\PostPurchaseIssueListResponse::class => PostPurchaseIssueListResponseNormalizer::class,
 
         \Em411\Allegro\Api\Model\PostPurchaseIssue::class => PostPurchaseIssueNormalizer::class,
