@@ -2661,6 +2661,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/UserRatingListResponse'
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/UserRatingListResponseVBeta1'
         '401':
           description: Unauthorized
         '403':
@@ -2709,6 +2712,9 @@ paths:
             application/vnd.allegro.public.v1+json:
               schema:
                 $ref: '#/components/schemas/UserRating'
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/UserRatingVBeta1'
         '401':
           description: Unauthorized
         '403':
@@ -24064,6 +24070,26 @@ components:
           example: 'pl'
           description: Language of the user comment.
 
+    AnswerVBeta1:
+      type: object
+      description: "Seller's answer, if null seller did not publish answer"
+      required:
+        - createdAt
+        - text
+        - language
+      properties:
+        createdAt:
+          type: string
+          example: '2025-05-17T08:36:57.292Z'
+          description: Answer creation datetime in ISO 8601 format
+        text:
+          type: string
+          description: Answer message
+        language:
+          type: string
+          example: 'pl'
+          description: Language of the user comment.
+
     AvailableConstraint:
       type: object
       properties:
@@ -27326,6 +27352,16 @@ components:
         language:
           type: string
           description: Language of the user comment.
+
+    CommentVBeta1:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Text of user's comment.
+        language:
+          type: string
+          description: Language of the user comment.
     Exclusion:
       type: object
       properties:
@@ -27731,6 +27767,7 @@ components:
         publication:
           $ref: '#/components/schemas/Publication_modification'
       description: Publication modification command payload
+
     Reference:
       type: object
       properties:
@@ -27848,6 +27885,43 @@ components:
         request:
           $ref: '#/components/schemas/UserRatingRemovalRequestDetails'
     UserRatingRemovalRequestDetails:
+      type: object
+      description: 'Submitted removal request, null if removal was not requested'
+      required:
+        - createdAt
+        - message
+      properties:
+        createdAt:
+          type: string
+          example: '2025-05-17T08:36:57.292Z'
+          description: Removal request creation datetime in ISO 8601 format
+        message:
+          type: string
+          description: Message containing explanation for removing rating
+        language:
+          type: string
+          description: Language of the message
+        source:
+          type: string
+          enum:
+            - SELLER
+            - ADMIN
+          description: Message containing information who requested removing of a rating
+          example: "SELLER"
+
+    RemovalVBeta1:
+      type: object
+      required:
+        - possibleTo
+      properties:
+        possibleTo:
+          type: string
+          example: '2025-05-17T08:36:57.292Z'
+          description: Date until a removal request can be submitted in ISO 8601 format
+        request:
+          $ref: '#/components/schemas/RemovalRequestVBeta1'
+
+    RemovalRequestVBeta1:
       type: object
       description: 'Submitted removal request, null if removal was not requested'
       required:
@@ -28893,6 +28967,70 @@ components:
             matched.
           items:
             $ref: '#/components/schemas/UserRating'
+
+    UserRatingVBeta1:
+      type: object
+      required:
+        - buyer
+        - createdAt
+        - id
+        - order
+        - recommended
+      properties:
+        answer:
+          $ref: '#/components/schemas/AnswerVBeta1'
+        buyer:
+          $ref: '#/components/schemas/User'
+        comment:
+          $ref: '#/components/schemas/CommentVBeta1'
+        createdAt:
+          type: string
+          example: '2025-05-17T08:36:57.292Z'
+          description: Creation datetime in ISO 8601 format
+        editedAt:
+          type: string
+          example: '2025-05-19T08:36:57.292Z'
+          description: Edition datetime in ISO 8601 format
+        exclusion:
+          $ref: '#/components/schemas/Exclusion'
+        id:
+          type: string
+          description: Rating id
+        justifications:
+          type: array
+          description: >-
+            List of the justifications chosen by the buyer while creating rating
+          items:
+            $ref: '#/components/schemas/Justification'
+        lastChangedAt:
+          type: string
+          example: '2025-05-19T08:36:57.292Z'
+          description: Last change (creation or latest edition) datetime in ISO 8601 format
+        order:
+          $ref: '#/components/schemas/Order'
+        recommended:
+          type: boolean
+          example: false
+          description: Whether buyer recommends the order
+        removal:
+          $ref: '#/components/schemas/RemovalVBeta1'
+        firstNegativeReviewInLast30Days:
+          type: boolean
+          example: false
+          description: Whether the rating is the first negative in the last 30 days
+
+    UserRatingListResponseVBeta1:
+      type: object
+      required:
+        - ratings
+      properties:
+        ratings:
+          type: array
+          description: >-
+            List of ratings that match requested filter. Empty when no rating
+            matched.
+          items:
+            $ref: '#/components/schemas/UserRatingVBeta1'
     UserRatingSummaryResponse:
       type: object
       required:
