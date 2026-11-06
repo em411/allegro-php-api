@@ -37752,6 +37752,10 @@ components:
         login:
           type: string
           nullable: true
+          description: >-
+            The Allegro login of the message author. Returned only for authors with
+            the `USER`, `BUYER`, or `SELLER` role. For `CONSULTANT`, `SYSTEM`, and
+            `CHATBOT`, the value is `null`.
           example: 'AllegroLogin'
       required:
         - role

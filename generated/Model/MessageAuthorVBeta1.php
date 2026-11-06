@@ -30,6 +30,8 @@ class MessageAuthorVBeta1 implements AdditionalPropertiesInterface
      */
     protected $role;
     /**
+     * The Allegro login of the message author. Returned only for authors with the `USER`, `BUYER`, or `SELLER` role. For `CONSULTANT`, `SYSTEM`, and `CHATBOT`, the value is `null`.
+     *
      * @var string|null
      */
     protected $login;
@@ -58,11 +60,17 @@ class MessageAuthorVBeta1 implements AdditionalPropertiesInterface
         return $this;
     }
 
+    /**
+     * The Allegro login of the message author. Returned only for authors with the `USER`, `BUYER`, or `SELLER` role. For `CONSULTANT`, `SYSTEM`, and `CHATBOT`, the value is `null`.
+     */
     public function getLogin(): ?string
     {
         return $this->login;
     }
 
+    /**
+     * The Allegro login of the message author. Returned only for authors with the `USER`, `BUYER`, or `SELLER` role. For `CONSULTANT`, `SYSTEM`, and `CHATBOT`, the value is `null`.
+     */
     public function setLogin(?string $login): self
     {
         $this->initialized['login'] = true;
