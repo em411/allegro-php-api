@@ -95,6 +95,13 @@ class MessageVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
             $object->setCreatedAt(null);
             unset($data['createdAt']);
         }
+        if (\array_key_exists('thread', $data) && null !== $data['thread']) {
+            $object->setThread($this->denormalizer->denormalize($data['thread'], \Em411\Allegro\Api\Model\ThreadId::class, 'json', $context));
+            unset($data['thread']);
+        } elseif (\array_key_exists('thread', $data) && null === $data['thread']) {
+            $object->setThread(null);
+            unset($data['thread']);
+        }
         if (\array_key_exists('author', $data) && null !== $data['author']) {
             $object->setAuthor($this->denormalizer->denormalize($data['author'], \Em411\Allegro\Api\Model\MessageAuthorVBeta1::class, 'json', $context));
             unset($data['author']);
@@ -164,6 +171,7 @@ class MessageVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
         $dataArray['status'] = $data->getStatus();
         $dataArray['type'] = $data->getType();
         $dataArray['createdAt'] = $data->getCreatedAt()->format('Y-m-d\TH:i:sP');
+        $dataArray['thread'] = null === $data->getThread() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getThread(), 'json', $context));
         $dataArray['author'] = null === $data->getAuthor() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAuthor(), 'json', $context));
         $dataArray['text'] = $data->getText();
         $dataArray['subject'] = $data->getSubject();
@@ -174,7 +182,9 @@ class MessageVBeta1Normalizer implements DenormalizerInterface, NormalizerInterf
             $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
         }
         $dataArray['attachments'] = $values;
-        $dataArray['additionalInformation'] = null === $data->getAdditionalInformation() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAdditionalInformation(), 'json', $context));
+        if ($data->isInitialized('additionalInformation') && null !== $data->getAdditionalInformation()) {
+            $dataArray['additionalInformation'] = null === $data->getAdditionalInformation() ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($data->getAdditionalInformation(), 'json', $context));
+        }
         foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
                 $dataArray[$key] = $value_1;

@@ -40,6 +40,10 @@ class MessageVBeta1 implements AdditionalPropertiesInterface
      */
     protected $createdAt;
     /**
+     * @var ThreadId|null
+     */
+    protected $thread;
+    /**
      * @var MessageAuthorVBeta1|null
      */
     protected $author;
@@ -123,6 +127,19 @@ class MessageVBeta1 implements AdditionalPropertiesInterface
     {
         $this->initialized['createdAt'] = true;
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getThread(): ?ThreadId
+    {
+        return $this->thread;
+    }
+
+    public function setThread(?ThreadId $thread): self
+    {
+        $this->initialized['thread'] = true;
+        $this->thread = $thread;
 
         return $this;
     }
@@ -232,6 +249,6 @@ class MessageVBeta1 implements AdditionalPropertiesInterface
 
     public function definedProperties(): array
     {
-        return ['id' => ['id', 'getId', 'setId'], 'status' => ['status', 'getStatus', 'setStatus'], 'type' => ['type', 'getType', 'setType'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'author' => ['author', 'getAuthor', 'setAuthor'], 'text' => ['text', 'getText', 'setText'], 'subject' => ['subject', 'getSubject', 'setSubject'], 'relatesTo' => ['relatesTo', 'getRelatesTo', 'setRelatesTo'], 'hasAdditionalAttachments' => ['hasAdditionalAttachments', 'getHasAdditionalAttachments', 'setHasAdditionalAttachments'], 'attachments' => ['attachments', 'getAttachments', 'setAttachments'], 'additionalInformation' => ['additionalInformation', 'getAdditionalInformation', 'setAdditionalInformation']];
+        return ['id' => ['id', 'getId', 'setId'], 'status' => ['status', 'getStatus', 'setStatus'], 'type' => ['type', 'getType', 'setType'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'thread' => ['thread', 'getThread', 'setThread'], 'author' => ['author', 'getAuthor', 'setAuthor'], 'text' => ['text', 'getText', 'setText'], 'subject' => ['subject', 'getSubject', 'setSubject'], 'relatesTo' => ['relatesTo', 'getRelatesTo', 'setRelatesTo'], 'hasAdditionalAttachments' => ['hasAdditionalAttachments', 'getHasAdditionalAttachments', 'setHasAdditionalAttachments'], 'attachments' => ['attachments', 'getAttachments', 'setAttachments'], 'additionalInformation' => ['additionalInformation', 'getAdditionalInformation', 'setAdditionalInformation']];
     }
 }

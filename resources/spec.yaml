@@ -20014,16 +20014,22 @@ paths:
           description: User not allowed to list messages in selected thread
         '404':
           description: Thread not found
-        '422':
-          description: Validation errors
+        '409':
+          description: Thread is closed and cannot accept new messages
           content:
             application/vnd.allegro.beta.v1+json:
               schema:
                 $ref: '#/components/schemas/ErrorsHolder'
               example:
                 errors:
-                  - code: THREAD_CLOSED
+                  - code: THREAD_CLOSED_FOR_NEW_MESSAGES
                     message: Cannot add a message to a closed POST_PURCHASE_ISSUE thread.
+        '422':
+          description: Validation errors
+          content:
+            application/vnd.allegro.beta.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
   '/messaging/messages/{messageId}':
     get:
       tags:
@@ -38093,6 +38099,8 @@ components:
           type: string
           format: date-time
           example: '2020-08-26T12:52:04Z'
+        thread:
+          $ref: '#/components/schemas/ThreadId'
         author:
           $ref: '#/components/schemas/MessageAuthorVBeta1'
         text:
@@ -38119,13 +38127,13 @@ components:
         - status
         - type
         - createdAt
+        - thread
         - author
         - text
         - subject
         - relatesTo
         - hasAdditionalAttachments
         - attachments
-        - additionalInformation
     Message:
       type: object
       properties:

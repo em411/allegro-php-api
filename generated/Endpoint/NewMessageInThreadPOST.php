@@ -89,6 +89,7 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
      * @throws \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTUnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTForbiddenException
      * @throws \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTNotFoundException
+     * @throws \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTConflictException
      * @throws \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTUnprocessableEntityException
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
@@ -111,6 +112,9 @@ class NewMessageInThreadPOST extends \Em411\Allegro\Api\Runtime\Client\BaseEndpo
         }
         if (404 === $status) {
             throw new \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTNotFoundException($response);
+        }
+        if ((null === $contentType) === false && (409 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
+            throw new \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTConflictException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);
         }
         if ((null === $contentType) === false && (422 === $status && false !== stripos(strtolower($contentType), 'application/vnd.allegro.beta.v1+json'))) {
             throw new \Em411\Allegro\Api\Exception\NewMessageInThreadPOSTUnprocessableEntityException($serializer->deserialize($body, 'Em411\Allegro\Api\Model\ErrorsHolder', 'json'), $response);

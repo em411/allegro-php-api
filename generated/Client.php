@@ -5264,6 +5264,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\NewMessageInThreadPOSTUnauthorizedException
      * @throws Exception\NewMessageInThreadPOSTForbiddenException
      * @throws Exception\NewMessageInThreadPOSTNotFoundException
+     * @throws Exception\NewMessageInThreadPOSTConflictException
      * @throws Exception\NewMessageInThreadPOSTUnprocessableEntityException
      */
     public function newMessageInThreadPOST(string $threadId, ?Model\NewMessageInThread $requestBody = null, array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
