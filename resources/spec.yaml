@@ -663,7 +663,17 @@ paths:
         - Offer management
       summary: "Edit an offer"
       description: >-
-        Use this resource to edit offer. This resource allows you to edit each field independently, so use it if you want to change only, for example, the price or the quantity in an offer. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#edycja-pojedynczej-oferty" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#editing-single-offer" target="_blank">EN</a>.
+        Use this resource to edit an offer. This resource allows you to edit each field independently, so you can update a single field, such as the price or quantity, several fields, or all supported offer fields in a single request.
+
+        <p>In general, fields omitted from the request remain unchanged. The request follows <a href="https://tools.ietf.org/html/rfc7396" target="_blank">RFC 7396</a>: arrays are replaced as a whole, and setting a field to <code>null</code> removes it.</p>
+
+        <p><strong>Before sending <code>productSet[].product.id</code>, read how it affects PATCH offer updates:</strong><br>
+        <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#edycja-pojedynczej-oferty" target="_blank">PL: Wpływ pola <code>product.id</code> na aktualizację oferty</a> /
+        <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#editing-single-offer" target="_blank">EN: How <code>product.id</code> affects offer updates</a>.
+        Including this field triggers an offer update using the linked product's current data, even if the ID has not changed. If you do not intend this update, do not send the field.</p>
+
+        <p>For offers linked to a product, outdated values in <code>tecdocSpecification</code> or <code>compatibilityList</code> are updated automatically. See the guide above for more details.</p>
+
         Note that requests may be limited.
       operationId: editProductOffers
       parameters:
