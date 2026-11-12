@@ -40691,6 +40691,7 @@ components:
             - SE
             - HU
             - IT
+            - XI
         street:
           type: string
           description: Street and number.
