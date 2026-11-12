@@ -20,7 +20,7 @@ class ResponsiblePersonGET extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoin
     protected $accept;
 
     /**
-     * Use this resource to get a responsible person for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#osoba-odpowiedzialna-za-zgodnosc-produktu-z-przepisami-unijnymi" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#responsible-persons-for-the-compliance-of-the-product-with-eu-regulations" target="_blank">EN</a>.
+     * Use this resource to get a responsible person for the compliance of the product with EU regulations. Read more: <a href="../../tutorials/jak-zarzadzac-kontem-danymi-uzytkownika-ZM9YAKgPgi2#jak-pobrac-dane-wybranej-osoby-odpowiedzialnej" target="_blank">PL</a> / <a href="../../tutorials/account-and-user-data-management-jn9vBjqjnsw#how-to-retrieve-details-of-selected-responsible-person" target="_blank">EN</a>.
      *
      * @param string $id responsible person ID
      * @param array{
