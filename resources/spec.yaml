@@ -20413,6 +20413,26 @@ paths:
           required: false
           schema:
             type: string
+        - name: updatedAt.gte
+          in: query
+          description: >-
+            Lower bound (inclusive) of the customer return last update date and time in ISO 8601 format.
+            When both bounds are provided, updatedAt.gte must be less than or equal to updatedAt.lte.
+          example: '2020-01-11T09:36:57.00Z'
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updatedAt.lte
+          in: query
+          description: >-
+            Upper bound (inclusive) of the customer return last update date and time in ISO 8601 format.
+            When both bounds are provided, updatedAt.lte must be greater than or equal to updatedAt.gte.
+          example: '2020-01-12T10:15:30.00Z'
+          required: false
+          schema:
+            type: string
+            format: date-time
         - name: marketplaceId
           in: query
           description: The marketplace ID where operation was made. When the parameter is omitted, searches for operations with all marketplaces.
@@ -23161,6 +23181,13 @@ components:
           type: string
           format: date-time
           example: '2020-01-11T09:36:57.00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: >-
+            Date and time when the last update to the customer return data was processed.
+          example: '2020-01-12T10:15:30.00Z'
         referenceNumber:
           type: string
           example: '1234/Z04A'

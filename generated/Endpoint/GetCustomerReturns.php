@@ -36,6 +36,8 @@ class GetCustomerReturns extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint 
      *    "from"?: string, //The ID of the last seen customer return. Customer returns created after the given customer return will be returned.
      *    "createdAt.gte"?: string, //Date of the return in ISO 8601 format to search by greater or equal.
      *    "createdAt.lte"?: string, //Date of the return in ISO 8601 format to search by lower or equal.
+     *    "updatedAt.gte"?: string, //Lower bound (inclusive) of the customer return last update date and time in ISO 8601 format. When both bounds are provided, updatedAt.gte must be less than or equal to updatedAt.lte.
+     *    "updatedAt.lte"?: string, //Upper bound (inclusive) of the customer return last update date and time in ISO 8601 format. When both bounds are provided, updatedAt.lte must be greater than or equal to updatedAt.gte.
      *    "marketplaceId"?: string, //The marketplace ID where operation was made. When the parameter is omitted, searches for operations with all marketplaces.
      *    "status"?: string, //Current return timeline statuses. The allowed values are:
      * CREATED
@@ -90,7 +92,7 @@ class GetCustomerReturns extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint 
     protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(['customerReturnId', 'orderId', 'buyer.email', 'buyer.login', 'items.offerId', 'items.name', 'parcels.waybill', 'parcels.transportingWaybill', 'parcels.carrierId', 'parcels.transportingCarrierId', 'parcels.sender.phoneNumber', 'referenceNumber', 'from', 'createdAt.gte', 'createdAt.lte', 'marketplaceId', 'status', 'limit', 'offset']);
+        $optionsResolver->setDefined(['customerReturnId', 'orderId', 'buyer.email', 'buyer.login', 'items.offerId', 'items.name', 'parcels.waybill', 'parcels.transportingWaybill', 'parcels.carrierId', 'parcels.transportingCarrierId', 'parcels.sender.phoneNumber', 'referenceNumber', 'from', 'createdAt.gte', 'createdAt.lte', 'updatedAt.gte', 'updatedAt.lte', 'marketplaceId', 'status', 'limit', 'offset']);
         $optionsResolver->setRequired([]);
         $optionsResolver->setDefaults(['limit' => 100, 'offset' => 0]);
         $optionsResolver->addAllowedTypes('customerReturnId', ['string']);
@@ -108,6 +110,8 @@ class GetCustomerReturns extends \Em411\Allegro\Api\Runtime\Client\BaseEndpoint 
         $optionsResolver->addAllowedTypes('from', ['string']);
         $optionsResolver->addAllowedTypes('createdAt.gte', ['string']);
         $optionsResolver->addAllowedTypes('createdAt.lte', ['string']);
+        $optionsResolver->addAllowedTypes('updatedAt.gte', ['string']);
+        $optionsResolver->addAllowedTypes('updatedAt.lte', ['string']);
         $optionsResolver->addAllowedTypes('marketplaceId', ['string']);
         $optionsResolver->addAllowedTypes('status', ['string']);
         $optionsResolver->addAllowedTypes('limit', ['int']);

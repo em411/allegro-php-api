@@ -88,6 +88,25 @@ class CustomerReturnNormalizer implements DenormalizerInterface, NormalizerInter
             $object->setCreatedAt(null);
             unset($data['createdAt']);
         }
+        if (\array_key_exists('updatedAt', $data) && null !== $data['updatedAt']) {
+            $date_1 = \DateTime::createFromFormat('Y-m-d\TH:i:sP', $data['updatedAt']);
+            if (false === $date_1) {
+                if (\is_string($data['updatedAt']) && 1 === preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/', $data['updatedAt'])) {
+                    try {
+                        $date_1 = new \DateTime($data['updatedAt']);
+                    } catch (\Exception) {
+                        throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['updatedAt'], 'Y-m-d\TH:i:sP');
+                    }
+                } else {
+                    throw new \Em411\Allegro\Api\Runtime\Normalizer\InvalidDateException($data['updatedAt'], 'Y-m-d\TH:i:sP');
+                }
+            }
+            $object->setUpdatedAt($date_1);
+            unset($data['updatedAt']);
+        } elseif (\array_key_exists('updatedAt', $data) && null === $data['updatedAt']) {
+            $object->setUpdatedAt(null);
+            unset($data['updatedAt']);
+        }
         if (\array_key_exists('referenceNumber', $data) && null !== $data['referenceNumber']) {
             $object->setReferenceNumber($data['referenceNumber']);
             unset($data['referenceNumber']);
@@ -179,6 +198,9 @@ class CustomerReturnNormalizer implements DenormalizerInterface, NormalizerInter
         }
         if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
             $dataArray['createdAt'] = $data->getCreatedAt()->format('Y-m-d\TH:i:sP');
+        }
+        if ($data->isInitialized('updatedAt') && null !== $data->getUpdatedAt()) {
+            $dataArray['updatedAt'] = $data->getUpdatedAt()?->format('Y-m-d\TH:i:sP');
         }
         if ($data->isInitialized('referenceNumber') && null !== $data->getReferenceNumber()) {
             $dataArray['referenceNumber'] = $data->getReferenceNumber();

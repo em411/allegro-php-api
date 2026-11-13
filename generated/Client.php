@@ -5398,6 +5398,8 @@ class Client extends Runtime\Client\Client
      *    "from"?: string, //The ID of the last seen customer return. Customer returns created after the given customer return will be returned.
      *    "createdAt.gte"?: string, //Date of the return in ISO 8601 format to search by greater or equal.
      *    "createdAt.lte"?: string, //Date of the return in ISO 8601 format to search by lower or equal.
+     *    "updatedAt.gte"?: string, //Lower bound (inclusive) of the customer return last update date and time in ISO 8601 format. When both bounds are provided, updatedAt.gte must be less than or equal to updatedAt.lte.
+     *    "updatedAt.lte"?: string, //Upper bound (inclusive) of the customer return last update date and time in ISO 8601 format. When both bounds are provided, updatedAt.lte must be greater than or equal to updatedAt.gte.
      *    "marketplaceId"?: string, //The marketplace ID where operation was made. When the parameter is omitted, searches for operations with all marketplaces.
      *    "status"?: string, //Current return timeline statuses. The allowed values are:
      * CREATED

@@ -38,6 +38,12 @@ class CustomerReturn implements AdditionalPropertiesInterface
      */
     protected $createdAt;
     /**
+     * Date and time when the last update to the customer return data was processed.
+     *
+     * @var \DateTime|null
+     */
+    protected $updatedAt;
+    /**
      * @var string|null
      */
     protected $referenceNumber;
@@ -141,6 +147,25 @@ class CustomerReturn implements AdditionalPropertiesInterface
     {
         $this->initialized['createdAt'] = true;
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Date and time when the last update to the customer return data was processed.
+     */
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Date and time when the last update to the customer return data was processed.
+     */
+    public function setUpdatedAt(?\DateTime $updatedAt): self
+    {
+        $this->initialized['updatedAt'] = true;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -324,6 +349,6 @@ class CustomerReturn implements AdditionalPropertiesInterface
 
     public function definedProperties(): array
     {
-        return ['id' => ['id', 'getId', 'setId'], 'isFulfillment' => ['isFulfillment', 'getIsFulfillment', 'setIsFulfillment'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'referenceNumber' => ['referenceNumber', 'getReferenceNumber', 'setReferenceNumber'], 'orderId' => ['orderId', 'getOrderId', 'setOrderId'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'items' => ['items', 'getItems', 'setItems'], 'refund' => ['refund', 'getRefund', 'setRefund'], 'parcels' => ['parcels', 'getParcels', 'setParcels'], 'rejection' => ['rejection', 'getRejection', 'setRejection'], 'marketplaceId' => ['marketplaceId', 'getMarketplaceId', 'setMarketplaceId'], 'status' => ['status', 'getStatus', 'setStatus']];
+        return ['id' => ['id', 'getId', 'setId'], 'isFulfillment' => ['isFulfillment', 'getIsFulfillment', 'setIsFulfillment'], 'createdAt' => ['createdAt', 'getCreatedAt', 'setCreatedAt'], 'updatedAt' => ['updatedAt', 'getUpdatedAt', 'setUpdatedAt'], 'referenceNumber' => ['referenceNumber', 'getReferenceNumber', 'setReferenceNumber'], 'orderId' => ['orderId', 'getOrderId', 'setOrderId'], 'buyer' => ['buyer', 'getBuyer', 'setBuyer'], 'items' => ['items', 'getItems', 'setItems'], 'refund' => ['refund', 'getRefund', 'setRefund'], 'parcels' => ['parcels', 'getParcels', 'setParcels'], 'rejection' => ['rejection', 'getRejection', 'setRejection'], 'marketplaceId' => ['marketplaceId', 'getMarketplaceId', 'setMarketplaceId'], 'status' => ['status', 'getStatus', 'setStatus']];
     }
 }
