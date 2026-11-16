@@ -41451,10 +41451,11 @@ components:
       type: object
       required:
         - products
+        - categoryId
       properties:
         categoryId:
           type: string
-          description: The category ID of the offer.
+          description: The category ID of the offer. Must not be empty.
           example: '5363'
         products:
           type: array

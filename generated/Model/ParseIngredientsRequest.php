@@ -24,7 +24,7 @@ class ParseIngredientsRequest implements AdditionalPropertiesInterface
      */
     protected $initialized = [];
     /**
-     * The category ID of the offer.
+     * The category ID of the offer. Must not be empty.
      *
      * @var string|null
      */
@@ -42,7 +42,7 @@ class ParseIngredientsRequest implements AdditionalPropertiesInterface
     }
 
     /**
-     * The category ID of the offer.
+     * The category ID of the offer. Must not be empty.
      */
     public function getCategoryId(): ?string
     {
@@ -50,7 +50,7 @@ class ParseIngredientsRequest implements AdditionalPropertiesInterface
     }
 
     /**
-     * The category ID of the offer.
+     * The category ID of the offer. Must not be empty.
      */
     public function setCategoryId(?string $categoryId): self
     {
