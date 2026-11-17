@@ -123,7 +123,7 @@ jobs:
       # github-token: '' stops the action from posting PR comments.
       - name: Diff specs (JSON, for version detection)
         if: steps.spec_check.outputs.changed == 'true' && hashFiles('resources/spec.yaml') != ''
-        uses: oasdiff/oasdiff-action/changelog@v0.1.21
+        uses: oasdiff/oasdiff-action/changelog@v0.1.23
         with:
           base: resources/spec.yaml
           revision: ${{ env.TEMP_DIR }}/new_spec.yaml
@@ -134,7 +134,7 @@ jobs:
 
       - name: Diff specs (text, for release notes)
         if: steps.spec_check.outputs.changed == 'true' && hashFiles('resources/spec.yaml') != ''
-        uses: oasdiff/oasdiff-action/changelog@v0.1.21
+        uses: oasdiff/oasdiff-action/changelog@v0.1.23
         with:
           base: resources/spec.yaml
           revision: ${{ env.TEMP_DIR }}/new_spec.yaml
