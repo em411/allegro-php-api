@@ -81,7 +81,11 @@ class CheckoutFormAddWaybillCreatedNormalizer implements DenormalizerInterface, 
             unset($data['carrierName']);
         }
         if (\array_key_exists('lineItems', $data) && null !== $data['lineItems']) {
-            $object->setLineItems($data['lineItems']);
+            $values = [];
+            foreach ($data['lineItems'] as $value) {
+                $values[] = $this->denormalizer->denormalize($value, \Em411\Allegro\Api\Model\CheckoutFormAddWaybillCreatedLineItemsItem::class, 'json', $context);
+            }
+            $object->setLineItems($values);
             unset($data['lineItems']);
         } elseif (\array_key_exists('lineItems', $data) && null === $data['lineItems']) {
             $object->setLineItems(null);
@@ -94,9 +98,9 @@ class CheckoutFormAddWaybillCreatedNormalizer implements DenormalizerInterface, 
             $object->setCreatedAt(null);
             unset($data['createdAt']);
         }
-        foreach ($data as $key => $value) {
+        foreach ($data as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $object[$key] = $value;
+                $object[$key] = $value_1;
             }
         }
 
@@ -119,14 +123,18 @@ class CheckoutFormAddWaybillCreatedNormalizer implements DenormalizerInterface, 
             $dataArray['carrierName'] = $data->getCarrierName();
         }
         if ($data->isInitialized('lineItems') && null !== $data->getLineItems()) {
-            $dataArray['lineItems'] = $data->getLineItems();
+            $values = [];
+            foreach ($data->getLineItems() as $value) {
+                $values[] = null === $value ? null : new \Em411\Allegro\Api\Runtime\JsonObject($this->normalizer->normalize($value, 'json', $context));
+            }
+            $dataArray['lineItems'] = $values;
         }
         if ($data->isInitialized('createdAt') && null !== $data->getCreatedAt()) {
             $dataArray['createdAt'] = $data->getCreatedAt();
         }
-        foreach ($data->additionalPropertyEntries() as $key => $value) {
+        foreach ($data->additionalPropertyEntries() as $key => $value_1) {
             if (preg_match('/.*/', (string) $key)) {
-                $dataArray[$key] = $value;
+                $dataArray[$key] = $value_1;
             }
         }
 

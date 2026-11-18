@@ -50,7 +50,7 @@ class CheckoutFormAddWaybillCreated implements AdditionalPropertiesInterface
     /**
      * List of order line items. They must be from the order specified in the path parameter. List cannot be empty.
      *
-     * @var mixed|null
+     * @var list<CheckoutFormAddWaybillCreatedLineItemsItem>|null
      */
     protected $lineItems;
     /**
@@ -143,16 +143,20 @@ class CheckoutFormAddWaybillCreated implements AdditionalPropertiesInterface
 
     /**
      * List of order line items. They must be from the order specified in the path parameter. List cannot be empty.
+     *
+     * @return list<CheckoutFormAddWaybillCreatedLineItemsItem>|null
      */
-    public function getLineItems()
+    public function getLineItems(): ?array
     {
         return $this->lineItems;
     }
 
     /**
      * List of order line items. They must be from the order specified in the path parameter. List cannot be empty.
+     *
+     * @param list<CheckoutFormAddWaybillCreatedLineItemsItem>|null $lineItems
      */
-    public function setLineItems($lineItems): self
+    public function setLineItems(?array $lineItems): self
     {
         $this->initialized['lineItems'] = true;
         $this->lineItems = $lineItems;

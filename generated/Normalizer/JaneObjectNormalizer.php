@@ -1223,6 +1223,8 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\CheckoutFormAddWaybillCreated::class => CheckoutFormAddWaybillCreatedNormalizer::class,
 
+        \Em411\Allegro\Api\Model\CheckoutFormAddWaybillCreatedLineItemsItem::class => CheckoutFormAddWaybillCreatedLineItemsItemNormalizer::class,
+
         \Em411\Allegro\Api\Model\OrdersShippingCarriersResponse::class => OrdersShippingCarriersResponseNormalizer::class,
 
         \Em411\Allegro\Api\Model\CheckoutFormOrderWaybillResponse::class => CheckoutFormOrderWaybillResponseNormalizer::class,
