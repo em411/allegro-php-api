@@ -3840,6 +3840,7 @@ class Client extends Runtime\Client\Client
      * @throws Exception\GetOffersUnfilledParametersUsingGET1BadRequestException
      * @throws Exception\GetOffersUnfilledParametersUsingGET1UnauthorizedException
      * @throws Exception\GetOffersUnfilledParametersUsingGET1ForbiddenException
+     * @throws Exception\GetOffersUnfilledParametersUsingGET1RequestUriTooLongException
      */
     public function getOffersUnfilledParametersUsingGET1(array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {

@@ -13991,6 +13991,8 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
+        '414':
+          description: URI Too Long
       security:
       - bearer-token-for-user:
         - allegro:api:sale:offers:read

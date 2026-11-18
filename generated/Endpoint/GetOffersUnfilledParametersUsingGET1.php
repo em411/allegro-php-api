@@ -97,6 +97,7 @@ class GetOffersUnfilledParametersUsingGET1 extends \Em411\Allegro\Api\Runtime\Cl
      * @throws \Em411\Allegro\Api\Exception\GetOffersUnfilledParametersUsingGET1BadRequestException
      * @throws \Em411\Allegro\Api\Exception\GetOffersUnfilledParametersUsingGET1UnauthorizedException
      * @throws \Em411\Allegro\Api\Exception\GetOffersUnfilledParametersUsingGET1ForbiddenException
+     * @throws \Em411\Allegro\Api\Exception\GetOffersUnfilledParametersUsingGET1RequestUriTooLongException
      */
     protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
@@ -113,6 +114,9 @@ class GetOffersUnfilledParametersUsingGET1 extends \Em411\Allegro\Api\Runtime\Cl
         }
         if (403 === $status) {
             throw new \Em411\Allegro\Api\Exception\GetOffersUnfilledParametersUsingGET1ForbiddenException($response);
+        }
+        if (414 === $status) {
+            throw new \Em411\Allegro\Api\Exception\GetOffersUnfilledParametersUsingGET1RequestUriTooLongException($response);
         }
     }
 }
