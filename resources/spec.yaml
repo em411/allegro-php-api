@@ -14793,10 +14793,14 @@ paths:
           - OFFER_TRANSLATION_UPDATED - translation of offer was updated.
           - OFFER_VISIBILITY_CHANGED - visibility of offer was changed on marketplaces.
           - OFFER_DELIVERY_COUNTRIES_BLOCKED - the offer has been blocked in selected countries.
+          - OFFER_CAMPAIGN_PARTICIPATION_CHANGED - a campaign participation state was recorded; includes participation and campaign identifiers and the offer participation state.
 
         Returned events may occur by actions made via browser or API.
-        The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status (the exception is OFFER_ARCHIVED event).
-        External id is returned for all event types except OFFER_BID_PLACED and OFFER_BID_CANCELED.
+        The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status (the exceptions are OFFER_ARCHIVED and OFFER_CAMPAIGN_PARTICIPATION_CHANGED events). Campaign participation events are independent of offer publication status.
+        External id is returned for all event types except OFFER_BID_PLACED, OFFER_BID_CANCELED, and OFFER_CAMPAIGN_PARTICIPATION_CHANGED.
+
+        For OFFER_CAMPAIGN_PARTICIPATION_CHANGED, every event with a distinct message ID is stored and returned, including repeated states of the same participation. Each request returns up to limit stored entries using standard cursor pagination; continue from the last returned ID until the response is empty. Entries become eligible for deletion 24 hours after insertion. Late messages retain their source occurredAt and are returned in journal cursor-ID order, not source timestamp order.
+        Refresh currently visible badge details with GET /sale/badges, using offer.id and the marketplace.id managed by your integration, and match the campaign identifier. Marketplace is not included in this event. This resource does not provide lookup by campaignParticipation.id; historical or terminal participations may no longer be visible.
         Please note that one change may result in more than one event. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#dziennik-zdarzen-w-ofertach-sprzedawcy" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#event-journal-concerning-changes-in-seller-s-offers" target="_blank">EN</a>.
 
       operationId: getOfferEvents
@@ -14839,6 +14843,7 @@ paths:
                 - OFFER_TRANSLATION_UPDATED
                 - OFFER_VISIBILITY_CHANGED
                 - OFFER_DELIVERY_COUNTRIES_BLOCKED
+                - OFFER_CAMPAIGN_PARTICIPATION_CHANGED
         - name: Accept-Language
           in: header
           required: false
@@ -14899,6 +14904,20 @@ paths:
                       type: "OFFER_BID_CANCELED"
                       offer:
                         id: "2865624934"
+                campaignParticipationChanged:
+                  summary: campaign participation state recorded
+                  value:
+                    offerEvents:
+                    - id: "MTEzMjQzODU3NA"
+                      occurredAt: "2026-10-26T12:34:56.123Z"
+                      type: "OFFER_CAMPAIGN_PARTICIPATION_CHANGED"
+                      offer:
+                        id: "70000000"
+                      campaignParticipation:
+                        id: "33146d1a-4fcd-4b15-b1fa-3fa05ef7f019"
+                        campaign:
+                          id: "BLACK_FRIDAY_PL"
+                        state: "ACTIVE"
                 translationChanged:
                   summary: offer translation updated event
                   value:
@@ -15100,6 +15119,202 @@ paths:
       security:
       - bearer-token-for-user:
         - allegro:api:campaigns
+  /sale/badge-campaigns/{campaignId}/selected-offers:
+    get:
+      tags:
+        - Badge campaigns
+      summary: List selected offers and their eligibility for a badge campaign
+      description: >-
+        Use this resource to retrieve campaign offers and check whether each returned offer meets the campaign conditions before submitting it.
+        This resource is available for selected public campaigns while they are open for submissions through the API.
+        Other campaigns or periods may return 404.
+        For eligible offers, the response includes the maximum price at which they can be submitted. For returned offers that
+        do not meet the conditions, the response explains why they are ineligible.
+        The response includes only offers matching the campaign's product list. Filters and pagination may further limit the
+        results, so an offer missing from the response is not necessarily unselected. To check a specific offer, provide
+        `offerId` and omit `meetsConditions`. If the response contains the offer, check
+        `offerConditions.meetsConditions` and `offerConditions.violations` to determine its eligibility.
+        The default `offset` is 0. If you explicitly provide a non-zero `offset`, the offer may be omitted from that page
+        even if it was selected for the campaign.
+        Submit eligible offers using *POST /sale/badges*.
+      operationId: selectedOffers_get
+      parameters:
+        - name: campaignId
+          in: path
+          description: Campaign ID.
+          required: true
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: Zero-based offset of the first selected offer to return.
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: limit
+          in: query
+          description: Maximum number of selected offers to return.
+          required: false
+          schema:
+            type: integer
+            default: 50
+            minimum: 1
+            maximum: 1000
+        - name: offerId
+          in: query
+          description: Filter by offer ID. Must contain only digits and be greater than or equal to 1.
+          required: false
+          example: '86247190358'
+          schema:
+            type: string
+            pattern: '^[0-9]*[1-9][0-9]*$'
+        - name: meetsConditions
+          in: query
+          description: Filter by whether offers meet campaign conditions. Set to true or false; omit to include both.
+          required: false
+          example: true
+          schema:
+            type: boolean
+        - name: Accept-Language
+          in: header
+          required: false
+          description: Language used for localized violation and error messages.
+          example: en-US
+          schema:
+            type: string
+            format: BCP-47 language code
+            enum:
+              - en-US
+              - pl-PL
+              - uk-UA
+              - sk-SK
+              - cs-CZ
+              - hu-HU
+      responses:
+        '200':
+          description: Selected offers returned successfully.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/SelectedOffersResponse'
+              examples:
+                eligible-offers:
+                  summary: All offers meet the campaign conditions
+                  value:
+                    selectedOffers:
+                      - offer:
+                          id: '86247190358'
+                        product:
+                          id: '0c78e9a4-6b2d-4f81-9a37-5d2c8e1b6043'
+                        offerConditions:
+                          meetsConditions: true
+                          violations: []
+                        prices:
+                          base:
+                            amount: '80.00'
+                            currency: PLN
+                        restrictions:
+                          maxPartnerPrice:
+                            amount: '75.00'
+                            currency: PLN
+                          campaignStock:
+                            min: 4
+                            max: 12
+                      - offer:
+                          id: '91730568241'
+                        product:
+                          id: 'b17e2c9d-43f6-4a08-8c52-91d6e3b7a405'
+                        offerConditions:
+                          meetsConditions: true
+                          violations: []
+                        prices:
+                          base:
+                            amount: '70.00'
+                            currency: PLN
+                        restrictions:
+                          maxPartnerPrice:
+                            amount: '65.00'
+                            currency: PLN
+                          campaignStock:
+                            min: 5
+                            max: 24
+                    count: 2
+                    totalCount: 37
+                offer-with-condition-violation:
+                  summary: One of the offers does not meet the campaign conditions
+                  value:
+                    selectedOffers:
+                      - offer:
+                          id: '73841602957'
+                        product:
+                          id: '7a3f1d8c-2e94-4b61-a735-0c8d5e2f9146'
+                        offerConditions:
+                          meetsConditions: true
+                          violations: []
+                        prices:
+                          base:
+                            amount: '1250.00'
+                            currency: PLN
+                        restrictions:
+                          maxPartnerPrice:
+                            amount: '1500.00'
+                            currency: PLN
+                          campaignStock:
+                            min: null
+                            max: 20
+                      - offer:
+                          id: '10000000543'
+                        product:
+                          id: '31fe3d9f-f4a1-48e3-a1cd-5224768f9ebb'
+                        offerConditions:
+                          meetsConditions: false
+                          violations:
+                            - code: BA118
+                              message: The Condition parameter in this offer is different than the expected parameter for this campaign.
+                        prices:
+                          base:
+                            amount: '5000.00'
+                            currency: PLN
+                        restrictions:
+                          maxPartnerPrice: null
+                          campaignStock: null
+                    count: 2
+                    totalCount: 37
+        '400':
+          description: Bad request.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '401':
+          description: Unauthorized.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+        '403':
+          description: Forbidden.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '404':
+          description: Campaign not found or unavailable for submissions, including when the submission window is closed.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+        '500':
+          description: Internal server error.
+          content:
+            application/vnd.allegro.public.v1+json:
+              schema:
+                $ref: '#/components/schemas/ErrorsHolder'
+      security:
+        - bearer-token-for-user:
+            - allegro:api:campaigns
   /sale/badges:
     post:
       tags:
@@ -15108,7 +15323,7 @@ paths:
       description: >-
         This resource allows you to apply for a badge. Most badges involve additional fee charged.
 
-        Your badge application will be verified and you will be notified about the verification status via e-mail.
+        Your badge application will be verified.
         You can use *Location* provided in header of the response to track your application status.
         Application will be removed after 30 days when status of the application was changed form PROCESSED or DECLINED.
 
@@ -34687,6 +34902,61 @@ components:
           OFFER_TRANSLATION_UPDATED: '#/components/schemas/OfferTranslationUpdatedEvent'
           OFFER_VISIBILITY_CHANGED: '#/components/schemas/OfferVisibilityChangedEvent'
           OFFER_DELIVERY_COUNTRIES_BLOCKED: '#/components/schemas/OfferDeliveryCountriesChangedEvent'
+          OFFER_CAMPAIGN_PARTICIPATION_CHANGED: '#/components/schemas/OfferCampaignParticipationChangedEvent'
+    OfferCampaignParticipationChangedEvent:
+      allOf:
+        - $ref: '#/components/schemas/SellerOfferBaseEvent'
+        - type: object
+          required:
+            - offer
+            - campaignParticipation
+          properties:
+            type:
+              type: string
+              enum:
+                - OFFER_CAMPAIGN_PARTICIPATION_CHANGED
+              example: 'OFFER_CAMPAIGN_PARTICIPATION_CHANGED'
+            offer:
+              $ref: '#/components/schemas/OfferEventBaseOffer'
+            campaignParticipation:
+              $ref: '#/components/schemas/OfferEventCampaignParticipation'
+    OfferEventCampaignParticipation:
+      type: object
+      description: >-
+        The participation identifier, campaign identifier, and offer participation state.
+        This is a change notification, not a complete or necessarily current participation snapshot.
+        It does not include marketplace information or participation details.
+      required:
+        - id
+        - campaign
+        - state
+      properties:
+        id:
+          type: string
+          description: Campaign participation identifier, independent of the seller's external offer identifier.
+          example: '33146d1a-4fcd-4b15-b1fa-3fa05ef7f019'
+        campaign:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
+              description: Campaign identifier.
+              example: 'BLACK_FRIDAY_PL'
+        state:
+          type: string
+          description: >-
+            Offer participation state, distinct from the offer's publication status.
+            New values may be introduced; consumers should preserve unknown strings. Known values include:
+            - SUBMITTED - application submitted, awaiting verification.
+            - PLANNING - verification passed, waiting for participation dates to be planned.
+            - REJECTED - application rejected during verification.
+            - ACCEPTED - application accepted, awaiting publication.
+            - ACTIVE - offer participates actively in the campaign.
+            - FINISHED - participation has ended.
+            - DECLINED - offer has been declined from the campaign.
+          example: 'ACTIVE'
     OfferActivatedEvent:
       allOf:
         - $ref: '#/components/schemas/SellerOfferBaseEvent'
@@ -35619,6 +35889,157 @@ components:
           type: number
           description: 'Stock for the campaign.'
           example: 10
+    SelectedOffersResponse:
+      type: object
+      required:
+        - selectedOffers
+        - count
+        - totalCount
+      properties:
+        selectedOffers:
+          type: array
+          description: Offers selected for the campaign, in the order returned by the campaign service.
+          items:
+            $ref: '#/components/schemas/SelectedOffer'
+        count:
+          type: integer
+          format: int64
+          description: Number of offers in this response page.
+          example: 4
+        totalCount:
+          type: integer
+          format: int64
+          description: Total number of selected offers for the campaign.
+          example: 37
+    SelectedOffer:
+      type: object
+      required:
+        - offer
+        - product
+        - offerConditions
+        - prices
+        - restrictions
+      properties:
+        offer:
+          $ref: '#/components/schemas/SelectedOfferIdentifier'
+        product:
+          $ref: '#/components/schemas/SelectedProductIdentifier'
+        offerConditions:
+          $ref: '#/components/schemas/SelectedOfferConditions'
+        prices:
+          $ref: '#/components/schemas/SelectedOfferPrices'
+        restrictions:
+          $ref: '#/components/schemas/SelectedOfferRestrictions'
+    SelectedOfferIdentifier:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: Offer identifier.
+          example: '86247190358'
+    SelectedProductIdentifier:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: Product identifier associated with the offer.
+          example: '0c78e9a4-6b2d-4f81-9a37-5d2c8e1b6043'
+    SelectedOfferConditions:
+      type: object
+      required:
+        - meetsConditions
+        - violations
+      properties:
+        meetsConditions:
+          type: boolean
+          description: Whether the offer meets the campaign conditions.
+          example: true
+        violations:
+          type: array
+          description: Public codes and localized messages describing offer condition violations.
+          items:
+            $ref: '#/components/schemas/SelectedOfferViolation'
+    SelectedOfferViolation:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Public violation code.
+          example: BA118
+        message:
+          type: string
+          description: Localized violation message.
+          example: The Condition parameter in this offer is different than the expected parameter for this campaign.
+    SelectedOfferPrices:
+      type: object
+      required:
+        - base
+      properties:
+        base:
+          type: object
+          nullable: true
+          description: Offer base price before the campaign; null when unavailable.
+          required:
+            - amount
+            - currency
+          properties:
+            amount:
+              type: string
+              description: 'Monetary amount as a string with decimal precision (e.g., ''100.00'')'
+              example: '100.00'
+            currency:
+              type: string
+              description: 'ISO 4217 currency code (e.g., ''PLN'', ''CZK'', ''EUR'', ''HUF'')'
+              example: PLN
+    SelectedOfferRestrictions:
+      type: object
+      required:
+        - maxPartnerPrice
+        - campaignStock
+      properties:
+        maxPartnerPrice:
+          type: object
+          nullable: true
+          description: Maximum partner price; null when no maximum price is provided.
+          required:
+            - amount
+            - currency
+          properties:
+            amount:
+              type: string
+              description: Monetary amount as a string.
+              example: '100.00'
+            currency:
+              type: string
+              description: ISO 4217 currency code.
+              example: PLN
+        campaignStock:
+          type: object
+          nullable: true
+          description: Null when neither stock bound is provided. The minimum and maximum bounds are independent.
+          required:
+            - min
+            - max
+          properties:
+            min:
+              type: integer
+              format: int32
+              nullable: true
+              description: Minimum campaign stock; null when no minimum is provided.
+              example: 4
+            max:
+              type: integer
+              format: int32
+              nullable: true
+              description: Maximum campaign stock; null when no maximum is provided.
+              example: 12
     BadgeOperation:
       type: object
       required:

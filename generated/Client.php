@@ -4099,7 +4099,9 @@ class Client extends Runtime\Client\Client
      *   - OFFER_TRANSLATION_UPDATED - translation of offer was updated.
      *   - OFFER_VISIBILITY_CHANGED - visibility of offer was changed on marketplaces.
      *   - OFFER_DELIVERY_COUNTRIES_BLOCKED - the offer has been blocked in selected countries.
-     * Returned events may occur by actions made via browser or API. The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status (the exception is OFFER_ARCHIVED event). External id is returned for all event types except OFFER_BID_PLACED and OFFER_BID_CANCELED. Please note that one change may result in more than one event. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#dziennik-zdarzen-w-ofertach-sprzedawcy" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#event-journal-concerning-changes-in-seller-s-offers" target="_blank">EN</a>.
+     *   - OFFER_CAMPAIGN_PARTICIPATION_CHANGED - a campaign participation state was recorded; includes participation and campaign identifiers and the offer participation state.
+     * Returned events may occur by actions made via browser or API. The resource allows you to get events concerning active offers and offers scheduled for activation (status ACTIVE and ACTIVATING). Returned events do not concern offers in INACTIVE and ENDED status (the exceptions are OFFER_ARCHIVED and OFFER_CAMPAIGN_PARTICIPATION_CHANGED events). Campaign participation events are independent of offer publication status. External id is returned for all event types except OFFER_BID_PLACED, OFFER_BID_CANCELED, and OFFER_CAMPAIGN_PARTICIPATION_CHANGED.
+     * For OFFER_CAMPAIGN_PARTICIPATION_CHANGED, every event with a distinct message ID is stored and returned, including repeated states of the same participation. Each request returns up to limit stored entries using standard cursor pagination; continue from the last returned ID until the response is empty. Entries become eligible for deletion 24 hours after insertion. Late messages retain their source occurredAt and are returned in journal cursor-ID order, not source timestamp order. Refresh currently visible badge details with GET /sale/badges, using offer.id and the marketplace.id managed by your integration, and match the campaign identifier. Marketplace is not included in this event. This resource does not provide lookup by campaignParticipation.id; historical or terminal participations may no longer be visible. Please note that one change may result in more than one event. Read more: <a href="../../tutorials/jak-zarzadzac-ofertami-7GzB2L37ase#dziennik-zdarzen-w-ofertach-sprzedawcy" target="_blank">PL</a> / <a href="../../tutorials/how-to-process-list-of-offers-m09BKA5v8H3#event-journal-concerning-changes-in-seller-s-offers" target="_blank">EN</a>.
      *
      * @param array{
      *    "from"?: string, //The ID of the last seen event. Events that occured after the given event will be returned.
@@ -4146,6 +4148,34 @@ class Client extends Runtime\Client\Client
     }
 
     /**
+     * Use this resource to retrieve campaign offers and check whether each returned offer meets the campaign conditions before submitting it. This resource is available for selected public campaigns while they are open for submissions through the API. Other campaigns or periods may return 404. For eligible offers, the response includes the maximum price at which they can be submitted. For returned offers that do not meet the conditions, the response explains why they are ineligible. The response includes only offers matching the campaign's product list. Filters and pagination may further limit the results, so an offer missing from the response is not necessarily unselected. To check a specific offer, provide `offerId` and omit `meetsConditions`. If the response contains the offer, check `offerConditions.meetsConditions` and `offerConditions.violations` to determine its eligibility. The default `offset` is 0. If you explicitly provide a non-zero `offset`, the offer may be omitted from that page even if it was selected for the campaign. Submit eligible offers using *POST /sale/badges*.
+     *
+     * @param string $campaignId campaign ID
+     * @param array{
+     *    "offset"?: int, //Zero-based offset of the first selected offer to return.
+     *    "limit"?: int, //Maximum number of selected offers to return.
+     *    "offerId"?: string, //Filter by offer ID. Must contain only digits and be greater than or equal to 1.
+     *    "meetsConditions"?: bool, //Filter by whether offers meet campaign conditions. Set to true or false; omit to include both.
+     * } $queryParameters
+     * @param array{
+     *    "Accept-Language"?: string, //Language used for localized violation and error messages.
+     * } $headerParameters
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return ($fetch is 'object' ? Model\SelectedOffersResponse|null : \Psr\Http\Message\ResponseInterface)
+     *
+     * @throws Exception\SelectedOffersGetBadRequestException
+     * @throws Exception\SelectedOffersGetUnauthorizedException
+     * @throws Exception\SelectedOffersGetForbiddenException
+     * @throws Exception\SelectedOffersGetNotFoundException
+     * @throws Exception\SelectedOffersGetInternalServerErrorException
+     */
+    public function selectedOffersGet(string $campaignId, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executeEndpoint(new Endpoint\SelectedOffersGet($campaignId, $queryParameters, $headerParameters), $fetch);
+    }
+
+    /**
      * Use this resource to get a list of badges in authorized seller's offers. Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#kampanie-przypisane-do-ofert" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#check-badges-assigned-to-offers" target="_blank">EN</a>.
      *
      * @param array{
@@ -4172,7 +4202,7 @@ class Client extends Runtime\Client\Client
 
     /**
      * This resource allows you to apply for a badge. Most badges involve additional fee charged.
-     * Your badge application will be verified and you will be notified about the verification status via e-mail. You can use *Location* provided in header of the response to track your application status. Application will be removed after 30 days when status of the application was changed form PROCESSED or DECLINED.
+     * Your badge application will be verified. You can use *Location* provided in header of the response to track your application status. Application will be removed after 30 days when status of the application was changed form PROCESSED or DECLINED.
      * Read more: <a href="../../tutorials/jak-przypisac-oferte-kampanii-GRaj0q6Gwuy#zglos-oferte-do-kampanii" target="_blank">PL</a> / <a href="../../tutorials/how-to-submit-offers-to-campaigns-AgGjd6EmyH4#submit-offer-to-a-campaign" target="_blank">EN</a>.
      *
      * @param array{

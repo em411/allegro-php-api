@@ -1615,6 +1615,12 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
 
         \Em411\Allegro\Api\Model\SellerOfferBaseEvent::class => SellerOfferBaseEventNormalizer::class,
 
+        \Em411\Allegro\Api\Model\OfferCampaignParticipationChangedEvent::class => OfferCampaignParticipationChangedEventNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferEventCampaignParticipation::class => OfferEventCampaignParticipationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\OfferEventCampaignParticipationCampaign::class => OfferEventCampaignParticipationCampaignNormalizer::class,
+
         \Em411\Allegro\Api\Model\OfferActivatedEvent::class => OfferActivatedEventNormalizer::class,
 
         \Em411\Allegro\Api\Model\OfferChangedEvent::class => OfferChangedEventNormalizer::class,
@@ -1742,6 +1748,28 @@ class JaneObjectNormalizer implements DenormalizerInterface, NormalizerInterface
         \Em411\Allegro\Api\Model\BadgeProcess::class => BadgeProcessNormalizer::class,
 
         \Em411\Allegro\Api\Model\BadgeCampaignStock::class => BadgeCampaignStockNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedOffersResponse::class => SelectedOffersResponseNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedOffer::class => SelectedOfferNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedOfferIdentifier::class => SelectedOfferIdentifierNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedProductIdentifier::class => SelectedProductIdentifierNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedOfferConditions::class => SelectedOfferConditionsNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedOfferViolation::class => SelectedOfferViolationNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedOfferPrices::class => SelectedOfferPricesNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedOfferPricesBase::class => SelectedOfferPricesBaseNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedOfferRestrictions::class => SelectedOfferRestrictionsNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedOfferRestrictionsMaxPartnerPrice::class => SelectedOfferRestrictionsMaxPartnerPriceNormalizer::class,
+
+        \Em411\Allegro\Api\Model\SelectedOfferRestrictionsCampaignStock::class => SelectedOfferRestrictionsCampaignStockNormalizer::class,
 
         \Em411\Allegro\Api\Model\BadgeOperation::class => BadgeOperationNormalizer::class,
 

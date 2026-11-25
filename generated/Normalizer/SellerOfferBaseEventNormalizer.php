@@ -85,6 +85,9 @@ class SellerOfferBaseEventNormalizer implements DenormalizerInterface, Normalize
         if (\array_key_exists('type', $data) && 'OFFER_DELIVERY_COUNTRIES_BLOCKED' === $data['type']) {
             return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\OfferDeliveryCountriesChangedEvent', $format, $context);
         }
+        if (\array_key_exists('type', $data) && 'OFFER_CAMPAIGN_PARTICIPATION_CHANGED' === $data['type']) {
+            return $this->denormalizer->denormalize($data, 'Em411\Allegro\Api\Model\OfferCampaignParticipationChangedEvent', $format, $context);
+        }
         if (\array_key_exists('id', $data) && null !== $data['id']) {
             $object->setId($data['id']);
             unset($data['id']);
@@ -161,6 +164,9 @@ class SellerOfferBaseEventNormalizer implements DenormalizerInterface, Normalize
             return $this->normalizer->normalize($data, $format, $context);
         }
         if (null !== $data->getType() && 'OFFER_DELIVERY_COUNTRIES_BLOCKED' === $data->getType()) {
+            return $this->normalizer->normalize($data, $format, $context);
+        }
+        if (null !== $data->getType() && 'OFFER_CAMPAIGN_PARTICIPATION_CHANGED' === $data->getType()) {
             return $this->normalizer->normalize($data, $format, $context);
         }
         $dataArray['id'] = $data->getId();
